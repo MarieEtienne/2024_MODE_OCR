@@ -3,7 +3,9 @@ on:
   push:
     branches:
       - master
-
+  pull_request:
+  
+  
 jobs:
   build:
     name: Build website with rmarkdown
@@ -15,14 +17,18 @@ jobs:
         uses: actions/checkout@v2
       - name: Install R packages
         run: |
-          Rscript -e "install.packages(c('deSolve', 'ggmcmc', 'sm', 'gridExtra', 'DHARMa', 'factoextra'))" 
-          Rscript -e "install.packages(c('draw', 'phaseR', 'rgl', 'bootstrap', 'latex2exp', 'datasets', 'popbio'))"
-          Rscript -e "install.packages(c('gwrr', 'spatialreg', 'spdep'))"
-          Rscript -e "devtools::install_version('TSA', version = '1.2.1', repos = 'http://cran.us.r-project.org')"
+          Rscript -e "install.packages(c('factoextra'))" 
+      - name: Additional Python packages
+        run: |
+          pip install numpy 
       - name: Generate slides
         run: "quarto render"
       - name: GitHub Pages action
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_site
+          
+          
+
