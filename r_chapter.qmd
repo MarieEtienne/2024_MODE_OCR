@@ -1,7 +1,7 @@
 ---
 
 title: "Modèles matriciels et applications"
-group: "Quentin,	Alexie, Jeanne,	Laurane" 
+group: "Tanguy" 
 
 bibliography: references.bib
 execute: 
