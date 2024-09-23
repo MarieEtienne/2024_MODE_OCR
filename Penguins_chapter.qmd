@@ -47,6 +47,7 @@ library(FactoMineR)
 ```{r}
 data <- read.table("penguins_raw.csv", sep = "," , header = TRUE, stringsAsFactors = T)
 summary(data)
+dim(data)
 ```
 
 Change species names :  
@@ -84,5 +85,61 @@ ggplot(data, aes(x = Delta.15.N..o.oo., y = Delta.13.C..o.oo., color = Species, 
 
 
 
+```{r NA}
 
-A citation @bauer2023writing
+data2 <-data[,1:17]
+data2
+NA_df <- (colSums(is.na(data2)) / nrow(data2)) * 100
+
+color_pal <- colorRampPalette(c("limegreen", "yellow", "firebrick"), bias = 20)(10)
+NA_col <- color_pal[as.integer(NA_df/length(NA_df)*9)+1]
+
+# Graphique
+barplot(NA_df, main = "NA quantity per column",
+        ylab = "NA", col = NA_col, las=2, cex.names=0.4)
+
+NA_mean<-mean(NA_df)
+# 0.78% 
+
+abline(h=NA_mean, col = "red", lwd = 2)
+
+```
+
+
+```{r violin}
+
+# Violin plot for Culmen Length (beak length)
+ggplot(data, aes(x = Species, y = Culmen.Length..mm., fill = Species)) +
+  geom_violin(trim = FALSE) +
+  geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
+    stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
+  labs(title = "Distribution of Culmen Length by Species",
+       x = "Species",
+       y = "Culmen Length (mm)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+# Violin plot for Flipper Length
+ggplot(data, aes(x = Species, y = Flipper.Length..mm., fill = Species)) +
+  geom_violin(trim = FALSE) +
+  geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
+    stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
+  labs(title = "Distribution of Flipper Length by Species",
+       x = "Species",
+       y = "Flipper Length (mm)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+# Violin plot for Body Mass
+ggplot(data, aes(x = Species, y = Body.Mass..g., fill = Species)) +
+  geom_violin(trim = FALSE) +
+  geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
+    stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
+  labs(title = "Distribution of Body Mass by Species",
+       x = "Species",
+       y = "Body Mass (g)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
