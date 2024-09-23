@@ -1,7 +1,7 @@
 ---
 
 title: "Modèles matriciels et applications"
-group: "Rudy, Tanguy, Manon, Garan, Anaelle, Oceane, Victor" 
+group: "Rudy, Tanguy, Manon, Garan, Anaëlle, Oceane, Victor" 
 
 bibliography: references.bib
 execute: 
@@ -15,5 +15,21 @@ output:
 Le lien du site : https://zenodo.org/records/8251495 
 
 
+Pistes 
 
+Calcul 
+
+Taux de succès 
+Taux de survie
+
+voir si habitat préférentiel, région,…
+voir quelles facteurs expliquent taux de succès
+
+voir si décalages entre dates de départ du nid -> facteurs expliquant 
+
+voir si habitat préferentiel 
+
+MAIS ATTENTION à ne pas être biaisé : du genre que des oiseaux d’une certaines espèces ne soit présents que dans un habitat
+
+refaire analyse de bases cf ASA 
 
