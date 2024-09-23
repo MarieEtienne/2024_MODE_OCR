@@ -1,5 +1,17 @@
 ---
 title: "groupe 3"
-author: "Chloé Van der Swaelmen, Anaelle, Kilian, Gabriel-Marie Arnault (aka Gabriel), Apolline Byrdy, Giuliana, Léa, Manon"
+autor: "Gabriel-Marie Arnault, Giuliana Brambilla, Apolline Byrdy, Anaelle Hulbert, Manon Le Bihan, Kilian Prevost, Chloé Van der Swaelmen, Léa Vuille "
 editor: visual
 ---
+
+# **INTRODUCTION** (Apolline et Kilian)
+
+# **EXPLORATION DU JEU DE DONNEES**
+
+## 1. Présentation du jeu de données (Léa et Giuliana)
+
+## 2. Analyse des interactions entre les variables (Chloé et Manon)
+
+# **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
+
+# **CONCLUSION** (Apolline et Kilian)
