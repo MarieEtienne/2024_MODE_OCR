@@ -3,3 +3,11 @@ title: "groupe 3"
 author: "Chloé, Annaelle, Kilian, Gabriel, Apolline, Giuliana, Léa, Manon"
 editor: visual
 ---
+
+# **INTRODUCTION**
+
+# **EXPLORATION DU JEU DE DONNEES**
+
+# **ANALYSE STATISTIQUE**
+
+# **CONCLUSION**
