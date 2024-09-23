@@ -1,5 +1,13 @@
 # MODE_reproduciblescience
 
+## Form to present the groups
+
+# The form for the groups 
+
+https://lite.framacalc.org/2024_ocr_groups-aa6d
+
+
+
 ## Description du chapitre :
 
 Faire des tests lorsqu'on a des données spatialement ou temporellement dépendantes
