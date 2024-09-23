@@ -13,6 +13,8 @@ output:
 ---
 
 ```{r}
+library(factoextra)
+library(FactoMineR)
 library(tidyverse)
 library(ggplot2)
 ```
@@ -46,6 +48,25 @@ data <- read.table("penguins_raw.csv", sep = "," , header = TRUE, stringsAsFacto
 summary(data)
 ```
 
+```{r}
+#sélection des données quantitatives
+data_numeric <- select_if(data, is.numeric)
+#enlever le numéro de l'individu et le sample
+#la body mass et le flipper sont corrélés à plus de 80% donc on suprimme flipper car c'est la données la plus corrélées à toute
+data_numeric <- data_numeric[,-c(1,2,5)]
+#centrer et réduire les données
+data_scales <- scale(data_numeric)
+acp_data= PCA(data_scales)
+summary(acp_data)
+#Variances pour chaque composantes
+fviz_eig(acp_data)
+#Projection des individus et coloration en fonction de l'espèce
+fviz_pca_ind(acp_data, geom.ind = "point", col.ind = as.factor(data$Species), addEllipses = T, pointshape = 19)
+#Projection des individus et coloration en fonction de l'île
+fviz_pca_ind(acp_data, geom.ind = "point", col.ind = data$Island, pointshape = 19, addEllipses = T)
+#projection des variables
+fviz_pca_var(acp_data)
+```
 
 
 A citation @bauer2023writing
