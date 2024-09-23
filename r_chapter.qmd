@@ -1,7 +1,7 @@
 ---
 
-title: "OURS?"
-group: "SLH_ARMY" 
+title: "Modèles matriciels et applications"
+group: "Quentin,	Alexie, Jeanne,	Laurane" 
 
 bibliography: references.bib
 execute: 
