@@ -1,0 +1,5 @@
+---
+title: "groupe 3"
+author: "Chloé, Annaelle, Kilian, Gabriel, Apolline, Giuliana, Léa, Manon"
+editor: visual
+---
