@@ -5,13 +5,13 @@ website:
   title: "The Companion book a M1 MODE student should have!"
   navbar:
     left:
+      - icon: home
+        href: https://marieetienne.github.io/MODE_reproduciblescience/
       - icon: github
-        href: https://github.com/MarieEtienne/MODE_reproduciblescience
+        href: https://github.com/MarieEtienne/2024_MODE_OCR
         aria-label: GitHub
-      - text: "Before the class"
-        href: prior_course.qmd
       - text: "Instructions"
-        href: instructions.qmd
+        href: https://marieetienne.github.io/MODE_reproduciblescience/instructions.html
       - text: "Courses Materials"
         menu:
         - text: Git Intro
@@ -20,25 +20,12 @@ website:
 
         
     right:
-      - text: M1 MODE Survival book by the M2 students
+      - text: Book contente
         menu:
-        - text: Multivariate Analysis
-          href: AMV_chapter.qmd
-        - text: Linear modelling in ecology
-          href: linear_modelling.qmd
-        - text: Mixed models in Ecology
-          href: Mixed_models.qmd        
-        - text: Dependent data
-          href: chapter_dependance.qmd
-        - text: Matrix models and applications in ecology
-          href: Matrix.qmd
-        - text: Ordinary Differential Equations in Ecology
-          href: Chap_ODE.qmd
-        - text: Resampling methods
-          href: r_chapter_boostrapping_resampling.qmd
-        - text: Bayesian models in Ecology
-          href: bayesian_modeles.qmd
-        - href: simple_chapter.qmd
+        - text: R simple example 
+          href: r_chapter.qmd
+        - text: Python simple example 
+          href: python_chapter.qmd
         aria-label: GitHub
 
 format:
