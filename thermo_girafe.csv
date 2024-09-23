@@ -1,0 +1,193 @@
+Id_observation;date;hour;moment_of_the day;wind;weather;name;sexe;size;age;temperature;habitat;position_giraffes_to_the_sun;exposure_to_the_sun;location_GPS;start_hour;end_hour;duration_of_one_position;general_behaviour 
+ba7b8ed6;21/09/2022;09:16:30;morning;no;overcast;Felix;male;sub_adult;2;19;open_woodland;NA;cloudy_day_no_shade;-22.734062, 28.779563;NA;NA;NA;foraging
+0bd7ce36;21/09/2022;09:31:40;morning;no;overcast;Kagiso;female;adult;8;19;open_woodland;NA;cloudy_day_no_shade;-22.734461, 28.779374;NA;NA;NA;foraging 
+c3e06a4d;22/09/2022;08:47:46;morning;little;overcast;Sun;male;adult;9;19;open_grassland;NA;cloudy_day_no_shade;-22.727669, 28.787646;08:45:00;08:45:00;0;foraging 
+1a42de6b;22/09/2022;11:53:22;morning;little;overcast;Nala;female;adult;10;23;open_shrubland;NA;cloudy_day_no_shade;-22.734471, 28.787167;11:53:00;11:53:00;0;foraging 
+47636afe;22/09/2022;12:35:23;midday;moderate;overcast;Emily;female;adult;26;25;open_woodland;NA;cloudy_day_no_shade;-22.727557, 28.777793;12:35:00;12:35:00;0;foraging
+38e3ab13;26/09/2022;06:43:47;morning;no;sunny;Forest;male;adult;5;18;open_woodland;225°;partially_in_shade;-22.726415, 28.773882;06:40:00;06:55:00;15;inactive
+60aa5a0e;26/09/2022;07:50:32;morning;little;sunny;Flamenkuchen;male;sub_adult;3;23;close_shrubland;45°;giraffe_in_full_shade;-22.744298, 28.780411;07:48:00;07:57:00;9;foraging , 
+7b6354e2;26/09/2022;08:10:13;morning;no;sunny;Aquarius;male;adult;9;24;close_shrubland;270°;partially_in_shade;-22.744026, 28.779557;08:10:00;08:14:00;4;foraging 
+715d8b50;26/09/2022;08:18:36;morning;little;sunny;Flamenkuchen;male;sub_adult;3;24;close_shrubland;180°;fully_exposed_to_the_sun;-22.744029, 28.779615;08:18:00;08:22:00;4;foraging 
+1a5b679a;26/09/2022;08:23:10;morning;little;sunny;Flamenkuchen;male;sub_adult;3;26;close_shrubland;45°;partially_in_shade;-22.744048, 28.779619;08:23:00;08:28:00;5;foraging
+aabb81b6;26/09/2022;08:44:30;morning;little;sunny;Charlie;male;adult;7;27;close_shrubland;0°;partially_in_shade;-22.743608, 28.778454;08:44:00;08:48:00;4;foraging 
+f134534b;28/09/2022;09:10:21;morning;strong;sunny;Kagiso;female;adult;8;27;open_woodland;315°;giraffe_in_full_shade;-22.731462, 28.780007;09:10:00;09:15:00;5;foraging
+de83652d;28/09/2022;09:15:54;morning;strong;sunny;Kagiso;female;adult;8;27;open_woodland;90°;fully_exposed_to_the_sun;-22.731467, 28.779999;09:15:00;09:19:00;4;foraging
+0f8c5916;28/09/2022;09:20:36;morning;strong;sunny;Kagiso;female;adult;8;28;open_woodland;270°;partially_in_shade;-22.731495, 28.779990;09:20:00;09:22:00;2;foraging
+b78b3810;28/09/2022;16:46:03;evening;strong ;sunny;Lovely;male;adult;12;30;open_woodland;135°;partially_in_shade;-22.735804, 28.777440;16:53:00;16:55:00;2;foraging
+a5935029;28/09/2022;16:56:36;evening;strong;sunny;Lovely;male;adult;12;30;open_woodland;45°;giraffe_in_full_shade;-22.735810, 28.777450;16:56:00;16:59:00;3;foraging
+864dc90a;28/09/2022;17:00:23;evening;strong;sunny;Lovely;male;adult;12;30;open_woodland;225°;fully_exposed_to_the_sun;-22.735772, 28.777416;17:00:00;17:00:00;2;drinking
+9c37f529;29/09/2022;10:08:35;morning;moderate;sunny;Emily;female;adult;26;26;open_shrubland;NA;fully_exposed_to_the_sun;-22.714800, 28.806287;10:08:00;10:08:00;0;foraging
+587e005b;03/10/2022;06:17:23;morning;no;sunny;Kagiso;female;adult;8;19;open_woodland;45°;partially_in_shade;-22.728182, 28.778995;06:17:00;06:21:00;4;foraging
+a5b00237;03/10/2022;06:21:57;morning;no;sunny;Kagiso;female;adult;8;19;open_woodland;0°;partially_in_shade;-22.728243, 28.778957;06:21:00;06:25:00;4;foraging
+fb611ebc;03/10/2022;06:25:34;morning;no;sunny;Kagiso;female;adult;8;19;open_woodland;270°;partially_in_shade;-22.728250, 28.778979;06:25:00;06:32:00;6;foraging
+5be603af;03/10/2022;06:38:49;morning;no;sunny;Polp;male;adult;16;20;close_shrubland;135°;partially_in_shade;-22.728363, 28.778943;06:38:00;06:42:00;4;foraging
+4583382a;03/10/2022;06:41:39;morning;no;sunny;Polp;male;adult;16;20;close_shrubland;180°;fully_exposed_to_the_sun;-22.728322, 28.778946;06:42:00;06:45:00;3;foraging
+ed0a5348;03/10/2022;06:45:36;morning;no;sunny;Polp;male;adult;16;20;close_shrubland;90°;partially_in_shade;-22.728322, 28.778946;06:45:00;06:47:00;2;vigilant
+1c7c24cd;03/10/2022;06:47:22;morning;no;sunny;Polp;male;adult;16;21;close_shrubland;90°;partially_in_shade;-22.728485, 28.778872;06:47:00;06:53:00;6;vigilant
+d76bdde8;03/10/2022;07:58:41;morning;no;sunny;Melman;male;adult;17;25;open_shrubland;315°;partially_in_shade;-22.728826, 28.789253;07:58:00;08:01:00;3;vigilant
+21d10b99;03/10/2022;08:01:19;morning;no;sunny;Melman;male;adult;17;26;open_shrubland;90°;partially_in_shade;-22.728813, 28.789214;08:01:00;08:04:00;3;foraging
+2ed14e7f;03/10/2022;08:04:09;morning;no;sunny;Melman;male;adult;17;26;open_shrubland;90°;partially_in_shade;-22.726939, 28.790289;08:04:00;08:06:00;2;foraging
+a6e3b926;03/10/2022;08:07:48;morning;no;sunny;Melman;male;adult;17;27;open_shrubland;135°;partially_in_shade;-22.728759, 28.789272;08:07:00;08:10:00;3;vigilant
+20f27be2;03/10/2022;09:03:47;morning;no;sunny;Nefertiti;female;juvenile;0,41;29;open_woodland;270°;partially_in_shade;-22.734101, 28.779065;09:03:00;09:13:00;10;foraging
+8ff98b9d;03/10/2022;16:30:32;evening;no;sunny;Berthille;female;adult;8;37;close_shrubland;135°;partially_in_shade;-22.731239, 28.778172;16:30:00;16:36:00;6;vigilant
+0e7e7830;03/10/2022;16:37:34;evening;no;sunny;Berthille;female;adult;8;37;close_shrubland;90°;giraffe_in_full_shade;-22.731361, 28.778094;16:37:00;16:41:00;5;foraging
+ff51360a;03/10/2022;16:50:43;evening;no;sunny;Charlie;male;adult;7;37;close_shrubland;135°;giraffe_in_full_shade;-22.731464, 28.778498;16:50:00;16:55:00;5;foraging
+90f0336c;03/10/2022;16:55:00;evening;no;sunny;Dark male;male;adult;18;37;open_woodland;225°;giraffe_in_full_shade;-22.731453, 28.778504;16:55:00;16:59:00;4;vigilant
+453b102f;03/10/2022;17:01:06;evening;no;sunny;Dark male;male;adult;18;36;open_woodland;225°;giraffe_in_full_shade;-22.731480, 28.778485;17:01:00;17:04:00;3;vigilant
+119f7a50;03/10/2022;17:04:21;evening;no;sunny;Dark male;male;adult;18;36;open_woodland;90°;partially_in_shade;-22.731163, 28.778526;17:04:00;17:07:00;3;foraging
+50f7ac03;03/10/2022;17:31:03;evening;no;sunny;Forest;male;adult;5;34;open_woodland;225°;partially_in_shade;-22.729854, 28.778258;17:31:00;17:44:00;13;foraging
+f1a06eb6;04/10/2022;06:52:56;morning;no;sunny;Forest;male;adult;5;23;close_shrubland;270°;partially_in_shade;-22.731357, 28.777400;06:52:00;06:54:00;2;vigilant
+35909275;04/10/2022;07:21:47;morning;no;sunny;Forest;male;adult;5;24;close_shrubland;0°;partially_in_shade;-22.734677, 28.774716;07:21:00;07:33:00;12;foraging
+27504095;05/10/2022;15:45:52;evening;moderate;sunny;Melman;male;adult;17;34;open_woodland;225°;partially_in_shade;-22.727135, 28.777020;15:45:00;15:50:00;5;foraging
+55e6dac5;05/10/2022;15:50:46;evening;moderate;sunny;Melman;male;adult;17;34;open_woodland;90°;giraffe_in_full_shade;-22.727176, 28.777059;15:50:00;15:53:00;3;foraging
+0da7af5c;05/10/2022;16:00:40;evening;moderate;sunny;Madame Butterfly;female;adult;20;34;open_woodland;180°;giraffe_in_full_shade;-22.727643, 28.777498;16:00:00;16:04:00;4;foraging
+e25bf602;05/10/2022;16:04:36;evening;moderate;sunny;Madame Butterfly;female;adult;20;34;open_woodland;90°;giraffe_in_full_shade;-22.727632, 28.777496;16:04:00;16:08:00;4;foraging
+fd152e55;05/10/2022;16:08:28;evening;moderate;sunny;Madame Butterfly;female;adult;20;34;open_woodland;180°;giraffe_in_full_shade;-22.727637, 28.777483;16:08:00;16:10:00;2;foraging
+75b979a0;05/10/2022;16:16:32;evening;moderate;sunny;Medea;female;juvenile;0,58;33;open_woodland;90°;partially_in_shade;-22.727950, 28.777764;16:16:00;16:27:00;11;foraging
+061d0996;10/10/2022;17:45:37;evening;little;sunny;Mcfly;male;adult;12;31;open_woodland;225°;fully_exposed_to_the_sun;-22.726834, 28.774479;17:45:00;17:48:00;3;vigilant
+71517f1b;11/10/2022;07:21:34;morning;little;sunny;Noumea;female;adult;6;21;close_shrubland;45°;partially_in_shade;-22.726407, 28.786180;07:21:00;07:23:00;2;foraging
+f82323e9;11/10/2022;07:23:29;morning;little;sunny;Noumea;female;adult;6;21;close_shrubland;90°;partially_in_shade;-22.726395, 28.786160;07:23:00;07:25:00;2;foraging
+07a47899;11/10/2022;07:26:20;morning;little;sunny;Noumea;female;adult;6;21;close_shrubland;45°;partially_in_shade;-22.726289, 28.786179;07:26:00;07:28:00;2;foraging
+f1bd0088;11/10/2022;07:29:21;morning;little;sunny;Sun;male;adult;9;21;close_shrubland;135°;partially_in_shade;-22.726274, 28.786167;07:29:00;07:44:00;15;inactive
+004ce2cd;11/10/2022;07:50:20;morning;little;sunny;Lovely;male;adult;12;23;close_shrubland;90°;partially_in_shade;-22.727200, 28.785569;07:50:00;07:55:00;5;foraging
+5256d10f;11/10/2022;07:55:44;morning;little;sunny;Lovely;male;adult;12;23;close_shrubland;180°;fully_exposed_to_the_sun;-22.727217, 28.785570;07:55:00;07:55:00;0;foraging
+d1961615;11/10/2022;07:58:22;morning;little;sunny;Lovely;male;adult;12;23;close_shrubland;90°;partially_in_shade;-22.727214, 28.785543;07:58:00;08:00:00;2;foraging
+064569a5;11/10/2022;08:00:06;morning;little;sunny;Lovely;male;adult;12;23;close_shrubland;315°;giraffe_in_full_shade;-22.727210, 28.785542;08:00:00;08:03:00;3;foraging
+d5d90ac9;11/10/2022;08:07:17;morning;little;sunny;Emily;female;adult;26;24;close_shrubland;0°;giraffe_in_full_shade;-22.727459, 28.785548;08:07:00;08:08:00;1;foraging
+39a256b1;11/10/2022;08:14:49;morning;little;sunny;Emily;female;adult;26;25;close_shrubland;270°;partially_in_shade;-22.727588, 28.785879;08:14:00;08:18:00;4;foraging
+fc618118;12/10/2022;09:11:47;morning;little;sunny;Bunnychow;male;adult;5;29;open_woodland;315°;fully_exposed_to_the_sun;-22.741070, 28.779797;09:11:00;09:14:00;3;vigilant
+9c5e530b;12/10/2022;09:23:20;morning;little;sunny;Meringue;male;sub_adult;3;29;open_woodland;225°;partially_in_shade;-22.739697, 28.778917;09:23:00;09:29:00;6;vigilant
+bcaf5a31;12/10/2022;09:29:57;morning;no;sunny;Braai;male;sub_adult;3;29;open_woodland;135°;partially_in_shade;-22.739682, 28.778976;09:29:00;09:31:00;2;vigilant
+412edc2c;12/10/2022;09:37:46;morning;no;sunny;Forest;male;adult;5;30;open_woodland;270°;giraffe_in_full_shade;-22.736890, 28.777466;09:37:00;09:43:00;6;vigilant
+3acb2a1f;12/10/2022;09:43:08;morning;no;sunny;Forest;male;adult;5;30;open_woodland;180°;fully_exposed_to_the_sun;-22.736772, 28.777469;09:43:00;09:52:00;9;foraging
+6efe1c3c;12/10/2022;16:11:55;evening;moderate;sunny;Nairobi;male;juvenile;1;36;open_woodland;90°;partially_in_shade;-22.727878, 28.778073;16:11:00;16:16:00;5;foraging
+5d349e0d;12/10/2022;16:19:36;evening;little;sunny;Lovely;male;adult;12;36;open_woodland;225°;partially_in_shade;-22.728109, 28.778394;16:19:00;16:22:00;3;vigilant
+30cc7e43;12/10/2022;16:21:56;evening;little;sunny;Lovely;male;adult;12;36;open_woodland;45°;partially_in_shade;-22.728149, 28.778392;16:21:00;16:24:00;3;vigilant
+73810281;12/10/2022;16:24:48;evening;little;sunny;Lovely;male;adult;12;36;open_woodland;135°;partially_in_shade;-22.728160, 28.778424;16:24:00;16:29:00;5;foraging
+8496ca98;12/10/2022;16:56:49;evening;moderate;sunny;Nala;female;adult;13;34;NA;270°;giraffe_in_full_shade;NA;16:56:00;16:59:00;3;foraging
+2ed41f30;12/10/2022;16:59:28;evening;moderate;sunny;Emily;female;adult;26;34;open_woodland;225°;giraffe_in_full_shade;-22.739351, 28.780134;16:59:00;17:02:00;3;foraging
+bcdb4067;13/10/2022;16:38:50;morning;no;sunny;Eden;female;adult;7;36;open_woodland;45°;giraffe_in_full_shade;-22.732162, 28.780075;16:38:00;16:42:00;4;foraging
+0f71d55e;13/10/2022;16:42:59;evening;no;sunny;Eden;female;adult;7;36;open_woodland;315°;giraffe_in_full_shade;-22.732134, 28.780117;16:42:00;16:46:00;4;foraging
+0dee527a;13/10/2022;16:46:17;evening;no;sunny;Eden;female;adult;7;36;open_woodland;45°;partially_in_shade;-22.732135, 28.780121;16:46:00;16:49:00;3;foraging
+4da7afe1;13/10/2022;16:49:24;evening;no;sunny;Eden;female;adult;7;36;open_woodland;90°;partially_in_shade;-22.732089, 28.780094;16:49:00;16:55:00;6;foraging
+e5b97e3a;13/10/2022;16:54:39;evening;no;sunny;Eden;female;adult;7;36;open_woodland;0°;partially_in_shade;-22.732144, 28.780143;16:54:00;17:00:00;6;foraging
+bf9bd276;14/10/2022;16:32:54;eevening;no;sunny;Shadow;female;adult;5;37;open_woodland;225°;giraffe_in_full_shade;-22.735787, 28.777422;16:32:00;16:38:00;6;drinking
+4b92d5a4;14/10/2022;17:01:59;evening;no;sunny;Flamenkuchen;male;sub-adult;3;36;open_woodland;0°;giraffe_in_full_shade;-22.741652, 28.781672;17:01:00;17:05:00;4;foraging
+2c2e56ee;17/10/2022;08:39:06;morning;moderate;overcast;Polp;male;adult;16;23;open_shrubland;NA;cloudy_day_no_shade;-22.718670, 28.799592;08:39:00;08:39:00;0;inactive
+6dd91034;18/10/2022;08:08:42;morning;moderate;cloudy;Shadow;female;adult;5;25;close_shrubland;225°;fully_exposed_to_the_sun;-22.737755, 28.766460;08:08:00;08:12:00;4;vigilant
+bf46875a;18/10/2022;08:12:35;morning;moderate;cloudy;Shadow;female;adult;5;25;close_shrubland;45°;fully_exposed_to_the_sun;-22.737713, 28.766430;08:12:00;08:20:00;8;foraging
+5e52efb9;18/10/2022;08:20:56;morning;moderate;cloudy;Shadow;female;adult;5;25;close_shrubland;270°;fully_exposed_to_the_sun;-22.737731, 28.766399;08:20:00;08:22:00;2;foraging
+fbc7aa20;18/10/2022;08:57:38;morning;moderate;cloudy;Dark male;male;adult;18;27;open_woodland;45°;giraffe_in_full_shade;-22.737202, 28.777892;08:57:00;08:59:00;2;foraging
+5dd0a340;18/10/2022;09:00:14;morning;moderate;cloudy;Dark male;male;adult;18;27;open_woodland;315°;giraffe_in_full_shade;-22.737162, 28.777903;09:00:00;09:08:00;8;foraging
+b1174b39;18/10/2022;09:09:02;morning;moderate;cloudy;Dark male;male;adult;18;27;open_woodland;0°;giraffe_in_full_shade;-22.737166, 28.777855;09:09:00;09:14:00;5;foraging
+627ff210;19/10/2022;16:52:32;evening;moderate;sunny;Nirvana;female;adult;5;31;open_grassland;180°;fully_exposed_to_the_sun;-22.721411, 28.790238;16:52:00;16:58:00;6;inactive
+fd90d009;19/10/2022;17:00:24;evening;moderate;sunny;Nirvana;female;adult;5;31;open_grassland;90°;partially_in_shade;-22.721158, 28.790229;17:00:00;17:09:00;9;foraging
+e8d5e5d6;19/10/2022;17:09:32;evening;moderate;sunny;Nirvana;female;adult;5;31;open_grassland;45°;partially_in_shade;-22.721183, 28.790205;17:09:00;17:18:00;9;vigilant
+bf602a8d;21/10/2022;07:31:45;morning;little;sunny;Melman;male;adult;17;24;open_shrubland;225°;partially_in_shade;-22.717586, 28.801236;07:31:00;07:34:00;3;foraging
+46d7f4df;21/10/2022;07:36:51;morning;little;sunny;Melman;male;adult;17;24;open_shrubland;135°;fully_exposed_to_the_sun;-22.717922, 28.801194;07:36:00;07:41:00;5;foraging
+b3b7da5e;21/10/2022;07:42:14;morning;little;sunny;Melman;male;adult;17;24;open_shrubland;225°;partially_in_shade;-22.717892, 28.801246;07:42:00;07:46:00;4;foraging
+d174a241;24/10/2022;07:05:52;morning;little;overcast;Lethabo;male;adult;8;21;open_woodland;NA;cloudy_day_no_shade;-22.739483, 28.780237;07:05:00;07:05:00;0;vigilant
+c5118d48;24/10/2022;16:14:50;evening;no;sunny;Mcfly;male;adult;12;31;open_woodland;180°;partially_in_shade;-22.731114, 28.778147;16:14:00;16:18:00;4;foraging
+eb370136;24/10/2022;16:18:18;evening;no;sunny;Mcfly;male;adult;12;31;open_woodland;315°;partially_in_shade;-22.731155, 28.778217;16:18:00;16:20:00;2;foraging
+13f2e35d;24/10/2022;16:20:07;evening;no;sunny;Mcfly;male;adult;12;31;open_woodland;225°;partially_in_shade;-22.731161, 28.778157;16:20:00;16:24:00;4;foraging
+29ca53ea;24/10/2022;16:26:12;evening;no;sunny;Forest;male;adult;5;31;open_woodland;45°;partially_in_shade;-22.732065, 28.777911;16:26:00;16:31:00;4;foraging
+b8b6c2fc;24/10/2022;17:04:36;evening;no;sunny;Charlie;male;adult;7;31;open_woodland;270°;giraffe_in_full_shade;-22.742214, 28.782675;17:04:00;17:10:00;5;foraging
+2ba6d051;25/10/2022;07:35:17;morning;no;cloudy;Lethabo;male;adult;8;25;close_shrubland;45°;partially_in_shade;-22.728382, 28.770437;07:35:00;07:38:00;3;foraging
+b112f1e1;25/10/2022;07:38:28;morning;no;cloudy;Lethabo;male;adult;8;25;close_shrubland;315°;partially_in_shade;-22.728310, 28.770521;07:38:00;07:40:00;2;foraging
+cc1b8863;25/10/2022;07:41:04;morning;no;cloudy;Lethabo;male;adult;8;25;close_shrubland;225°;partially_in_shade;-22.728295, 28.770570;07:41:00;07:50:00;9;foraging
+c3215e24;25/10/2022;07:49:40;morning;no;cloudy;Berthille;female;adult;8;25;close_shrubland;225°;fully_exposed_to_the_sun;-22.728097, 28.770534;07:49:00;07:52:00;3;foraging
+856701de;25/10/2022;07:52:45;morning;no;cloudy;Berthille;male;adult;8;25;close_shrubland;135°;fully_exposed_to_the_sun;-22.728099, 28.770530;07:52:00;07:54:00;2;foraging
+45b96ba5;25/10/2022;07:54:39;morning;no;cloudy;Berthille;female;adult;8;26;close_shrubland;180°;fully_exposed_to_the_sun;-22.728030, 28.770392;07:54:00;07:58:00;4;foraging
+8638c80a;25/10/2022;07:58:20;morning;no;cloudy;Berthille;female;adult;8;26;close_shrubland;270°;partially_in_shade;-22.728025, 28.770326;07:58:00;08:01:00;3;foraging
+8c378cc4;26/10/2022;07:22:39;morning;little;cloudy;Lovely;male;adult;12;26;close_shrubland;90°;cloudy_day_no_shade;-22.737100, 28.785995;07:22:00;07:26:00;4;inactive
+fe1d3c79;26/10/2022;07:51:07;morning;little;cloudy;Flamenkuchen;male;sub_adult;3;28;close_shrubland;315°;partially_in_shade;-22.739920, 28.783467;07:51:00;08:06:00;15;vigilant
+3f78e732;27/10/2022;11:41:50;midday;moderate;overcast;Sun;male;adult;9;26;close_shrubland;NA;cloudy_day_no_shade;-22.727502, 28.793186;11:41:00;11:41:00;0;foraging
+79297845;27/10/2022;12:00:51;midday;little;overcast;Volley;male;sub_adult;3;27;close_shrubland;NA;cloudy_day_no_shade;-22.727216, 28.793873;12:00:00;12:00:00;0;vigilant
+2fb546ca;27/10/2022;12:08:15;midday;little;overcast;Lovely;male;adult;12;27;close_shrubland;NA;cloudy_day_no_shade;-22.726291, 28.793240;12:08:00;12:08:00;0;foraging
+185b7ffe;31/10/2022;06:47:58;morning;no;overcast;Berthille;female;adult;8;23;close_shrubland;NA;cloudy_day_no_shade;-22.726775, 28.770680;06:47:00;06:47:00;0;vigilant
+0f921d54;31/10/2022;07:56:20;morning;no;overcast;Charlie;male;adult;8;25;open_grassland;135°;cloudy_day_no_shade;-22.736491, 28.761585;07:56:00;07:56:00;0;foraging
+28d165ba;31/10/2022;09:08:42;morning;no;overcast;Forest;male;adult;5;28;open_woodland;NA;cloudy_day_no_shade;-22.735787, 28.777349;09:08:00;09:08:00;0;foraging
+fc2a4806;31/10/2022;09:15:26;morning;no;overcast;Vejay;male;adult;5;28;open_woodland;NA;cloudy_day_no_shade;-22.735858, 28.777419;09:15:00;09:15:00;0;foraging
+e6591477;31/10/2022;09:21:11;morning;no;overcast;Fidji;male;adult;6;28;open_woodland;NA;cloudy_day_no_shade;-22.735817, 28.777356;09:21:00;09:21:00;0;foraging
+733cb7d0;01/11/2022;16:43:05;evening;little;overcast;Lovely;male;adult;12;22;open_woodland;NA;cloudy_day_no_shade;-22.726799, 28.774743;16:43:00;16:43:00;0;foraging
+d683a6c5;01/11/2022;16:51:32;evening;little;overcast;Aquarius;male;adult;9;22;open_woodland;NA;cloudy_day_no_shade;-22.726938, 28.775144;16:51:00;16:51:00;0;foraging
+0e88631d;01/11/2022;16:54:19;evening;little;overcast;Mcfly;male;adult;12;22;open_woodland;NA;cloudy_day_no_shade;-22.726739, 28.775145;16:54:00;16:54:00;0;vigilant
+d6b2f2cd;01/11/2022;16:56:59;evening;little;overcast;Dark male;male;adult;18;22;open_woodland;NA;cloudy_day_no_shade;-22.726788, 28.775475;16:56:00;16:56:00;0;vigilant
+4d9562b9;01/11/2022;16:58:54;evening;little;overcast;Lethabo;male;adult;8;22;open_woodland;NA;cloudy_day_no_shade;-22.726854, 28.775448;16:58:00;16:58:00;0;foraging
+234e2a74;01/11/2022;17:26:41;evening;little;overcast;Forest;male;adult;5;22;open_woodland;NA;cloudy_day_no_shade;-22.728364, 28.776683;17:26:00;17:26:00;0;foraging
+b673f972;02/11/2022;08:36:54;morning;moderate;overcast;Aquarius;male;adult;9;19;open_woodland;NA;cloudy_day_no_shade;-22.732403, 28.780902;08:36:00;08:36:00;0;foraging
+d83c725c;02/11/2022;08:50:58;morning;little;overcast;Polp;male;adult;16;19;open_woodland;NA;cloudy_day_no_shade;-22.728918, 28.779389;08:50:00;08:50:00;0;vigilant
+5c590fd3;03/11/2022;06:48:03;morning;no;cloudy;Dark male;male;adult;18;18;open_woodland;45°;giraffe_in_full_shade;-22.725651, 28.773198;06:48:00;06:52:00;4;foraging
+1cb5c0c2;03/11/2022;06:52:19;morning;no;cloudy;Dark male;male;adult;18;18;open_woodland;0°;giraffe_in_full_shade;-22.725668, 28.773207;06:52:00;06:57:00;5;foraging
+822c7dd5;03/11/2022;06:57:08;morning;no;cloudy;Dark male;male;adult;18;18;open_woodland;270°;giraffe_in_full_shade;-22.725653, 28.773211;06:57:00;07:00:00;3;foraging
+2bde9a14;03/11/2022;08:02:58;morning;little;overcast;Night;male;sub_adult;3;19;close_shrubland;NA;cloudy_day_no_shade;-22.736206, 28.768158;08:02:00;08:02:00;0;foraging
+7b5281c1;03/11/2022;08:41:52;morning;little;overcast;Mcfly;male;adult;12;21;open_shrubland;NA;cloudy_day_no_shade;-22.732532, 28.763728;08:41:00;08:41:00;0;foraging
+1c3fd5ec;03/11/2022;08:57:37;morning;little;overcast;Lovely;male;adult;12;21;open_shrubland;NA;cloudy_day_no_shade;-22.732725, 28.765175;08:57:00;08:57:00;0;vigilant
+e05cb7b4;03/11/2022;16:28:41;evening;no;cloudy;Nala;female;adult;10;27;open_woodland;90°;cloudy_day_no_shade;-22.728998, 28.781152;16:28:00;16:30:00;2;foraging
+6e57801c;03/11/2022;16:31:03;evening;no;cloudy;Nala;female;adult;10;27;open_shrubland;315°;giraffe_in_full_shade;-22.728973, 28.781214;16:31:00;16:33:00;2;foraging
+7c62c553;03/11/2022;16:33:49;evening;no;cloudy;Nala;female;adult;10;27;open_shrubland;135°;partially_in_shade;-22.728955, 28.781186;16:33:00;16:38:00;5;foraging
+1ba08066;03/11/2022;16:53:43;evening;little;cloudy;Meringue;male;sub_adult;3;27;close_shrubland;135°;partially_in_shade;-22.731963, 28.782272;16:53:00;16:56:00;3;vigilant
+381ec865;03/11/2022;16:56:15;evening;little;cloudy;Meringue;male;sub_adult;3;27;close_shrubland;225°;partially_in_shade;-22.732940, 28.782182;16:56:00;16:58:00;2;vigilant
+eb2e1cce;03/11/2022;17:21:24;evening;little;cloudy;Emily;female;adult;26;27;close_shrubland;225°;fully_exposed_to_the_sun;-22.732408, 28.787103;17:21:00;17:26:00;5;foraging
+2b317f3b;03/11/2022;17:26:38;evening;little;cloudy;Emily;female;adult;26;26;close_shrubland;270°;giraffe_in_full_shade;-22.732222, 28.786970;17:26:00;17:32:00;6;foraging
+8a3667f5;07/11/2022;07:57:14;morning;moderate;cloudy;Melman;male;adult;17;23;close_shrubland;180°;cloudy_day_no_shade;-22.718976, 28.796399;07:57:00;08:01:00;4;foraging
+e0255624;07/11/2022;08:02:03;morning;moderate;cloudy;Melman;male;adult;17;23;close_shrubland;NA;cloudy_day_no_shade;-22.718960, 28.796430;08:02:00;NA;0;foraging
+5365ceda;07/11/2022;08:12:24;morning;moderate;cloudy;Melman;male;adult;17;23;close_shrubland;0°;cloudy_day_no_shade;-22.716942, 28.796706;08:12:00;08:16:00;4;vigilant
+5e10fe59;07/11/2022;08:16:28;morning;moderate;cloudy;Melman;male;adult;17;23;close_shrubland;270°;cloudy_day_no_shade;-22.716953, 28.796755;08:16:00;08:18:00;2;vigilant
+e3460b65;07/11/2022;08:19:00;morning;moderate;cloudy;Melman;male;adult;17;23;close_shrubland;90°;cloudy_day_no_shade;-22.716944, 28.796756;08:19:00;08:26:00;7;foraging
+17c2f820;07/11/2022;16:38:48;evening;little;cloudy;Aquarius;male;adult;9;29;close_shrubland;135°;cloudy_day_no_shade;-22.732788, 28.776076;16:38:00;16:42:00;4;foraging
+2d36007c;07/11/2022;16:42:53;evening;little;cloudy;Aquarius;male;adult;9;29;close_shrubland;270°;cloudy_day_no_shade;-22.732819, 28.776096;16:42:00;16:50:00;8;foraging
+856af687;07/11/2022;16:50:22;evening;little;cloudy;Aquarius;male;adult;9;29;close_shrubland;180°;cloudy_day_no_shade;-22.733286, 28.776208;16:50:00;16:54:00;4;foraging
+e8fa53a3;07/11/2022;16:56:32;evening;little;cloudy;Sun;male;adult;9;29;close_shrubland;0°;cloudy_day_no_shade;-22.733347, 28.776421;16:56:00;17:06:00;10;foraging
+433d405d;08/11/2022;16:43:01;evening;no;cloudy;Nala;male;adult;10;26;open_shrubland;90°;partially_in_shade;-22.728211, 28.781206;16:43:00;16:45:00;2;foraging
+ba76af73;08/11/2022;16:45:30;evening;no;cloudy;Nala;female;adult;10;26;open_shrubland;45°;partially_in_shade;-22.728295, 28.781167;16:45:00;16:50:00;5;foraging
+da611c59;08/11/2022;16:50:43;evening;no;cloudy;Nala;female;adult;10;26;open_shrubland;45°;partially_in_shade;-22.728387, 28.780775;16:50:00;16:56:00;6;foraging
+c29fbcd1;08/11/2022;16:56:41;evening;no;cloudy;Nala;female;adult;10;26;open_shrubland;135°;partially_in_shade;-22.728330, 28.780806;16:56:00;17:01:00;5;foraging
+d76e0f9c;09/11/2022;06:21:52;morning;no;sunny;Lethabo;male;adult;8;20;open_woodland;0°;giraffe_in_full_shade;-22.728121, 28.778346;06:21:00;06:24:00;3;foraging
+8dbea1fd;09/11/2022;06:24:54;morning;no;sunny;Lethabo;male;adult;8;20;open_woodland;135°;partially_in_shade;-22.728316, 28.778462;06:24:00;06:26:00;2;foraging
+2dcbe53f;09/11/2022;06:26:52;morning;no;sunny;Lethabo;male;adult;8;20;open_woodland;270°;partially_in_shade;-22.728316, 28.778471;06:26:00;06:31:00;5;foraging
+fbbc9081;09/11/2022;09:29:42;morning;no;sunny;Eden;female;adult;7;27;close_shrubland;270°;fully_exposed_to_the_sun;-22.718073, 28.791986;09:29:00;09:32:00;3;vigilant
+0d4d6703;10/11/2022;07:48:55;morning;little;sunny;Aquarius;male;adult;9;26;close_shrubland;315°;partially_in_shade;-22.736798, 28.774589;07:48:00;07:51:00;3;inactive
+57cbd920;10/11/2022;07:52:18;morning;little;sunny;Aquarius;male;adult;9;26;close_shrubland;270°;fully_exposed_to_the_sun;-22.736765, 28.774599;07:52:00;07:58:00;6;interacting
+1b137b79;10/11/2022;07:59:44;morning;moderate;sunny;Dark male;male;adult;18;26;open_woodland;225°;partially_in_shade;-22.736766, 28.774580;07:59:00;08:01:00;2;foraging
+b230fcca;10/11/2022;08:01:50;morning;moderate;sunny;Dark male;male;adult;18;26;open_woodland;45°;partially_in_shade;-22.736798, 28.774612;08:01:00;08:03:00;2;foraging
+98e36b66;10/11/2022;08:03:17;morning;moderate;sunny;Dark male;male;adult;18;27;open_woodland;90°;partially_in_shade;-22.736768, 28.774583;08:03:00;08:10:00;7;foraging
+e664c5bf;02/12/2022;06:43:52;morning;no;sunny;Charlie;male;adult;5;20;open_shrubland;315°;partially_in_shade;-22.725555, 28.777140;06:43:00;06:48:00;5;foraging
+3989e9a7;02/12/2022;06:48:25;morning;no;sunny;Charlie;male;adult;5;20;open_shrubland;90°;partially_in_shade;-22.725627, 28.777249;06:48:00;06:50:00;2;foraging
+c807d1bc;02/12/2022;06:52:57;morning;no;sunny;Melman;male;adult;17;20;open_shrubland;225°;giraffe_in_full_shade;-22.725731, 28.777410;06:52:00;06:57:00;5;vigilant
+ae96b37a;02/12/2022;06:57:15;morning;no;sunny;Melman;male;adult;17;20;open_shrubland;225°;giraffe_in_full_shade;-22.725185, 28.777511;06:57:00;07:02:00;5;vigilant
+f1821138;02/12/2022;07:02:58;morning;no;sunny;Melman;male;adult;17;20;open_shrubland;180°;giraffe_in_full_shade;-22.725607, 28.777231;07:02:00;07:04:00;2;vigilant
+307eaccb;02/12/2022;07:07:25;morning;no;sunny;Meringue;male;sub_adult;3;21;open_shrubland;270°;giraffe_in_full_shade;-22.724085, 28.778611;07:07:00;07:12:00;5;vigilant
+80295127;02/12/2022;08:48:35;morning;little;sunny;Flower;female;adult;23;26;open_shrubland;0°;partially_in_shade;-22.725275, 28.777407;08:48:00;08:51:00;3;inactive
+20fd4b91;02/12/2022;08:52:53;morning;little;sunny;Flower;female;adult;23;26;open_shrubland;315°;giraffe_in_full_shade;-22.725201, 28.777647;08:52:00;08:55:00;3;foraging
+3195058b;06/12/2022;08:57:32;morning;no;cloudy;Kamille;female;juvenile;0,6;27;open_shrubland;270°;fully_exposed_to_the_sun;-22.720756, 28.780555;08:57:00;08:58:00;1;vigilant
+df3cf29d;06/12/2022;08:58:59;morning;little;cloudy;Kamille;female;juvenile;0,6;27;open_shrubland;225°;giraffe_in_full_shade;-22.720745, 28.780517;08:58:00;09:13:00;14;vigilant
+34c4ba8b;06/12/2022;09:06:37;morning;little;cloudy;Kagiso;female;adult;8;27;open_shrubland;180°;giraffe_in_full_shade;-22.720731, 28.780416;09:06:00;09:21:00;15;foraging
+f9017411;07/12/2022;07:01:00;morning;no;overcast;Forest;male;adult;5;21;open_woodland;NA;cloudy_day_no_shade;-22.727187, 28.778840;07:01:00;07:01:00;0;foraging
+23097c7e;07/12/2022;07:23:15;morning;no;overcast;Mcfly;male;adult;12;21;open_shrubland;NA;cloudy_day_no_shade;-22.724616, 28.781025;07:23:00;07:23:00;0;foraging
+5f4a235a;07/12/2022;07:31:21;morning;little;overcast;Kagiso;female;adult;8;21;open_shrubland;NA;cloudy_day_no_shade;-22.723986, 28.781240;07:31:00;07:31:00;0;vigilant
+beecee84;07/12/2022;07:38:39;morning;little;overcast;Kamille;female;juvenile;0,6;22;open_shrubland;NA;cloudy_day_no_shade;-22.723723, 28.781144;07:38:00;07:38:00;0;vigilant
+2c6ddb15;08/12/2022;17:01:55;evening;little;cloudy;Sun;male;adult;9;29;close_shrubland;180°;giraffe_in_full_shade;-22.719713, 28.787072;17:01:00;17:07:00;6;vigilant
+bee3219f;08/12/2022;17:08:12;evening;little;cloudy;Noumea;female;adult;6;29;close_shrubland;45°;giraffe_in_full_shade;-22.719642, 28.786950;17:08:00;17:12:00;4;vigilant
+e4e84013;08/12/2022;17:12:29;evening;little;cloudy;Kamille;female;juvenile;0,6;29;close_shrubland;180°;giraffe_in_full_shade;-22.719633, 28.786916;17:12:00;17:16:00;4;foraging
+e8178e01;08/12/2022;17:18:11;evening;little;cloudy;Kagiso;female;adult;8;29;close_shrubland;45°;giraffe_in_full_shade;-22.719383, 28.786579;17:18:00;17:19:00;1;vigilant
+277573af;08/12/2022;17:29:42;evening;little;cloudy;Lethabo;male;adult;8;29;close_shrubland;225°;cloudy_day_no_shade;-22.719659, 28.784775;17:29:00;17:32:00;3;vigilant
+78be48d2;12/12/2022;07:54:03;morning;moderate;cloudy;Berthille;female;adult;8;22;open_shrubland;0°;partially_in_shade;-22.718815, 28.799784;07:54:00;07:56:00;2;vigilant
+49ee7426;12/12/2022;07:57:11;morning;moderate;cloudy;Berthille;female;adult;8;22;open_shrubland;180°;giraffe_in_full_shade;-22.718609, 28.799776;07:57:00;08:11:00;14;vigilant
+4d679f9c;12/12/2022;08:40:02;morning;moderate;cloudy;Nala;female;adult;10;26;open_grassland;315°;giraffe_in_full_shade;-22.719260, 28.787243;08:40:00;08:43:00;3;foraging
+3dfcef64;12/12/2022;08:43:52;morning;moderate;cloudy;Nala;female;adult;10;26;open_grassland;315°;giraffe_in_full_shade;-22.719209, 28.787228;08:43:00;08:48:00;5;foraging
+2dc9220e;12/12/2022;08:48:28;morning;moderate;cloudy;Polp;male;adult;16;26;open_grassland;135°;giraffe_in_full_shade;-22.719208, 28.787228;08:48:00;08:51:00;3;foraging
+4b64ee26;12/12/2022;08:53:25;morning;moderate;cloudy;Wolke;female;adult;9;26;open_grassland;225°;cloudy_day_no_shade;-22.719277, 28.787171;08:53:00;08:58:00;6;interacting
+d99f76b3;12/12/2022;08:58:41;morning;moderate;cloudy;Wolke;female;adult;9;26;open_grassland;270°;cloudy_day_no_shade;-22.719257, 28.787181;08:58:00;09:02:00;4;foraging
+40771d93;12/12/2022;09:09:27;morning;moderate;cloudy;Wolke;female;adult;9;26;open_grassland;90°;partially_in_shade;-22.719268, 28.787148;09:09:00;09:11:00;2;vigilant
+22fb54d1;14/12/2022;08:31:38;morning;no;overcast;Kevin;male;adult;13;26;close_shrubland;NA;cloudy_day_no_shade;-22.727443, 28.786447;08:31:00;08:31:00;0;foraging
+42e1e8e2;14/12/2022;08:59:06;morning;no;overcast;Vendetta;female;adult;12;26;close_shrubland;NA;cloudy_day_no_shade;-22.726543, 28.786200;08:59:00;08:59:00;0;foraging
+378d7e9f;14/12/2022;09:04:49;morning;no;overcast;Mcfly;male;adult;12;26;close_shrubland;NA;cloudy_day_no_shade;-22.725928, 28.786115;09:04:00;09:04:00;0;vigilant
+26a21e0a;14/12/2022;09:05:20;morning;no;overcast;Volt;male;juvenile;0,5;26;close_shrubland;NA;cloudy_day_no_shade;-22.725932, 28.786114;09:05:00;09:05:00;0;foraging
+2b4a33c9;15/12/2022;07:21:09;morning;little;cloudy;Flower;female;adult;23;24;open_grassland;135°;cloudy_day_no_shade;-22.735157, 28.782448;07:21:00;07:26:00;5;vigilant
+85815f71;15/12/2022;07:26:44;morning;little;cloudy;Flower;female;adult;23;24;open_grassland;0°;cloudy_day_no_shade;-22.735147, 28.782427;07:26:00;07:29:00;3;vigilant
+f07da2d3;15/12/2022;07:29:51;morning;little;cloudy;Flower;female;adult;23;24;open_grassland;135°;cloudy_day_no_shade;-22.735343, 28.783006;07:29:00;07:33:00;4;vigilant
+c355c0eb;15/12/2022;07:34:02;morning;little;cloudy;Freyja;female;juvenile;0,5;24;open_grassland;45°;cloudy_day_no_shade;-22.734928, 28.783280;07:34:00;07:37:00;3;vigilant
+52cecb1d;15/12/2022;07:37:14;morning;little;cloudy;Freyja;female;juvenile;0,5;24;open_grassland;90°;cloudy_day_no_shade;-22.734790, 28.783436;07:37:00;07:40:00;3;foraging
+62236918;19/12/2022;08:32:49;morning;little;cloudy;Dark male;male;adult;18;23;close_shrubland;90°;cloudy_day_no_shade;-22.730769, 28.787860;08:32:00;08:35:00;3;foraging
+fa6ac572;19/12/2022;08:40:00;morning;little;cloudy;Dark male;male;adult;18;23;close_shrubland;0°;fully_exposed_to_the_sun;-22.730576, 28.788303;08:40:00;08:50:00;10;foraging
