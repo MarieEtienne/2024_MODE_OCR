@@ -1,5 +1,5 @@
 ---
 title: "groupe 3"
-author: "Chloé Van der Swaelmen, Anaelle, Kilian, Gabriel-Marie Arnault (aka Gabriel), Apolline, Giuliana, Léa, Manon"
+author: "Chloé Van der Swaelmen, Anaelle, Kilian, Gabriel-Marie Arnault (aka Gabriel), Apolline Byrdy, Giuliana, Léa, Manon"
 editor: visual
 ---
