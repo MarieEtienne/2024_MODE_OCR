@@ -1,7 +1,7 @@
 ---
 
-title: "Modèles matriciels et applications"
-group: "Quentin,	Alexie, Jeanne,	Laurane" 
+title: "Exploration données sur les manchots"
+group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, Sésia Marion, TANGUY Céline" 
 
 bibliography: references.bib
 execute: 
