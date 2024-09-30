@@ -3,7 +3,7 @@
 
 title: "Effets du pâturage sur les prairies suédoises"
 group: "Bastien, Elia, Caroline, Alexia, Marine, Lily, Julie" 
->>>>>>> 75e9da09555ae3bad45e7f54a26d7c51188f42d7
+
 
 bibliography: references.bib
 execute: 
@@ -42,11 +42,18 @@ df %>% ggplot() +
 	geom_boxplot()  
 ```
 
-EFFET DU paturage sur les strategies de pollinisation
+EFFET DU PÂTURAGE SUR LES STRATÉGIES DE POLLINISATION
+
+
 ```{r}
 # Boxplot 
 par(mfrow=c(1,2))
-boxplot(df$RatioPoll~df$�..treatment, varwidth = TRUE, ylab = "Ratio Pollinisation", xlab = "treatment", col='blue', main = "")
+boxplot(df$RatioPoll~df$treatment, varwidth = TRUE, ylab = "Ratio Pollinisation", xlab = "treatment", col='blue', main = "")
 
 ```
-A citation @bauer2023writing
+```{r}
+# Anova
+hyp1<-lm(RatioPoll~1,data=df)
+hyp2<-lm(RatioPoll~treatment,data=df)
+anova(hyp1,hyp2)
+```
