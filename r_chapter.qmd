@@ -1,7 +1,7 @@
 ---
 
-title: "Modèles matriciels et applications"
-group: "Quentin,	Alexie, Jeanne,	Laurane" 
+title: "Effet du pâturage sur les végétaux des prairies suédoises"
+group: "Caroline, Elia, Bastien, Lily, Alexia, Marine, Julie" 
 
 bibliography: references.bib
 execute: 
