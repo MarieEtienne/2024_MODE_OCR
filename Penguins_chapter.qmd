@@ -23,13 +23,6 @@ This document is a report on the analysis of a dataset on penguins. This dataset
 
 
 ```{r}
-
-library(factoextra)
-library(FactoMineR)
-library(tidyverse)
-library(dplyr)
-library(ggplot2)
-
 #| message: false
 #| warning: false
 #| echo: true
@@ -306,3 +299,5 @@ anova3
 ```
 
 Significance tests confirm the trends seen by the eye.
+
+
