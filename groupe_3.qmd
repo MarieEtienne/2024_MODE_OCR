@@ -14,4 +14,12 @@ editor: visual
 
 # **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
 
+## 1. Construction du modèle
+
+## 2. Analyse des coefficients
+
+## 3. Pouvoir explicatif du modèle
+
+## 4. Validation du modèle
+
 # **CONCLUSION** (Apolline et Kilian)
