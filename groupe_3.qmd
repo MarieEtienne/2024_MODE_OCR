@@ -109,7 +109,7 @@ On peut penser qu'il y a une interaction entre les covariables si les pentes for
 
 ###2.3 Vérifier une éventuelle colinéarité entre les Xs
 
-
+Nous cherchons à éviter la colinéarité des variables explicatives dans notre modélisation, afin de ne pas avoir plusieurs variables qui donnent la même information. Pour ce faire, nous devons vérifier les liens statistiques qu'il peut y avoir entre les variables, [1] en calculant la corrélation entre les variables Xs quantitatives, [2] puis en étudiant l'influence du X qualitative sur les Xs quantitatives à l'aide de graphiques plot.
 
 ```{r datacolin, include=TRUE, fig.height=4, fig.width=8}
 
