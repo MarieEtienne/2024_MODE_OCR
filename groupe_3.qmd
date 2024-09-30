@@ -104,7 +104,8 @@ drop1(mod1,test="Chi")
 
 Les variables explicatives restantes sont significatives, on conserve donc ce modèle comme modèle candidat.
 
-On va identifier le modèle candidat basé sur la règle de l'AIC et le mode stepwise. 
+On va identifier le modèle candidat basé sur la règle de l'AIC et le mode stepwise.
+
 ```{r modelAIC, include=TRUE}
 library(MASS)
 # On construit le modèle complet
@@ -127,7 +128,7 @@ summary(modfinal)
 
 ```
 
-Remarque : il est recommandé d'utiliser l'AIC avec plus de 40 individus par paramètre, sinon il existe l'AICc.
+Remarque : il est recommandé d'utiliser l'AIC avec plus de 40 individus par paramètre, sinon il existe l'AICc @YannickOutreman.
 
 Les deux procédures (Backward et StepAIC) convergent : nous obtenons les mêmes modèles candidats.
 
@@ -147,16 +148,17 @@ summary(mod1)
 
 Ce tableau détaille les coefficients du modèle avec les coefficients associés à chaque effet majeur significatif. Rappelons que pour un facteur, une modalité est appelée "modalité de référence", c'est-à-dire que son coefficient est égal à 0. D'après ce tableau, les coefficients sont :
 
-**Location factor**  
-- $Location_{Bog}$ = 0 (modalité de référence du facteur Location)  
-- $Location_{Forest}$ = $+0.63^{**}$  
-**Latitude covariate**  
-- $\beta_{Latitude}$ = $-0.23^{***}$  
-**Elevation covariate**  
+**Location factor**\
+- $Location_{Bog}$ = 0 (modalité de référence du facteur Location)\
+- $Location_{Forest}$ = $+0.63^{**}$\
+**Latitude covariate**\
+- $\beta_{Latitude}$ = $-0.23^{***}$\
+**Elevation covariate**\
 - $\beta_{Elevation}$ = $-0.001^{***}$
 
-Ainsi, le modèle candidat s'écrit :
-$$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
+Ainsi, le modèle candidat s'écrit : $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
+
+Rappel : pour modéliser une variable quantitative discrète avec un modèle linéaire généralisé on passe par une fonction de lien, ici avec la loi de Poisson on utilise la fonction log()
 
 ## 3. Pouvoir explicatif du modèle (Anaelle)
 
