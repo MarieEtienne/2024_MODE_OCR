@@ -12,13 +12,20 @@ output:
    toc_float: true
 ---
 
+## Study context
+
+This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#colum-name). This dataset was made from 4 differents articles METTRE BIBLIO.
+Only 3 different species where studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
+AJOUTER LES QUESTIONS DE RECHERCHE ET LES ANALYSES FAITES
+
+
 ```{r}
 library(tidyverse)
 library(ggplot2)
 ```
 
 
-## Présentation du jeu de données : 
+## Présentation du jeu de données {#colum-name} : 
 
 **Columns name :**
 
