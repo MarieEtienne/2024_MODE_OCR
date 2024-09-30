@@ -20,6 +20,8 @@ You can import R package using the code
 
 ```{r}
 library(tidyverse)
+library(FactoMineR)
+library(dplyr)
 ```
 
 
@@ -29,15 +31,33 @@ and then describe the purpose of your chapter as well as executing R command.
 For example a basic summary of a dataset is given by 
 
 ```{r}
-df <- read.table("https://gist.githubusercontent.com/slopp/ce3b90b9168f2f921784de84fa445651/raw/4ecf3041f0ed4913e7c230758733948bc561f434/penguins.csv", sep = "," , header = TRUE)
+df <- read.table("pollen.csv", sep = ";" , header = TRUE)
 ```
 
 and produce a graph
 
+## Effets du pâturage sur la richesse spécifique 
+
+# Visualisation des données 
+
 ```{r}
-df %>% ggplot() +
-	aes(x=species, y = body_mass_g) +
-	geom_boxplot()  
+df<-rename(.data=df,Richesse=num.species, Traitement=treatment)
+```
+Les variables ont été renommées
+
+```{r}
+ggplot(data=df)+
+  geom_boxplot(aes(x=Traitement, y=Richesse))+
+  geom_jitter(aes(x=Traitement, y=Richesse))
+```
+
+
+```{r}
+df %>% ggplot(aes(x=Traitement, y=Richesse)) +
+  geom_boxplot(aes(x=Traitement, y=Richesse))+
+  geom_jitter(aes(x=Traitement, y=Richesse)) +
+  labs(x="Traitement", y="Richesse spécifique") +
+  ggtitle('Influence du pâturage sur la richesse spécifique')
 ```
 
 
