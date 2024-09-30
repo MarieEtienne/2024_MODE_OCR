@@ -1,7 +1,9 @@
 ---
 
+
 title: "Effets du pâturage sur les prairies suédoises"
-group: "Quentin,	Alexie, Jeanne,	Laurane" 
+group: "Bastien, Elia, Caroline, Alexia, Marine, Lily, Julie" 
+>>>>>>> 75e9da09555ae3bad45e7f54a26d7c51188f42d7
 
 bibliography: references.bib
 execute: 
