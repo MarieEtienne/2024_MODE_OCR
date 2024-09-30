@@ -8,7 +8,7 @@ editor:
 
 title: "analyse_data_faune" group: "SLH ARMY" \# On est où
 
-Auteur: "Sébastien, Hugo"
+Auteur: "Sébastien, Hugo", "Malo"
 
 bibliography: references.bib execute: freeze: auto output:
 html_document: toc: true toc_float: true ---
