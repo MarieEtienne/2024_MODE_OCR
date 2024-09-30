@@ -1,7 +1,7 @@
 ---
 
 title: "Modèles matriciels et applications"
-group: "Quentin,	Alexie, Jeanne,	Laurane" 
+group: "Bastien, Elia, Caroline, Alexia, Marine, Lily, Julie" 
 
 bibliography: references.bib
 execute: 
