@@ -8,7 +8,7 @@ editor: visual
 
 à faire :
 
--   importation du jeu de données (lien) (A)
+-   **Importation du jeu de données** 
 
 ```{r global data, echo=TRUE,include=TRUE}
 #importation
