@@ -43,9 +43,33 @@ str(dataAnts)
 ## 1. Présentation du jeu de données (Léa et Giuliana)
 
 ## 2. Analyse des interactions entre les variables Y et Xs (Chloé et Manon)
+
 ###2.1 Analyser la relation potentielle entre Y vs Xs 
 ###2.2 Analyse des éventuelles interactions entre les Xs
-###2.3 Vérifier une éventuelle colinéarité entre les Xs 
+
+On cherche à étudier les interactions entre le facteur et les 3 covariables. On exclut l'interaction entre les variables explicatives quantitatives. On passe par une approche graphique.
+
+```{r dataInter, include=TRUE, fig.height=3, fig.width=8}
+
+par(mfrow=c(1,3))
+# Interactions entre Latitude & Localisation
+plot(dataAnts$Nsp~dataAnts$Latitude,type='n',ylab = "Richesse spécifique de fourmis",xlab="Latitude")
+points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$Latitude[dataAnts$Location=="Bog"],pch=16,cex=2,col='#000099')
+points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$Latitude[dataAnts$Location=="Forest"],pch=17,cex=2,col='#339900')
+
+# Interactions between Elevation & Location
+plot(dataAnts$Nsp~dataAnts$Elevation,type='n',ylab = "Richesse spécifique de fourmis",xlab="Altitude")
+points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$Elevation[dataAnts$Location=="Bog"],pch=16,cex=2,col='#000099')
+points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$Elevation[dataAnts$Location=="Forest"],pch=17,cex=2,col='#339900')
+
+# Interactions between Bog Area & Location
+plot(dataAnts$Nsp~dataAnts$LogArea,type='n',ylab = "Richesse spécifique de fourmis",xlab="Superficie de la tourbière")
+points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$LogArea[dataAnts$Location=="Bog"],pch=16,cex=2,col='#000099')
+points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Location=="Forest"],pch=17,cex=2,col='#339900')
+
+```
+
+###2.3 Vérifier une éventuelle colinéarité entre les Xs
 
 # **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
 
