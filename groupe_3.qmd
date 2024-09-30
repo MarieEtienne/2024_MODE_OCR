@@ -8,7 +8,7 @@ editor: visual
 
 à faire :
 
--   importation du jeu de données (lien) (A)
+-   **Importation du jeu de données** 
 
     On commence par importer le jeu de données situé dans fichier "BogAnts.txt"
 
@@ -54,7 +54,13 @@ library(rcompanion)# Modèle pseudo R²
 library(lattice)# Graphiques multipanneaux (A CHANGER?)
 ```
 
--   vérifier si données manquantes (K)
+-   **Vérification si des données sont manquantes**
+
+```{r global data, echo=TRUE,include=TRUE}
+# Vérification de la présence de valeurs manquantes
+colSums(is.na(dataAnts))
+# Aucune valeur manquante
+```
 
 -   mini summary (A)
 
