@@ -11,8 +11,10 @@ editor: visual
 
 ## 1. Présentation du jeu de données (Léa et Giuliana)
 
-## 2. Analyse des relations et interactions entre les variables (Chloé et Manon)
-
+## 2. Analyse des interactions entre les variables Y et Xs (Chloé et Manon)
+###2.1 Analyser la relation potentielle entre Y vs Xs 
+###2.2 Analyse des éventuelles interactions entre les Xs
+###2.3 Vérifier une éventuelle colinéarité entre les Xs 
 
 # **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
 
