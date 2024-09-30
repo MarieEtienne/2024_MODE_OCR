@@ -8,6 +8,18 @@ editor: visual
 
 Principe de l'exploration du jeu de données d'après l'article cité en cours. 
 
+```{r Importation du jeu de donnees, echo=TRUE, message=FALSE, include=TRUE}
+#importation
+dataAnts <- read.table("BogAnts.txt", dec=".", header = TRUE)
+
+#Passer la localisation en facteur 
+dataAnts$Location<-as.factor(dataAnts$Location)
+
+#vérification du type des variables 
+str(dataAnts)
+```
+
+
 # **EXPLORATION DU JEU DE DONNEES**
 
 ## 1. Présentation du jeu de données (Léa et Giuliana)
