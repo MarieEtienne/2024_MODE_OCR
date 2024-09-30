@@ -22,8 +22,6 @@ Calcul
 Taux de succès 
 Taux de survie
 
-Oceane : ANOVA pour voir effet de l'habitat sur les variables 
-
 voir si habitat préférentiel, région,…
 voir quelles facteurs expliquent taux de succès
 
@@ -46,18 +44,12 @@ refaire analyse de bases cf ASA
 
 ```{r}
 # Datatset import under the name of "data"
-data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE)
+data <- read.table("Bird_dataset.csv", sep="\t", header = TRUE)
 ```
 
 ```{r}
 # Charge the librairies
-rm(list=ls()) 
-library(knitr)
-opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")
 library(ggplot2)
-library(tinytex) 
-library(corrplot)
-library(plot3D)
 ```
 
 ```{r}
@@ -93,6 +85,4 @@ We will performing an ANOVA to see the effect of qualitatives variables (state, 
 
 
   C. Effect on Nest_end_date
-
-
 
