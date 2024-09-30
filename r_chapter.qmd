@@ -12,6 +12,21 @@ output:
    toc_float: true
 ---
 
+Importation du jeu de donnees
+
+```{r} importation
+
+if (!requireNamespace("xlsx", quietly = TRUE)) {
+  install.packages("xlsx")
+}
+
+library(xlsx)
+
+nidification <- read.xlsx("Bird_dataset.xlsx")
+
+```
+
+
 Le lien du site : https://zenodo.org/records/8251495 
 
 
