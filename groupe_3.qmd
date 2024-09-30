@@ -104,7 +104,8 @@ drop1(mod1,test="Chi")
 
 Les variables explicatives restantes sont significatives, on conserve donc ce modèle comme modèle candidat.
 
-On va identifier le modèle candidat basé sur la règle de l'AIC et le mode stepwise. 
+On va identifier le modèle candidat basé sur la règle de l'AIC et le mode stepwise.
+
 ```{r modelAIC, include=TRUE}
 library(MASS)
 # On construit le modèle complet
@@ -147,16 +148,15 @@ summary(mod1)
 
 Ce tableau détaille les coefficients du modèle avec les coefficients associés à chaque effet majeur significatif. Rappelons que pour un facteur, une modalité est appelée "modalité de référence", c'est-à-dire que son coefficient est égal à 0. D'après ce tableau, les coefficients sont :
 
-**Location factor**  
-- $Location_{Bog}$ = 0 (modalité de référence du facteur Location)  
-- $Location_{Forest}$ = $+0.63^{**}$  
-**Latitude covariate**  
-- $\beta_{Latitude}$ = $-0.23^{***}$  
-**Elevation covariate**  
+**Location factor**\
+- $Location_{Bog}$ = 0 (modalité de référence du facteur Location)\
+- $Location_{Forest}$ = $+0.63^{**}$\
+**Latitude covariate**\
+- $\beta_{Latitude}$ = $-0.23^{***}$\
+**Elevation covariate**\
 - $\beta_{Elevation}$ = $-0.001^{***}$
 
-Ainsi, le modèle candidat s'écrit :
-$$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
+Ainsi, le modèle candidat s'écrit : $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
 
 ## 3. Pouvoir explicatif du modèle (Anaelle)
 
@@ -189,13 +189,37 @@ abline(0,1)
 
 ## 4. Validation du modèle (Anaelle)
 
-L'*indépendance des résidus* est la seule chose qui limite le modèle linéaire généralisé. L'analyse des résidus permet donc d'identifier d'éventuelles tendances et de vérifier la présence d'unités statistiques influentes. 
+L'*indépendance des résidus* est la seule chose qui limite le modèle linéaire généralisé. L'analyse des résidus permet donc d'identifier d'éventuelles tendances et de vérifier la présence d'unités statistiques influentes.
 
-Dans un premier temps, verifier la présence de **surdispersion** est indispensable lorsque l'on fait un modèle linéaire généralisé suivant une loi de Poisson. Pour tous les modèles linéaires généralisées utilisant des données de comptage, il faut vérifier l'absence de surdispersion. 
+Dans un premier temps, verifier la présence de **surdispersion** est indispensable lorsque l'on fait un modèle linéaire généralisé suivant une loi de Poisson. Pour tous les modèles linéaires généralisées utilisant des données de comptage, il faut vérifier l'absence de surdispersion.
 
 Pour cela, nous allons calculer un paramètre appelé 'scale parameter'. Si ça valeur est supérieure à 1, il y a surdispersion. Le modèle n'est donc pas valable.
 
 ### Vérification de la surdispersion
+
+Quand l'index de dispersion est supérieur à 1, il existe différentes explications.
+
+Cela peut être dû à : 
+1. Des valeurs abérrantes sont présentes dans le jeu de données. Il faut donc les éliminer. 
+2. Des covariables sont manquantes. Il faut les ajouter au modèle. 
+3. Des interactions sont manquantes. Il faut les ajouter au modèle. 
+4. Une inflation des zéros se produit. Il faut utiliser une regression Binomiale négative à inflation des zéros. https://stats.oarc.ucla.edu/r/dae/zinb/
+5. Une dépendance entre les données et un facteur ou une variable est présente. Il faut utiliser un modèle linéaire général mixte.
+6.Relation entre les données et les variables ou facteurs n'est pas linéaire. Il faut utiliser un modèle additif généralisé. 
+7. La fonction de lien est mauvaise. Il faut changer la fonction de lien.
+8. La variation de $Y$ est grande. Il faut utiliser un modèle linéaire généralisé suivant une loi binomiale négative.
+
+Dans notre exemple, nous allons calculer le 'scale parameter'. Pour cela nous allons utiliser la commande : 
+
+```{r overdisp, include=TRUE}
+# Scale parameter calculation
+E1 <- resid(mod1, type = "pearson") # (Y - mu) / sqrt(mu)
+N  <- nrow(dataAnts)
+p  <- length(coef(mod1))
+sum(E1^2) / (N - p)
+```
+
+Ici, la dispersion est de 1,02. Il n'y a pas de surdispersion. 
 
 ### Analyses des résidus
 
