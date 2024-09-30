@@ -6,7 +6,7 @@ editor: visual
 
 # **INTRODUCTION** (Apolline et Kilian)
 
-Principe de l'exploration du jeu de données d'après l'article cité en cours. 
+Principe de l'exploration du jeu de données d'après l'article cité en cours.
 
 ```{r Importation du jeu de donnees, echo=TRUE, message=FALSE, include=TRUE}
 #importation
@@ -19,23 +19,71 @@ dataAnts$Location<-as.factor(dataAnts$Location)
 str(dataAnts)
 ```
 
-
 # **EXPLORATION DU JEU DE DONNEES**
 
 ## 1. Présentation du jeu de données (Léa et Giuliana)
 
 ```{r Library}
-
+library(ggplot2)
+library(patchwork)
 ```
-
 
 ### a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$ (Giu)
 
 ### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de X (Léa)
 
+```{r Premier graph, message=FALSE, warning=FALSE, paged.print=FALSE}
+p1 <- ggplot(dataAnts) +
+  aes(x=Latitude, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  geom_jitter(width=0, height=0.2) +
+  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) + # Valeurs de l'axe X
+  labs(title = "Test de la latitude",
+       subtitle = "Juste pour la distrib",
+       x= "Latitude") +  # Titres
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
+        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
+        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+        axis.title.x = element_text(size = 8, color = "darkblue"),
+        plot.title = element_text(size = 14, face = "bold", color = "black"),
+        plot.subtitle = element_text(size = 10, color = "black")
+        )   
+
+p2 <- ggplot(dataAnts) +
+  aes(x = Latitude) +  # Utiliser Latitude sur l'axe X
+  geom_histogram(binwidth = 0.25, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
+  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) +  # Valeurs de l'axe X
+  scale_y_continuous(breaks = seq(0, 10, by = 2)) +  # Valeurs de l'axe X
+  labs(       subtitle = "Distribution des latitudes",
+       x = "Latitude") +  # Titres
+  theme_minimal() +  # Appliquer un thème minimal
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"), 
+    plot.subtitle = element_text(size = 10, color = "black")
+  ) 
+
+p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
+  labs(title = "Quantile-Quantile Plot",
+       x = "Théorique Quantiles",
+       y = "Quantiles Observés") +
+  scale_y_continuous(breaks = seq(41, 46, by = 1), limits=c(41,46)) + # Valeurs de l'axe X
+  stat_qq() +  # Ajoute les points du Q-Q plot
+  stat_qq_line(col = "red") +  # Ajoute la ligne théorique
+  
+  theme_minimal() + # Applique un thème minimal
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey") 
+  ) 
+
+(p1 / p2) | p3 + 
+  plot_layout(guides = "collect")
+```
+
 ### c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité (Giu)
-
-
 
 ## 2. Analyse des interactions entre les variables (Chloé et Manon)
 
