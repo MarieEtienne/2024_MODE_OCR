@@ -35,9 +35,7 @@ Question de recherche
 
 -   données et variables
 
--   **Quel modèle et pourquoi ?**
-
-Pour modéliser la relation entre une variable réponse quantitative $Y$ et une ou plusieurs variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives on utilise des modèles linéaires généraux (ANCOVA, ANOVA, régression linéaire). Pour pouvoir utiliser ces modèles linéaires généraux trois conditions d'application sont nécessaires: *la normalité des résidus*, *l'homogénéité des variances* et *l'indépendance des résidus*. Cependant, dans nos disciplines, nous analysons souvent des réponses $Y$ qui peuvent être discrètes et s'écarter alors de l'hypothèse gaussienne (dernière phrase à reformuler).
+-   Quel modèle et pourquoi
 
 -   **Configuration de l'environnement et packages**
 
