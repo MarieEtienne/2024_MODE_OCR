@@ -1,6 +1,7 @@
 ---
-title: "groupe 3"
-autor: "Gabriel-Marie Arnault, Giuliana Brambilla, Apolline Byrdy, Anaelle Hulbert, Manon Le Bihan, Kilian Prevost, Chloé Van der Swaelmen, Léa Vuille "
+title: "Groupe 3"
+autor: "Gabriel-Marie Arnault, Giuliana Brambilla, Apolline Byrdy, Anaelle Hulbert, Manon Le Bihan, Kilian Prevost, Chloé Van der Swaelmen et Léa Vuille"
+source : "Yannick Outreman, selon les données de Gotelli & Ellison (2002) - Biogeography at a regional scale : determinants of antspecies density in New England bogs and forests. Ecology, 83 : 1604-1609."
 editor: visual
 ---
 
@@ -10,7 +11,8 @@ editor: visual
 
 ## 1. Présentation du jeu de données (Léa et Giuliana)
 
-## 2. Analyse des interactions entre les variables (Chloé et Manon)
+## 2. Analyse des relations et interactions entre les variables (Chloé et Manon)
+
 
 # **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
 
