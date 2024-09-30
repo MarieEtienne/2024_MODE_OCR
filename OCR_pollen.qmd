@@ -50,7 +50,10 @@ df %>% ggplot() +
 
 Partie 2 : effet du paturage sur la morphologie des plantes
 
-Nous pouvons tout d'abord effectuer une observation graphique des donn?es
+Nous pouvons tout d'abord effectuer une observation graphique des donnees.
+
+#Taille
+Commencons par representer la taille des plantes en fonction du paturage.
 
 ```{r}
 boxplot(df$logHeight.score~df$?..treatment, varwidth = TRUE, ylab = "LogH", xlab = "Treatment", col='darkgrey', main = "", title = "effet du p?turage sur la hauteur")
@@ -60,6 +63,16 @@ ggplot(data=df)+
   geom_jitter(aes(x=?..treatment, y=logHeight.score))
 ```
 
+#Masse
+Etudions a present la masse des graines des plantes en fonction du paturage.
+
+```{r}
+boxplot(df$logSeedMass.score~df$ï..treatment, varwidth = TRUE, ylab = "LogS", xlab = "Treatment", col='darkgrey', main = "", title = "effet du paturage sur la masse des graines")
+
+ggplot(data=df)+
+  geom_boxplot(aes(x=ï..treatment, y=logSeedMass.score))+
+  geom_jitter(aes(x=ï..treatment, y=logSeedMass.score))
+```
 
 
 Partie 3 : effet du paturage sur les strategies de pollinisation
