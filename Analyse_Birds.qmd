@@ -45,7 +45,7 @@ refaire analyse de bases cf ASA
 
 
 ```{r}
-# Datatset import under the name of "data"
+# Dataset import under the name of "data"
 data <- read.table("Bird_dataset.csv", sep="\t", header = TRUE)
 ```
 
