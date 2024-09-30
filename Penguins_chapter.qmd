@@ -18,8 +18,6 @@ library(FactoMineR)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
-library(factoextra)
-library(FactoMineR)
 ```
 
 
@@ -86,23 +84,42 @@ ggplot(data, aes(x = Delta.15.N..o.oo., y = Delta.13.C..o.oo., color = Species, 
 ```
 
 ```{r}
-#sélection des données quantitatives
+#Selection of quantitative data
 data_numeric <- select_if(data, is.numeric)
-#enlever le numéro de l'individu et le sample
-#la body mass et le flipper sont corrélés à plus de 80% donc on suprimme flipper car c'est la données la plus corrélées à toute
+
+#Removal of quantitative variables that are qualitative
+#Correlation between body mass and flipper ( 80%), flipper suppression
 data_numeric <- data_numeric[,-c(1,2,5)]
-#centrer et réduire les données
+
+#focus and reduce data
 data_scales <- scale(data_numeric)
-acp_data= PCA(data_scales)
+
+#PCA realization
+acp_data= PCA(data_scales, graph = F)
 summary(acp_data)
+#cercle des corrélations
+fviz_pca_var(acp_data)
+
 #Variances pour chaque composantes
 fviz_eig(acp_data)
+
+#contribution des variables pour chaque axe
+fviz_contrib(acp_data, choice="var", axes=1) #axe 1
+fviz_contrib(acp_data, choice="var", axes=2) #axe 1
+
 #Projection des individus et coloration en fonction de l'espèce
-fviz_pca_ind(acp_data, geom.ind = "point", col.ind = as.factor(data$Species), addEllipses = T, pointshape = 19)
+fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$Species, addEllipses = T, pointshape = 19)
+
+#Projection of variables and individuals according to species
+fviz_pca_biplot(acp_data, label="var", habillage=data$Species, title = "Projection of variables and individuals according to species", ylim=c(-3,3.5), xlim = c(-3.5,3.5))
+
 #Projection des individus et coloration en fonction de l'île
-fviz_pca_ind(acp_data, geom.ind = "point", col.ind = data$Island, pointshape = 19, addEllipses = T)
-#projection des variables
-fviz_pca_var(acp_data)
+fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$Island, addEllipses = T, pointshape = 19)
+#Projection of variables and individuals according to island
+fviz_pca_biplot(acp_data, label="var", habillage=data$Island, title = "Projection of variables and individuals according to island", ylim=c(-3,3.5),xlim = c(-3.5,3.5))
+
+```
+```{r}
 ```
 
 
