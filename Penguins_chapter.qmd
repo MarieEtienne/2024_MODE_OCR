@@ -1,6 +1,6 @@
 ---
 
-title: "Exploration données sur les manchots"
+title: "Exploring data on penguins"
 group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline" 
 
 bibliography: references.bib
@@ -69,16 +69,20 @@ data <- read.table("penguins_raw.csv", sep = "," , header = TRUE, stringsAsFacto
 summary(data)
 dim(data)
 ```
+
+
 ```{r Antoine}
 
 # Modification of colnames 
-
 data <- data %>%
   select(-X) %>%                   # Remove X column 
-  #select(-Comments) %>%           # Remove ?
+  #select(-Comments) %>%           # Remove (?)
   rename(                          # we rename the columns of the dataset
     sample_number = Sample.Number,
     id = Individual.ID,
+    island = Island,
+    region = Region,
+    stage = Stage,
     clutch_completion = Clutch.Completion,
     date_egg = Date.Egg,
     culmen_length = Culmen.Length..mm.,
@@ -91,6 +95,7 @@ data <- data %>%
     species = Species,
   ) 
 
+names(data)
 # Verification of missing data
 colSums(is.na(data)) 
 
@@ -106,7 +111,7 @@ data = data %>%
 Distribution of species between the islands :  
 
 ```{r}
-table(data$Island, data$species)
+table(data$island, data$species)
 ```
 
 Some graphs :
@@ -124,37 +129,42 @@ ggplot(data, aes(x = culmen_length, y = culmen_depth, color = species))+
 ```
 
 ```{r}
-ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species, shape = Island))+
+ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species, shape = island))+
   geom_point()+
   theme_classic()
 ```
 
 ```{r}
-#sélection des données quantitatives
+
+#Selection of quantitative data
 data_numeric <- select_if(data, is.numeric)
-#enlever le numéro de l'individu et le sample
-#la body mass et le flipper sont corrélés à plus de 80% donc on suprimme flipper car c'est la données la plus corrélées à toute
-data_numeric <- data_numeric[,-c(1,2,5)]
-#centrer et réduire les données
+
+# Remove sample_number 
+# The body_mass et the flipper_length are more than 80% correlated, we're deleting flipper_length because it's the data that's most correlated with all the other data.
+# names(data_numeric)
+data_numeric <- data_numeric %>% select(-c("sample_number","flipper_length"))
+
+# Normalizing data
 data_scales <- scale(data_numeric)
 acp_data= PCA(data_scales)
 summary(acp_data)
-#Variances pour chaque composantes
+
+# Variances for each variable
 fviz_eig(acp_data)
-#Projection des individus et coloration en fonction de l'espèce
+
+# Projection of individuals and differentiation according to species
 fviz_pca_ind(acp_data, geom.ind = "point", col.ind = as.factor(data$species), addEllipses = T, pointshape = 19)
-#Projection des individus et coloration en fonction de l'île
-fviz_pca_ind(acp_data, geom.ind = "point", col.ind = data$Island, pointshape = 19, addEllipses = T)
-#projection des variables
+
+# Projection of individuals and differentiation according to the islands
+fviz_pca_ind(acp_data, geom.ind = "point", col.ind = data$island, pointshape = 19, addEllipses = T)
+
+# Projection of variables
 fviz_pca_var(acp_data)
 ```
 
 
 ```{r NA}
-
-data2 <-data[,1:17]
-data2
-NA_df <- (colSums(is.na(data2)) / nrow(data2)) * 100
+NA_df <- (colSums(is.na(data)) / nrow(data)) * 100
 
 color_pal <- colorRampPalette(c("limegreen", "yellow", "firebrick"), bias = 20)(10)
 NA_col <- color_pal[as.integer(NA_df/length(NA_df)*9)+1]
