@@ -50,7 +50,13 @@ library(rcompanion)# Modèle pseudo R²
 library(lattice)# Graphiques multipanneaux (A CHANGER?)
 ```
 
--   vérifier si données manquantes (K)
+-   **Vérification si des données sont manquantes**
+
+```{r global data, echo=TRUE,include=TRUE}
+# Vérification de la présence de valeurs manquantes
+colSums(is.na(dataAnts))
+# Aucune valeur manquante
+```
 
 -   mini summary (A) summary(dataAnts)
 
