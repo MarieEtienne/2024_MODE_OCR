@@ -46,7 +46,7 @@ refaire analyse de bases cf ASA
 
 ```{r}
 # Datatset import under the name of "data"
-data <- read.table("Bird_dataset.csv", sep="\t", header = TRUE)
+data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE)
 ```
 
 ```{r}
@@ -67,4 +67,21 @@ ggplot(data, aes(x="Year"))+
   geom_bar(stat="bin", width=0.7, fill="steelblue")+
   theme_minimal()
 ```
+
+
+
+I. ANOVA (Oceane  G.)
+
+Performing an ANOVA to see the effect of habitat on the variables in the Bird_dataset.csv dataset
+
+ANOVA : 
+- ANOVA is a statistical method that simultaneously compares means across several groups to determine if observed differences are due to chance or reflect genuine distinctions.
+- A one-way ANOVA uses one independent variable. A two-way ANOVA uses two independent variables.
+- By partitioning total variance into components, ANOVA unravels relationships between variables and identifies true sources of variation.
+- ANOVA can handle multiple factors and their interactions, providing a robust way to better understand intricate relationships.
+
+
+
+
+
 
