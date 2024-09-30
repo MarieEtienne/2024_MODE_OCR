@@ -17,19 +17,19 @@ output:
 This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#column_name). 
 The dataset was find on kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv 
 
-This dataset was made from 4 differents articles METTRE BIBLIO.
+This dataset was made from differents articles METTRE BIBLIO.
 Only 3 different species were studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
 AJOUTER LES QUESTIONS DE RECHERCHE ET LES ANALYSES FAITES
 
 
 ```{r}
-<<<<<<< HEAD
+
 library(factoextra)
 library(FactoMineR)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
-=======
+
 #| message: false
 #| warning: false
 #| echo: true
@@ -42,10 +42,9 @@ library(dplyr)      # for data manipulation
 library(ggplot2)    # for data visualization
 
 # On a vraiment besoin d'importer dplyr et ggplot2, alors qu'on a deja importer tidyverse ?
->>>>>>> 299a0e16fe2643030cdf2138547dcd7e54038e3c
 ```
 
-## Dataset presentation {#colum-name}: 
+## Dataset presentation {#column_name}: 
 
 **Columns name :**
 
@@ -230,12 +229,6 @@ ggplot(data, aes(x = species, y = body_mass, fill = species)) +
        y = "Body Mass (g)") +
   theme_minimal() +
   theme(legend.position = "none")
-
-```
-
-
-```{r biblio}
-# You place Marion 
 
 ```
 
