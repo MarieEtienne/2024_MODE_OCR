@@ -1,6 +1,6 @@
 ---
 
-title: "Modèles matriciels et applications"
+title: "Effets du pâturage sur les prairies suédoises"
 group: "Quentin,	Alexie, Jeanne,	Laurane" 
 
 bibliography: references.bib
