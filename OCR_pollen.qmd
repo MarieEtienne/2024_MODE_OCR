@@ -13,10 +13,7 @@ output:
    toc: true
    toc_float: true
 ---
-
-This chapter is a simple example using R
-
-You can import R package using the code
+IMPORTATION DES PACKAGES
 
 ```{r}
 library(tidyverse)
@@ -24,17 +21,25 @@ library(FactoMineR)
 library(dplyr)
 ```
 
-
-and then describe the purpose of your chapter as well as executing R command.
-
-
-For example a basic summary of a dataset is given by 
+IMPORTATION DES DONNEES
 
 ```{r}
 df <- read.table("pollen.csv", sep = ";" , header = TRUE)
 ```
 
-and produce a graph
+INTRODUCTION 
+
+Les écosystèmes terrestres ont été dominés pendant plusieurs millions d'années par les grands mammifères herbivores, qui ont ensuite décliné à la fin du Pléistocène sous la pression des premières populations humaines préhistoriques. La perte de ces espèces de grands herbivores (aurochs, chevaux et ânes sauvages, rhinocéros laineux...) a également été synonyme de la perte des services écosystémiques qu'ils apportaient. (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7148574/)
+
+Depuis plusieurs années, le courant du réensauvagement ("rewilding" en anglais) a pour but de restaurer ces services écosytémique en réintroduisant des espèces dans les grands espaces naturels européens.L'étude présente cherche à évaluer dans quelle mesure les espèces d'herbivores introduites ont une influence sur la végétation. (https://besjournals.onlinelibrary.wiley.com/doi/10.1111/1365-2664.13338)
+
+
+PRESENTATION DE L'EXPERIENCE
+
+
+
+
+
 
 ```{r}
 df %>% ggplot() +
@@ -49,4 +54,3 @@ par(mfrow=c(1,2))
 boxplot(df$RatioPoll~df$�..treatment, varwidth = TRUE, ylab = "Ratio Pollinisation", xlab = "treatment", col='blue', main = "")
 
 ```
-A citation @bauer2023writing
