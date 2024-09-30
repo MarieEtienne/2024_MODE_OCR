@@ -12,7 +12,18 @@ output:
    toc_float: true
 ---
 
+# Ideas of modelisation : 
+
 Le lien du site : https://zenodo.org/records/8251495 
+
+- Océane : ANOVA
+
+- Manon : ACP
+
+- Rudy : Number_Fledged
+
+
+
 
 
 Pistes 
@@ -32,6 +43,12 @@ voir si habitat préferentiel
 MAIS ATTENTION à ne pas être biaisé : du genre que des oiseaux d’une certaines espèces ne soit présents que dans un habitat
 
 refaire analyse de bases cf ASA 
+
+
+
+
+
+
 
 # Document R modifié et avec ajouts
 
@@ -62,13 +79,51 @@ head(data)
 ## Data exploration
 # Repartition of the data through time
 
-In the following plot, we compare the initiation dates according to the Year and the State. We observe 
+
+
+# Rudy part : 
+
+We can use the number of fledged birds as response variable and try to explain this by several variables. We can analyse if the number of fledged birds depends on the species. 
+
+H0 : there is no differences between species
+
+First, we observe the data with a boxplot
 ```{r}
 # Compari
-ggplot(data, aes(x = Year, 
-                 y = Initiation_Date
+ggplot(data, aes(x = Species, 
+                 y = Number_Fledged
                  )
        ) +
-  geom_boxplot(aes(fill = State))
+  geom_boxplot(outlier.shape = 0.2)
+                 
+                 
 ```
+
+Then, we test the normality of the data : 
+
+```{r}
+sp_fledged <- data |>
+  dplyr::select(
+    Species, 
+    Number_Fledged
+    ) |>
+  dplyr::group_by(Species) |>
+  dplyr::summarise()
+  
+
+sp_fledged
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
