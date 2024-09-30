@@ -9,9 +9,11 @@ https://lite.framacalc.org/2024_ocr_groups-aa6d
 
 https://marieetienne.github.io/reproductibilite/_presentation/english_version.html#1 and the reference therein
 
+
 ## Markdown / R markdown 
 
 https://www.markdownguide.org/
+
 
 ## Evaluation
 
