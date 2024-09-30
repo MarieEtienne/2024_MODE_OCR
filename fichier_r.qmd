@@ -20,6 +20,26 @@ This chapter is a simple example using R
 
 You can import R package using the code
 
+
+PLAN POUR GLM:
+
+- CHARGEMENT DES DONNEES
+- EXPLORATION DU JEU DE DONNEE
+  - Valeurs aberrantes dans Y et dans les X
+  - Nombre de modalité et individus par modalité
+  - Relations potentielles entre Y et Xs
+  - Eventuelles interactions entre les Xs
+  - Colinéarité entre les Xs
+- ANALYSE STATISTIQUE
+  - Construction du modèle
+  - Analyse des coefficients du modèle
+  - Pouvoir explicatif du modèle
+- VALIDATION DE LA MODELISATION
+  - Analyse des résidus
+  - Vérification des individus influents
+  - Simulations pour estimer la qualité d'ajustement du modèle
+- CONCLUSION
+
 ```{r}
 library(tidyverse)
 ```
