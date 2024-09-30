@@ -23,10 +23,9 @@ dataAnts$Location<-as.factor(dataAnts$Location)
 str(dataAnts)
 ```
 
--   *Article, auteur, journal, référence*
+-   **Article, auteur, journal, référence**
 
 Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604–1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
-
 
 -   Contexte Biologique
 
@@ -36,13 +35,11 @@ Question de recherche
 
 -   données et variables
 
-
 -   **Quel modèle et pourquoi ?**
 
 Pour modéliser la relation entre une variable réponse quantitative $Y$ et une ou plusieurs variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives on utilise des modèles linéaires généraux (i.e glm : régression linéaire, ANCOVA, ANOVA). Pour pouvoir utiliser ces glm, trois conditions d'application sont nécessaires: *l'homogénéité des variances*, *l'indépendance des résidus* et *la normalité des résidus*. Cependant, les réponses $Y$ que nous analysons en , peuvent parfois être discrètes et s'écarter de l'hypothèse gaussienne.
 
 Pour les variables réponses discrètes, (comptages, données binaires), la variance de $Y$ varie généralement avec la moyenne de $Y$. Cette relation semble alors indiquer que la variance ne peut être homogène dans un jeu de données, du fait de sa dépendance à la moyenne. Or,les modèles linéaires généraux ont pour hypothèse d'application une variance constante (c'est-à-dire une homogénéité de la variance). Par ailleurs, lorsque l'on applique un modèle linéaire général à des données de comptage, les valeurs prédites obtenues peuvent être négatives (ce qui est impossible au regard de la nature de $Y$) et les résidus non distribués normalement. Donc, l'utilisation d'un modèle linéaire général (*glm*) sur des réponses discrètes génère très généralement des écarts par rapport aux conditions d'application. En conclusion, il devient necessaire d'utiliser une méthode plus adaptée à l'analyse de variables réponses discrètes telle que les Modèles linéaires généralisés (*glim*).
-
 
 -   **Configuration de l'environnement et packages**
 
