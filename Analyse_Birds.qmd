@@ -51,7 +51,13 @@ data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE)
 
 ```{r}
 # Charge the librairies
+rm(list=ls()) 
+library(knitr)
+opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")
 library(ggplot2)
+library(tinytex) 
+library(corrplot)
+library(plot3D)
 ```
 
 ```{r}
@@ -72,16 +78,25 @@ ggplot(data, aes(x="Year"))+
 
 I. ANOVA (Oceane  G.)
 
-Performing an ANOVA to see the effect of habitat on the variables in the Bird_dataset.csv dataset
 
-ANOVA : 
-- ANOVA is a statistical method that simultaneously compares means across several groups to determine if observed differences are due to chance or reflect genuine distinctions.
-- A one-way ANOVA uses one independent variable. A two-way ANOVA uses two independent variables.
-- By partitioning total variance into components, ANOVA unravels relationships between variables and identifies true sources of variation.
-- ANOVA can handle multiple factors and their interactions, providing a robust way to better understand intricate relationships.
+Analysis of variance (ANOVA) is one of the most widely used statistical methods in various disciplines. It allows to model the relationship between a quantitative dependent variable $Y$ according to the different modalities of one or more qualitative explanatory variables $Xs$.
+
+We will performing an ANOVA to see the effect of qualitatives variables (state, habitat, species, year) on the quantitatives (nest_fate, initiation_date, number_fledged, nest_end_date) variables in the Bird_dataset.csv dataset.
 
 
+  A. Effect on Nest_fate
+  
+  
+  
+  B. Effect on Initiation_date
+  
+  
+  
+  C. Effect on Number_fledged
 
+
+
+  D. Effect on Nest_end_date
 
 
 
