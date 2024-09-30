@@ -143,6 +143,18 @@ Nous pouvons calculer le *pseudo R²*, de trois manières différentes. Soit ave
 
 Dans notre exemple, comme vu dans la partie précédente, le modèle nul a une déviance de 102,76 et la déviance résiduelle est de 40,69.
 
+Nous allons donc calculé la qualité avec les commandes suivantes : 
+
+```{r deviance, include=TRUE}
+# Estimate of deviance explained
+(mod1$null.deviance-mod1$deviance)/mod1$null.deviance
+
+# Some others estimates of deviance explained - package 'rcompanion'
+nagelkerke(mod1)
+```
+
+Ici, l'estiamtion de la déviance expliquée est de 60% ou 75%, en fonction de la méthode utilisée.
+
 ## 4. Validation du modèle (Anaelle)
 
 
