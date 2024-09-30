@@ -1,5 +1,4 @@
 ---
-
 title: "Exploration données sur les manchots"
 group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline" 
 
@@ -11,6 +10,7 @@ output:
    toc: true
    toc_float: true
 ---
+
 
 ```{r}
 library(tidyverse)
@@ -48,4 +48,3 @@ summary(data)
 
 
 
-A citation @bauer2023writing
