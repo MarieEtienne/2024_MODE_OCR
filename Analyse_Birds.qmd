@@ -24,7 +24,7 @@ Calcul
 Taux de succès 
 Taux de survie
 
-voir si habitat préférentiel, région,…
+voir si habitat préférentiel, région, …
 voir quelles facteurs expliquent taux de succès
 
 voir si décalages entre dates de départ du nid -> facteurs expliquant 
@@ -37,6 +37,17 @@ refaire analyse de bases cf ASA
 
 # Document R modifié et avec ajouts
 
+# Variables presentation:
+
+- Nest_ID : the code to identify each nest
+- State : the state in which the nest has been found. 3 levels factor.
+- County : the county in the state where the state has been found. 15 levels factor.
+- Habitat : the type of habitat in which the nest has been found. 5 levels factor.
+- Species : the species of the bird that has build the nest. 9 levels factor.
+- Year : the year of the nest building. 21 levels factor.
+
+
+
 ## Import des données
 
 **Do not forget to set your working directory in the right place**
@@ -46,7 +57,9 @@ refaire analyse de bases cf ASA
 
 ```{r}
 # Dataset import under the name of "data"
-data <- read.table("Bird_dataset.csv", sep="\t", header = TRUE)
+data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE, stringsAsFactors = TRUE)
+data$Nest_Fate <- as.factor(data$Nest_Fate)
+data$Year <- as.factor(data$Year)
 ```
 
 ```{r}
@@ -63,8 +76,15 @@ head(data)
 
 ```{r}
 # Creation of a barplot
-ggplot(data, aes(x="Year"))+
-  geom_bar(stat="bin", width=0.7, fill="steelblue")+
+hist(data$Nest_Fate,col='dodgerblue3',xlab="Nest_Fate",main="")
+```
+
+```{r}
+# Graph du nombre de nids réussis en fonction des Etats
+ggplot(data, aes(x="data$State"))+
+  geom_bar(stat="data$Nest_Fate", width=0.7, fill="steelblue")+
   theme_minimal()
 ```
+
+
 
