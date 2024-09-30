@@ -2,7 +2,6 @@
 
 title: "Exploring data on penguins"
 group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline" 
-
 bibliography: references.bib
 execute: 
   freeze: auto
@@ -10,15 +9,23 @@ output:
   html_document:
    toc: true
    toc_float: true
+editor: 
+  markdown: 
+    wrap: 72   
+
 ---
 
 ## Study context
+
 
 This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#column_name). 
 The dataset was find on kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv 
 
 This dataset was made from differents articles METTRE BIBLIO.
 Only 3 different species were studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
+
+This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#colum-name). This dataset was made from differents articles Selon Gorman et al. [@10.1371/journal.pone.0090081] and  Horst et al. [@10.32614/RJ-2022-020]. NE FOCNTIONNE PAS MAIS JE VAIS VOIR PLUS TARD
+Only 3 different species where studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
 AJOUTER LES QUESTIONS DE RECHERCHE ET LES ANALYSES FAITES
 
 
@@ -44,27 +51,41 @@ library(ggplot2)    # for data visualization
 # On a vraiment besoin d'importer dplyr et ggplot2, alors qu'on a deja importer tidyverse ?
 ```
 
+
 ## Dataset presentation {#column_name}: 
 
 **Columns name :**
 
- - studyName :Sampling expedition from which data were collected, generated, etc.  
- - Sample Number : an integer denoting the continuous numbering sequence for each sample  
- - Species : a character string denoting the penguin species  
- - Region : a character string denoting the region of Palmer LTER sampling grid  
- - Island : a character string denoting the island near Palmer Station where samples were collected  
- - Stage : a character string denoting reproductive stage at sampling  
- - Individual ID : a character string denoting the unique ID for each individual in dataset  
- - Clutch Completion : a character string denoting if the study nest observed with a full clutch, i.e., 2 eggs  
- - Date Egg : a date denoting the date study nest observed with 1 egg (sampled)  
- - Culmen Length : a number denoting the length of the dorsal ridge of a bird's bill (millimeters)  
- - Culmen Depth : a number denoting the depth of the dorsal ridge of a bird's bill (millimeters)  
- - Flipper Length : an integer denoting the length penguin flipper (millimeters)  
- - Body Mass : an integer denoting the penguin body mass (grams)  
- - Sex : a character string denoting the sex of an animal  
- - Delta 15 N : a number denoting the measure of the ratio of stable isotopes 15N:14N  
- - Delta 13 C : a number denoting the measure of the ratio of stable isotopes 13C:12C  
- - Comments : a character string with text providing additional relevant information for data  
+-   studyName :Sampling expedition from which data were collected,
+    generated, etc.\
+-   Sample Number : an integer denoting the continuous numbering
+    sequence for each sample\
+-   Species : a character string denoting the penguin species\
+-   Region : a character string denoting the region of Palmer LTER
+    sampling grid\
+-   Island : a character string denoting the island near Palmer Station
+    where samples were collected\
+-   Stage : a character string denoting reproductive stage at sampling\
+-   Individual ID : a character string denoting the unique ID for each
+    individual in dataset\
+-   Clutch Completion : a character string denoting if the study nest
+    observed with a full clutch, i.e., 2 eggs\
+-   Date Egg : a date denoting the date study nest observed with 1 egg
+    (sampled)\
+-   Culmen Length : a number denoting the length of the dorsal ridge of
+    a bird's bill (millimeters)\
+-   Culmen Depth : a number denoting the depth of the dorsal ridge of a
+    bird's bill (millimeters)\
+-   Flipper Length : an integer denoting the length penguin flipper
+    (millimeters)\
+-   Body Mass : an integer denoting the penguin body mass (grams)\
+-   Sex : a character string denoting the sex of an animal\
+-   Delta 15 N : a number denoting the measure of the ratio of stable
+    isotopes 15N:14N\
+-   Delta 13 C : a number denoting the measure of the ratio of stable
+    isotopes 13C:12C\
+-   Comments : a character string with text providing additional
+    relevant information for data
 
 
 ```{r}
@@ -164,15 +185,15 @@ fviz_contrib(acp_data, choice="var", axes=1) #axe 1
 fviz_contrib(acp_data, choice="var", axes=2) #axe 1
 
 # Projection of individuals and differentiation according to species
-fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$Species, addEllipses = T, pointshape = 19)
+fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$species, addEllipses = T, pointshape = 19)
 
 #Projection of variables and individuals and differentiation according to species
-fviz_pca_biplot(acp_data, label="var", habillage=data$Species, title = "Projection of variables and individuals according to species", ylim=c(-3,3.5), xlim = c(-3.5,3.5))
+fviz_pca_biplot(acp_data, label="var", habillage=data$species, title = "Projection of variables and individuals according to species", ylim=c(-3,3.5), xlim = c(-3.5,3.5))
 
 # Projection of individuals and differentiation according to the islands
-fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$Island, addEllipses = T, pointshape = 19)
+fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$island, addEllipses = T, pointshape = 19)
 #Projection of variables and individuals and differentiation according to the islands
-fviz_pca_biplot(acp_data, label="var", habillage=data$Island, title = "Projection of variables and individuals and dfferentiation according to the islands", ylim=c(-3,3.5),xlim = c(-3.5,3.5))
+fviz_pca_biplot(acp_data, label="var", habillage=data$island, title = "Projection of variables and individuals and dfferentiation according to the islands", ylim=c(-3,3.5),xlim = c(-3.5,3.5))
 
 ```
 
@@ -231,4 +252,85 @@ ggplot(data, aes(x = species, y = body_mass, fill = species)) +
   theme(legend.position = "none")
 
 ```
+
+In this Data set, we would like to compare the different qualitative variables :\
+- *Culmen Length*\
+- *Culmen Depth*\
+- *Flipper Length*\
+- *Body Mass*\
+- *Delta 13C*\
+- *Delta 15N*\
+
+```{r}
+sub_data_num = data%>%
+  select(culmen_length, culmen_depth,flipper_length,body_mass,delta_13_C,delta_15_N)%>%
+  na.omit() # we delete the few individuals with NA
+
+matcor = cor(sub_data_num,method = "pearson")
+matcor
+```
+
+The representation of this matrix isn't the best. We can use the library
+*corrplot* to make some visual correlation matrix.
+
+We used the following code:
+
+```{r}
+library(corrplot)
+
+corrplot(matcor, method = "number", type = "upper",order = "hclust", tl.col="black", tl.srt=45)
+corrplot(matcor, type = "upper",order = "hclust", tl.col="black", tl.srt=45)
+
+```
+
+Now, we want to observe whether certain qualitative variables have an
+effect on body mass. We will therefore try to create a graph for each
+factor (qualitative variables) according to body mass:\
+- *Species*\
+- *Island*\
+- *Sex*\
+
+```{r}
+box1 <- ggplot(data = data)+
+  geom_boxplot(aes(x=species,y=body_mass, fill = species))
+box1
+
+box2 <- ggplot(data = data)+
+  geom_boxplot(aes(x=island,y=body_mass, fill = island))
+box2
+
+box3 <- ggplot(data = data)+
+  geom_boxplot(aes(x=sex,y=body_mass, fill = sex))
+box3
+```
+
+We have noticed some trends that we will have to confirm with
+statistical tests.\
+Box1: Gentoo penguins appear to be heavier than the other two species.\
+Box2: penguins from Biscoe Island appear to be heavier than the other
+two islands.\
+Box3: male penguins appear to be heavier than the other two categories.\
+We run anovas to confirm these differences.\
+
+```{r}
+mod1= lm(body_mass~species, data = data)
+
+anova1 = anova(mod1)
+
+anova1
+
+mod2 = lm(body_mass~island, data = data)
+
+anova2 = anova(mod2)
+
+anova2
+
+mod3 = lm(body_mass~sex, data = data)
+
+anova3 = anova(mod3)
+
+anova3
+```
+
+Significance tests confirm the trends seen by the eye.
 
