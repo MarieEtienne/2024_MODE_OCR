@@ -20,6 +20,8 @@ This chapter is a simple example using R
 
 You can import R package using the code
 
+**OMG C'EST LE TEST**
+
 
 PLAN POUR GLM:
 
