@@ -32,6 +32,17 @@ PLAN POUR GLM:
 - EXPLORATION DU JEU DE DONNEE
   - Valeurs aberrantes dans Y et dans les X
 ```{r}
+table()
+
+par(mfrow=c(1,3))
+
+# Cleveland plot
+dotchart(data,pch=16,col='',xlab='')
+# Histogram
+hist(data,col='',xlab="",main="")
+# Quantile-Quantile plot
+qqnorm(data,pch=16,col='',xlab='')
+qqline(data,col='',lwd=2)
 ```
   - Nombre de modalité et individus par modalité
 ```{r}
