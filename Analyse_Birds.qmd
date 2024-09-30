@@ -44,7 +44,9 @@ refaire analyse de bases cf ASA
 
 ```{r}
 # Datatset import under the name of "data"
-data <- read.table("Bird_dataset.csv", sep="\t", header = TRUE)
+data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE, stringsAsFactors = TRUE)
+data$Nest_Fate <- as.factor(data$Nest_Fate)
+
 ```
 
 ```{r}
