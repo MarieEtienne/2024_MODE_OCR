@@ -51,6 +51,32 @@ data <- read.table("penguins_raw.csv", sep = "," , header = TRUE, stringsAsFacto
 summary(data)
 dim(data)
 ```
+```{r Antoine}
+
+# Modification of colnames 
+
+data <- data %>%
+  select(-X) %>%                   # Remove X column 
+  #select(-Comments) %>%           # Remove ?
+  rename(                          # we rename the columns of the dataset
+    sample_number = Sample.Number,
+    id = Individual.ID,
+    clutch_completion = Clutch.Completion,
+    date_egg = Date.Egg,
+    culmen_length = Culmen.Length..mm.,
+    culmen_depth = Culmen.Depth..mm.,
+    flipper_length = Flipper.Length..mm.,
+    body_mass = Body.Mass..g.,
+    sex = Sex,
+    delta_15_N = Delta.15.N..o.oo.,
+    delta_13_C = Delta.13.C..o.oo.,
+    species = Species,
+  ) 
+
+# Verification of missing data
+colSums(is.na(data2)) 
+
+```
 
 Change species names :  
 ```{r}
