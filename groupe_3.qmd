@@ -10,6 +10,18 @@ editor: visual
 
 ## 1. Présentation du jeu de données (Léa et Giuliana)
 
+```{r Library}
+
+```
+
+
+### a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$ (Giu)
+
+### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de X (Léa)
+
+### c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité (Giu)
+
+
 ## 2. Analyse des interactions entre les variables (Chloé et Manon)
 
 # **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
