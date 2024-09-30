@@ -105,9 +105,38 @@ points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Locat
 
 ```
 
-On peut penser qu'il y a une interactions entre les covariables si les pentes formées par les deux nuages de points sont différentes. Ici les nuages ne permettent pas de voir clairement de similitude ou de différence de tendance pour chaque graphique.
+On peut penser qu'il y a une interaction entre les covariables si les pentes formées par les deux nuages de points sont différentes. Ici les nuages ne permettent pas de voir clairement de similitude ou de différence de tendance pour chaque graphique.
 
 ###2.3 Vérifier une éventuelle colinéarité entre les Xs
+
+
+
+```{r datacolin, include=TRUE, fig.height=4, fig.width=8}
+
+# Vérifier la colinéarité entre les variables continues indépendantes
+
+# On fait un graphqiue pour chaque paire de covariable
+newdata<-cbind(dataAnts$Latitude,dataAnts$Elevation,dataAnts$LogArea)
+colnames(newdata)<-c('Latitude','Altitude','Log Superficie tourbière')
+newdata<-data.frame(newdata)
+plot(newdata,pch=16,col='dodgerblue3')
+
+#On calcule la corrélation de chaque paire de covariables
+M<-cor(newdata)
+corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
+
+# On vérifie la collinéarité entre catégories et variables continues
+par(mfrow=c(1,3))
+#Latitude and Localisation
+boxplot(dataAnts$Latitude~dataAnts$Location, varwidth = TRUE, ylab = "Latitude", xlab = "Localisation",col=c('#000099','#339900'), main = "")
+
+#Altitude and Localisation
+boxplot(dataAnts$Elevation~dataAnts$Location, varwidth = TRUE, ylab = "Altitude", xlab = "Localisation",col=c('#000099','#339900'), main = "")
+
+#Superficie de la tourbière and Localisation
+boxplot(dataAnts$LogArea~dataAnts$Location, varwidth = TRUE, ylab = "Superficie de tourbière", xlab = "Localisation",col=c('#000099','#339900'), main = "")
+
+```
 
 # **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
 
