@@ -18,11 +18,11 @@ editor: visual
 
 -   Question de recherche
 
--    Quel modèle et pourquoi
-
--   vérifier si données manquantes
+-   Quel modèle et pourquoi
 
 -   packages pouvant servir
+
+-   vérifier si données manquantes
 
 -   mini summary
 
