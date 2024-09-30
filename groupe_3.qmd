@@ -49,9 +49,11 @@ La première étape de l'exploration du jeu de données consiste à vérifier la
 
 **Valeurs aberrantes :** dans un jeu de données écologiques, il est probable de rencontrer des individus présentant des valeurs extrêmes pour la variable réponse. Ces individus, en raison de leurs valeurs inhabituelles, peuvent avoir un impact disproportionné sur la construction du modèle. Toutefois, ces valeurs extrêmes peuvent résulter soit de la variabilité naturelle des phénomènes écologiques, soit d'erreurs (par exemple, des erreurs de mesure ou de manipulation). Identifier ces individus avant l'analyse statistique permet de prévenir les erreurs et de justifier, si nécessaire, l'exclusion de certaines valeurs aberrantes pour améliorer la robustesse du modèle.
 
-**Distribution des valeurs : ** analyser la distribution des valeurs de $Y$ permet d'identifier *a priori* la loi de probabilité qui expliquera au mieux les processus écologiques en cours. Cela est d'autant plus intéressant si les données suggèrent une relation non linéaire ou asymétrique. 
+Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à un **Cleveland plot** des valeurs de $Y$.
 
-## Vérification des valeurs aberrantes dans $Y$ :
+**Distribution des valeurs :** analyser la distribution des valeurs de $Y$ permet d'identifier *a priori* la loi de probabilité qui expliquera au mieux les processus écologiques en cours. Cela est d'autant plus intéressant si les données suggèrent une relation non linéaire ou asymétrique.
+
+La distribution des valeurs de $Y$ peut être visualisée grâce à un **histogramme** ou à un **Normal Q-Q plot**.
 
 ### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de X (Léa)
 
