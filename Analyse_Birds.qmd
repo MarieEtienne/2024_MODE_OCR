@@ -22,6 +22,8 @@ Calcul
 Taux de succès 
 Taux de survie
 
+Oceane : ANOVA pour voir effet de l'habitat sur les variables 
+
 voir si habitat préférentiel, région,…
 voir quelles facteurs expliquent taux de succès
 
