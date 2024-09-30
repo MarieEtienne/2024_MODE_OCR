@@ -197,19 +197,27 @@ Pour cela, nous allons calculer un paramètre appelé 'scale parameter'. Si ça 
 
 ### Vérification de la surdispersion
 
-Quand l'index de dispersion est supérieur à 1, il existe différentes explications.
+Quand l'index de dispersion est supérieur à 1,5 , il existe différentes explications.
 
-Cela peut être dû à : 
-1. Des valeurs abérrantes sont présentes dans le jeu de données. Il faut donc les éliminer. 
-2. Des covariables sont manquantes. Il faut les ajouter au modèle. 
-3. Des interactions sont manquantes. Il faut les ajouter au modèle. 
-4. Une inflation des zéros se produit. Il faut utiliser une regression Binomiale négative à inflation des zéros. https://stats.oarc.ucla.edu/r/dae/zinb/
-5. Une dépendance entre les données et un facteur ou une variable est présente. Il faut utiliser un modèle linéaire général mixte.
-6.Relation entre les données et les variables ou facteurs n'est pas linéaire. Il faut utiliser un modèle additif généralisé. 
-7. La fonction de lien est mauvaise. Il faut changer la fonction de lien.
-8. La variation de $Y$ est grande. Il faut utiliser un modèle linéaire généralisé suivant une loi binomiale négative.
+Cela peut être dû à :
 
-Dans notre exemple, nous allons calculer le 'scale parameter'. Pour cela nous allons utiliser la commande : 
+-   Des valeurs abérrantes sont présentes dans le jeu de données. Il faut donc les éliminer.
+
+-   Des covariables sont manquantes. Il faut les ajouter au modèle.
+
+-   Des interactions sont manquantes. Il faut les ajouter au modèle.
+
+-   Une inflation des zéros se produit. Il faut utiliser une regression Binomiale négative à inflation des zéros. (*source*)
+
+-   Une dépendance entre les données et un facteur ou une variable est présente. Il faut utiliser un modèle linéaire général mixte. (*source*)
+
+-   Relation entre les données et les variables ou facteurs n'est pas linéaire. Il faut utiliser un modèle additif généralisé. (*source*)
+
+-   La fonction de lien est mauvaise. Il faut changer la fonction de lien.
+
+-   La variation de $Y$ est grande. Il faut utiliser un modèle linéaire généralisé suivant une loi binomiale négative. (*source*)
+
+Dans notre exemple, nous allons calculer le 'scale parameter'. Pour cela nous allons utiliser la commande :
 
 ```{r overdisp, include=TRUE}
 # Scale parameter calculation
@@ -219,7 +227,7 @@ p  <- length(coef(mod1))
 sum(E1^2) / (N - p)
 ```
 
-Ici, la dispersion est de 1,02. Il n'y a pas de surdispersion. 
+Ici, la dispersion est de 1,02. Il n'y a pas de surdispersion.
 
 ### Analyses des résidus
 
