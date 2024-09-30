@@ -42,7 +42,7 @@ A partir de ce modèle complet nous allons donc éliminer pas à pas les interac
 drop1(mod1,test="Chi")
 ```
 
-Les trois interactions ne sont pas significatives. On enlève l'interaction 'Location:Latitude' car c'est la 'moins significative'. On peut voir que la fonction drop1() nous informe que c'est en enlevant cette interaction que l'on obtient le meilleur AIC.
+Les trois interactions ne sont pas significatives. On enlève l'interaction 'Location:Latitude' car c'est la 'moins significative'. On peut également remarquer que la fonction drop1() nous informe que c'est en enlevant cette interaction que l'on obtient le meilleur AIC.
 
 On obtient donc le modèle suivant:
 
@@ -56,13 +56,14 @@ mod1<-glm(Nsp~ Location
         + Location:LogArea
         ,data=dataAnts
         ,family=poisson(link="log"))
+
 drop1(mod1,test="Chi")
 ```
 
 De la même façon, on enlève l'interaction 'Location:LogArea'.
 
 ```{r}
-# Etape 2
+# Etape 3
 mod1<-glm(Nsp~ Location
         + Latitude
         + Elevation
@@ -70,10 +71,66 @@ mod1<-glm(Nsp~ Location
         + Location:Elevation
         ,data=dataAnts
         ,family=poisson(link="log"))
+
 drop1(mod1,test="Chi")
 ```
 
-On enlève donc également l'interaction 'Location:Elevation'.
+On enlève donc également l'interaction 'Location:Elevation'. On regarde donc maintenant la significativité des variables explicatives.
+
+```{r}
+# Etape 4
+mod1<-glm(Nsp~ Location
+        + Latitude
+        + Elevation
+        + LogArea
+        ,data=dataAnts
+        ,family=poisson(link="log"))
+
+drop1(mod1,test="Chi")
+```
+La variable 'LogArea' n'a pas un effet siginificatif, on l'élimine du modèle.
+
+```{r}
+# Etape 5
+mod1<-glm(Nsp~ Location
+        + Latitude
+        + Elevation
+        ,data=dataAnts
+        ,family=poisson(link="log"))
+
+drop1(mod1,test="Chi")
+```
+
+Les variables explicatives restantes sont significatives, on conserve donc ce modèle comme modèle candidat.
+
+On va identifier le modèle candidat basé sur la règle de l'AIC et le mode stepwise. 
+```{r modelAIC, include=TRUE}
+library(MASS)
+#On construit le modèle complet
+modelcomplet<- glm(Nsp~ Location
+        + Latitude
+        + Elevation
+        + LogArea
+        + Location:Latitude
+        + Location:Elevation
+        + Location:LogArea
+        ,data=dataAnts
+        ,family=poisson(link="log"))
+#Sélection du modèle sur la base AIC
+modfinal<-stepAIC(modelcomplet,direction="both")
+#Analyse du modèle final
+drop1(modfinal,test="Chi")
+summary(modfinal)
+
+## AIC si plus de 40 pour indiv/parametres, sinon AICc
+```
+
+Remarque : il est recommandé d'utiliser l'AIC avec plus de 40 individus par paramètre, sinon il existe l'AICc.
+
+Les deux procédures (Backward et StepAIC) convergent : nous obtenons les mêmes modèles candidats.
+
+Pour comprendre comment les 3 variables explicatives (Latitude, Elevation, LogArea) influencent la richesse spécifique des fourmis, nous devons analyser les coefficients du modèle.
+
 
 ## 2. Analyse des coefficients (Gabriel)
 
