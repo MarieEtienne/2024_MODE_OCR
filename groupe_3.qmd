@@ -8,7 +8,7 @@ editor: visual
 
 à faire :
 
--   importation du jeu de données (lien)
+-   importation du jeu de données (lien) (A)
 
 -   Quel article, auteur, journal, référence
 
@@ -20,11 +20,11 @@ editor: visual
 
 -   Quel modèle et pourquoi
 
--   packages pouvant servir
+-   packages pouvant servir (K)
 
--   vérifier si données manquantes
+-   vérifier si données manquantes (K)
 
--   mini summary
+-   mini summary (A)
 
 # **EXPLORATION DU JEU DE DONNEES**
 
