@@ -115,7 +115,7 @@ Nous cherchons à éviter la colinéarité des variables explicatives dans notre
 
 # Vérifier la colinéarité entre les variables continues indépendantes
 
-# On fait un graphqiue pour chaque paire de covariable
+# On fait un graphique pour chaque paire de covariables
 newdata<-cbind(dataAnts$Latitude,dataAnts$Elevation,dataAnts$LogArea)
 colnames(newdata)<-c('Latitude','Altitude','Log Superficie tourbière')
 newdata<-data.frame(newdata)
@@ -127,16 +127,19 @@ corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,t
 
 # On vérifie la collinéarité entre catégories et variables continues
 par(mfrow=c(1,3))
-#Latitude and Localisation
+#Latitude et Localisation
 boxplot(dataAnts$Latitude~dataAnts$Location, varwidth = TRUE, ylab = "Latitude", xlab = "Localisation",col=c('#000099','#339900'), main = "")
 
-#Altitude and Localisation
+#Altitude et Localisation
 boxplot(dataAnts$Elevation~dataAnts$Location, varwidth = TRUE, ylab = "Altitude", xlab = "Localisation",col=c('#000099','#339900'), main = "")
 
-#Superficie de la tourbière and Localisation
-boxplot(dataAnts$LogArea~dataAnts$Location, varwidth = TRUE, ylab = "Superficie de tourbière", xlab = "Localisation",col=c('#000099','#339900'), main = "")
+#Superficie de la tourbière et Localisation
+boxplot(dataAnts$LogArea~dataAnts$Location, varwidth = TRUE, ylab = "Superficie de la tourbière", xlab = "Localisation",col=c('#000099','#339900'), main = "")
 
 ```
+
+
+
 
 # **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
 
