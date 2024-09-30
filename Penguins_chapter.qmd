@@ -1,51 +1,143 @@
 ---
-
-title: "Exploration données sur les manchots"
-group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline" 
-
-bibliography: references.bib
-execute: 
-  freeze: auto
-output: 
-  html_document:
-   toc: true
-   toc_float: true
+editor: 
+  markdown: 
+    wrap: 72
 ---
+
+------------------------------------------------------------------------
+
+title: "Exploration données sur les manchots" group: "CHOULETTE Klervi,
+DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion,
+TANGUY Céline"
+
+bibliography: references.bib execute: freeze: auto output:
+html_document: toc: true toc_float: true ---
 
 ```{r}
 library(tidyverse)
 library(ggplot2)
 ```
 
-
-## Présentation du jeu de données : 
+## Présentation du jeu de données :
 
 **Columns name :**
 
- - studyName :Sampling expedition from which data were collected, generated, etc.  
- - Sample Number : an integer denoting the continuous numbering sequence for each sample  
- - Species : a character string denoting the penguin species  
- - Region : a character string denoting the region of Palmer LTER sampling grid  
- - Island : a character string denoting the island near Palmer Station where samples were collected  
- - Stage : a character string denoting reproductive stage at sampling  
- - Individual ID : a character string denoting the unique ID for each individual in dataset  
- - Clutch Completion : a character string denoting if the study nest observed with a full clutch, i.e., 2 eggs  
- - Date Egg : a date denoting the date study nest observed with 1 egg (sampled)  
- - Culmen Length : a number denoting the length of the dorsal ridge of a bird's bill (millimeters)  
- - Culmen Depth : a number denoting the depth of the dorsal ridge of a bird's bill (millimeters)  
- -  Flipper Length : an integer denoting the length penguin flipper (millimeters)  
- - Body Mass : an integer denoting the penguin body mass (grams)  
- - Sex : a character string denoting the sex of an animal  
- -  Delta 15 N : a number denoting the measure of the ratio of stable isotopes 15N:14N  
- - Delta 13 C : a number denoting the measure of the ratio of stable isotopes 13C:12C  
- - Comments : a character string with text providing additional relevant information for data  
-
+-   studyName :Sampling expedition from which data were collected,
+    generated, etc.\
+-   Sample Number : an integer denoting the continuous numbering
+    sequence for each sample\
+-   Species : a character string denoting the penguin species\
+-   Region : a character string denoting the region of Palmer LTER
+    sampling grid\
+-   Island : a character string denoting the island near Palmer Station
+    where samples were collected\
+-   Stage : a character string denoting reproductive stage at sampling\
+-   Individual ID : a character string denoting the unique ID for each
+    individual in dataset\
+-   Clutch Completion : a character string denoting if the study nest
+    observed with a full clutch, i.e., 2 eggs\
+-   Date Egg : a date denoting the date study nest observed with 1 egg
+    (sampled)\
+-   Culmen Length : a number denoting the length of the dorsal ridge of
+    a bird's bill (millimeters)\
+-   Culmen Depth : a number denoting the depth of the dorsal ridge of a
+    bird's bill (millimeters)\
+-   Flipper Length : an integer denoting the length penguin flipper
+    (millimeters)\
+-   Body Mass : an integer denoting the penguin body mass (grams)\
+-   Sex : a character string denoting the sex of an animal\
+-   Delta 15 N : a number denoting the measure of the ratio of stable
+    isotopes 15N:14N\
+-   Delta 13 C : a number denoting the measure of the ratio of stable
+    isotopes 13C:12C\
+-   Comments : a character string with text providing additional
+    relevant information for data
 
 ```{r}
 data <- read.table("penguins_raw.csv", sep = "," , header = TRUE, stringsAsFactors = T)
 summary(data)
 ```
 
+In this Data set, we would like to compare the different qualitative
+variables :\
+- *Culmen Length*\
+- *Culmen Depth*\
+- *Flipper Length*\
+- *Body Mass*\
+- *Delta 13C*\
+- *Delta 15N*\
+
+```{r}
+sub_data_num = data%>%
+  select(Culmen.Length..mm.,Culmen.Depth..mm.,Flipper.Length..mm.,Body.Mass..g.,Delta.13.C..o.oo.,Delta.15.N..o.oo.)%>%
+  na.omit() # we delete the few individuals with NA
+
+matcor = cor(sub_data_num,method = "pearson")
+matcor
+```
+
+The representation of this matrix isn't the best. We can use the library
+*corrplot* to make some visual correlation matrix.
+
+We used the following code:
+
+```{r}
+library(corrplot)
+
+corrplot(matcor, method = "number", type = "upper",order = "hclust", tl.col="black", tl.srt=45)
 
 
-A citation @bauer2023writing
+corrplot(matcor, type = "upper",order = "hclust", tl.col="black", tl.srt=45)
+
+```
+
+Now, we want to observe whether certain qualitative variables have an
+effect on body mass. We will therefore try to create a graph for each
+factor (qualitative variables) according to body mass:\
+- *Species*\
+- *Island*\
+- *Sex*\
+
+```{r}
+box1 <- ggplot(data = data)+
+  geom_boxplot(aes(x=Species,y=Body.Mass..g., fill = Species))
+box1
+
+box2 <- ggplot(data = data)+
+  geom_boxplot(aes(x=Island,y=Body.Mass..g., fill = Island))
+box2
+
+box3 <- ggplot(data = data)+
+  geom_boxplot(aes(x=Sex,y=Body.Mass..g., fill = Sex))
+box3
+```
+
+We have noticed some trends that we will have to confirm with
+statistical tests.\
+Box1: Gentoo penguins appear to be heavier than the other two species.\
+Box2: penguins from Biscoe Island appear to be heavier than the other
+two islands.\
+Box3: male penguins appear to be heavier than the other two categories.\
+We run anovas to confirm these differences.\
+
+```{r}
+mod1= lm(Body.Mass..g.~Species, data = data)
+
+anova1 = anova(mod1)
+
+anova1
+
+mod2 = lm(Body.Mass..g.~Island, data = data)
+
+anova2 = anova(mod2)
+
+anova2
+
+mod3 = lm(Body.Mass..g.~Sex, data = data)
+
+anova3 = anova(mod3)
+
+anova3
+```
+
+Significance tests confirm the trends seen by the eye.
