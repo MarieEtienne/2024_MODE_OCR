@@ -1,33 +1,27 @@
----
+------------------------------------------------------------------------
 
-title: "Exploring data on penguins"
-group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline" 
-bibliography: references.bib
-execute: 
-  freeze: auto
-output: 
-  html_document:
-   toc: true
-   toc_float: true
-editor: 
-  markdown: 
-    wrap: 72   
+Title: "Exploring data on penguins"\
+Group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline"\
+Bibliography: references.\
+bib execute: \
+freeze: auto \
+output: \
+html_document: \
+toc: true \
+toc_float: true \
+editor: \
+markdown: \
+wrap: 72\
 
----
+------------------------------------------------------------------------
 
 ## Study context
 
+This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#column_name). The dataset was find on kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv
 
-This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#column_name). 
-The dataset was find on kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv 
+This dataset was made from differents articles METTRE BIBLIO. Only 3 different species were studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
 
-This dataset was made from differents articles METTRE BIBLIO.
-Only 3 different species were studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
-
-This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#colum-name). This dataset was made from differents articles Selon Gorman et al. [@10.1371/journal.pone.0090081] and  Horst et al. [@10.32614/RJ-2022-020]. NE FOCNTIONNE PAS MAIS JE VAIS VOIR PLUS TARD
-Only 3 different species where studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
-AJOUTER LES QUESTIONS DE RECHERCHE ET LES ANALYSES FAITES
-
+This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#colum-name). This dataset was made from differents articles Selon Gorman et al. [@10.1371/journal.pone.0090081] and Horst et al. [@10.32614/RJ-2022-020]. NE FOCNTIONNE PAS MAIS JE VAIS VOIR PLUS TARD Only 3 different species where studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins. AJOUTER LES QUESTIONS DE RECHERCHE ET LES ANALYSES FAITES
 
 ```{r}
 
@@ -51,49 +45,33 @@ library(ggplot2)    # for data visualization
 # On a vraiment besoin d'importer dplyr et ggplot2, alors qu'on a deja importer tidyverse ?
 ```
 
-
-## Dataset presentation {#column_name}: 
+## Dataset presentation {#column_name}:
 
 **Columns name :**
 
--   studyName :Sampling expedition from which data were collected,
-    generated, etc.\
--   Sample Number : an integer denoting the continuous numbering
-    sequence for each sample\
+-   studyName :Sampling expedition from which data were collected, generated, etc.\
+-   Sample Number : an integer denoting the continuous numbering sequence for each sample\
 -   Species : a character string denoting the penguin species\
--   Region : a character string denoting the region of Palmer LTER
-    sampling grid\
--   Island : a character string denoting the island near Palmer Station
-    where samples were collected\
+-   Region : a character string denoting the region of Palmer LTER sampling grid\
+-   Island : a character string denoting the island near Palmer Station where samples were collected\
 -   Stage : a character string denoting reproductive stage at sampling\
--   Individual ID : a character string denoting the unique ID for each
-    individual in dataset\
--   Clutch Completion : a character string denoting if the study nest
-    observed with a full clutch, i.e., 2 eggs\
--   Date Egg : a date denoting the date study nest observed with 1 egg
-    (sampled)\
--   Culmen Length : a number denoting the length of the dorsal ridge of
-    a bird's bill (millimeters)\
--   Culmen Depth : a number denoting the depth of the dorsal ridge of a
-    bird's bill (millimeters)\
--   Flipper Length : an integer denoting the length penguin flipper
-    (millimeters)\
+-   Individual ID : a character string denoting the unique ID for each individual in dataset\
+-   Clutch Completion : a character string denoting if the study nest observed with a full clutch, i.e., 2 eggs\
+-   Date Egg : a date denoting the date study nest observed with 1 egg (sampled)\
+-   Culmen Length : a number denoting the length of the dorsal ridge of a bird's bill (millimeters)\
+-   Culmen Depth : a number denoting the depth of the dorsal ridge of a bird's bill (millimeters)\
+-   Flipper Length : an integer denoting the length penguin flipper (millimeters)\
 -   Body Mass : an integer denoting the penguin body mass (grams)\
 -   Sex : a character string denoting the sex of an animal\
--   Delta 15 N : a number denoting the measure of the ratio of stable
-    isotopes 15N:14N\
--   Delta 13 C : a number denoting the measure of the ratio of stable
-    isotopes 13C:12C\
--   Comments : a character string with text providing additional
-    relevant information for data
-
+-   Delta 15 N : a number denoting the measure of the ratio of stable isotopes 15N:14N\
+-   Delta 13 C : a number denoting the measure of the ratio of stable isotopes 13C:12C\
+-   Comments : a character string with text providing additional relevant information for data
 
 ```{r}
 data <- read.table("penguins_raw.csv", sep = "," , header = TRUE, stringsAsFactors = T)
 summary(data)
 # dim(data)
 ```
-
 
 ```{r}
 
@@ -125,14 +103,14 @@ colSums(is.na(data))
 
 ```
 
-Change species names :  
+Change species names :
+
 ```{r}
 data = data %>%
   mutate(species = recode(species, "Adelie Penguin (Pygoscelis adeliae)" = "Adelie", "Chinstrap penguin (Pygoscelis antarctica)" = "Chinstrap", "Gentoo penguin (Pygoscelis papua)" = "Gentoo"))
 ```
 
-
-Distribution of species between the islands :  
+Distribution of species between the islands :
 
 ```{r}
 table(data$island, data$species)
@@ -197,7 +175,6 @@ fviz_pca_biplot(acp_data, label="var", habillage=data$island, title = "Projectio
 
 ```
 
-
 ```{r NA}
 NA_df <- (colSums(is.na(data)) / nrow(data)) * 100
 
@@ -214,7 +191,6 @@ NA_mean<-mean(NA_df)
 abline(h=NA_mean, col = "red", lwd = 2)
 
 ```
-
 
 ```{r violin}
 
@@ -270,8 +246,7 @@ matcor = cor(sub_data_num,method = "pearson")
 matcor
 ```
 
-The representation of this matrix isn't the best. We can use the library
-*corrplot* to make some visual correlation matrix.
+The representation of this matrix isn't the best. We can use the library *corrplot* to make some visual correlation matrix.
 
 We used the following code:
 
@@ -283,9 +258,7 @@ corrplot(matcor, type = "upper",order = "hclust", tl.col="black", tl.srt=45)
 
 ```
 
-Now, we want to observe whether certain qualitative variables have an
-effect on body mass. We will therefore try to create a graph for each
-factor (qualitative variables) according to body mass:\
+Now, we want to observe whether certain qualitative variables have an effect on body mass. We will therefore try to create a graph for each factor (qualitative variables) according to body mass:\
 - *Species*\
 - *Island*\
 - *Sex*\
@@ -304,11 +277,9 @@ box3 <- ggplot(data = data)+
 box3
 ```
 
-We have noticed some trends that we will have to confirm with
-statistical tests.\
+We have noticed some trends that we will have to confirm with statistical tests.\
 Box1: Gentoo penguins appear to be heavier than the other two species.\
-Box2: penguins from Biscoe Island appear to be heavier than the other
-two islands.\
+Box2: penguins from Biscoe Island appear to be heavier than the other two islands.\
 Box3: male penguins appear to be heavier than the other two categories.\
 We run anovas to confirm these differences.\
 
@@ -333,4 +304,3 @@ anova3
 ```
 
 Significance tests confirm the trends seen by the eye.
-
