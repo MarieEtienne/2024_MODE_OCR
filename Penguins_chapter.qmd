@@ -18,8 +18,76 @@ library(FactoMineR)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
-library(factoextra)
-library(FactoMineR)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(ggspatial)
+library(gridExtra)
+```
+Location : 
+
+Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands. 
+
+```{r}
+# Download country data (including Antarctica)
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Filter to keep only Antarctica
+antarctica <- world[world$continent == "Antarctica", ]
+
+rectangle_coords <- st_as_sfc(st_bbox(c(xmin = -90, xmax = -55, ymin = -75, ymax = -60), crs = st_crs(4326)))
+
+# Transform the rectangle into the polar projection system
+rectangle_proj <- st_transform(rectangle_coords, crs = antarctic_proj)
+
+# Create the map
+gg_antartique = ggplot(data = antarctica) +
+    annotate("rect", xmin = -90, xmax = -55, ymin = -75, ymax = -60,
+           fill = "blue") +
+  geom_sf() +
+  coord_sf(crs = "+proj=laea +lat_0=-90 +datum=WGS84") +
+ annotate("rect", 
+           xmin = st_bbox(rectangle_proj)["xmin"], xmax = st_bbox(rectangle_proj)["xmax"], 
+           ymin = st_bbox(rectangle_proj)["ymin"], ymax = st_bbox(rectangle_proj)["ymax"], 
+           alpha = 0.2, fill = "blue")+
+  theme_minimal() +
+  labs(title = "Antarctica map",
+       caption = "Data: Natural Earth") +
+  annotation_scale(location = "bl", width_hint = 0.5)
+
+antarctic_proj <- "+proj=laea +lat_0=-90 +datum=WGS84"
+
+# Point coordinates in longitude and latitude
+point_coords <- data.frame(lon = c(-66.209547, -64, -65), lat = c(-66, -65, -64.8))
+
+# Convert the point into an sf object (longitude/latitude coordinate system WGS84)
+point_sf <- st_as_sf(point_coords, coords = c("lon", "lat"), crs = 4326)
+
+# Transform the point into the projected coordinate system of the map
+point_proj <- st_transform(point_sf, crs = antarctic_proj)
+
+# Extract the projected coordinates for use in annotate
+point_proj_coords <- st_coordinates(point_proj)
+
+# Create a bounding box manually with the coordinates
+# Convert the bounding box into an sf object
+bbox_sf <- st_as_sfc(st_bbox(c(xmin = -90, xmax = -55, ymin = -75, ymax = -60)))
+
+# Crop the map using the bounding box
+antarctica_cropped <- st_crop(antarctica, bbox_sf)
+
+# Create the map
+gg_zone_interet = ggplot() +
+  geom_sf(data = antarctica_cropped) +
+  geom_sf(data = point_proj, color = "blue", size = 1, alpha = 0.8, shape = 19) +
+
+  coord_sf(crs = "+proj=laea +lat_0=-90 +datum=WGS84") +
+  theme_minimal() +
+  labs(title = "Area of Interest",
+       caption = "Data: Natural Earth") +
+  annotation_scale(location = "bl", width_hint = 0.5)
+
+grid.arrange(gg_antartique, gg_zone_interet, ncol = 2)
 ```
 
 
@@ -51,6 +119,10 @@ data <- read.table("penguins_raw.csv", sep = "," , header = TRUE, stringsAsFacto
 summary(data)
 dim(data)
 ```
+
+
+
+
 
 Change species names :  
 ```{r}
@@ -163,4 +235,17 @@ ggplot(data, aes(x = Species, y = Body.Mass..g., fill = Species)) +
   theme(legend.position = "none")
 
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
