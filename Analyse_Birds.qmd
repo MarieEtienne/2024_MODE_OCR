@@ -44,7 +44,10 @@ refaire analyse de bases cf ASA
 
 ```{r}
 # Datatset import under the name of "data"
-data <- read.table("Bird_dataset.csv", sep="\t", header = TRUE)
+# data <- read.table("Bird_dataset.csv", sep="\t", header = TRUE)
+bird <- read.table("Bird_dataset.txt", header = TRUE, stringsAsFactors = TRUE)
+
+data <- bird
 ```
 
 ```{r}
@@ -59,10 +62,13 @@ head(data)
 ## Data exploration
 # Repartition of the data through time
 
+In the following plot, we compare the initiation dates according to the Year and the State. We observe 
 ```{r}
-# Creation of a barplot
-ggplot(data, aes(x="Year"))+
-  geom_bar(stat="bin", width=0.7, fill="steelblue")+
-  theme_minimal()
+# Compari
+ggplot(data, aes(x = Year, 
+                 y = Initiation_Date
+                 )
+       ) +
+  geom_boxplot(aes(fill = State))
 ```
 
