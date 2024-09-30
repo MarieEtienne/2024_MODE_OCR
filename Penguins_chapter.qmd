@@ -1,85 +1,136 @@
 ---
-title: "Exploration données sur les manchots"
-group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline" 
-bibliography: references.bib
-execute: 
-  freeze: auto
-output: 
-  html_document:
-   toc: true
-   toc_float: true
+Title: "Exploring data on penguins"\
+Group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline"\
+Bibliography: references.\
+bib execute: \
+freeze: auto \
+output: \
+html_document: \
+toc: true \
+toc_float: true \
+editor: \
+markdown: \
+wrap: 72\
 ---
+
+## Study context
+
+This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#column_name). The dataset was find on kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv
+
+This dataset was made from differents articles METTRE BIBLIO. Only 3 different species were studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
+
+This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#colum-name). This dataset was made from differents articles Selon Gorman et al. [@10.1371/journal.pone.0090081] and Horst et al. [@10.32614/RJ-2022-020]. NE FOCNTIONNE PAS MAIS JE VAIS VOIR PLUS TARD Only 3 different species where studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins. AJOUTER LES QUESTIONS DE RECHERCHE ET LES ANALYSES FAITES
 
 
 ```{r}
+
 library(factoextra)
 library(FactoMineR)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
-library(factoextra)
-library(FactoMineR)
+
+#| message: false
+#| warning: false
+#| echo: true
+#| results: hide
+
+library(factoextra) # for data visualization
+library(FactoMineR) # for PCA
+library(tidyverse)  # for data manipulation
+library(dplyr)      # for data manipulation
+library(ggplot2)    # for data visualization
+
+# On a vraiment besoin d'importer dplyr et ggplot2, alors qu'on a deja importer tidyverse ?
 ```
 
-
-## Dataset presentation : 
+## Dataset presentation {#column_name}:
 
 **Columns name :**
 
- - studyName :Sampling expedition from which data were collected, generated, etc.  
- - Sample Number : an integer denoting the continuous numbering sequence for each sample  
- - Species : a character string denoting the penguin species  
- - Region : a character string denoting the region of Palmer LTER sampling grid  
- - Island : a character string denoting the island near Palmer Station where samples were collected  
- - Stage : a character string denoting reproductive stage at sampling  
- - Individual ID : a character string denoting the unique ID for each individual in dataset  
- - Clutch Completion : a character string denoting if the study nest observed with a full clutch, i.e., 2 eggs  
- - Date Egg : a date denoting the date study nest observed with 1 egg (sampled)  
- - Culmen Length : a number denoting the length of the dorsal ridge of a bird's bill (millimeters)  
- - Culmen Depth : a number denoting the depth of the dorsal ridge of a bird's bill (millimeters)  
- - Flipper Length : an integer denoting the length penguin flipper (millimeters)  
- - Body Mass : an integer denoting the penguin body mass (grams)  
- - Sex : a character string denoting the sex of an animal  
- - Delta 15 N : a number denoting the measure of the ratio of stable isotopes 15N:14N  
- - Delta 13 C : a number denoting the measure of the ratio of stable isotopes 13C:12C  
- - Comments : a character string with text providing additional relevant information for data  
-
+-   studyName :Sampling expedition from which data were collected, generated, etc.\
+-   Sample Number : an integer denoting the continuous numbering sequence for each sample\
+-   Species : a character string denoting the penguin species\
+-   Region : a character string denoting the region of Palmer LTER sampling grid\
+-   Island : a character string denoting the island near Palmer Station where samples were collected\
+-   Stage : a character string denoting reproductive stage at sampling\
+-   Individual ID : a character string denoting the unique ID for each individual in dataset\
+-   Clutch Completion : a character string denoting if the study nest observed with a full clutch, i.e., 2 eggs\
+-   Date Egg : a date denoting the date study nest observed with 1 egg (sampled)\
+-   Culmen Length : a number denoting the length of the dorsal ridge of a bird's bill (millimeters)\
+-   Culmen Depth : a number denoting the depth of the dorsal ridge of a bird's bill (millimeters)\
+-   Flipper Length : an integer denoting the length penguin flipper (millimeters)\
+-   Body Mass : an integer denoting the penguin body mass (grams)\
+-   Sex : a character string denoting the sex of an animal\
+-   Delta 15 N : a number denoting the measure of the ratio of stable isotopes 15N:14N\
+-   Delta 13 C : a number denoting the measure of the ratio of stable isotopes 13C:12C\
+-   Comments : a character string with text providing additional relevant information for data
 
 ```{r}
 data <- read.table("penguins_raw.csv", sep = "," , header = TRUE, stringsAsFactors = T)
 summary(data)
-dim(data)
+# dim(data)
 ```
 
-Change species names :  
+```{r}
+
+# Modification of colnames 
+data <- data %>%
+  select(-X) %>%                   # Remove X column 
+  #select(-Comments) %>%           # Remove (?)
+  rename(                          # we rename the columns of the dataset
+    sample_number = Sample.Number,
+    id = Individual.ID,
+    island = Island,
+    region = Region,
+    stage = Stage,
+    clutch_completion = Clutch.Completion,
+    date_egg = Date.Egg,
+    culmen_length = Culmen.Length..mm.,
+    culmen_depth = Culmen.Depth..mm.,
+    flipper_length = Flipper.Length..mm.,
+    body_mass = Body.Mass..g.,
+    sex = Sex,
+    delta_15_N = Delta.15.N..o.oo.,
+    delta_13_C = Delta.13.C..o.oo.,
+    species = Species,
+  ) 
+
+names(data)
+# Verification of missing data
+colSums(is.na(data)) 
+
+```
+
+Change species names :
+
 ```{r}
 data = data %>%
-  mutate(Species = recode(Species, "Adelie Penguin (Pygoscelis adeliae)" = "Adelie", "Chinstrap penguin (Pygoscelis antarctica)" = "Chinstrap", "Gentoo penguin (Pygoscelis papua)" = "Gentoo"))
+  mutate(species = recode(species, "Adelie Penguin (Pygoscelis adeliae)" = "Adelie", "Chinstrap penguin (Pygoscelis antarctica)" = "Chinstrap", "Gentoo penguin (Pygoscelis papua)" = "Gentoo"))
 ```
 
-
-Distribution of species between the islands :  
+Distribution of species between the islands :
 
 ```{r}
-table(data$Island, data$Species)
+table(data$island, data$species)
 ```
 
 Some graphs :
 
 ```{r}
-ggplot(data, aes(x = Flipper.Length..mm., y = Body.Mass..g., color = Species))+
+ggplot(data, aes(x = flipper_length, y = body_mass, color = species))+
   geom_point()+
   theme_classic()
 ```
 
 ```{r}
-ggplot(data, aes(x = Culmen.Length..mm., y = Culmen.Depth..mm., color = Species))+
+ggplot(data, aes(x = culmen_length, y = culmen_depth, color = species))+
   geom_point()+
   theme_classic()
 ```
 
 ```{r}
-ggplot(data, aes(x = Delta.15.N..o.oo., y = Delta.13.C..o.oo., color = Species, shape = Island))+
+ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species, shape = island))+
   geom_point()+
   theme_classic()
 ```
@@ -88,31 +139,46 @@ ggplot(data, aes(x = Delta.15.N..o.oo., y = Delta.13.C..o.oo., color = Species, 
 
 
 ```{r}
-#sélection des données quantitatives
+#Selection of quantitative data
 data_numeric <- select_if(data, is.numeric)
-#enlever le numéro de l'individu et le sample
-#la body mass et le flipper sont corrélés à plus de 80% donc on suprimme flipper car c'est la données la plus corrélées à toute
-data_numeric <- data_numeric[,-c(1,2,5)]
-#centrer et réduire les données
-data_scales <- scale(data_numeric)
-acp_data= PCA(data_scales)
-summary(acp_data)
-#Variances pour chaque composantes
-fviz_eig(acp_data)
-#Projection des individus et coloration en fonction de l'espèce
-fviz_pca_ind(acp_data, geom.ind = "point", col.ind = as.factor(data$Species), addEllipses = T, pointshape = 19)
-#Projection des individus et coloration en fonction de l'île
-fviz_pca_ind(acp_data, geom.ind = "point", col.ind = data$Island, pointshape = 19, addEllipses = T)
-#projection des variables
-fviz_pca_var(acp_data)
-```
 
+# Remove sample_number 
+# The body_mass et the flipper_length are more than 80% correlated, we're deleting flipper_length because it's the data that's most correlated with all the other data.
+# names(data_numeric)
+data_numeric <- data_numeric %>% select(-c("sample_number","flipper_length"))
+
+# Normalizing data
+data_scales <- scale(data_numeric)
+
+#PCA realization
+acp_data= PCA(data_scales, graph = F)
+summary(acp_data)
+
+#Correlation circle
+fviz_pca_var(acp_data)
+
+#Variance for each component
+fviz_eig(acp_data)
+
+#Contribution of axis variables axis 1 and 2
+fviz_contrib(acp_data, choice="var", axes=1) #axe 1
+fviz_contrib(acp_data, choice="var", axes=2) #axe 1
+
+# Projection of individuals and differentiation according to species
+fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$species, addEllipses = T, pointshape = 19)
+
+#Projection of variables and individuals and differentiation according to species
+fviz_pca_biplot(acp_data, label="var", habillage=data$species, title = "Projection of variables and individuals according to species", ylim=c(-3,3.5), xlim = c(-3.5,3.5))
+
+# Projection of individuals and differentiation according to the islands
+fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$island, addEllipses = T, pointshape = 19)
+#Projection of variables and individuals and differentiation according to the islands
+fviz_pca_biplot(acp_data, label="var", habillage=data$island, title = "Projection of variables and individuals and dfferentiation according to the islands", ylim=c(-3,3.5),xlim = c(-3.5,3.5))
+
+```
 
 ```{r NA}
-
-data2 <-data[,1:17]
-data2
-NA_df <- (colSums(is.na(data2)) / nrow(data2)) * 100
+NA_df <- (colSums(is.na(data)) / nrow(data)) * 100
 
 color_pal <- colorRampPalette(c("limegreen", "yellow", "firebrick"), bias = 20)(10)
 NA_col <- color_pal[as.integer(NA_df/length(NA_df)*9)+1]
@@ -128,11 +194,10 @@ abline(h=NA_mean, col = "red", lwd = 2)
 
 ```
 
-
 ```{r violin}
 
 # Violin plot for Culmen Length (beak length)
-ggplot(data, aes(x = Species, y = Culmen.Length..mm., fill = Species)) +
+ggplot(data, aes(x = species, y = culmen_length, fill = species)) +
   geom_violin(trim = FALSE) +
   geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
     stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
@@ -143,7 +208,7 @@ ggplot(data, aes(x = Species, y = Culmen.Length..mm., fill = Species)) +
   theme(legend.position = "none")
 
 # Violin plot for Flipper Length
-ggplot(data, aes(x = Species, y = Flipper.Length..mm., fill = Species)) +
+ggplot(data, aes(x = species, y = flipper_length, fill = species)) +
   geom_violin(trim = FALSE) +
   geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
     stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
@@ -154,7 +219,7 @@ ggplot(data, aes(x = Species, y = Flipper.Length..mm., fill = Species)) +
   theme(legend.position = "none")
 
 # Violin plot for Body Mass
-ggplot(data, aes(x = Species, y = Body.Mass..g., fill = Species)) +
+ggplot(data, aes(x = species, y = body_mass, fill = species)) +
   geom_violin(trim = FALSE) +
   geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
     stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
@@ -166,3 +231,78 @@ ggplot(data, aes(x = Species, y = Body.Mass..g., fill = Species)) +
 
 ```
 
+In this Data set, we would like to compare the different qualitative variables :\
+- *Culmen Length*\
+- *Culmen Depth*\
+- *Flipper Length*\
+- *Body Mass*\
+- *Delta 13C*\
+- *Delta 15N*\
+
+```{r}
+sub_data_num = data%>%
+  select(culmen_length, culmen_depth,flipper_length,body_mass,delta_13_C,delta_15_N)%>%
+  na.omit() # we delete the few individuals with NA
+
+matcor = cor(sub_data_num,method = "pearson")
+matcor
+```
+
+The representation of this matrix isn't the best. We can use the library *corrplot* to make some visual correlation matrix.
+
+We used the following code:
+
+```{r}
+library(corrplot)
+
+corrplot(matcor, method = "number", type = "upper",order = "hclust", tl.col="black", tl.srt=45)
+corrplot(matcor, type = "upper",order = "hclust", tl.col="black", tl.srt=45)
+
+```
+
+Now, we want to observe whether certain qualitative variables have an effect on body mass. We will therefore try to create a graph for each factor (qualitative variables) according to body mass:\
+- *Species*\
+- *Island*\
+- *Sex*\
+
+```{r}
+box1 <- ggplot(data = data)+
+  geom_boxplot(aes(x=species,y=body_mass, fill = species))
+box1
+
+box2 <- ggplot(data = data)+
+  geom_boxplot(aes(x=island,y=body_mass, fill = island))
+box2
+
+box3 <- ggplot(data = data)+
+  geom_boxplot(aes(x=sex,y=body_mass, fill = sex))
+box3
+```
+
+We have noticed some trends that we will have to confirm with statistical tests.\
+Box1: Gentoo penguins appear to be heavier than the other two species.\
+Box2: penguins from Biscoe Island appear to be heavier than the other two islands.\
+Box3: male penguins appear to be heavier than the other two categories.\
+We run anovas to confirm these differences.\
+
+```{r}
+mod1= lm(body_mass~species, data = data)
+
+anova1 = anova(mod1)
+
+anova1
+
+mod2 = lm(body_mass~island, data = data)
+
+anova2 = anova(mod2)
+
+anova2
+
+mod3 = lm(body_mass~sex, data = data)
+
+anova3 = anova(mod3)
+
+anova3
+```
+
+Significance tests confirm the trends seen by the eye.
