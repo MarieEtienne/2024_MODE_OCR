@@ -6,6 +6,26 @@ editor: visual
 
 # **INTRODUCTION** (Apolline et Kilian)
 
+à faire :
+
+-   importation du jeu de données (lien)
+
+-   Quel article, auteur, journal, référence
+
+-   contexte biologique
+
+-   données et variables
+
+-   Question de recherche
+
+-    Quel modèle et pourquoi
+
+-   vérifier si données manquantes
+
+-   packages pouvant servir
+
+-   mini summary
+
 # **EXPLORATION DU JEU DE DONNEES**
 
 ## 1. Présentation du jeu de données (Léa et Giuliana)
