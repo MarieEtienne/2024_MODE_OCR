@@ -6,7 +6,7 @@ editor: visual
 
 # **INTRODUCTION** (Apolline et Kilian)
 
-Principe de l'exploration du jeu de données d'après l'article cité en cours. 
+Principe de l'exploration du jeu de données d'après l'article cité en cours.
 
 ```{r importation du jeu de donnes}
 #importation
@@ -33,8 +33,7 @@ str(dataAnts)
 
 -   vérifier si données manquantes (K)
 
--   mini summary (A)
-summary(dataAnts)
+-   mini summary (A) summary(dataAnts)
 
 # **EXPLORATION DU JEU DE DONNEES**
 
@@ -44,14 +43,17 @@ summary(dataAnts)
 
 ```
 
-
 ### a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$ (Giu)
+
+La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
+
+Valeurs aberrantes : dans un jeu de données écologiques, il est probable de rencontrer des individus présentant des valeurs extrêmes pour la variable réponse. Ces individus, en raison de leurs valeurs inhabituelles, peuvent avoir un impact disproportionné sur la construction du modèle. Toutefois, ces valeurs extrêmes peuvent résulter soit de la variabilité naturelle des phénomènes écologiques, soit d'erreurs (par exemple, des erreurs de mesure ou de manipulation). Identifier ces individus avant l'analyse statistique permet de prévenir les erreurs et de justifier, si nécessaire, l'exclusion de certaines valeurs aberrantes pour améliorer la robustesse du modèle.
+
+## Vérification des valeurs aberrantes dans $Y$ :
 
 ### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de X (Léa)
 
 ### c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité (Giu)
-
-
 
 ## 2. Analyse des interactions entre les variables (Chloé et Manon)
 
