@@ -81,5 +81,17 @@ We have approximately 66/34% repartition which is good enough to extract varianc
 
 ```{r}
 #Cleveland plot
+dotchart(data$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation_Date')
+dotchart(data$Nest_End_Date,pch=16,col='dodgerblue3',xlab='Nest_End_Date')
+
+#Histogram
+hist(data$Initiation_Date,col='dodgerblue3',xlab="Initiation_Date",main="")
+hist(data$Nest_End_Date,col='dodgerblue3',xlab="Nest_End_Date",main="")
+
+# Quantile-Quantile plot
+qqnorm(data$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation_Date')
+qqline(data$Initiation_Date,col='red',lwd=2)
+qqnorm(data$Nest_End_Date,pch=16,col='dodgerblue3',xlab='Nest_End_Date')
+qqline(data$Nest_End_Date,col='red',lwd=2)
 ```
 
