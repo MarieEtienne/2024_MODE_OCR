@@ -7,6 +7,37 @@ editor: visual
 
 # **INTRODUCTION** (Apolline et Kilian)
 
+à faire :
+
+-   importation du jeu de données (lien) (A)
+
+```{r global data, echo=TRUE,include=TRUE}
+#importation
+dataAnts <- read.table("BogAnts.txt", dec=".", header = TRUE)
+
+#Passer la localisation en facteur 
+dataAnts$Location<-as.factor(dataAnts$Location)
+
+#vérification du type des variables 
+str(dataAnts)
+```
+
+-   Quel article, auteur, journal, référence
+
+-   contexte biologique
+
+-   Question de recherche
+
+-   données et variables
+
+-   Quel modèle et pourquoi
+
+-   packages pouvant servir (K)
+
+-   vérifier si données manquantes (K)
+
+-   mini summary (A) summary(dataAnts)
+
 # **EXPLORATION DU JEU DE DONNEES**
 
 ## 1. Présentation du jeu de données (Léa et Giuliana)
