@@ -42,12 +42,23 @@ A partir de ce modèle complet nous allons donc éliminer pas à pas les interac
 drop1(mod1,test="Chi")
 ```
 
-Les trois interactions ne sont pas significatives. On enlève l'interaction 'Location:Latitude' car  c'est la 'moins significative'. On peut voir que la fonction drop1() nous informe que c'est en enlevant cette interaction que l'on obtient le meilleur AIC.
+Les trois interactions ne sont pas significatives. On enlève l'interaction 'Location:Latitude' car c'est la 'moins significative'. On peut voir que la fonction drop1() nous informe que c'est en enlevant cette interaction que l'on obtient le meilleur AIC.
 
 ## 2. Analyse des coefficients (Gabriel)
 
 ## 3. Pouvoir explicatif du modèle (Anaelle)
 
+Afin de connaître la qualité de notre modèle, nous allons calculer la distance entre le modèle candidat et le modèle nul. Le modèle nul est un modèle qui résume les données avec un unique paramètre : la moyenne de Y. Ce modèle n'explique pas les données.
+
+Un moyen de connaître la qualité du modèle est de calculer un *pseudo R²*. Pour cela, on détermine la distance entre la déviance du modèle nul et la déviance résiduelle du modèle candidat.
+
+$$Pseudo\:R^2=100\:.\:\frac{Null\:Deviance- Residual\:Deviance}{Null\:Deviance}$$
+
+Nous pouvons calculer le *pseudo R²*, de trois manières différentes. Soit avec la méthode de McFadden, celle de Cox et Snell ou celle de Nagelkerke. Les deux dernières méthodes nécessite le package 'rcompagnon'.
+
+Dans notre exemple, comme vu dans la partie précédente, le modèle nul a une déviance de 102,76 et la déviance résiduelle est de 40,69.
+
 ## 4. Validation du modèle (Anaelle)
+
 
 # **CONCLUSION** (Apolline et Kilian)
