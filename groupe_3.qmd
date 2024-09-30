@@ -8,7 +8,7 @@ editor: visual
 
 à faire :
 
--   **Importation du jeu de données** 
+-   **Importation du jeu de données**
 
     On commence par importer le jeu de données situé dans fichier "BogAnts.txt"
 
@@ -25,11 +25,13 @@ str(dataAnts)
 
 -   Quel article, auteur, journal, référence
 
-Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604–1609) [https://doi.org/10.1890/0012-9658(2002)083[1604:BAARSD]2.0.CO;2] 
+Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604–1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
 
--   contexte biologique
+-   Contexte Biologique
 
--   Question de recherche
+Gotelli et Ellison sont deux écologues, le premier étant spécialisé sur des questions d'organisation des communautés animales et végétales, le second sur la désintégration et le réassemblage des écosystèmes suite à des perturbations naturelles et anthropiques. Ils se sont ici intéressés à la richesse spécifique chez les fourmis de l'Etat de la Nouvelle-Angleterre au Nord-Est des Etats-Unis. Leur étude a été réalisée sur 22 sites où, pour chacun, 25 pièges ont été placés dans une tourbière ombrotrophe et 25 dans la forêt environnante. Les espèces de fourmis contenues dans les pièges sont par la suite identifiées en laboratoire et, pour un site et un habitat donnés, ils ont calculé la richesse spécifique (nombre total d'espèces présentes).
+
+Question de recherche
 
 -   données et variables
 
