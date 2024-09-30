@@ -26,20 +26,46 @@ You can import R package using the code
 PLAN POUR GLM:
 
 - CHARGEMENT DES DONNEES
+
+```{r}
+```
 - EXPLORATION DU JEU DE DONNEE
   - Valeurs aberrantes dans Y et dans les X
+```{r}
+```
   - Nombre de modalité et individus par modalité
+```{r}
+
+```
   - Relations potentielles entre Y et Xs
+```{r}
+```
   - Eventuelles interactions entre les Xs
+```{r}
+```
   - Colinéarité entre les Xs
+```{r}
+```
 - ANALYSE STATISTIQUE
   - Construction du modèle
+```{r}
+```
   - Analyse des coefficients du modèle
+```{r}
+```
   - Pouvoir explicatif du modèle
+```{r}
+```
 - VALIDATION DE LA MODELISATION
   - Analyse des résidus
+```{r}
+```
   - Vérification des individus influents
+```{r}
+```
   - Simulations pour estimer la qualité d'ajustement du modèle
+```{r}
+```
 - CONCLUSION
 
 ```{r}
