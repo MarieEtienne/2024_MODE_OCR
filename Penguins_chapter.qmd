@@ -1,6 +1,6 @@
 ---
 
-title: "Exploration données sur les manchots"
+title: "Exploring data on penguins"
 group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline" 
 
 bibliography: references.bib
@@ -12,16 +12,37 @@ output:
    toc_float: true
 ---
 
+## Study context
+
+This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#colum-name). This dataset was made from 4 differents articles METTRE BIBLIO.
+Only 3 different species where studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
+AJOUTER LES QUESTIONS DE RECHERCHE ET LES ANALYSES FAITES
+
+
 ```{r}
+<<<<<<< HEAD
 library(factoextra)
 library(FactoMineR)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+=======
+#| message: false
+#| warning: false
+#| echo: true
+#| results: hide
+
+library(factoextra) # for data visualization
+library(FactoMineR) # for PCA
+library(tidyverse)  # for data manipulation
+library(dplyr)      # for data manipulation
+library(ggplot2)    # for data visualization
+
+# On a vraiment besoin d'importer dplyr et ggplot2, alors qu'on a deja importer tidyverse ?
+>>>>>>> 299a0e16fe2643030cdf2138547dcd7e54038e3c
 ```
 
-
-## Dataset presentation : 
+## Dataset presentation {#colum-name}: 
 
 **Columns name :**
 
@@ -50,35 +71,66 @@ summary(data)
 dim(data)
 ```
 
+
+```{r Antoine}
+
+# Modification of colnames 
+data <- data %>%
+  select(-X) %>%                   # Remove X column 
+  #select(-Comments) %>%           # Remove (?)
+  rename(                          # we rename the columns of the dataset
+    sample_number = Sample.Number,
+    id = Individual.ID,
+    island = Island,
+    region = Region,
+    stage = Stage,
+    clutch_completion = Clutch.Completion,
+    date_egg = Date.Egg,
+    culmen_length = Culmen.Length..mm.,
+    culmen_depth = Culmen.Depth..mm.,
+    flipper_length = Flipper.Length..mm.,
+    body_mass = Body.Mass..g.,
+    sex = Sex,
+    delta_15_N = Delta.15.N..o.oo.,
+    delta_13_C = Delta.13.C..o.oo.,
+    species = Species,
+  ) 
+
+names(data)
+# Verification of missing data
+colSums(is.na(data)) 
+
+```
+
 Change species names :  
 ```{r}
 data = data %>%
-  mutate(Species = recode(Species, "Adelie Penguin (Pygoscelis adeliae)" = "Adelie", "Chinstrap penguin (Pygoscelis antarctica)" = "Chinstrap", "Gentoo penguin (Pygoscelis papua)" = "Gentoo"))
+  mutate(species = recode(species, "Adelie Penguin (Pygoscelis adeliae)" = "Adelie", "Chinstrap penguin (Pygoscelis antarctica)" = "Chinstrap", "Gentoo penguin (Pygoscelis papua)" = "Gentoo"))
 ```
 
 
 Distribution of species between the islands :  
 
 ```{r}
-table(data$Island, data$Species)
+table(data$island, data$species)
 ```
 
 Some graphs :
 
 ```{r}
-ggplot(data, aes(x = Flipper.Length..mm., y = Body.Mass..g., color = Species))+
+ggplot(data, aes(x = flipper_length, y = body_mass, color = species))+
   geom_point()+
   theme_classic()
 ```
 
 ```{r}
-ggplot(data, aes(x = Culmen.Length..mm., y = Culmen.Depth..mm., color = Species))+
+ggplot(data, aes(x = culmen_length, y = culmen_depth, color = species))+
   geom_point()+
   theme_classic()
 ```
 
 ```{r}
-ggplot(data, aes(x = Delta.15.N..o.oo., y = Delta.13.C..o.oo., color = Species, shape = Island))+
+ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species, shape = island))+
   geom_point()+
   theme_classic()
 ```
@@ -87,47 +139,44 @@ ggplot(data, aes(x = Delta.15.N..o.oo., y = Delta.13.C..o.oo., color = Species, 
 #Selection of quantitative data
 data_numeric <- select_if(data, is.numeric)
 
-#Removal of quantitative variables that are qualitative
-#Correlation between body mass and flipper ( 80%), flipper suppression
-data_numeric <- data_numeric[,-c(1,2,5)]
+# Remove sample_number 
+# The body_mass et the flipper_length are more than 80% correlated, we're deleting flipper_length because it's the data that's most correlated with all the other data.
+# names(data_numeric)
+data_numeric <- data_numeric %>% select(-c("sample_number","flipper_length"))
 
-#focus and reduce data
+# Normalizing data
 data_scales <- scale(data_numeric)
 
 #PCA realization
 acp_data= PCA(data_scales, graph = F)
 summary(acp_data)
-#cercle des corrélations
+
+#Correlation circle
 fviz_pca_var(acp_data)
 
-#Variances pour chaque composantes
+#Variance for each component
 fviz_eig(acp_data)
 
-#contribution des variables pour chaque axe
+#Contribution of axis variables axis 1 and 2
 fviz_contrib(acp_data, choice="var", axes=1) #axe 1
 fviz_contrib(acp_data, choice="var", axes=2) #axe 1
 
-#Projection des individus et coloration en fonction de l'espèce
+# Projection of individuals and differentiation according to species
 fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$Species, addEllipses = T, pointshape = 19)
 
-#Projection of variables and individuals according to species
+#Projection of variables and individuals and differentiation according to species
 fviz_pca_biplot(acp_data, label="var", habillage=data$Species, title = "Projection of variables and individuals according to species", ylim=c(-3,3.5), xlim = c(-3.5,3.5))
 
-#Projection des individus et coloration en fonction de l'île
+# Projection of individuals and differentiation according to the islands
 fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$Island, addEllipses = T, pointshape = 19)
-#Projection of variables and individuals according to island
-fviz_pca_biplot(acp_data, label="var", habillage=data$Island, title = "Projection of variables and individuals according to island", ylim=c(-3,3.5),xlim = c(-3.5,3.5))
+#Projection of variables and individuals and differentiation according to the islands
+fviz_pca_biplot(acp_data, label="var", habillage=data$Island, title = "Projection of variables and individuals and dfferentiation according to the islands", ylim=c(-3,3.5),xlim = c(-3.5,3.5))
 
-```
-```{r}
 ```
 
 
 ```{r NA}
-
-data2 <-data[,1:17]
-data2
-NA_df <- (colSums(is.na(data2)) / nrow(data2)) * 100
+NA_df <- (colSums(is.na(data)) / nrow(data)) * 100
 
 color_pal <- colorRampPalette(c("limegreen", "yellow", "firebrick"), bias = 20)(10)
 NA_col <- color_pal[as.integer(NA_df/length(NA_df)*9)+1]
@@ -147,7 +196,7 @@ abline(h=NA_mean, col = "red", lwd = 2)
 ```{r violin}
 
 # Violin plot for Culmen Length (beak length)
-ggplot(data, aes(x = Species, y = Culmen.Length..mm., fill = Species)) +
+ggplot(data, aes(x = species, y = culmen_length, fill = species)) +
   geom_violin(trim = FALSE) +
   geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
     stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
@@ -158,7 +207,7 @@ ggplot(data, aes(x = Species, y = Culmen.Length..mm., fill = Species)) +
   theme(legend.position = "none")
 
 # Violin plot for Flipper Length
-ggplot(data, aes(x = Species, y = Flipper.Length..mm., fill = Species)) +
+ggplot(data, aes(x = species, y = flipper_length, fill = species)) +
   geom_violin(trim = FALSE) +
   geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
     stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
@@ -169,7 +218,7 @@ ggplot(data, aes(x = Species, y = Flipper.Length..mm., fill = Species)) +
   theme(legend.position = "none")
 
 # Violin plot for Body Mass
-ggplot(data, aes(x = Species, y = Body.Mass..g., fill = Species)) +
+ggplot(data, aes(x = species, y = body_mass, fill = species)) +
   geom_violin(trim = FALSE) +
   geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
     stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
