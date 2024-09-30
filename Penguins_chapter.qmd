@@ -20,12 +20,28 @@ AJOUTER LES QUESTIONS DE RECHERCHE ET LES ANALYSES FAITES
 
 
 ```{r}
-library(tidyverse)
-library(ggplot2)
+#| message: false
+#| warning: false
+#| echo: true
+#| results: hide
+
+install.packages("factoextra")
+install.packages("FactoMineR")
+install.packages("tidyverse")
+install.packages("dplyr")
+install.packages("ggplot2")
+
+
+library(factoextra) # for data visualization
+library(FactoMineR) # for PCA
+library(tidyverse)  # for data manipulation
+library(dplyr)      # for data manipulation
+library(ggplot2)    # for data visualization
+
+# On a vraiment besoin d'importer dplyr et ggplot2, alors qu'on a deja importer tidyverse ?
 ```
 
-
-## Présentation du jeu de données {#colum-name} : 
+## Dataset presentation {#colum-name}: 
 
 **Columns name :**
 
@@ -40,10 +56,10 @@ library(ggplot2)
  - Date Egg : a date denoting the date study nest observed with 1 egg (sampled)  
  - Culmen Length : a number denoting the length of the dorsal ridge of a bird's bill (millimeters)  
  - Culmen Depth : a number denoting the depth of the dorsal ridge of a bird's bill (millimeters)  
- -  Flipper Length : an integer denoting the length penguin flipper (millimeters)  
+ - Flipper Length : an integer denoting the length penguin flipper (millimeters)  
  - Body Mass : an integer denoting the penguin body mass (grams)  
  - Sex : a character string denoting the sex of an animal  
- -  Delta 15 N : a number denoting the measure of the ratio of stable isotopes 15N:14N  
+ - Delta 15 N : a number denoting the measure of the ratio of stable isotopes 15N:14N  
  - Delta 13 C : a number denoting the measure of the ratio of stable isotopes 13C:12C  
  - Comments : a character string with text providing additional relevant information for data  
 
@@ -51,8 +67,118 @@ library(ggplot2)
 ```{r}
 data <- read.table("penguins_raw.csv", sep = "," , header = TRUE, stringsAsFactors = T)
 summary(data)
+dim(data)
+```
+
+Change species names :  
+```{r}
+data = data %>%
+  mutate(Species = recode(Species, "Adelie Penguin (Pygoscelis adeliae)" = "Adelie", "Chinstrap penguin (Pygoscelis antarctica)" = "Chinstrap", "Gentoo penguin (Pygoscelis papua)" = "Gentoo"))
 ```
 
 
+Distribution of species between the islands :  
 
-A citation @bauer2023writing
+```{r}
+table(data$Island, data$Species)
+```
+
+Some graphs :
+
+```{r}
+ggplot(data, aes(x = Flipper.Length..mm., y = Body.Mass..g., color = Species))+
+  geom_point()+
+  theme_classic()
+```
+
+```{r}
+ggplot(data, aes(x = Culmen.Length..mm., y = Culmen.Depth..mm., color = Species))+
+  geom_point()+
+  theme_classic()
+```
+
+```{r}
+ggplot(data, aes(x = Delta.15.N..o.oo., y = Delta.13.C..o.oo., color = Species, shape = Island))+
+  geom_point()+
+  theme_classic()
+```
+
+```{r}
+#sélection des données quantitatives
+data_numeric <- select_if(data, is.numeric)
+#enlever le numéro de l'individu et le sample
+#la body mass et le flipper sont corrélés à plus de 80% donc on suprimme flipper car c'est la données la plus corrélées à toute
+data_numeric <- data_numeric[,-c(1,2,5)]
+#centrer et réduire les données
+data_scales <- scale(data_numeric)
+acp_data= PCA(data_scales)
+summary(acp_data)
+#Variances pour chaque composantes
+fviz_eig(acp_data)
+#Projection des individus et coloration en fonction de l'espèce
+fviz_pca_ind(acp_data, geom.ind = "point", col.ind = as.factor(data$Species), addEllipses = T, pointshape = 19)
+#Projection des individus et coloration en fonction de l'île
+fviz_pca_ind(acp_data, geom.ind = "point", col.ind = data$Island, pointshape = 19, addEllipses = T)
+#projection des variables
+fviz_pca_var(acp_data)
+```
+
+
+```{r NA}
+
+data2 <-data[,1:17]
+data2
+NA_df <- (colSums(is.na(data2)) / nrow(data2)) * 100
+
+color_pal <- colorRampPalette(c("limegreen", "yellow", "firebrick"), bias = 20)(10)
+NA_col <- color_pal[as.integer(NA_df/length(NA_df)*9)+1]
+
+# Graphique
+barplot(NA_df, main = "NA quantity per column",
+        ylab = "NA", col = NA_col, las=2, cex.names=0.4)
+
+NA_mean<-mean(NA_df)
+# 0.78% 
+
+abline(h=NA_mean, col = "red", lwd = 2)
+
+```
+
+
+```{r violin}
+
+# Violin plot for Culmen Length (beak length)
+ggplot(data, aes(x = Species, y = Culmen.Length..mm., fill = Species)) +
+  geom_violin(trim = FALSE) +
+  geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
+    stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
+  labs(title = "Distribution of Culmen Length by Species",
+       x = "Species",
+       y = "Culmen Length (mm)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+# Violin plot for Flipper Length
+ggplot(data, aes(x = Species, y = Flipper.Length..mm., fill = Species)) +
+  geom_violin(trim = FALSE) +
+  geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
+    stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
+  labs(title = "Distribution of Flipper Length by Species",
+       x = "Species",
+       y = "Flipper Length (mm)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+# Violin plot for Body Mass
+ggplot(data, aes(x = Species, y = Body.Mass..g., fill = Species)) +
+  geom_violin(trim = FALSE) +
+  geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
+    stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
+  labs(title = "Distribution of Body Mass by Species",
+       x = "Species",
+       y = "Body Mass (g)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
