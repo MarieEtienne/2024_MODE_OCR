@@ -20,6 +20,8 @@ You can import R package using the code
 
 ```{r}
 library(tidyverse)
+library(FactoMineR)
+library(dplyr)
 ```
 
 
@@ -40,5 +42,11 @@ df %>% ggplot() +
 	geom_boxplot()  
 ```
 
+EFFET DU paturage sur les strategies de pollinisation
+```{r}
+# Boxplot 
+par(mfrow=c(1,2))
+boxplot(df$RatioPoll~df$ï..treatment, varwidth = TRUE, ylab = "Ratio Pollinisation", xlab = "treatment", col='blue', main = "")
 
+```
 A citation @bauer2023writing
