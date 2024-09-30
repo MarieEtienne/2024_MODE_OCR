@@ -85,17 +85,19 @@ plot(dataAnts$Nsp~dataAnts$Latitude,type='n',ylab = "Richesse spécifique de fou
 points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$Latitude[dataAnts$Location=="Bog"],pch=16,cex=2,col='#000099')
 points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$Latitude[dataAnts$Location=="Forest"],pch=17,cex=2,col='#339900')
 
-# Interactions between Elevation & Location
+# Interactions entre Altitude & Localisation
 plot(dataAnts$Nsp~dataAnts$Elevation,type='n',ylab = "Richesse spécifique de fourmis",xlab="Altitude")
 points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$Elevation[dataAnts$Location=="Bog"],pch=16,cex=2,col='#000099')
 points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$Elevation[dataAnts$Location=="Forest"],pch=17,cex=2,col='#339900')
 
-# Interactions between Bog Area & Location
+# Interactions entre Superficie de la tourbière & Localisation
 plot(dataAnts$Nsp~dataAnts$LogArea,type='n',ylab = "Richesse spécifique de fourmis",xlab="Superficie de la tourbière")
 points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$LogArea[dataAnts$Location=="Bog"],pch=16,cex=2,col='#000099')
 points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Location=="Forest"],pch=17,cex=2,col='#339900')
 
 ```
+
+On peut penser qu'il y a une interactions entre les covariables si les pentes formées par les deux nuages de points sont différentes. Ici les nuages ne permettent pas de voir clairement de similitude ou de différence de tendance pour chaque graphique.
 
 ###2.3 Vérifier une éventuelle colinéarité entre les Xs
 
