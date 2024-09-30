@@ -1,7 +1,7 @@
 ---
 
 title: "Modèles matriciels et applications"
-group: "Caroline, Elia, Bastien" 
+group: "Caroline, Elia, Bastien, Lily, Alexia, Marine, Julie" 
 
 bibliography: references.bib
 execute: 
