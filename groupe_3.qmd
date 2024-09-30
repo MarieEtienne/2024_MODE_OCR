@@ -43,7 +43,35 @@ str(dataAnts)
 ## 1. Présentation du jeu de données (Léa et Giuliana)
 
 ## 2. Analyse des interactions entre les variables Y et Xs (Chloé et Manon)
+
+```{r dataCov2, include=TRUE, fig.height=4, fig.width=9}
+#Ligne ajouté qui sera supprimée, c'est juste pour avoir les données correctes
+par(mfrow=c(1,3))
+
+dataAnts$LogArea<-log(dataAnts$Area)
+
+```
 ###2.1 Analyser la relation potentielle entre Y vs Xs 
+Afin de tester la relation éventuelle entre la variable réponse Y et les variables explicatives Xs, il est indispensable de réaliser la modélisation statistique. C'est le seul moyen qui nous permet de tester la significativité de cette relation. Seulement, nous pouvons commencer par réaliser des analyses graphiques afin de ce faire une idée.
+
+```{r datagraph, include=TRUE, fig.height=7, fig.width=7}
+
+par(mfrow=c(2,2))
+
+# Pour la variable Latitude
+plot(dataAnts$Nsp~dataAnts$Latitude,pch=16,col='dodgerblue3',xlab='Latitude',ylab='Richesse spécifique des fourmis')
+
+# Pour la variable Altitude
+plot(dataAnts$Nsp~dataAnts$Elevation,pch=16,col='dodgerblue3',xlab='Altitude',ylab='Richesse spécifique des fourmis')
+
+# Pour la variable Superficie de la tourbière
+plot(dataAnts$Nsp~dataAnts$LogArea,pch=16,col='dodgerblue3',xlab='Superficie de la tourbière',ylab='Richesse spécifique des fourmis')
+
+# Pour la variable Localisation
+boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Richesse spécifique des fourmis", xlab = "Localisation", col=c('#000099','#339900'), main = "")
+```
+
+
 ###2.2 Analyse des éventuelles interactions entre les Xs
 ###2.3 Vérifier une éventuelle colinéarité entre les Xs 
 
