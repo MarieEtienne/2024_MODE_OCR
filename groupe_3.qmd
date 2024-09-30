@@ -25,9 +25,9 @@ str(dataAnts)
 
 -   contexte biologique
 
--   données et variables
-
 -   Question de recherche
+
+-   données et variables
 
 -   Quel modèle et pourquoi
 
@@ -35,8 +35,7 @@ str(dataAnts)
 
 -   vérifier si données manquantes (K)
 
--   mini summary (A)
-summary(dataAnts)
+-   mini summary (A) summary(dataAnts)
 
 # **EXPLORATION DU JEU DE DONNEES**
 
