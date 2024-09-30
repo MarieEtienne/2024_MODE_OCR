@@ -42,8 +42,14 @@ df %>% ggplot() +
 	geom_boxplot()  
 ```
 
-EFFET DU PÃ‚TURAGE SUR LES STRATÃ‰GIES DE POLLINISATION
+PARTIE 3: EFFET DU PATURAGE SUR LES STRATEGIES DE POLLINISATION
 
+
+```{r}
+# renommer la premiere colonne pour Marine et Alexia car var treatment est ï..treatment et pose pblm
+names(df)[1] <- "treatment"
+names(df)
+```
 
 ```{r}
 # Boxplot 
@@ -51,9 +57,12 @@ par(mfrow=c(1,2))
 boxplot(df$RatioPoll~df$treatment, varwidth = TRUE, ylab = "Ratio Pollinisation", xlab = "treatment", col='blue', main = "")
 
 ```
+On observe pas de différences significatives entre les parcelles qui subissent du paturage et celles qui n'en subissent pas d'après le boxplot.
+
 ```{r}
 # Anova
 hyp1<-lm(RatioPoll~1,data=df)
 hyp2<-lm(RatioPoll~treatment,data=df)
 anova(hyp1,hyp2)
 ```
+Le test Anova confirme notre observation graphique: il n'y a pas de difference entre les parcelles paturées et celles naturelles.
