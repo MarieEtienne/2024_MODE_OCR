@@ -47,7 +47,22 @@ df %>% ggplot() +
 	geom_boxplot()  
 ```
 
-EFFET DU paturage sur les strategies de pollinisation
+
+Partie 2 : effet du paturage sur la morphologie des plantes
+
+Nous pouvons tout d'abord effectuer une observation graphique des données
+
+```{r}
+boxplot(df$logHeight.score~df$ï..treatment, varwidth = TRUE, ylab = "LogH", xlab = "Treatment", col='darkgrey', main = "", title = "effet du pâturage sur la hauteur")
+
+ggplot(data=df)+
+  geom_boxplot(aes(x=ï..treatment, y=logHeight.score))+
+  geom_jitter(aes(x=ï..treatment, y=logHeight.score))
+```
+
+
+
+Partie 3 : effet du paturage sur les strategies de pollinisation
 ```{r}
 # Boxplot 
 par(mfrow=c(1,2))
