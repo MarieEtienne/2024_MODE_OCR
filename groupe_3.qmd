@@ -58,6 +58,7 @@ mod1<-glm(Nsp~ Location
         ,family=poisson(link="log"))
 drop1(mod1,test="Chi")
 ```
+
 De la même façon, on enlève l'interaction 'Location:LogArea'.
 
 ```{r}
@@ -71,8 +72,8 @@ mod1<-glm(Nsp~ Location
         ,family=poisson(link="log"))
 drop1(mod1,test="Chi")
 ```
-On enlève donc également l'interaction 'Location:Elevation'.
 
+On enlève donc également l'interaction 'Location:Elevation'.
 
 ## 2. Analyse des coefficients (Gabriel)
 
@@ -88,7 +89,7 @@ Nous pouvons calculer le *pseudo R²*, de trois manières différentes. Soit ave
 
 Dans notre exemple, comme vu dans la partie précédente, le modèle nul a une déviance de 102,76 et la déviance résiduelle est de 40,69.
 
-Nous allons donc calculé la qualité avec les commandes suivantes : 
+Nous allons donc calculé la qualité avec les commandes suivantes :
 
 ```{r deviance, include=TRUE}
 # Estimate of deviance explained
@@ -100,7 +101,19 @@ nagelkerke(mod1)
 
 Ici, l'estiamtion de la déviance expliquée est de 60% ou 75%, en fonction de la méthode utilisée.
 
+```{r Prediction,include=TRUE, fig.height=6, fig.width=6}
+plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Valeurs estimées par le modèle",xlab="Valeurs observées")
+abline(0,1)
+```
+
 ## 4. Validation du modèle (Anaelle)
 
+### Vérification de la surdispersion
+
+### Analyses des résidus
+
+### Vérification des individus influents
+
+### Analyses des résidus avec DHARMa (bonus)
 
 # **CONCLUSION** (Apolline et Kilian)
