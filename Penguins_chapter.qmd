@@ -14,8 +14,11 @@ output:
 
 ## Study context
 
-This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#colum-name). This dataset was made from 4 differents articles METTRE BIBLIO.
-Only 3 different species where studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
+This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#column_name). 
+The dataset was find on kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv 
+
+This dataset was made from 4 differents articles METTRE BIBLIO.
+Only 3 different species were studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
 AJOUTER LES QUESTIONS DE RECHERCHE ET LES ANALYSES FAITES
 
 
@@ -60,7 +63,7 @@ library(ggplot2)    # for data visualization
 ```{r}
 data <- read.table("penguins_raw.csv", sep = "," , header = TRUE, stringsAsFactors = T)
 summary(data)
-dim(data)
+# dim(data)
 ```
 
 
@@ -207,6 +210,13 @@ ggplot(data, aes(x = species, y = body_mass, fill = species)) +
        y = "Body Mass (g)") +
   theme_minimal() +
   theme(legend.position = "none")
+
+```
+
+
+```{r biblio}
+# You place Marion 
+
 
 ```
 
