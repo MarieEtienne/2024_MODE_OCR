@@ -69,36 +69,62 @@ data <- read.table("penguins_raw.csv", sep = "," , header = TRUE, stringsAsFacto
 summary(data)
 dim(data)
 ```
+```{r Antoine}
+
+# Modification of colnames 
+
+data <- data %>%
+  select(-X) %>%                   # Remove X column 
+  #select(-Comments) %>%           # Remove ?
+  rename(                          # we rename the columns of the dataset
+    sample_number = Sample.Number,
+    id = Individual.ID,
+    clutch_completion = Clutch.Completion,
+    date_egg = Date.Egg,
+    culmen_length = Culmen.Length..mm.,
+    culmen_depth = Culmen.Depth..mm.,
+    flipper_length = Flipper.Length..mm.,
+    body_mass = Body.Mass..g.,
+    sex = Sex,
+    delta_15_N = Delta.15.N..o.oo.,
+    delta_13_C = Delta.13.C..o.oo.,
+    species = Species,
+  ) 
+
+# Verification of missing data
+colSums(is.na(data)) 
+
+```
 
 Change species names :  
 ```{r}
 data = data %>%
-  mutate(Species = recode(Species, "Adelie Penguin (Pygoscelis adeliae)" = "Adelie", "Chinstrap penguin (Pygoscelis antarctica)" = "Chinstrap", "Gentoo penguin (Pygoscelis papua)" = "Gentoo"))
+  mutate(species = recode(species, "Adelie Penguin (Pygoscelis adeliae)" = "Adelie", "Chinstrap penguin (Pygoscelis antarctica)" = "Chinstrap", "Gentoo penguin (Pygoscelis papua)" = "Gentoo"))
 ```
 
 
 Distribution of species between the islands :  
 
 ```{r}
-table(data$Island, data$Species)
+table(data$Island, data$species)
 ```
 
 Some graphs :
 
 ```{r}
-ggplot(data, aes(x = Flipper.Length..mm., y = Body.Mass..g., color = Species))+
+ggplot(data, aes(x = flipper_length, y = body_mass, color = species))+
   geom_point()+
   theme_classic()
 ```
 
 ```{r}
-ggplot(data, aes(x = Culmen.Length..mm., y = Culmen.Depth..mm., color = Species))+
+ggplot(data, aes(x = culmen_length, y = culmen_depth, color = species))+
   geom_point()+
   theme_classic()
 ```
 
 ```{r}
-ggplot(data, aes(x = Delta.15.N..o.oo., y = Delta.13.C..o.oo., color = Species, shape = Island))+
+ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species, shape = Island))+
   geom_point()+
   theme_classic()
 ```
@@ -116,7 +142,7 @@ summary(acp_data)
 #Variances pour chaque composantes
 fviz_eig(acp_data)
 #Projection des individus et coloration en fonction de l'espèce
-fviz_pca_ind(acp_data, geom.ind = "point", col.ind = as.factor(data$Species), addEllipses = T, pointshape = 19)
+fviz_pca_ind(acp_data, geom.ind = "point", col.ind = as.factor(data$species), addEllipses = T, pointshape = 19)
 #Projection des individus et coloration en fonction de l'île
 fviz_pca_ind(acp_data, geom.ind = "point", col.ind = data$Island, pointshape = 19, addEllipses = T)
 #projection des variables
@@ -148,7 +174,7 @@ abline(h=NA_mean, col = "red", lwd = 2)
 ```{r violin}
 
 # Violin plot for Culmen Length (beak length)
-ggplot(data, aes(x = Species, y = Culmen.Length..mm., fill = Species)) +
+ggplot(data, aes(x = species, y = culmen_length, fill = species)) +
   geom_violin(trim = FALSE) +
   geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
     stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
@@ -159,7 +185,7 @@ ggplot(data, aes(x = Species, y = Culmen.Length..mm., fill = Species)) +
   theme(legend.position = "none")
 
 # Violin plot for Flipper Length
-ggplot(data, aes(x = Species, y = Flipper.Length..mm., fill = Species)) +
+ggplot(data, aes(x = species, y = flipper_length, fill = species)) +
   geom_violin(trim = FALSE) +
   geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
     stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
@@ -170,7 +196,7 @@ ggplot(data, aes(x = Species, y = Flipper.Length..mm., fill = Species)) +
   theme(legend.position = "none")
 
 # Violin plot for Body Mass
-ggplot(data, aes(x = Species, y = Body.Mass..g., fill = Species)) +
+ggplot(data, aes(x = species, y = body_mass, fill = species)) +
   geom_violin(trim = FALSE) +
   geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
     stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
