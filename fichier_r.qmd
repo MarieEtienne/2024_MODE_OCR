@@ -19,6 +19,7 @@ PLAN POUR GLM:
 
 ```{r}
 ```
+
 - EXPLORATION DU JEU DE DONNEE
   - Valeurs aberrantes dans Y et dans les X
 ```{r}
@@ -33,19 +34,52 @@ hist(data,col='',xlab="",main="")
 # Quantile-Quantile plot
 qqnorm(data,pch=16,col='',xlab='')
 qqline(data,col='',lwd=2)
+
+
+## Voir si il faut faire une transformation des données
+
+
 ```
   - Nombre de modalité et individus par modalité
 ```{r}
+summary()
 
 ```
   - Relations potentielles entre Y et Xs
 ```{r}
+plot()
+
+mosaicplot()
 ```
   - Eventuelles interactions entre les Xs
 ```{r}
+plot()
+points()
+
+#Avec courbes (exemple)
+coplot(Acarinarium~SQRTMites|Species,
+       data = dataBombus ,
+        panel = function(x, y, ...) {
+         if(length(y[y>0])>5 & length(y[y==0])>5 ) {
+           tmp <- glm(y ~ x, family=binomial, na.action = na.omit)
+           MyDat<-data.frame(x=seq(from=min(x,na.rm=TRUE),
+                                 to=max(x,na.rm=TRUE),
+                                 length=25))
+           P1<-predict(tmp,newdata=MyDat, type="response")
+           lines(MyDat$x,P1,col='darkred',lwd=2)
+         }
+         points(x, y,pch=16,col='dodgerblue3') })
 ```
   - Colinéarité entre les Xs
 ```{r}
+# Checking collinearity between both categorical independent variables
+table(var1,var2)
+
+# Checking collinearity between categorical and continuous independent variables
+par(mfrow=c(1,2))
+# Checker les couples de variable 2 à 2
+boxplot(var1~var2, varwidth = TRUE, ylab = "var1", xlab = "var2",col=c('dodgerblue3','darkred'), main = "")
+
 ```
 - ANALYSE STATISTIQUE
   - Construction du modèle
