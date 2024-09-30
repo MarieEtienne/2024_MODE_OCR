@@ -1,63 +1,52 @@
 ---
-
-title: "Modèles matriciels et applications"
-group: "Rudy, Tanguy, Manon, Garan, Anaëlle, Oceane, Victor" 
-
-bibliography: references.bib
-execute: 
-  freeze: auto
-output: 
-  html_document:
-   toc: true
-   toc_float: true
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-# Ideas of modelisation : 
+------------------------------------------------------------------------
 
-Le lien du site : https://zenodo.org/records/8251495 
+title: "Modèles matriciels et applications" group: "Rudy, Tanguy, Manon,
+Garan, Anaëlle, Oceane, Victor"
 
-- Océane : ANOVA
+bibliography: references.bib execute: freeze: auto output:
+html_document: toc: true toc_float: true ---
 
-- Manon : ACP
+# Ideas of modelisation :
 
-- Rudy : Number_Fledged
+Le lien du site : https://zenodo.org/records/8251495
 
+-   Océane : ANOVA
 
+-   Manon : ACP
 
+-   Rudy : Number_Fledged
 
+Pistes
 
-Pistes 
+Calcul
 
-Calcul 
+Taux de succès Taux de survie
 
-Taux de succès 
-Taux de survie
+voir si habitat préférentiel, région,… voir quelles facteurs expliquent
+taux de succès
 
-voir si habitat préférentiel, région,…
-voir quelles facteurs expliquent taux de succès
+voir si décalages entre dates de départ du nid -\> facteurs expliquant
 
-voir si décalages entre dates de départ du nid -> facteurs expliquant 
+voir si habitat préferentiel
 
-voir si habitat préferentiel 
+MAIS ATTENTION à ne pas être biaisé : du genre que des oiseaux d’une
+certaines espèces ne soit présents que dans un habitat
 
-MAIS ATTENTION à ne pas être biaisé : du genre que des oiseaux d’une certaines espèces ne soit présents que dans un habitat
-
-refaire analyse de bases cf ASA 
-
-
-
-
-
-
+refaire analyse de bases cf ASA
 
 # Document R modifié et avec ajouts
 
 ## Import des données
 
 **Do not forget to set your working directory in the right place**
-**Menu : Session/Set Working Directory/Choose directory**
-*And indicate Git/2024_MODE_OCR*
-
+**Menu : Session/Set Working Directory/Choose directory** *And indicate
+Git/2024_MODE_OCR*
 
 ```{r}
 # Datatset import under the name of "data"
@@ -70,60 +59,119 @@ data <- bird
 ```{r}
 # Charge the librairies
 library(ggplot2)
+library(tidyverse)
+library(ggcorrplot)
 ```
 
 ```{r}
 # View the firsts lignes of the dataset
 head(data)
 ```
-## Data exploration
-# Repartition of the data through time
 
+# [1. Data exploration]{.underline}
 
+### Repartition of the data through time
 
-# Rudy part : 
+### Rudy part : Statistical tests
 
-We can use the number of fledged birds as response variable and try to explain this by several variables. We can analyse if the number of fledged birds depends on the species. 
+In this part, several statistical tests are performed in order to answer
+questions.
+
+-   *First question : Does the number of fledged birs depend on the
+    species ?*
 
 H0 : there is no differences between species
 
 First, we observe the data with a boxplot
+
 ```{r}
-# Compari
+# 
 ggplot(data, aes(x = Species, 
                  y = Number_Fledged
                  )
        ) +
-  geom_boxplot(outlier.shape = 0.2)
+  geom_boxplot(outlier.shape = 10, 
+               fill = "tomato"
+               ) +
+  theme(
+    axis.text.x = element_text(size = 7,
+                               angle = 45)
+    )
                  
                  
 ```
 
-Then, we test the normality of the data : 
+Then, we test the normality of the data :
 
 ```{r}
-sp_fledged <- data |>
-  dplyr::select(
+data |>
+  # Selection of only two columns of interest
+  dplyr::select(  
     Species, 
     Number_Fledged
-    ) |>
+  ) |>
+  # Calculation of the p-value of the shapiro test for each species
   dplyr::group_by(Species) |>
-  dplyr::summarise()
-  
-
-sp_fledged
+  dplyr::summarise(
+    shap = shapiro.test(Number_Fledged)$p
+  )
 ```
 
+Conclusion : each subset does not follow the normality. We can perform a
+U test (non parametric test) :
+
+```{r}
+# Construction of an empty 8x8 dataframe. It will contains each p-value of the U test
+cor_df <- as.data.frame(
+  matrix(nrow = 8, ncol = 8, NA)
+  )
+  
+# Retrive the species names
+species <- as.character(unique(data_species$Species))
+
+# Rename the matrix
+colnames(cor_df) <- species
+rownames(cor_df) <- species
 
 
+for (sp1 in (1:(length(species)))){
+  for (sp2 in (1:length(species))){
 
+    ## Retrieve the data of the species 1
+    species_1 <- data_species |>
+      dplyr::filter(Species == species[sp1]) |>
+      dplyr::select(Number_Fledged)
 
+    ## Retrieve the data of the species 2
+    species_2 <- data_species |>
+      dplyr::filter(Species == species[sp2]) |>
+      dplyr::select(Number_Fledged)
+    
+    ## Formating of the vector containing the number of fledged birds. 
+    species_1 <- as.vector(species_1)$Number_Fledged
+    species_2 <- as.vector(species_2)$Number_Fledged
+    
+    ## To put the p.values on the correlation matrix
+    cor_df[sp1,sp2] <- wilcox.test(species_1, species_2)$p.value
+  }
+}
+```
 
+Now, we can observe the correlation matrix here :
 
+```{r}
+ggcorrplot(
+  corr = cor_df,
+  lab = TRUE,
+  lab_size = 3,
+  show.diag = TRUE,
+  colors = c("tomato2", "white", "springgreen3"),
+  type = "upper"
+  ) +
+  theme(
+    axis.text.x = element_text(size = 8,
+                               angle = 45),
+    axis.text.y = element_text(size = 8)
+    )
 
-
-
-
-
-
-
+```
