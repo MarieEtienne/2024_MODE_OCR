@@ -136,7 +136,7 @@ Pour comprendre comment les 3 variables explicatives (Latitude, Elevation, LogAr
 
 ## 3. Pouvoir explicatif du modèle (Anaelle)
 
-Afin de connaître la qualité de notre modèle, nous allons calculer la distance entre le modèle candidat et le modèle nul. Le modèle nul est un modèle qui résume les données avec un unique paramètre : la moyenne de Y. Ce modèle n'explique pas les données.
+Afin de connaître la qualité de notre modèle, nous allons calculer la distance entre le modèle candidat et le modèle nul. Le modèle nul est un modèle qui résume les données avec un unique paramètre : la moyenne de $Y$. Ce modèle n'explique pas les données.
 
 Un moyen de connaître la qualité du modèle est de calculer un *pseudo R²*. Pour cela, on détermine la distance entre la déviance du modèle nul et la déviance résiduelle du modèle candidat.
 
@@ -164,6 +164,12 @@ abline(0,1)
 ```
 
 ## 4. Validation du modèle (Anaelle)
+
+L'*indépendance des résidus* est la seule chose qui limite le modèle linéaire généralisé. L'analyse des résidus permet donc d'identifier d'éventuelles tendances et de vérifier la présence d'unités statistiques influentes. 
+
+Dans un premier temps, verifier la présence de **surdispersion** est indispensable lorsque l'on fait un modèle linéaire généralisé suivant une loi de Poisson. Pour tous les modèles linéaires généralisées utilisant des données de comptage, il faut vérifier l'absence de surdispersion. 
+
+Pour cela, nous allons calculer un paramètre appelé 'scale parameter'. Si ça valeur est supérieure à 1, il y a surdispersion. Le modèle n'est donc pas valable.
 
 ### Vérification de la surdispersion
 
