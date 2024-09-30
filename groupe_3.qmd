@@ -14,40 +14,22 @@ editor: visual
 
 # **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
 
-## 1. Construction du modèle (Gabriel)
+## 1. Construction du modèle
 
-On cherche à produire le meilleur modèle pour prédire le nombre d'espèces. La variable réponse est un comptage (variable quantitative discrète) de petit effectifs (\<30), la loi appropriée est donc la loi de **Poisson**. Nous allons donc réaliser la modélisation avec un modèle linéaire généralisée de Poisson.
+## 2. Analyse des coefficients
 
-Pour arriver au modèle dit candidat à tester, nous allons partir du modèle dit complet, c'est-à-dire avec toutes les variables explicatives et interactions, et utiliser une méthode pas à pas arrière ou **Backward selection** pour sélectionner les variables et interactions à conserver.
+## 3. Pouvoir explicatif du modèle (moi)
 
-Commençons avec le modèle complet.
+Afin de connaître la qualité de notre modèle, nous allons calculer la distance entre le modèle candidat et le modèle nul. Le modèle nul est un modèle qui résume les données avec un unique paramètre : la moyenne de Y. Ce modèle n'explique pas les données.
 
-```{r}
-# Formulation du modèle avec la fonction glm() et family=poisson(link="log")
-mod1<-glm(Nsp~ Location
-        + Latitude
-        + Elevation
-        + LogArea
-        + Location:Latitude
-        + Location:Elevation
-        + Location:LogArea
-        ,data=dataAnts
-        ,family=poisson(link="log"))
-```
+Un moyen de connaître la qualité du modèle est de calculer un *pseudo R²*. Pour cela, on détermine la distance entre la déviance du modèle nul et la déviance résiduelle du modèle candidat.
 
-A partir de ce modèle complet nous allons donc éliminer pas à pas les interactions non significatives.
+$$Pseudo\:R^2=100\:.\:\frac{Null\:Deviance- Residual\:Deviance}{Null\:Deviance}$$
 
-```{r}
-# Etape 1
-drop1(mod1,test="Chi")
-```
+Nous pouvons calculer le *pseudo R²*, de trois manières différentes. Soit avec la méthode de McFadden, celle de Cox et Snell ou celle de Nagelkerke. Les deux dernières méthodes nécessite le package 'rcompagnon'. 
 
-Les trois interactions ne sont pas significatives. On enlève l'interaction 'Location:Latitude' car  c'est la 'moins significative'. On peut voir que la fonction drop1() nous informe que c'est en enlevant cette interaction que l'on obtient le meilleur AIC.
+Dans notre exemple, comme vu dans la partie précédente, le modèle nul a une déviance de 102,76 et la déviance résiduelle est de 40,69.
 
-## 2. Analyse des coefficients (Gabriel)
-
-## 3. Pouvoir explicatif du modèle (Anaelle)
-
-## 4. Validation du modèle (Anaelle)
+## 4. Validation du modèle (moi)
 
 # **CONCLUSION** (Apolline et Kilian)
