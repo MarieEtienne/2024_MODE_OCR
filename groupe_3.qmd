@@ -88,6 +88,7 @@ mod1<-glm(Nsp~ Location
 
 drop1(mod1,test="Chi")
 ```
+
 La variable 'LogArea' n'a pas un effet siginificatif, on l'élimine du modèle.
 
 ```{r}
@@ -106,7 +107,7 @@ Les variables explicatives restantes sont significatives, on conserve donc ce mo
 On va identifier le modèle candidat basé sur la règle de l'AIC et le mode stepwise. 
 ```{r modelAIC, include=TRUE}
 library(MASS)
-#On construit le modèle complet
+# On construit le modèle complet
 modelcomplet<- glm(Nsp~ Location
         + Latitude
         + Elevation
@@ -116,13 +117,14 @@ modelcomplet<- glm(Nsp~ Location
         + Location:LogArea
         ,data=dataAnts
         ,family=poisson(link="log"))
-#Sélection du modèle sur la base AIC
+
+# Sélection du modèle sur la base AIC
 modfinal<-stepAIC(modelcomplet,direction="both")
-#Analyse du modèle final
+
+# Analyse du modèle final
 drop1(modfinal,test="Chi")
 summary(modfinal)
 
-## AIC si plus de 40 pour indiv/parametres, sinon AICc
 ```
 
 Remarque : il est recommandé d'utiliser l'AIC avec plus de 40 individus par paramètre, sinon il existe l'AICc.
@@ -131,8 +133,30 @@ Les deux procédures (Backward et StepAIC) convergent : nous obtenons les mêmes
 
 Pour comprendre comment les 3 variables explicatives (Latitude, Elevation, LogArea) influencent la richesse spécifique des fourmis, nous devons analyser les coefficients du modèle.
 
-
 ## 2. Analyse des coefficients (Gabriel)
+
+```{r}
+# Coefficients du modèle
+summary(mod1)
+#                 Estimate Std. Error z value Pr(>|z|)    
+#(Intercept)    11.9368121  2.6214970   4.553 5.28e-06 ***
+#LocationForest  0.6354389  0.1195664   5.315 1.07e-07 ***
+#Latitude       -0.2357930  0.0616638  -3.824 0.000131 ***
+#Elevation      -0.0011411  0.0003749  -3.044 0.002337 ** 
+```
+
+Ce tableau détaille les coefficients du modèle avec les coefficients associés à chaque effet majeur significatif. Rappelons que pour un facteur, une modalité est appelée "modalité de référence", c'est-à-dire que son coefficient est égal à 0. D'après ce tableau, les coefficients sont :
+
+**Location factor**  
+- $Location_{Bog}$ = 0 (modalité de référence du facteur Location)  
+- $Location_{Forest}$ = $+0.63^{**}$  
+**Latitude covariate**  
+- $\beta_{Latitude}$ = $-0.23^{***}$  
+**Elevation covariate**  
+- $\beta_{Elevation}$ = $-0.001^{***}$
+
+Ainsi, le modèle candidat s'écrit :
+$$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
 
 ## 3. Pouvoir explicatif du modèle (Anaelle)
 
