@@ -25,13 +25,6 @@ AJOUTER LES QUESTIONS DE RECHERCHE ET LES ANALYSES FAITES
 #| echo: true
 #| results: hide
 
-install.packages("factoextra")
-install.packages("FactoMineR")
-install.packages("tidyverse")
-install.packages("dplyr")
-install.packages("ggplot2")
-
-
 library(factoextra) # for data visualization
 library(FactoMineR) # for PCA
 library(tidyverse)  # for data manipulation
