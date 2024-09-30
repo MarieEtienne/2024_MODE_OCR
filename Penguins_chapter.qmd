@@ -68,7 +68,7 @@ library(ggplot2)    # for data visualization
 
 
 
-```{r Antoine}
+```{r}
 
 # Modification of colnames 
 data <- data %>%
