@@ -40,11 +40,12 @@ PRESENTATION DE L'EXPERIENCE
 
 
 
-
+Effet du paturage sur la richesse specifique
 ```{r}
-df %>% ggplot() +
-	aes(x=species, y = body_mass_g) +
-	geom_boxplot()  
+df %>% ggplot(data = df) +
+  geom_boxplot(aes(y = Density, x = Continent), fill=rainbow(4), alpha=0.6) +
+  labs(x="Continents d'origine", y="Densité de population des Cervidae") +
+  ggtitle('Répartition de la densité des Cervidae sur les différents continents')  
 ```
 
 EFFET DU paturage sur les strategies de pollinisation
