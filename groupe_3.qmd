@@ -53,6 +53,7 @@ dataAnts$LogArea<-log(dataAnts$Area)
 ```
 
 ###2.1 Analyser la relation potentielle entre Y vs Xs 
+
 Afin de tester la relation éventuelle entre la variable réponse Y et les variables explicatives Xs, il est indispensable de réaliser la modélisation statistique. C'est le seul moyen qui nous permet de tester la significativité de cette relation. Seulement, nous pouvons commencer par réaliser des analyses graphiques afin de ce faire une idée.
 
 ```{r datagraph, include=TRUE, fig.height=7, fig.width=7}
@@ -72,14 +73,9 @@ plot(dataAnts$Nsp~dataAnts$LogArea,pch=16,col='dodgerblue3',xlab='Superficie de 
 boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Richesse spécifique des fourmis", xlab = "Localisation", col=c('#000099','#339900'), main = "")
 ```
 
-Conclusion des différents graphiques : 
-Relation entre X et la latitude : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevé. On peut alors dire qu'il semble que plus on est au Nord, moins il y a d'espèce de fourmis.
-Relation entre X et l'altitude : Dans ce graphique ci, nous pouvons voir à nouveau que plus l'altitude est importante, moins la richesse spécifique est élevée. On peut alors ce dire qu'il semble que plus on est dans un relief, moins il y a d'espèce de fourmis. 
-Relation entre X et la surperficie de la tourbière : Ici, il ne semble pas y avoir de relation entre la richesse spécifique des fourmis et la surperficie des tourbières.
-Relation entre X et localisation : Il semble ici y avoir une relation entre le lieu et la richesse spécifique des fourmis, avec une richesse spécifique plus importante en forêt. 
+Conclusion des différents graphiques : Relation entre X et la latitude : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevé. On peut alors dire qu'il semble que plus on est au Nord, moins il y a d'espèce de fourmis. Relation entre X et l'altitude : Dans ce graphique ci, nous pouvons voir à nouveau que plus l'altitude est importante, moins la richesse spécifique est élevée. On peut alors ce dire qu'il semble que plus on est dans un relief, moins il y a d'espèce de fourmis. Relation entre X et la surperficie de la tourbière : Ici, il ne semble pas y avoir de relation entre la richesse spécifique des fourmis et la surperficie des tourbières. Relation entre X et localisation : Il semble ici y avoir une relation entre le lieu et la richesse spécifique des fourmis, avec une richesse spécifique plus importante en forêt.
 
-Conclusion générale : 
-Il semble que plus on se trouve dans le nord et dans un haut relief moins on a d'espèce de fourmis. De plus, si on se trouve en forêt, il y aura une richesse spécifique plus importante. 
+Conclusion générale : Il semble que plus on se trouve dans le nord et dans un haut relief moins on a d'espèce de fourmis. De plus, si on se trouve en forêt, il y aura une richesse spécifique plus importante.
 
 ###2.2 Analyse des éventuelles interactions entre les Xs
 
@@ -108,6 +104,9 @@ points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Locat
 On peut penser qu'il y a une interactions entre les covariables si les pentes formées par les deux nuages de points sont différentes. Ici les nuages ne permettent pas de voir clairement de similitude ou de différence de tendance pour chaque graphique.
 
 ###2.3 Vérifier une éventuelle colinéarité entre les Xs
+
+Nous cherchons à éviter la colinéarité des variables explicatives dans notre modélisation, afin de ne pas avoir plusieurs variables qui donnent la même information. Pour ce faire, nous devons vérifier les liens statistiques qu'il peut y avoir entre les variables, [1] en calculant la corrélation entre les variables Xs quantitatives, [2] puis en étudiant l'influence du X qualitative sur les Xs quantitatives à l'aide de graphiques plot.
+
 
 # **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
 
