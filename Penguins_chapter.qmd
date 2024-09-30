@@ -128,7 +128,6 @@ ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species, shape = island
 ```
 
 ```{r}
-
 #Selection of quantitative data
 data_numeric <- select_if(data, is.numeric)
 
