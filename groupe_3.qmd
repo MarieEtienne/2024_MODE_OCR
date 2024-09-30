@@ -138,6 +138,8 @@ boxplot(dataAnts$LogArea~dataAnts$Location, varwidth = TRUE, ylab = "Superficie 
 
 ```
 
+On peut observer sur le premier graphique que les nuages de points de semblent pas montrer de tendance à la colinéarité. Cette impression est confirmée par les valeur calculées dans la figure suivante, les valeurs sont largement inférieures à 0,7. Le chevauchement presque total des boxplot confirme entre une fois la non colinéarité des facteurs.
+
 # **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
 
 # **CONCLUSION** (Apolline et Kilian)
