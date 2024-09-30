@@ -20,7 +20,7 @@ On cherche à produire le meilleur modèle pour prédire le nombre d'espèces. L
 
 Pour arriver au modèle dit candidat à tester, nous allons partir du modèle dit complet, c'est-à-dire avec toutes les variables explicatives et interactions, et utiliser une méthode pas à pas arrière ou **Backward selection** pour sélectionner les variables et interactions à conserver.
 
-Commençons avec le modèle complet.
+Commençons avec le modèle complet:
 
 ```{r}
 # Formulation du modèle avec la fonction glm() et family=poisson(link="log")
@@ -42,7 +42,35 @@ A partir de ce modèle complet nous allons donc éliminer pas à pas les interac
 drop1(mod1,test="Chi")
 ```
 
-Les trois interactions ne sont pas significatives. On enlève l'interaction 'Location:Latitude' car  c'est la 'moins significative'. On peut voir que la fonction drop1() nous informe que c'est en enlevant cette interaction que l'on obtient le meilleur AIC.
+Les trois interactions ne sont pas significatives. On enlève l'interaction 'Location:Latitude' car c'est la 'moins significative'. On peut voir que la fonction drop1() nous informe que c'est en enlevant cette interaction que l'on obtient le meilleur AIC.
+On obtient donc le modèle suivant:
+
+```{r}
+# Etape 2
+mod1<-glm(Nsp~ Location
+        + Latitude
+        + Elevation
+        + LogArea
+        + Location:Elevation
+        + Location:LogArea
+        ,data=dataAnts
+        ,family=poisson(link="log"))
+drop1(mod1,test="Chi")
+```
+De la même façon, on enlève l'interaction 'Location:LogArea'.
+
+```{r}
+# Etape 2
+mod1<-glm(Nsp~ Location
+        + Latitude
+        + Elevation
+        + LogArea
+        + Location:Elevation
+        ,data=dataAnts
+        ,family=poisson(link="log"))
+drop1(mod1,test="Chi")
+```
+On enlève donc également l'interaction 'Location:Elevation'.
 
 ## 2. Analyse des coefficients (Gabriel)
 
