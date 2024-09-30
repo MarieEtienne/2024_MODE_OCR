@@ -6,6 +6,8 @@ editor: visual
 
 # **INTRODUCTION** (Apolline et Kilian)
 
+Principe de l'exploration du jeu de données d'après l'article cité en cours. 
+
 # **EXPLORATION DU JEU DE DONNEES**
 
 ## 1. Présentation du jeu de données (Léa et Giuliana)
@@ -20,6 +22,7 @@ editor: visual
 ### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de X (Léa)
 
 ### c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité (Giu)
+
 
 
 ## 2. Analyse des interactions entre les variables (Chloé et Manon)
