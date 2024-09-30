@@ -6,9 +6,16 @@ editor: visual
 
 # **INTRODUCTION** (Apolline et Kilian)
 
+Principe de l'exploration du jeu de données d'après l'article cité en cours. 
+
 # **EXPLORATION DU JEU DE DONNEES**
 
 ## 1. Présentation du jeu de données (Léa et Giuliana)
+
+
+
+
+### a. Valeurs aberrantes de $Y$ et distribution des valeurs de $Y$
 
 ## 2. Analyse des interactions entre les variables (Chloé et Manon)
 
