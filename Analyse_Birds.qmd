@@ -44,25 +44,394 @@ refaire analyse de bases cf ASA
 
 ```{r}
 # Datatset import under the name of "data"
-data <- read.table("Bird_dataset.csv", sep="\t", header = TRUE)
+data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE)
+
+# Selecting the data of interest (here our study is going to focus on the state of illinois)
+data_Illinois <- subset(data, data$State == "Illinois")
+
+# Converting explanatory variables (or covariates) into factor (they were intially character chain )
+data_Illinois$County <- as.factor(data_Illinois$County)
+data_Illinois$Habitat <- as.factor(data_Illinois$Habitat)
+data_Illinois$Species <- as.factor(data_Illinois$Species)
+data_Illinois$Year <- as.factor(data_Illinois$Year)
+
+# checking for missing values
+colSums(is.na(data_Illinois))
 ```
+
+
 
 ```{r}
-# Charge the librairies
-library(ggplot2)
+library(knitr)
+opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")
+library(ggplot2) # graph package
+library(tinytex) # Pour la sortie pdf
+library(corrplot)# Correlation matrix calculus
+library(plot3D)# For 3D plot
+library(DHARMa)# Model diagnosis
+library(rcompanion)# Model pseudo R²
+library(lattice)# Multipanel graphics
 ```
 
-```{r}
-# View the firsts lignes of the dataset
-head(data)
-```
-## Data exploration
-# Repartition of the data through time
 
-```{r}
-# Creation of a barplot
-ggplot(data, aes(x="Year"))+
-  geom_bar(stat="bin", width=0.7, fill="steelblue")+
-  theme_minimal()
+
+
+## DATA EXPLORATION
+
+Variables are :  
+- *Nest_Fate* = Response variable which represent the sucess of the nesting period 
+- *County* : Covariate
+- *Habitat* : Covariate
+- *Species* : Covariate
+- *Year* : Covariate
+- *Initiation_Date* : Quantitative variable
+
+**Aim of the studie** : We want to check for 
+
+**Method** : 
+### outlier in $Y$ and distribution of $Y$ values
+
+
+```{r dataY, include=TRUE}
+# Number of 0 and 1 in Y
+table(data_Illinois$Nest_Fate)
 ```
 
+### for each quantitative $X$ : check for outlier and distribution of $X$ values
+
+```{r dataCov, include=TRUE, fig.height=3, fig.width=8}
+par(mfrow=c(1,3))
+
+# Length
+# Cleveland plot
+dotchart(data_Illinois$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation Date')
+# Histogram
+hist(data_Illinois$Initiation_Date,col='dodgerblue3',xlab="Initiation Date",main="")
+# Quantile-Quantile plot
+qqnorm(data_Illinois$Initiation_Date,pch=16,col='dodgerblue3',xlab='')
+qqline(data_Illinois$Initiation_Date,col='red',lwd=2)
+```
+We do no observe any outlier and it seems that the initiation date of the nesting period follows a normal distribution. 
+
+
+### For each covariate $X$  : we need to analyse the modalities and the number of individuals for each modality
+
+```{r datafact, include=TRUE}
+# Factor County
+summary(data_Illinois$County)
+
+# Factor Habitat
+summary(data_Illinois$Habitat)
+
+# Factor Species
+summary(data_Illinois$Species)
+
+# Factor Year
+summary(data_Illinois$Year)
+```
+
+
+### Analysing graphicallyv if we might have the relationship between Y and Xs
+
+
+```{r datagraph, include=TRUE, fig.height=4, fig.width=10}
+par(mfrow=c(1,3))
+
+# Initiation_Date
+plot(data_Illinois$Nest_Fate~data_Illinois$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation_Date',ylab='Nest_Fate')
+
+
+# Define the color palette
+color <- c('dodgerblue3', 'darkred', 'forestgreen', 'gold', 
+           'purple', 'orange', 'cyan', 'magenta', 
+           'salmon', 'lightseagreen', 'plum', 
+           'yellowgreen', 'sandybrown', 'steelblue')
+
+# County
+mosaicplot(data_Illinois$Nest_Fate ~ data_Illinois$County, 
+           col = color, 
+           main="Relationship Nest Fate & County")
+# Habitat
+mosaicplot(data_Illinois$Nest_Fate ~ data_Illinois$Habitat, 
+           col = color[1:4],  
+           main = "Relationship Nest Fate & Habitat")
+
+# Species
+mosaicplot(data_Illinois$Nest_Fate ~ data_Illinois$Species, 
+           col = color[1:8],  
+           main = "Relationship Nest Fate & Species")
+
+# Year
+mosaicplot(data_Illinois$Nest_Fate ~ data_Illinois$Year, 
+           col = color[1:6],  
+           main = "Relationship Nest Fate & Year")
+
+
+```
+
+
+### Analysing interaction between Xs
+
+
+```{r dataInter, include=TRUE, fig.height=4, fig.width=4}
+par(mfrow=c(1,1))
+# Interactions between County and Habitat
+
+# Using plot
+plot(data_Illinois$Nest_Fate~data_Illinois$County,type='n',ylab = "Nest Fate",xlab="County")
+
+
+
+points(data_Illinois$Nest_Fate~data_Illinois$Habitat=="Cool-seasonGrassland"]~dataBombus$SQRTMites[dataBombus$Species=="B_atratus"],pch=16,cex=1,col='dodgerblue3')
+points(dataBombus$Acarinarium[dataBombus$Species=="B_opifex"]~dataBombus$SQRTMites[dataBombus$Species=="B_opifex"],pch=17,cex=1,col='darkred')
+
+# Using curves (Zuur et al. code)
+par(mfrow=c(1,1))
+coplot(Acarinarium~SQRTMites|Species,
+       data = dataBombus ,
+        panel = function(x, y, ...) {
+         if(length(y[y>0])>5 & length(y[y==0])>5 ) {
+           tmp <- glm(y ~ x, family=binomial, na.action = na.omit)
+           MyDat<-data.frame(x=seq(from=min(x,na.rm=TRUE),
+                                 to=max(x,na.rm=TRUE),
+                                 length=25))
+           P1<-predict(tmp,newdata=MyDat, type="response")
+           lines(MyDat$x,P1,col='darkred',lwd=2)
+         }
+         points(x, y,pch=16,col='dodgerblue3') })
+```
+Conclure sur ces graphiques
+
+# il semble que chez atratus plus il ya des mites plus iol ya la proba d'avoirt un acarinarium
+# inverse chez opifex 
+
+### Vérifier une éventuelle colinéarité entre les Xs
+
+Afin d'éviter la colinéarité dans la modélisation, nous analyserons comment les variables explicatives $Xs$ sont liées. Pour cela, nous estimons si les $Xs$ qualitatives sont liées et si elles influencent la $Xs$ quantitative en utilisant des boxplots.
+```{r datacolin, include=TRUE, fig.height=4, fig.width=8}
+# Checking collinearity between both categorical independent variables
+table(dataBombus$Species,dataBombus$Castes)
+
+# Checking collinearity between categorical and continuous independent variables
+par(mfrow=c(1,2))
+#Number of Mites and Species
+boxplot(dataBombus$SQRTMites~dataBombus$Species, varwidth = TRUE, ylab = "Number of Mites", xlab = "Species",col=c('dodgerblue3','darkred'), main = "")
+#Number of Mites and Castes
+boxplot(dataBombus$SQRTMites~dataBombus$Castes, varwidth = TRUE, ylab = "Number of Mites", xlab = "Castes",col=c('#339900','#000039'), main = "")
+```
+Conclure sur ces graphiques
+
+
+## ANALYSE STATISTIQUE
+
+### Construction du modèle
+
+Pour la modélisation statistique, nous considérerons une modèle linéaire généralisé binomial. Pour cela, nous analysons dans un premier temps le modèle complet (i.e. le modèle contenant toutes les variables explicatives et les interactions à tester). Rappelons que nous allons tester ici les effets majeurs (1 $X$ quantitative et 2 $Xs$ qualitatives) et une interaction.
+
+Afin d'identifier le modèle candidat en partant du modèle complet, nous allons utiliser la méthode dite **Backward selection model**. Cette méthode de sélection de modèle est basée sur la significativité des termes du modèle. En partant du modèle complet, on identifie la significativité des termes de ce modèle et on procède ensuite à un 'écrémage' des termes non significatifs afin de ne retenir que les termes significatifs. ATTENTION, il faut procéder par étapes et PROGRESSIVEMENT. Ainsi, la suppression des termes non significatifs doit suivre les deux étapes suivantes :  
+   -	étape 1 : supprimer SUCCESSIVEMENT les interactions non significatives  
+   -	étape 2 : supprimer SUCCESSIVEMENT les effets majeurs non significatifs et non présents dans les interactions significatives  
+   
+# on modélise le logit car proba compris entre 0 et 1
+
+En suivant ces deux étapes, on trouve le modèle dit 'candidat'. 
+```{r fullmodel,include=TRUE}
+# Model formulation
+mod1<-glm(Acarinarium~ Species
+        + Castes
+        + SQRTMites
+        + Species:SQRTMites
+        ,data=dataBombus
+        ,family=binomial(link="logit"))
+# Then we check for significance
+drop1(mod1,test="Chi")
+```
+# Si j'enlève la caste je passe à 80 -> on s'éloigne du modèle saturé
+# Si je retire l'interaction je recule de 8,65
+
+Ce listing de significativité précise la significativité de l'interaction étudiée et l'effet majeur non inclus dans cette interaction. De ce listing, nous décidons de garder l'ensemble des termes car significatifs. Nous obtenons ainsi le modèle candidat. Pour comprendre comment les effets majeurs et l'interaction influencent la présence d'un acarinarium chez les bourdons, nous devons analyser les coefficients du modèle.
+
+### Analyse des coefficients du modèle
+```{r coeffm, ,include=TRUE}
+# Coefficients of the model
+summary(mod1)
+#From this output, you read the coefficients table hereafter
+
+#Coefficients:
+#                           Estimate Std. Error z value Pr(>|z|)    
+#(Intercept)                 1.0389     1.3188   0.788 0.430860    
+#SpeciesB_opifex             4.1010     1.0617   3.863 0.000112 ***
+#Castesworker               -2.4501     0.9974  -2.456 0.014030 *  
+#SQRTMites                   0.3597     0.3933   0.915 0.360322    
+#SpeciesB_opifex:SQRTMites  -0.9788     0.4081  -2.399 0.016455 *  
+```
+# 105 = distance entre pire modèle et meilleur modèle 
+
+Ce tableau détaille les coefficients du modèle avec les coefficients associés à chaque effet majeur et interaction significatif. Rappelons que pour un facteur, une modalité est appelée "modalité de référence", c'est-à-dire que son coefficient est égal à 0. D'après ce tableau, les coefficients sont :
+
+**Species factor**  
+- $Species_{B.atratus}$ = 0 (modalité de référence du facteur Species)  
+- $Species_{B.opifex}$ = $+4.10^{***}$  
+
+**Castes factor**  
+- $Castes_{Drone}$ = 0 (modalité de référence du facteur Castes)  
+- $Castes_{Worker}$ = $-2.45^{*}$
+
+**Mites number covariate**  
+- $\beta_{SQRTMites}$ = $+0.36^{NS}$    
+
+**Interaction**  
+- $\beta_{SQRTMites_{B.opifex}}$ = $- 0.978^{***}$  
+
+Ainsi, le modèle candidat s'écrit :
+$$ logit(Presence\:of\:acarinarium) = 1.03 + (B.\:atratus = 0\:;\:B.\:opifex = 4.10^{***})$$
+$$ + (Castes_{Drone} = 0\:;\:Castes_{Worker} = -2.45^{*})$$
+$$ + 0.35^{NS}.\sqrt{Number\:of\:Mites}\: +\: (if\:B.\:opifex:\: - 0.978^{***}.\sqrt{Number\:of\:Mites})$$
+
+```{r lines, include=TRUE, fig.height=5, fig.width=5}
+#R code from Zuur et al. Example of Binary data
+
+MyData <- expand.grid(SQRTMites = seq(0, 9.5, length = 25),
+                      Species = levels(dataBombus$Species),
+                      Castes = levels(dataBombus$Castes))
+MyData$P <- predict(mod1, newdata = MyData, 
+                    type = "response")
+
+xyplot(Acarinarium ~ SQRTMites| Species * Castes,
+       data = dataBombus,
+       xlab = "Total Mites",
+       ylab = "Probability of Acarinarium",
+       panel = function(x,y, subscripts,...)
+         {
+         panel.points(x,y, pch = 16, col =1)
+         print(dataBombus$Castes[subscripts][1])
+         print(dataBombus$Species[subscripts][1])
+         i <- dataBombus$Castes[subscripts][1]
+         j <- dataBombus$Species[subscripts][1]
+         Data.ij <- subset(MyData,
+                           Castes == i &
+                           Species == j)
+         panel.lines(Data.ij$SQRTMites, 
+                     Data.ij$P, 
+                     col = 'red1', lty = 1, lwd = 2)
+                  })
+```
+
+### Pouvoir explicatif du modèle 
+
+Il faut rappeler qu'il n'y a pas de R² dans les modèles linéaires généralisés. Une façon d'analyser la qualité d'ajustement des modèles est de déterminer la distance entre le modèle candidat et le modèle nul (i.e. le modèle qui résume les données en un seul paramètre : la moyenne de $Y$. Il s'agit donc d'un modèle qui n’explique rien). Pour cela, nous calculons un *pseudo R²* en déterminant la distance entre la déviance du modèle nul et la déviance résiduelle du modèle candidat. 
+
+D'après le résumé du modèle, la déviance du modèle nul est de 105,85 et la déviance résiduelle est de 72,80. Afin d'estimer la déviance expliquée, nous avons utilisé la formule suivante :   
+$$Pseudo\:R^2=100\:.\:\frac{Null\:Deviance- Residual\:Deviance}{Null\:Deviance}$$
+On procède aux calculs de *pseudo R²*
+```{r deviance, include=TRUE}
+# Estimate of deviance explained
+(mod1$null.deviance-mod1$deviance)/mod1$null.deviance
+
+# Some others estimates of deviance explained - package 'rcompanion'
+nagelkerke(mod1)
+```
+
+Ainsi, l'estimation de la déviance expliquée est de 31%. 
+
+En utilisant d'autres $Pseudo\:R^2$ (package 'rcompanion'), on retrouve environ 31-33%.
+
+## VALIDATION DE LA MODELISATION
+
+Les hypothèses du modèle linéaire généralisé sont limitées : *indépendance des résidus*. Cependant, nous pouvons analyser les résidus afin d'identifier d'éventuelles tendances et vérifier la présence d'unités statistiques influentes (i.e. des observations ayant une contribution importante à la construction du modèle).
+
+### Analyse des résidus
+
+Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les GLM, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $X_s$ significatifs du modèle, on doit valider l'absence de tendance dans leur distribution. Si on constate une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les GLM, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
+
+```{r ResidNB, include=TRUE, fig.height=8, fig.width=6}
+
+resid<-residuals(mod1, type="pearson")
+
+par(mfrow=c(3,2))
+# Histogram
+hist(resid,col='dodgerblue3',xlab="residuals",main="")
+# Quantile-Quantile plot
+qqnorm(resid,pch=16,col='dodgerblue3',xlab='')
+qqline(resid,col='red',lwd=2)
+
+# residuals vs fitted
+plot(resid~fitted(mod1)
+      , col='dodgerblue3'
+      , pch=16)
+abline(h = 0)
+
+# residuals against Species factor
+boxplot(resid~ dataBombus$Species, 
+         varwidth = TRUE,
+         ylab = "Residuals",
+         xlab = "Species",
+         main = "")
+abline(h = 0)
+
+# residuals against Castes factor
+boxplot(resid~ dataBombus$Castes, 
+         varwidth = TRUE,
+         ylab = "Residuals",
+         xlab = "Castes",
+         main = "")
+abline(h = 0)
+
+
+# residuals against Number of mites
+plot(resid~ dataBombus$SQRTMites, 
+         pch=16,
+         col="dodgerblue3",
+         ylab = "Residuals",
+         xlab = "Number of Mites",
+         main = "")
+abline(h = 0)
+```
+
+Vous constatez que dans un GLM binomial, les graphiques des résidus sont difficiles à interpréter, sauf si vous avez beaucoup d'observations.
+
+### Vérification des individus influents
+```{r Contri, include=TRUE, fig.height=4, fig.width=4}
+par(mfrow = c(1, 1))
+plot(cooks.distance(mod1), type = "h", ylim = c(0, 1))
+abline(h = 1, col = 2,lwd = 3)
+```
+Conclure sur la présence d'individus influents.
+
+### Des simulations pour estimer la qualité d'ajustement du modèle
+
+Ci-dessous, un module de simulations afin d'identifier si le modèle GLM binomial candidat est capable de bien classer les individus (porteur ou non d'un acarinarium) au regard des données réelles. On identifie ainsi, les bien classés et les mal classés afin d'identifier si le modèle est 'valable'.
+```{r Simul, include=TRUE, fig.height=4, fig.width=4}
+
+# We could do a simulation
+N    <- nrow(dataBombus)
+Pi   <- fitted(mod1)
+dataBombus$Ysim <- rbinom(N, size = 1, Pi)
+# Classification table
+Z <- table(dataBombus$Acarinarium, dataBombus$Ysim) / N
+rownames(Z) <- c("Observed 0", "Observed 1")
+colnames(Z) <- c("Predicted 0", "Predicted 1")
+Z
+#Correctly classified:
+sum(diag(Z))
+
+# And repeat this 1000 times, store the results and calculate an average classification table
+
+Pi   <- fitted(mod1)
+N    <- nrow(dataBombus)					
+NSim <- 1000                           
+diagZ<- matrix(nrow = N, ncol = NSim)
+for (i in 1:NSim) {
+  Ysim <- rbinom(N, size = 1, Pi)
+  Z<- table(dataBombus$Acarinarium, Ysim) / N
+  diagZ[,i]<-sum(diag(Z))
+  }
+#Average rate of individuals well-classified by the model
+boxplot(diagZ[2,], col='dodgerblue3',ylab='#Rate of bumble bees well-classified')
+mean(diagZ[2,])
+```
+Environ 70% de bonnes prédictions !
+
+## CONCLUSIONS
+
+**Alors, quelles conclusions sur cette modélisation ? Bonne ou mauvaise ?**
