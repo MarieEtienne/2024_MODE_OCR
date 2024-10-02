@@ -44,12 +44,13 @@ refaire analyse de bases cf ASA
 
 ```{r}
 # Datatset import under the name of "data"
-data <- read.table("Bird_dataset.csv", sep="\t", header = TRUE)
+data <- read.table("Bird_dataset.csv", sep=";", header = TRUE)
 ```
 
 ```{r}
 # Charge the librairies
 library(ggplot2)
+library(corrplot)
 ```
 
 ```{r}
@@ -68,7 +69,7 @@ ggplot(data, aes(x="Year"))+
 
 
 
-I. ANOVA (Oceane  G.)
+# ANOVA (Oceane  G.)
 
 
 Analysis of variance (ANOVA) is one of the most widely used statistical methods in various disciplines. It allows to model the relationship between a quantitative dependent variable $Y$ according to the different modalities of one or more qualitative explanatory variables $Xs$.
@@ -76,13 +77,66 @@ Analysis of variance (ANOVA) is one of the most widely used statistical methods 
 We will performing an ANOVA to see the effect of qualitatives variables (state, habitat, species, year) on the quantitatives (initiation_date, number_fledged, nest_end_date) variables in the Bird_dataset.csv dataset.
 
   
-  A. Effect on Initiation_date
+## Effect on Initiation_date
+  
+```{r global data, echo=TRUE,include=TRUE}
+# Dataset : variables as factors
+
+data$State<-as.factor(data$State)
+data$Habitat<-as.factor(data$Habitat)
+data$Species<-as.factor(data$Species)
+data$Year<-as.factor(data$Year)
+str(data)
+
+# Checking for missing data
+
+colSums(is.na(data))  # No missing data here
+```
+  
+Before any modeling, we must explore the data in order to avoid possible errors. 
+Below we present the list of steps to follow before proceeding to the modeling:
+
+- 1: Check for the presence of outliers in $Y$ and the distribution of the 
+values of $Y$
+
+- 2: If $X$ is a **quantitative** explanatory variable, check for the presence 
+of outliers and the distribution of the values of $X$ **OR/AND** 
+If $X$ is a **qualitative** explanatory variable, analyze the number of 
+modalities and the number of individuals per modality
+
+- 3: Analyze the potential relationship between $Y$ and the $X_{s}$
+
+- 4: Check for the presence of possible interactions between the $X_{s}$
+
+- 5: Check for the presence of possible collinearity between the $X_{s}$
+  
+  
+### Outliers in $Y$ and distribution of values of $Y$
+
+```{r datahist, include=TRUE, fig.height=5, fig.width=5}
+par(mfrow=c(2,2))
+# Boxplot
+boxplot(data$Initiation_Date,col='dodgerblue3',ylab='Initiation date')
+# Cleveland plot
+dotchart(data$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation date')
+# Histogram
+hist(data$Initiation_Date,col='dodgerblue3',xlab="Initiation date",main="")
+# Quantile-Quantile plot
+qqnorm(data$Initiation_Date,pch=16,col='dodgerblue3',xlab='')
+qqline(data$Initiation_Date,col='red',lwd=2)
+```
+  
+  
+The different graphs show us no outliers for Initiation_Date. In addition, our 
+Y variable seems to follow a Normal Distribution.
   
   
   
-  B. Effect on Number_fledged
-
-
-
-  C. Effect on Nest_end_date
-
+  
+  
+  
+  
+  
+  
+  
+  
