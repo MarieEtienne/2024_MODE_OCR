@@ -172,7 +172,9 @@ ggcorrplot(
 
 Observation : we see that there is globally no differences in the mean of the groups. So we keep H0.
 
--   Second question :
+-   *Second question : we want to summarise the information depending on different factor.*
+
+Here, we summarise with the factor : Species.
 
 ```{r}
 ## Calculation of the mean of each variables depending on the Species
@@ -184,28 +186,85 @@ data_sp <- data |>
     Species
     ) |>
   dplyr::summarise(
+    count = n(),
     prop_Nest_Fate = sum(Nest_Fate) / length(Nest_Fate),
     mean_Init_Date = mean(Initiation_Date),
     mean_Number_Fledged = mean(Number_Fledged),
-    mean_Nest_End_Date = mean(Nest_End_Date)
+    mean_Nest_End_Date = mean(Nest_End_Date),
   )
 data_sp
 ```
 
 ```{r}
-### Formating the dataframe by keeping only the species for the moment. 
-data_sp <- as.data.frame(table(data$Species))
-data_sp <- as.data.frame(t(data_sp))
+data_summariser <-list()
+data_summariser$Species <- data_sp
+```
 
-### Rename the column of the dataframe
-colnames(data_sp) <- dplyr::slice(data_sp,1) # Retrive the first line containing the colnames. 
-data_sp <- data_sp[-1,] # Delete the first line. 
+Here, with the factor : Habitat
 
-rownames(data_sp) <- "n"
+```{r}
+## Calculation of the mean of each variables depending on the habitat
+data_hab <- data |>
+  dplyr::select(
+    Habitat,Nest_Fate,Initiation_Date, Number_Fledged, Nest_End_Date
+  )|>
+  dplyr::group_by(
+    Habitat
+    ) |>
+  dplyr::summarise(
+    count = n(),
+    prop_Nest_Fate = sum(Nest_Fate) / length(Nest_Fate),
+    mean_Init_Date = mean(Initiation_Date),
+    mean_Number_Fledged = mean(Number_Fledged),
+    mean_Nest_End_Date = mean(Nest_End_Date),
+  )
 
+data_summariser$Habitat <- data_hab 
+data_hab
+```
 
+Here, with the factor State :
 
+```{r}
+## Calculation of the mean of each variables depending on the state
+data_state <- data |>
+  dplyr::select(
+    State,Nest_Fate,Initiation_Date, Number_Fledged, Nest_End_Date
+  )|>
+  dplyr::group_by(
+    State
+    ) |>
+  dplyr::summarise(
+    count = n(),
+    prop_Nest_Fate = sum(Nest_Fate) / length(Nest_Fate),
+    mean_Init_Date = mean(Initiation_Date),
+    mean_Number_Fledged = mean(Number_Fledged),
+    mean_Nest_End_Date = mean(Nest_End_Date),
+  )
 
+data_summariser$State <- data_state
+data_state
+```
 
-data_sp
+Here with the County :
+
+```{r}
+## Calculation of the mean of each variables depending on the state
+data_county <- data |>
+  dplyr::select(
+    State, County, Nest_Fate,Initiation_Date, Number_Fledged, Nest_End_Date
+  )|>
+  dplyr::group_by(
+    State, County
+    ) |>
+  dplyr::summarise(
+    count = n(),
+    prop_Nest_Fate = sum(Nest_Fate) / length(Nest_Fate),
+    mean_Init_Date = mean(Initiation_Date),
+    mean_Number_Fledged = mean(Number_Fledged),
+    mean_Nest_End_Date = mean(Nest_End_Date),
+  )
+
+data_summariser$County <- data_county
+data_county
 ```
