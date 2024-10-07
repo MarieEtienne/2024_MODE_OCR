@@ -2,15 +2,14 @@
 editor: 
   markdown: 
     wrap: 72
+bibliography: references.bib execute: freeze: auto output: html_document: toc: true toc_float: true
 ---
 
 ------------------------------------------------------------------------
 
-title: "Modèles matriciels et applications" group: "Rudy, Tanguy, Manon,
-Garan, Anaëlle, Oceane, Victor"
+title: "Modèles matriciels et applications" group: "Rudy, Tanguy, Manon, Garan, Anaëlle, Oceane, Victor"
 
-bibliography: references.bib execute: freeze: auto output:
-html_document: toc: true toc_float: true ---
+bibliography: references.bib execute: freeze: auto output: html_document: toc: true toc_float: true ---
 
 # Ideas of modelisation :
 
@@ -28,15 +27,13 @@ Calcul
 
 Taux de succès Taux de survie
 
-voir si habitat préférentiel, région,… voir quelles facteurs expliquent
-taux de succès
+voir si habitat préférentiel, région,… voir quelles facteurs expliquent taux de succès
 
 voir si décalages entre dates de départ du nid -\> facteurs expliquant
 
 voir si habitat préferentiel
 
-MAIS ATTENTION à ne pas être biaisé : du genre que des oiseaux d’une
-certaines espèces ne soit présents que dans un habitat
+MAIS ATTENTION à ne pas être biaisé : du genre que des oiseaux d’une certaines espèces ne soit présents que dans un habitat
 
 refaire analyse de bases cf ASA
 
@@ -44,9 +41,7 @@ refaire analyse de bases cf ASA
 
 ## Import des données
 
-**Do not forget to set your working directory in the right place**
-**Menu : Session/Set Working Directory/Choose directory** *And indicate
-Git/2024_MODE_OCR*
+**Do not forget to set your working directory in the right place** **Menu : Session/Set Working Directory/Choose directory** *And indicate Git/2024_MODE_OCR*
 
 ```{r}
 # Datatset import under the name of "data"
@@ -74,15 +69,13 @@ head(data)
 
 ### Rudy part : Statistical tests
 
-In this part, several statistical tests are performed in order to answer
-questions.
+In this part, several statistical tests are performed in order to answer questions.
 
--   *First question : Does the number of fledged birs depend on the
-    species ?*
+-   *First question : Does the number of fledged birs depend on the species ?*
 
 H0 : there is no differences between species
 
-First, we observe the data with a boxplot
+First, we observe the data with a boxplot. There is no significant differences through the boxplots.
 
 ```{r}
 # 
@@ -97,11 +90,9 @@ ggplot(data, aes(x = Species,
     axis.text.x = element_text(size = 7,
                                angle = 45)
     )
-                 
-                 
 ```
 
-Then, we test the normality of the data :
+Then, we test the normality of the data. All the p-values are ranged in a dataframe.
 
 ```{r}
 data |>
@@ -117,8 +108,7 @@ data |>
   )
 ```
 
-Conclusion : each subset does not follow the normality. We can perform a
-U test (non parametric test) :
+Conclusion : each subset does not follow the normality. We can perform a U test (non parametric test) :
 
 ```{r}
 # Construction of an empty 8x8 dataframe. It will contains each p-value of the U test
@@ -157,7 +147,7 @@ for (sp1 in (1:(length(species)))){
 }
 ```
 
-Now, we can observe the correlation matrix here :
+Now, we can observe the p-values in the following matrix :
 
 ```{r}
 ggcorrplot(
@@ -165,13 +155,19 @@ ggcorrplot(
   lab = TRUE,
   lab_size = 3,
   show.diag = TRUE,
-  colors = c("tomato2", "white", "springgreen3"),
   type = "upper"
   ) +
   theme(
     axis.text.x = element_text(size = 8,
                                angle = 45),
     axis.text.y = element_text(size = 8)
-    )
+    ) +
+  scale_fill_gradient2(
+    low = "tomato2", 
+    high = "springgreen3", 
+    midpoint = 0.2) +
+  ggtitle("P-values of the correlation tests with the number of fledged birds as variable")
 
 ```
+
+Observation : we see that there is globally no differences in the mean of the groups. So we keep H0.
