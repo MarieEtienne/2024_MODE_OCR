@@ -171,3 +171,41 @@ ggcorrplot(
 ```
 
 Observation : we see that there is globally no differences in the mean of the groups. So we keep H0.
+
+-   Second question :
+
+```{r}
+## Calculation of the mean of each variables depending on the Species
+data_sp <- data |>
+  dplyr::select(
+    Species,Nest_Fate,Initiation_Date, Number_Fledged, Nest_End_Date
+  )|>
+  dplyr::group_by(
+    Species
+    ) |>
+  dplyr::summarise(
+    prop_Nest_Fate = sum(Nest_Fate) / length(Nest_Fate),
+    mean_Init_Date = mean(Initiation_Date),
+    mean_Number_Fledged = mean(Number_Fledged),
+    mean_Nest_End_Date = mean(Nest_End_Date)
+  )
+data_sp
+```
+
+```{r}
+### Formating the dataframe by keeping only the species for the moment. 
+data_sp <- as.data.frame(table(data$Species))
+data_sp <- as.data.frame(t(data_sp))
+
+### Rename the column of the dataframe
+colnames(data_sp) <- dplyr::slice(data_sp,1) # Retrive the first line containing the colnames. 
+data_sp <- data_sp[-1,] # Delete the first line. 
+
+rownames(data_sp) <- "n"
+
+
+
+
+
+data_sp
+```
