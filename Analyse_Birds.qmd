@@ -84,18 +84,18 @@ library(lattice)# Multipanel graphics
 
 # Analysing the relationship between nest fate and county, habitat, species, year, initiation date using a generalized linear model (GLM) with a binomial distribution
 
-## I. DATA EXPLORATION
+## I. Data Exploration
 
 Variables are :  
 
-- *Nest_Fate* : Response variable 
-- *County* : Covariate
-- *Habitat* : Covariate
-- *Species* : Covariate
-- *Year* : Covariate
-- *Initiation_Date* : Quantitative variable
+- *Nest_Fate* : Response variable, binary
+- *County* : qualitative explanatory variable
+- *Habitat* : qualitative explanatory variable
+- *Species* : qualitative explanatory variable
+- *Year* : qualitative explanatory variable
+- *Initiation_Date* : Quantitative explanatory variable
 
-**Aim of the study** : We want to model the faye of the nest as a response of the county, the habitat, the species, the year, the initiation date. We are looking for a model that could explain the dstribution of Nest fate. 
+**Aim of the study** : We want to model the faye of the nest as a response of the county, the habitat, the species, the year, the initiation date. We are looking for a model that could explain the distribution of Nest fate. 
 
 **Method** : Here our response variable is either a sucess or a failure. This response follows a binomial distribution with the probability density function $$P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}$$
 
@@ -115,10 +115,12 @@ Here we are checking the values of Y (the values of Nest Fate)
 table(data_Illinois$Nest_Fate)
 
 ```
+According to the results table, it appears that overall, there are roughly twice as many failures as successes.
+
 
 ### For quantitative Xs : outlier and distribution of $X$ values
 
-Here we have one quantitative $X$ variable. We check its distribution and if there is any outlier value. 
+Here we have one quantitative explanatory variable $X$. We check its distribution and if there is any outlier value. 
 
 ```{r dataCov, echo = FALSE, include=TRUE, fig.height=3, fig.width=8}
 par(mfrow=c(1,3))
@@ -133,10 +135,10 @@ qqnorm(data_Illinois$Initiation_Date,pch=16,col='dodgerblue3',xlab='')
 qqline(data_Illinois$Initiation_Date,col='red',lwd=2)
 ```
 
-We do no observe any outlier and it seems that the initiation date of the nesting period follows a normal distribution. 
+We do not observe any outliers and it seems that the initiation date of the nesting period follows a normal distribution. 
 
 
-### For each covariate $X$  : Modalities and number of individuals for each of them
+### For each qualitative explanatory variable $X$  : Modalities and number of individuals for each of them
 
 We need to analyse the modalities and the number of individuals for each modality. 
 
@@ -144,27 +146,44 @@ We need to analyse the modalities and the number of individuals for each modalit
 # Factor County
 summary(data_Illinois$County)
 
+# Spacer
+cat("\n\n")
+
 # Factor Habitat
 summary(data_Illinois$Habitat)
+
+# Spacer
+cat("\n\n")
 
 # Factor Species
 summary(data_Illinois$Species)
 
+# Spacer
+cat("\n\n")
+
 # Factor Year
 summary(data_Illinois$Year)
 ```
-
+The results tables provided by our script show different things. 
+First of all for the county variable we can observe that some counties have very little records. For example Carrol/Whiteside has 5 recors of nest while counties like Jo Daviess have 292 records. This could lead to mis-modelling so attention on the model results is necessary. 
+For habitat variable it seems that one habitat in particular (Pasture) has more records than the other.
+For the species variable, similarly to county variable, we observe that some species have more records than others. We observe the same for the year variable. 
 
 ### Relationships between Y and Xs ?
 
 We can then analyse graphically if we might have relationships between $Y$ and $Xs$. 
 
 ```{r datagraph, echo = FALSE, fig.height=4, fig.width=10}
-par(mfrow=c(1,3))
+par(mfrow=c(1,3), mar=c(5, 4, 4, 2) + 0.1) 
 
 # Initiation_Date
-plot(data_Illinois$Nest_Fate~data_Illinois$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation_Date',ylab='Nest_Fate')
-
+plot(data_Illinois$Nest_Fate ~ data_Illinois$Initiation_Date, 
+     pch=16, 
+     col='dodgerblue3',
+     xlab='Initiation_Date', 
+     ylab='Nest_Fate',
+     cex.lab=1.2,  
+     cex.axis=1.2)
 
 # Define the color palette
 color <- c('dodgerblue3', 'darkred', 'forestgreen', 'gold', 
@@ -175,52 +194,50 @@ color <- c('dodgerblue3', 'darkred', 'forestgreen', 'gold',
 # County
 mosaicplot(data_Illinois$Nest_Fate ~ data_Illinois$County, 
            col = color, 
-           main="Relationship Nest Fate & County")
+           main="", 
+           cex.axis=0.8,  
+           las=2)        
+title("Relationship Nest Fate & County", cex.main=1.2)  
+
 # Habitat
 mosaicplot(data_Illinois$Nest_Fate ~ data_Illinois$Habitat, 
            col = color[1:4],  
-           main = "Relationship Nest Fate & Habitat")
+           main="",  
+           cex.axis=0.8,
+           las=2)
+title("Relationship Nest Fate & Habitat", cex.main=1.2)  
 
 # Species
 mosaicplot(data_Illinois$Nest_Fate ~ data_Illinois$Species, 
            col = color[1:8],  
-           main = "Relationship Nest Fate & Species")
+           main="", 
+           cex.axis=0.8,
+           las=2)
+title("Relationship Nest Fate & Species", cex.main=1.2)  
 
 # Year
 mosaicplot(data_Illinois$Nest_Fate ~ data_Illinois$Year, 
            col = color[1:6],  
-           main = "Relationship Nest Fate & Year")
+           main="", 
+           cex.axis=0.8,
+           las=2)
+title("Relationship Nest Fate & Year", cex.main=1.2) 
 
 
 ```
-
+Looking at those graphs it doesn't seems like the initiation date, the county or the habitat has any effects on the nest fate. Maybe a little bit for county but the statistical analysis afterward will enable us to have more information on which varaible has an effect.  For the year and the species we might observe a little difference, but still really light. 
 
 ### Analysing interaction between Xs
 
-
-```{r, echo = FALSE}
-
-# Interactions entre County et Habitat avec Nest_Fate
-
-# Utilisation de la fonction plot pour créer un fond neutre
-plot(data_Illinois$Nest_Fate~data_Illinois$Habitat, type='n', ylab="Nest Fate", xlab="Habitat")
-
-# Ajout des points pour chaque County
-points(data_Illinois$Nest_Fate[data_Illinois$County=="Carroll"]~data_Illinois$Habitat[data_Illinois$County=="Carroll"], pch=16, cex=1, col='dodgerblue3')
-points(data_Illinois$Nest_Fate[data_Illinois$County=="Grundy"]~data_Illinois$Habitat[data_Illinois$County=="Grundy"], pch=17, cex=1, col='darkred')
-points(data_Illinois$Nest_Fate[data_Illinois$County=="Lee/Ogle"]~data_Illinois$Habitat[data_Illinois$County=="Lee/Ogle"], pch=18, cex=1, col='forestgreen')
-points(data_Illinois$Nest_Fate[data_Illinois$County=="Will"]~data_Illinois$Habitat[data_Illinois$County=="Will"], pch=19, cex=1, col='gold')
-
-
-```
-
+In any modelling approach there is a need to check for interactions between variables. In our study we judges that there is none. 
 
 ### Checking collinearity  between $Xs$
 
-To avoid multicollinearity in modeling, we need to analyze how the explanatory variables  $X_s$ are related. It is important to check for collinearity  as if some variables are correlated they mesure the same thing and therefore keeping both of them might lead to bad prediction.
+To avoid multicollinearity in modeling, we need to analyze how the explanatory variables  $X_s$ are related. It is important to check for collinearity. Indeed iff some variables are correlated they mesure the same thing and therefore keeping both of them might lead to bad prediction.
 
 ```{r datacolin, echo = FALSE, fig.height=4, fig.width=8}
-#  Vérification de la colinéarité entre variables catégorielles
+# Vérification de la colinéarité entre variables catégorielles
+
 # Tableau de contingence entre County et Habitat
 table(data_Illinois$County, data_Illinois$Habitat)
 
@@ -228,24 +245,38 @@ table(data_Illinois$County, data_Illinois$Habitat)
 # Tableau de contingence entre Species et Year
 table(data_Illinois$Species, data_Illinois$Year)
 
+# Tableau de contingence entre habitat et Species
+table(data_Illinois$Habitat, data_Illinois$Species)
+
 
 # Boxplots pour vérifier la relation entre Initiation_Date et les variables catégorielles
-par(mfrow=c(2,2))
 
 # Initiation_Date et County
-boxplot(data_Illinois$Initiation_Date ~ data_Illinois$County, xlab="County", ylab="Initiation Date")
+boxplot(data_Illinois$Initiation_Date ~ data_Illinois$County, 
+        xlab="County", 
+        ylab="Initiation Date", 
+        cex.axis=0.8)          
 
 # Initiation_Date et Habitat
-boxplot(data_Illinois$Initiation_Date ~ data_Illinois$Habitat, xlab="Habitat", ylab="Initiation Date")
+boxplot(data_Illinois$Initiation_Date ~ data_Illinois$Habitat, 
+        xlab="Habitat", 
+        ylab="Initiation Date", 
+        cex.axis=0.8)         
 
 # Initiation_Date et Species
-boxplot(data_Illinois$Initiation_Date ~ data_Illinois$Species, xlab="Species", ylab="Initiation Date")
+boxplot(data_Illinois$Initiation_Date ~ data_Illinois$Species, 
+        xlab="Species", 
+        ylab="Initiation Date", 
+        cex.axis=0.4)         
 
 # Initiation_Date et Year
-boxplot(data_Illinois$Initiation_Date ~ data_Illinois$Year, xlab="Year", ylab="Initiation Date")
-
+boxplot(data_Illinois$Initiation_Date ~ data_Illinois$Year, 
+        xlab="Year", 
+        ylab="Initiation Date", 
+        cex.axis=0.8)         
 
 ```
+Here it seems that there is a strong collinearity between county and habitat as well as between species and year and also between species and habitat. Therefore, we are not going to keep county, habitat and year as explanatory variables in our model. 
 
 
 ## II. Statistical Analysis
@@ -253,16 +284,12 @@ boxplot(data_Illinois$Initiation_Date ~ data_Illinois$Year, xlab="Year", ylab="I
 ### Model building up
 
 
-   
-Because our response variable is a binary variable that follows a binomial distribution we have a link fucntion : the logit. 
+Because our response variable is a binary variable that follows a binomial distribution we have a link function : the logit. 
 
  
 ```{r fullmodel,echo = FALSE}
 # Model formulation
-mod1<-glm(Nest_Fate~ County
-        + Habitat
-        + Species
-        + Year
+mod1<-glm(Nest_Fate~Species
         + Initiation_Date
         ,data=data_Illinois
         ,family=binomial(link="logit"))
@@ -270,110 +297,74 @@ mod1<-glm(Nest_Fate~ County
 drop1(mod1,test="Chi")
 ```
 
-
-````{r, echo = FALSE}
-# Modèle sans Initiation_Date
-mod2 <- glm(Nest_Fate ~ County 
-            + Habitat 
-            + Species 
-            + Year, 
-            data = data_Illinois, 
-            family = binomial(link = "logit"))
-
-# Vérification des résultats après suppression
-drop1(mod2, test = "Chi")
-
-````
-```{r}
-# Modèle sans Initiation_Date et sans county
-mod3 <- glm(Nest_Fate ~ Habitat 
-            + Species 
-            + Year, 
-            data = data_Illinois, 
-            family = binomial(link = "logit"))
-
-# Vérification des résultats après suppression
-drop1(mod3, test = "Chi")
-```
-```{r}
-# Modèle sans Initiation_Date, sans county et sans habitat
-mod4 <- glm(Nest_Fate ~ Species 
-            + Year, 
-            data = data_Illinois, 
-            family = binomial(link = "logit"))
-
-# Vérification des résultats après suppression
-drop1(mod4, test = "Chi")
-```
+The results table shows that Initiation_Date is not significant. However the AIC with Initiation_Date is better which means we should keep this variable despite its lack of significance.
 
 
-### Analysing model coefficient 
+
+### Model coefficient and its equation
 ```{r, echo = FALSE}
 # Coefficients of the model
-summary(mod4)
+summary(mod1)
 
 ```
+$$\log\left(\frac{p}{1-p}\right) = -1.097853 + 0.189410 \cdot \text{Species}_{\text{Dickcissel}} - 0.382551 \cdot \text{Species}_{\text{Eastern Meadowlark}} + 0.664586 \cdot \text{Species}_{\text{Grasshopper Sparrow}} - 0.327407 \cdot \text{Species}_{\text{Henslow's Sparrow}} - 0.655641 \cdot \text{Species}_{\text{Savannah Sparrow}} + 0.180147 \cdot \text{Species}_{\text{Vesper Sparrow}} + 0.961508 \cdot \text{Species}_{\text{Western Meadowlark}} + 0.000686 \cdot \text{Initiation\_Date}$$
+
+
+where $p$ is the probability that the event is true. 
+
+
+- **Intercept (-1.097853)**: The value of the log-odds when all explanatory variables are zero.
+- **Species Dickcissel (0.189410)**: A positive coefficient, but not significant (\(p = 0.56565\)), indicating that the effect of this species on the chances of nest success is not statistically significant.
+- **Species Eastern Meadowlark (-0.382551)**: A negative coefficient, not significant (\(p = 0.25424\)).
+- **Species Grasshopper Sparrow (0.664586)**: A positive and significant coefficient (\(p = 0.03505\)), suggesting that this species increases the chances of nest success.
+- **Species Henslow's Sparrow (-0.327407)**: A negative coefficient, not significant (\(p = 0.77686\)).
+- **Species Savannah Sparrow (-0.655641)**: A negative coefficient, not significant (\(p = 0.42549\)).
+- **Species Vesper Sparrow (0.180147)**: A positive coefficient, not significant (\(p = 0.66871\)).
+- **Species Western Meadowlark (0.961508)**: A positive and significant coefficient (\(p = 0.02092\)).
+- **Initiation Date (0.000686)**: A positive coefficient, but not significant (\(p = 0.86557\)), indicating that it does not have a statistically significant effect on nest success.
 
 
 
 ### Explanation provided by the model
 
-On procède aux calculs de *pseudo R²*
+One way to evaluate the goodness of fit for our models is to assess the difference between our model and the null model (which summarizes the data with a single parameter: the mean of𝑌)
+Y). This null model essentially explains nothing. 
+To do so we calculate a parameter, $${pseudo}-R^2$$ by examining the distance between the deviance of the null model and the residual deviance of our model.
+
 ```{r deviance, echo = FALSE}
 # Estimate of deviance explained
-(mod4$null.deviance-mod4$deviance)/mod4$null.deviance
+(mod1$null.deviance-mod1$deviance)/mod1$null.deviance
 
 # Some others estimates of deviance explained - package 'rcompanion'
-nagelkerke(mod4)
+nagelkerke(mod1)
 ```
-
-5%
+According to this table, the estimate of the explained deviance is 2.9% which is very low. 
 
 ## III. Model validation
 
 
-### Analysing residuals
+### Checking for influential individuals
 
-
-
-```{r ResidNB, echo = FALSE, fig.height=8, fig.width=6}
-
-resid<-residuals(mod4, type="pearson")
-
-par(mfrow=c(3,2))
-# Histogram
-hist(resid,col='dodgerblue3',xlab="residuals",main="")
-# Quantile-Quantile plot
-qqnorm(resid,pch=16,col='dodgerblue3',xlab='')
-qqline(resid,col='red',lwd=2)
-
-# residuals vs fitted
-plot(resid~fitted(mod4)
-      , col='dodgerblue3'
-      , pch=16)
-abline(h = 0)
-
-
-```
-
-
-### Checking for influent individuals
+We make sure that there is no influential individuals. 
 
 ```{r Contri, echo = FALSE, fig.height=4, fig.width=4}
 par(mfrow = c(1, 1))
 plot(cooks.distance(mod1), type = "h", ylim = c(0, 1))
 abline(h = 1, col = 2,lwd = 3)
 ```
-Conclure sur la présence d'individus influents.
+
+The graph does not show any influential individuals. 
+
 
 ### Prediction with different data
 
+Here we want to assess if our model is able to well-classify nest based on our data. 
 
 ```{r Simul, echo = FALSE, fig.height=4, fig.width=4}
 
 # We could do a simulation
 N    <- nrow(data_Illinois)
-Pi   <- fitted(mod4)
+Pi   <- fitted(mod1)
 data_Illinois$Ysim <- rbinom(N, size = 1, Pi)
 # Classification table
 Z <- table(data_Illinois$Nest_Fate, data_Illinois$Ysim) / N
@@ -385,7 +376,7 @@ sum(diag(Z))
 
 # And repeat this 1000 times, store the results and calculate an average classification table
 
-Pi   <- fitted(mod4)
+Pi   <- fitted(mod1)
 N    <- nrow(data_Illinois)					
 NSim <- 1000                           
 diagZ<- matrix(nrow = N, ncol = NSim)
@@ -398,6 +389,12 @@ for (i in 1:NSim) {
 boxplot(diagZ[2,], col='dodgerblue3',ylab='#Rate of nest fate well-classified')
 mean(diagZ[2,])
 ```
+Here we have 58% of good predictions, which is somewhat below the common threshold of 70% for a model to be considered good. This suggests that the model may need improvement.
+
+This result is not surprising given our initial data. Because they are from different studies some variables barely contains some species or years, etc... This could explain while our model is not suitable. 
+
+
+
 
 
 
