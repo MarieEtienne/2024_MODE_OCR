@@ -427,7 +427,7 @@ boxplot(dataLM$body_mass~dataLM$sex, varwidth = TRUE, ylab = "body mass", xlab =
 
 Variable that seems to influence body mass: culmne length, flipper length, delta 15N, species and island
 
-```{r colinearity, include=TRUE, fig.height=5, fig.width=5}
+```{r colinearity covariables, include=TRUE, fig.height=5, fig.width=5}
 # Checking collinearity between continuous independent variables
 # We represent plot for each X continuous covariate pair.
 plot(dataLM %>% select_if(is.numeric) %>% select(-body_mass),pch=16,col='dodgerblue3')
@@ -435,4 +435,54 @@ plot(dataLM %>% select_if(is.numeric) %>% select(-body_mass),pch=16,col='dodgerb
 corrplot.mixed(cor(dataLM %>% select_if(is.numeric)%>% select(-body_mass)),upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
 M<-dataLM %>% select_if(is.numeric) %>% select(-body_mass)
 ```
+No colinearity detected between the covariables.
 
+```{r colinearity cofactors,include=TRUE, fig.height=15, fig.width=12}
+# Checking collinearity between cofactors and covariables
+par(mfrow=c(5,4))
+#Culmen length and species
+boxplot(dataLM$culmen_length~dataLM$species, varwidth = TRUE, ylab = "Culmen length", xlab = "Species", col='grey', main = "")
+#Culmen length and island
+boxplot(dataLM$culmen_length~dataLM$island, varwidth = TRUE, ylab = "Culmen length", xlab = "Island", col='grey', main = "")
+#Culmen length and sex
+boxplot(dataLM$culmen_length~dataLM$sex, varwidth = TRUE, ylab = "Culmen length", xlab = "Sex", col='grey', main = "")
+#Culmen length and clutch completion
+boxplot(dataLM$culmen_length~dataLM$clutch_completion, varwidth = TRUE, ylab = "Culmen length", xlab = "Clutch completion", col='grey', main = "")
+
+#Culmen depth and species
+boxplot(dataLM$culmen_depth~dataLM$species, varwidth = TRUE, ylab = "Culmen depth", xlab = "Species", col='grey', main = "")
+#Culmen depth and island
+boxplot(dataLM$culmen_depth~dataLM$island, varwidth = TRUE, ylab = "Culmen depth", xlab = "Island", col='grey', main = "")
+#Culmen depth and sex
+boxplot(dataLM$culmen_depth~dataLM$sex, varwidth = TRUE, ylab = "Culmen depth", xlab = "Sex", col='grey', main = "")
+#Culmen depth and clutch completion
+boxplot(dataLM$culmen_depth~dataLM$clutch_completion, varwidth = TRUE, ylab = "Culmen depth", xlab = "Clutch completion", col='grey', main = "")
+
+#Flipper length and species
+boxplot(dataLM$flipper_length~dataLM$species, varwidth = TRUE, ylab = "Flipper length", xlab = "Species", col='grey', main = "")
+#Flipper length and island
+boxplot(dataLM$flipper_length~dataLM$island, varwidth = TRUE, ylab = "Flipper length", xlab = "Island", col='grey', main = "")
+#Flipper length and sex
+boxplot(dataLM$flipper_length~dataLM$sex, varwidth = TRUE, ylab = "Flipper length", xlab = "Sex", col='grey', main = "")
+#Flipper length and clutch completion
+boxplot(dataLM$flipper_length~dataLM$clutch_completion, varwidth = TRUE, ylab = "Flipper length", xlab = "Clutch completion", col='grey', main = "")
+
+#delta 15N and species
+boxplot(dataLM$delta_15_N~dataLM$species, varwidth = TRUE, ylab = "delta 15N", xlab = "Species", col='grey', main = "")
+#delta 15N and island
+boxplot(dataLM$delta_15_N~dataLM$island, varwidth = TRUE, ylab = "delta 15N", xlab = "Island", col='grey', main = "")
+#delta 15N and sex
+boxplot(dataLM$delta_15_N~dataLM$sex, varwidth = TRUE, ylab = "delta 15N", xlab = "Sex", col='grey', main = "")
+#delta 15N and clutch completion
+boxplot(dataLM$delta_15_N~dataLM$clutch_completion, varwidth = TRUE, ylab = "delta 15N", xlab = "Clutch completion", col='grey', main = "")
+
+#delta 13C and species
+boxplot(dataLM$delta_13_C~dataLM$species, varwidth = TRUE, ylab = "delta 13C", xlab = "Species", col='grey', main = "")
+#delta 13C and island
+boxplot(dataLM$delta_13_C~dataLM$island, varwidth = TRUE, ylab = "delta 13C", xlab = "Island", col='grey', main = "")
+#delta 13C and sex
+boxplot(dataLM$delta_13_C~dataLM$sex, varwidth = TRUE, ylab = "delta 13C", xlab = "Sex", col='grey', main = "")
+#delta 13C and clutch completion
+boxplot(dataLM$delta_13_C~dataLM$clutch_completion, varwidth = TRUE, ylab = "delta 13C", xlab = "Clutch completion", col='grey', main = "")
+
+```
