@@ -86,17 +86,15 @@ First, we observe the data with a boxplot. There is no significant
 differences through the boxplots.
 
 ```{r}
-# 
-ggplot(data, aes(x = Species, 
-                 y = Number_Fledged
-                 )
+ggplot(data = data, 
+       aes(x = Habitat, 
+           y = Nest_End_Date)
        ) +
-  geom_boxplot(outlier.shape = 10, 
-               fill = "tomato"
-               ) +
+  geom_boxplot(aes(fill = Habitat)) +
+  ggtitle("Nest_End_Date depending on the Habitat")
   theme(
-    axis.text.x = element_text(size = 7,
-                               angle = 45)
+    axis.text.x = element_blank(),
+    plot.title = element_text(face = "bold")
     )
 ```
 
