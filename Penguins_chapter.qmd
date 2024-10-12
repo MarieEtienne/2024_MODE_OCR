@@ -13,7 +13,7 @@ markdown: \
 wrap: 72\
 ---
 
-## Study context
+# Study context
 
 This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#column_name). The dataset was find on kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv
 
@@ -30,14 +30,16 @@ This document is a report on the analysis of a dataset on penguins. This dataset
 
 library(factoextra) # for data visualization
 library(FactoMineR) # for PCA
+library(MASS)       # for model selection
 library(tidyverse)  # for data manipulation
 library(dplyr)      # for data manipulation
 library(ggplot2)    # for data visualization
+library(corrplot)   # for correlation test
 
 # On a vraiment besoin d'importer dplyr et ggplot2, alors qu'on a deja importer tidyverse ?
 ```
 
-## Dataset presentation {#column_name}:
+# Dataset presentation {#column_name}:
 
 **Columns name :**
 
@@ -300,7 +302,7 @@ anova3
 
 Significance tests confirm the trends seen by the eye.
 
-# Which parameters influence the body mass
+# Model of the body mass
 The aim of this part is to determine wich variable influence the body mass of the penguins.
 ```{r data preparation}
 #selection of the interesting varaibles
@@ -324,8 +326,9 @@ dataLM<-dataLM %>%
 
 summary(dataLM)
 ```
-## Exploration of the data - abberant values
+## Exploration of the data 
 
+- abberant values
 ```{r body mass, include=TRUE, fig.height=6, fig.width=6}
 par(mfrow=c(2,2))
 # Boxplot
@@ -427,6 +430,7 @@ boxplot(dataLM$body_mass~dataLM$sex, varwidth = TRUE, ylab = "body mass", xlab =
 
 Variable that seems to influence body mass: culmne length, flipper length, delta 15N, species and island
 
+- Colinearity
 ```{r colinearity covariables, include=TRUE, fig.height=5, fig.width=5}
 # Checking collinearity between continuous independent variables
 # We represent plot for each X continuous covariate pair.
@@ -486,3 +490,44 @@ boxplot(dataLM$delta_13_C~dataLM$sex, varwidth = TRUE, ylab = "delta 13C", xlab 
 boxplot(dataLM$delta_13_C~dataLM$clutch_completion, varwidth = TRUE, ylab = "delta 13C", xlab = "Clutch completion", col='grey', main = "")
 
 ```
+
+## Statistics analysis - Model selection
+
+- Selection of the best model "by hand"
+```{r full model}
+modlm<-lm(body_mass ~ species + island + clutch_completion + culmen_length + culmen_depth + flipper_length + sex + delta_15_N + delta_13_C,data=dataLM) #full model
+drop1(modlm,test="F") #test significativté des variables avec test fischer
+```
+Exclusion of the variable "island", because it is the non-significant variable with the highest p-value, in the model and test again for variables' significance.
+```{r model2}
+modlm2<-lm(body_mass ~ species + clutch_completion + culmen_length + 
+    culmen_depth + flipper_length + sex + delta_15_N + delta_13_C, data=dataLM)
+drop1(modlm2,test="F")
+```
+Exclusion of the variable "clutch_completion", because it is non-significant, in the model and test again for variables' significance.
+
+```{r model3}
+modlm3<-lm(body_mass ~ species + culmen_length + 
+    culmen_depth + flipper_length + sex + delta_15_N + delta_13_C, data=dataLM)
+drop1(modlm3,test="F")
+```
+All the variable in the model are significant, so we keep all of them in our final model. The best model is thus: body_mass ~ species + culmen_length + culmen_depth + flipper_length + sex + delta_15_N + delta_13_C
+
+```{r}
+summary(modlm3)
+```
+
+- Selection of the best model with the AIC criterion
+```{r model selection AIC}
+modfinal<-stepAIC(modlm,direction="both")
+summary(modfinal)
+```
+With this method, the best model includes the variable "clutch completion", however, it's not significant so it confirms our first model selection.
+
+Finaly, the model can be written as :
+
+$$ Body\:Mass = 1467.1\:+\:(Species_{Adeliae} = 0 \:;\:Species_{Pygoscelis antarctica} = -245.1^{**}\:;\:Species_{Pygoscelis papua} = 882.1^{***})$$
+$$ +\:17.1^{*NS*}. Culmen\:Length\:+\:61.6^{**}. Culmen\:Depth\:+\:17.8^{***}. Flipper\:Length $$
+$$ + (Sex_{Female}= 0\:;\: Sex_{Male}=417.9^{***})\:-\:164.3^{***}. Delta\:15N\:+\:65.2^{*}. Delta\:13C)$$
+
+The model explain 88% of the body mass variance.
