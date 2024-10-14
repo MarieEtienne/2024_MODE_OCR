@@ -45,7 +45,7 @@ library(ggplot2)
 
 ### a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$ (Giu)
 
-site ggplot2 : https://r4ds.hadley.nz/data-visualize 
+site ggplot2 : https://r4ds.hadley.nz/data-visualize
 
 La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
 
@@ -61,7 +61,7 @@ ggplot(data = dataAnts, aes(y = Nsp))+
   geom_boxplot()+
   labs(y = "richesse spécifique")+
   theme(
-    panel.background = element_rect(fill="lightgrey"),
+    panel.background = element_rect(fill="white"),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     plot.margin = margin(10,20,10,20),
@@ -69,9 +69,21 @@ ggplot(data = dataAnts, aes(y = Nsp))+
     axis.ticks.x = element_blank()
   )
 
+# Cleveland plot 
+ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
+  geom_jitter(width = 0.1, size = 3, color = "blue")+
+  theme(
+    panel.background = element_rect(fill="white"),
+    panel.grid.major = element_rect(),
+    panel.grid.minor = element_blank(),
+    plot.margin = margin(10,20,10,20),
+  )
+  
+  
+  
+
 
 ```
-
 
 **Distribution des valeurs :** analyser la distribution des valeurs de $Y$ permet d'identifier *a priori* la loi de probabilité qui expliquera au mieux les processus écologiques en cours. Cela est d'autant plus intéressant si les données suggèrent une relation non linéaire ou asymétrique.
 
