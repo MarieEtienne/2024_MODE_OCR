@@ -56,16 +56,16 @@ library(ggplot2)
 
 ```{r}
 # Datatset import under the name of "data"
-data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE, stringsAsFactors = TRUE)
-data$Nest_Fate <- as.factor(data$Nest_Fate)
-data$Year <- as.factor(data$Year)
+dataBirds <- read.csv("Bird_dataset.csv", sep=";", header = TRUE, stringsAsFactors = TRUE)
+dataBirds$Nest_Fate <- as.factor(dataBirds$Nest_Fate)
+dataBirds$Year <- as.factor(dataBirds$Year)
 #Verification de la presence de valeurs manquantes
-colSums(is.na(data))
+colSums(is.na(dataBirds))
 ```
 
 ```{r}
 # View the firsts lignes of the dataset
-head(data)
+head(dataBirds)
 ```
 
 ## Data exploration
@@ -74,7 +74,7 @@ head(data)
 
 ```{r}
 # Number of 0 and 1 in the response variable
-table(data$Nest_Fate)
+table(dataBirds$Nest_Fate)
 ```
 
 We have approximately 66/34% repartition which is good enough to extract
@@ -82,29 +82,29 @@ variance from the dataset
 
 ```{r}
 #Cleveland plot
-dotchart(data$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation_Date')
-dotchart(data$Nest_End_Date,pch=16,col='dodgerblue3',xlab='Nest_End_Date')
+dotchart(dataBirds$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation_Date')
+dotchart(dataBirds$Nest_End_Date,pch=16,col='dodgerblue3',xlab='Nest_End_Date')
 
 #Histogram
-hist(data$Initiation_Date,col='dodgerblue3',xlab="Initiation_Date",main="")
-hist(data$Nest_End_Date,col='dodgerblue3',xlab="Nest_End_Date",main="")
+hist(dataBirds$Initiation_Date,col='dodgerblue3',xlab="Initiation_Date",main="")
+hist(dataBirds$Nest_End_Date,col='dodgerblue3',xlab="Nest_End_Date",main="")
 
 # Quantile-Quantile plot
-qqnorm(data$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation_Date')
-qqline(data$Initiation_Date,col='red',lwd=2)
-qqnorm(data$Nest_End_Date,pch=16,col='dodgerblue3',xlab='Nest_End_Date')
-qqline(data$Nest_End_Date,col='red',lwd=2)
+qqnorm(dataBirds$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation_Date')
+qqline(dataBirds$Initiation_Date,col='red',lwd=2)
+qqnorm(dataBirds$Nest_End_Date,pch=16,col='dodgerblue3',xlab='Nest_End_Date')
+qqline(dataBirds$Nest_End_Date,col='red',lwd=2)
 ```
 
 ```{r}
 # Analyse par variables qualitatives du nombres de modalites et du nombre d'individus par modalite
 
-summary(data$State)
-summary(data$County)
-summary(data$Habitat)
-summary(data$Species)
-summary(data$Year)
-summary(data$Nest_Fate)
+summary(dataBirds$State)
+summary(dataBirds$County)
+summary(dataBirds$Habitat)
+summary(dataBirds$Species)
+summary(dataBirds$Year)
+summary(dataBirds$Nest_Fate)
 
 ```
 
@@ -113,14 +113,14 @@ avons tres/trop peu de donnees
 
 ```{r}
 #Analyse de relation potentielle entre Number fledged et nos variables explicatives
-plot(data$Number_Fledged~data$Habitat,pch=16,col='dodgerblue3',xlab='Habitat',ylab='Number Fledged')
-plot(data$Number_Fledged~data$County,pch=16,col='dodgerblue3',xlab='County',ylab='Number Fledged')
-plot(data$Number_Fledged~data$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation Date',ylab='Number Fledged')
-plot(data$Number_Fledged~data$Nest_Fate,pch=16,col='dodgerblue3',xlab='Nest fate',ylab='Number Fledged')
-plot(data$Number_Fledged~data$Nest_End_Date,pch=16,col='dodgerblue3',xlab='Nest end date', ylab='Number Fledged')
-plot(data$Number_Fledged~data$State,pch=16,col='dodgerblue3',xlab='State',ylab='Number Fledged')
-plot(data$Number_Fledged~data$Year,pch=16,col='dodgerblue3',xlab='Year',ylab='Number Fledged')
-plot(data$Number_Fledged~data$Species,pch=16,col='dodgerblue3',xlab='Species',ylab='Number Fledged')
+plot(dataBirds$Number_Fledged~dataBirds$Habitat,pch=16,col='dodgerblue3',xlab='Habitat',ylab='Number Fledged')
+plot(dataBirds$Number_Fledged~dataBirds$County,pch=16,col='dodgerblue3',xlab='County',ylab='Number Fledged')
+plot(dataBirds$Number_Fledged~dataBirds$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation Date',ylab='Number Fledged')
+plot(dataBirds$Number_Fledged~dataBirds$Nest_Fate,pch=16,col='dodgerblue3',xlab='Nest fate',ylab='Number Fledged')
+plot(dataBirds$Number_Fledged~dataBirds$Nest_End_Date,pch=16,col='dodgerblue3',xlab='Nest end date', ylab='Number Fledged')
+plot(dataBirds$Number_Fledged~dataBirds$State,pch=16,col='dodgerblue3',xlab='State',ylab='Number Fledged')
+plot(dataBirds$Number_Fledged~dataBirds$Year,pch=16,col='dodgerblue3',xlab='Year',ylab='Number Fledged')
+plot(dataBirds$Number_Fledged~dataBirds$Species,pch=16,col='dodgerblue3',xlab='Species',ylab='Number Fledged')
 
 ```
 
@@ -134,15 +134,26 @@ annees c est l hecatombe \> forte variabilite par an \> facteur
 aleatoire ? Species \> Disparite en fonction des especes mais pas de
 reelle difference significative
 
-Analyse des interactions entre les variables explicatives
+
 
 ```{r}
 
-plot(data$Number_Fledged~data$Habitat,type='n',ylab = "Number Fledged",xlab="Habitat")
-points(data$Number_Fledged[data$species=="Bobolink"]~data$Habitat[data$Species=="Bobolink"],pch=16,cex=1,col='dodgerblue3')
-points(data$Number_Fledged[data$Species=="Western Meadowlark"]~data$Habitat[data$Species=="Western Meadowlark"],pch=17,cex=1,col='darkred')
+# Analyse colinearite entre les variables explicatives
 
+table(dataBirds$Species,dataBirds$Habitat)
+table(dataBirds$Species,dataBirds$County)
+table(dataBirds$Species,dataBirds$Year)
+
+boxplot(dataBirds$Initiation_Date~dataBirds$Species, varwidth = TRUE, ylab = "Initiaition Date", xlab = "Species",col=c('dodgerblue3','darkred'), main = "")
+boxplot(dataBirds$Initiation_Date~dataBirds$Year, varwidth = TRUE, ylab = "Initiaition Date", xlab = "Year",col=c('dodgerblue3','darkred'), main = "")
+
+boxplot(dataBirds$Nest_End_Date~dataBirds$Species, varwidth = TRUE, ylab = "Initiaition Date", xlab = "Species",col=c('dodgerblue3','darkred'), main = "")
+boxplot(dataBirds$Nest_End_Date~dataBirds$Year, varwidth = TRUE, ylab = "Initiaition Date", xlab = "Year",col=c('dodgerblue3','darkred'), main = "")
 
 
 ```
+
+
+Analyse :
+Pour les Initiation date et les end date en fonction des annees et des especes: On ne note pas de colinearite a vu d'oeil
 
