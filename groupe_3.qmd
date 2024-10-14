@@ -23,17 +23,37 @@ dataAnts$Location<-as.factor(dataAnts$Location)
 str(dataAnts)
 ```
 
+<<<<<<< HEAD
+-   **Présentation de l'article**
+=======
 -   **Article, auteur, journal, référence**
+>>>>>>> cf0fd880ec180f7fae55fbd2da435da211df580f
 
 Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604–1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
 
--   Contexte Biologique
+-   **Contexte Biologique**
 
-Gotelli et Ellison sont deux écologues, le premier étant spécialisé sur des questions d'organisation des communautés animales et végétales, le second sur la désintégration et le réassemblage des écosystèmes suite à des perturbations naturelles et anthropiques. Ils se sont ici intéressés à la richesse spécifique chez les fourmis de l'Etat de la Nouvelle-Angleterre au Nord-Est des Etats-Unis. Leur étude a été réalisée sur 22 sites où, pour chacun, 25 pièges ont été placés dans une tourbière ombrotrophe et 25 dans la forêt environnante. Les espèces de fourmis contenues dans les pièges sont par la suite identifiées en laboratoire et, pour un site et un habitat donnés, ils ont calculé la richesse spécifique (nombre total d'espèces présentes).
+Gotelli et Ellison sont deux écologues, le premier étant spécialisé sur des questions d'organisation des communautés animales et végétales, le second sur la désintégration et le réassemblage des écosystèmes suite à des perturbations naturelles et anthropiques. Ils se sont ici intéressés à l'influence du gradient latitudinal sur la richesse spécifique chez les fourmis de l'Etat de la Nouvelle-Angleterre au Nord-Est des Etats-Unis. Leur étude a été réalisée sur 22 sites où, pour chacun, 25 pièges ont été placés dans une tourbière ombrotrophe et 25 dans la forêt environnante. Les espèces de fourmis contenues dans les pièges sont par la suite identifiées en laboratoire et, pour un site et un habitat donnés, ils ont calculé la richesse spécifique (nombre total d'espèces présentes).
 
-Question de recherche
+-   **Données et variables**
 
--   données et variables
+Les variables utilisées sont :\
+- *Site* correspondant au nom du site échantillonné\
+- *Latitude* : la latitude du site, variable quantitative.\
+- *Altitude* = l'altitude du site, variable quantitative.\
+- *Area* = la superficie de la tourbière du site, variable quantitative.\
+- *Location* = la localisation des pièges ("Bog" ou "Forest"), variable qualitative.\
+- *Nsp* = richesse spécifique des fourmis, variable réponse.
+
+-   **Question de recherche**
+
+Parmi les trois questions que se posent Gotelli et Ellison dans cette étude, on s'intéresse ici aux deux première :
+
+1\) La densité des espèces est-elle en corrélation avec la latitude sur une étendue latitudinale aussi étroite ?
+
+2\) Le gradient latitudinal persiste-t-il après un contrôle statistique des différences entre les sites dans la composition de la végétation ?
+
+En d'autres termes : quelles sont les variables quantitatives et qualitatives qui déterminent la richesse spécifique des fourmis dans les tourbières du New-England ?
 
 -   **Quel modèle et pourquoi ?**
 
