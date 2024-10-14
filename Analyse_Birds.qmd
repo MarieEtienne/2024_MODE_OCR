@@ -1,123 +1,475 @@
 ---
-
-title: "Modèles matriciels et applications"
-group: "Rudy, Tanguy, Manon, Garan, Anaëlle, Oceane, Victor" 
-
-bibliography: references.bib
+title: "Modèles matriciels et applications" 
+group: "Rudy, Tanguy, Manon, Garan, Anaëlle, Oceane, Victor"
+editor: 
+  markdown: 
+    wrap: 72
+bibliography: references.bib 
 execute: 
-  freeze: auto
-output: 
-  html_document:
-   toc: true
-   toc_float: true
+  freeze: auto 
+output: html_document
+toc: true 
+toc_float: true
 ---
 
-Le lien du site : https://zenodo.org/records/8251495 
+# Ideas of modelisation :
 
+Le lien du site : https://zenodo.org/records/8251495
 
-Pistes 
+-   Océane : ANOVA
 
-Calcul 
+-   Manon : ACM
 
-Taux de succès 
-Taux de survie
+-   Rudy : Number_Fledged
 
-voir si habitat préférentiel, région,…
-voir quelles facteurs expliquent taux de succès
+Pistes
 
-voir si décalages entre dates de départ du nid -> facteurs expliquant 
+Calcul
 
-voir si habitat préferentiel 
+Taux de succès Taux de survie
 
-MAIS ATTENTION à ne pas être biaisé : du genre que des oiseaux d’une certaines espèces ne soit présents que dans un habitat
+voir si habitat préférentiel, région,… voir quelles facteurs expliquent
+taux de succès
 
-refaire analyse de bases cf ASA 
+voir si décalages entre dates de départ du nid -\> facteurs expliquant
+
+voir si habitat préferentiel
+
+MAIS ATTENTION à ne pas être biaisé : du genre que des oiseaux d’une
+certaines espèces ne soit présents que dans un habitat
+
+refaire analyse de bases cf ASA
 
 # Document R modifié et avec ajouts
 
 ## Import des données
 
 **Do not forget to set your working directory in the right place**
-**Menu : Session/Set Working Directory/Choose directory**
-*And indicate Git/2024_MODE_OCR*
-
+**Menu : Session/Set Working Directory/Choose directory** *And indicate
+Git/2024_MODE_OCR*
 
 ```{r}
 # Datatset import under the name of "data"
-data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE, stringsAsFactors = T)
+# data <- read.table("Bird_dataset.csv", sep="\t", header = TRUE)
+bird <- read.table("Bird_dataset.txt", header = TRUE, stringsAsFactors = TRUE)
+data <- bird
 ```
 
 ```{r}
 # Charge the librairies
 library(ggplot2)
-library(FactoMineR)
+library(tidyverse)
+library(ggcorrplot)
 library(factoextra)
+library(FactoMineR)
 ```
 
 ```{r}
-# Nest_Fate and Year as a factor (currently a quantitative variable)
-data$Nest_Fate = as.factor(data$Nest_Fate)
-data$Year = as.factor(data$Year)
-
 # View the firsts lignes of the dataset
 head(data)
 ```
-## Data exploration
 
-Création d'une ACM
+# [1. Data exploration]{.underline}
+
+### Repartition of the data through time
+
+##### Rudy part : Statistical tests
+
+In this part, several statistical tests are performed in order to answer
+questions.
+
+-   *First question : Does the number of fledged birds depend on the
+    species ?*
+
+H0 : there is no differences between species
+
+First, we observe the data with a boxplot. There is no significant
+differences through the boxplots.
+
+```{r}
+ggplot(data = data, 
+       aes(x = Habitat, 
+           y = Nest_End_Date)
+       ) +
+  geom_boxplot(aes(fill = Habitat)) +
+  ggtitle("Nest_End_Date depending on the Habitat")
+  theme(
+    axis.text.x = element_blank(),
+    plot.title = element_text(face = "bold")
+    )
+```
+
+Then, we test the normality of the data. All the p-values are ranged in
+a dataframe.
+
+```{r}
+data |>
+  # Selection of only two columns of interest
+  dplyr::select(  
+    Species, 
+    Number_Fledged
+  ) |>
+  # Calculation of the p-value of the shapiro test for each species
+  dplyr::group_by(Species) |>
+  dplyr::summarise(
+    shap = shapiro.test(Number_Fledged)$p
+  )
+```
+
+Conclusion : each subset does not follow the normality. We can perform a
+U test (non parametric test) :
+
+```{r}
+# Construction of an empty 8x8 dataframe. It will contains each p-value of the U test
+cor_df <- as.data.frame(
+  matrix(nrow = 8, ncol = 8, NA)
+  )
+  
+# Retrive the species names
+species <- as.character(unique(data$Species))
+
+# Rename the matrix
+colnames(cor_df) <- species
+rownames(cor_df) <- species
+
+data_species <- data |> 
+  dplyr::select(
+    Species, 
+    Number_Fledged
+    ) |>
+  dplyr::arrange(Species)
+
+
+for (sp1 in (1:(length(species)))){
+  for (sp2 in (1:length(species))){
+
+    ## Retrieve the data of the species 1
+    species_1 <- data_species |>
+      dplyr::filter(Species == species[sp1]) |>
+      dplyr::select(Number_Fledged)
+
+    ## Retrieve the data of the species 2
+    species_2 <- data_species |>
+      dplyr::filter(Species == species[sp2]) |>
+      dplyr::select(Number_Fledged)
+    
+    ## Formating of the vector containing the number of fledged birds. 
+    species_1 <- as.vector(species_1)$Number_Fledged
+    species_2 <- as.vector(species_2)$Number_Fledged
+    
+    ## To put the p.values on the correlation matrix
+    cor_df[sp1,sp2] <- wilcox.test(species_1, species_2)$p.value
+  }
+}
+```
+
+Now, we can observe the p-values in the following matrix :
+
+```{r}
+ggcorrplot(
+  corr = cor_df,
+  lab = TRUE,
+  lab_size = 3,
+  show.diag = TRUE,
+  type = "upper"
+  ) +
+  theme(
+    axis.text.x = element_text(size = 8,
+                               angle = 45),
+    axis.text.y = element_text(size = 8)
+    ) +
+  scale_fill_gradient2(
+    low = "tomato2", 
+    high = "springgreen3", 
+    midpoint = 0.2) +
+  ggtitle("P-values of the U-tests with the number of fledged birds as variable")
+
+```
+
+Observation : we see that there is globally no differences in the mean
+of the groups. So we keep H0.
+
+-   *Second question : we want to summarise the information depending on
+    different factor.*
+
+In the following chunks, a list named *data_summariser* is created and
+it will contains several dataframes. These dataframes summarise the
+different quantitative variables (i.e. Nest_Fate, Initiation_Date,
+Number_Fledged and Nest_End_Date) by the means and for each factor (i.e.
+County, State, Species and Habitat). There is one dataframe per factor.
+The goal is to better visualise the repartition of the species as a
+function of a factor AND to see the means.
+
+Here, we summarise with the factor : Species.
+
+```{r}
+## Calculation of the mean of each variables depending on the Species
+data_sp <- data |>
+  dplyr::select(
+    Species,Nest_Fate,Initiation_Date, Number_Fledged, Nest_End_Date
+  )|>
+  dplyr::group_by(
+    Species
+    ) |>
+  dplyr::summarise(
+    count = n(),
+    prop_Nest_Fate = sum(Nest_Fate) / length(Nest_Fate),
+    mean_Init_Date = mean(Initiation_Date),
+    mean_Number_Fledged = mean(Number_Fledged),
+    mean_Nest_End_Date = mean(Nest_End_Date),
+  )
+
+## Calculation of the mean of each variables depending on the habitat
+data_hab <- data |>
+  dplyr::select(
+    Habitat,Nest_Fate,Initiation_Date, Number_Fledged, Nest_End_Date
+  )|>
+  dplyr::group_by(
+    Habitat
+    ) |>
+  dplyr::summarise(
+    count = n(),
+    prop_Nest_Fate = sum(Nest_Fate) / length(Nest_Fate),
+    mean_Init_Date = mean(Initiation_Date),
+    mean_Number_Fledged = mean(Number_Fledged),
+    mean_Nest_End_Date = mean(Nest_End_Date),
+  )
+
+## Calculation of the mean of each variables depending on the state
+data_state <- data |>
+  dplyr::select(
+    State,Nest_Fate,Initiation_Date, Number_Fledged, Nest_End_Date
+  )|>
+  dplyr::group_by(
+    State
+    ) |>
+  dplyr::summarise(
+    count = n(),
+    prop_Nest_Fate = sum(Nest_Fate) / length(Nest_Fate),
+    mean_Init_Date = mean(Initiation_Date),
+    mean_Number_Fledged = mean(Number_Fledged),
+    mean_Nest_End_Date = mean(Nest_End_Date),
+  )
+
+## Calculation of the mean of each variables depending on the county
+data_county <- data |>
+  dplyr::select(
+    State, County, Nest_Fate,Initiation_Date, Number_Fledged, Nest_End_Date
+  )|>
+  dplyr::group_by(
+    State, County
+    ) |>
+  dplyr::summarise(
+    count = n(),
+    prop_Nest_Fate = sum(Nest_Fate) / length(Nest_Fate),
+    mean_Init_Date = mean(Initiation_Date),
+    mean_Number_Fledged = mean(Number_Fledged),
+    mean_Nest_End_Date = mean(Nest_End_Date),
+  )
+data_sp
+```
+
+We create a list called data_summariser that will contains each
+previously created tables.
+
+```{r}
+data_summariser <-list()  # Creation of the due list data_summariser
+data_summariser$Species <- data_sp # Add the Species table
+data_summariser$Habitat <- data_hab 
+data_summariser$State <- data_state
+data_summariser$County <- data_county
+
+data_summariser
+```
+
+-   Essayer de faire une ACM en changeant les dates en mois.
+
+```{r}
+### Creation of a function to replace the number by a month 
+
+num_to_month <- function(num){
+  if (num %in% (1:30)){
+    res <- "april"
+  } else if (num %in% (31:61)){
+    res <- "may"
+  } else if (num %in% (62:91)){
+    res <- "june"
+  } else if (num %in% (92:122)){
+    res <- "july"
+  } else if (num %in% (123:153)){
+    res <- "august"
+  } else {
+    res <- "september"
+  }
+  return (res)
+}
+```
+
+Now, we trasform all the quantitative variable into factors.
+
+```{r}
+## Conversion into months 
+data_ACM <- data
+data_ACM$Initiation_Date <- lapply(X = data_ACM$Initiation_Date, 
+                                FUN = num_to_month
+                                )
+data_ACM$Nest_End_Date <- lapply(X = data_ACM$Nest_End_Date, 
+                              FUN = num_to_month
+                              )
+## Conversion into factors
+data_ACM <- data_ACM |>
+  dplyr::mutate(Nest_Fate = as.factor(Nest_Fate),
+                Initiation_Date = as.factor(unlist(Initiation_Date)),
+                Number_Fledged = as.factor(Number_Fledged),
+                Nest_End_Date = as.factor(unlist(Nest_End_Date)),
+                Year = as.factor(Year)
+                )
+```
+
+
+##### Manon part : MCA analysis (data exploring)
+
+Before doing the MCA analysis, we must verify that all the modalities represent at least 3% of the data
 
 ```{r}
 # Proportions de chaques modalités dans chaques variables:
-prop.table(table(data$State))
-prop.table(table(data$County))
-prop.table(table(data$Habitat))
-prop.table(table(data$Species))
-prop.table(table(data$Year))
-prop.table(table(data$Nest_Fate))
-prop.table(table(data$Number_Fledged))
+prop.table(table(data_ACM$State))*100
+prop.table(table(data_ACM$County))*100
+prop.table(table(data_ACM$Habitat))*100
+prop.table(table(data_ACM$Species))*100
+prop.table(table(data_ACM$Year))*100
+prop.table(table(data_ACM$Nest_Fate))*100
+prop.table(table(data_ACM$Number_Fledged))*100
+prop.table(table(data_ACM$Initiation_Date))*100
+prop.table(table(data_ACM$Nest_End_Date))*100
 ```
-Certaines variables sont sous-représentées (<0.003)
+Some of the modalities are under-represented. We must delete them. 
+```{r}
+prop.table(table(data_ACM$County))*100 < 3
+# We must delete the data of counties Carroll, Carroll/Whiteside, Grundy, Lee and Rock
+data_ACM <- data_ACM[-which(data_ACM$County == "Carroll" | 
+                              data_ACM$County == "Carroll/Whiteside" | 
+                              data_ACM$County == "Grundy" | 
+                              data_ACM$County == "Lee" | 
+                              data_ACM$County == "Rock"),]
+data_ACM$County <- droplevels(data_ACM$County)
+```
 
 ```{r}
-# All variable in factor for the MCA
-data$Number_Fledged <- as.factor(data$Number_Fledged)
-# MCA without the quantitative variables (Initiation date and Nest end date) and the Nest IDs.
-ACM_bird <- MCA(data[,-c(1,8,10)])
+prop.table(table(data_ACM$Species))*100 < 3
+# We must delete the data of species Henslow's_Sparrow and Western_Meadowlark
+data_ACM <- data_ACM[-which(data_ACM$Species == "Henslow's_Sparrow" | 
+                              data_ACM$Species == "Western_Meadowlark"),]
+data_ACM$Species <- droplevels(data_ACM$Species)
 ```
 
 ```{r}
-fviz_eig(ACM_bird, main="histogram of % inertie", addlabels = T)
+prop.table(table(data_ACM$Year))*100 < 3
+summary(prop.table(table(data_ACM$Year))*100 < 3)
+# As half of the modalities are under-represented, we will regroup the years by 3.
+
+data_ACM <- data_ACM %>%
+  mutate(Year = factor(case_when(
+    Year %in% c("1991", "1992", "1993") ~ "1991-1993",
+    Year %in% c("1994", "1995", "1996") ~ "1994-1996",
+    Year %in% c("1997", "1998", "1999") ~ "1997-1999",
+    Year %in% c("2000", "2001", "2002") ~ "2000-2002",
+    Year %in% c("2003", "2004", "2005") ~ "2003-2005",
+    Year %in% c("2006", "2007", "2008") ~ "2006-2008",
+    Year %in% c("2009", "2010", "2011") ~ "2009-2011"
+  ), levels = c("1991-1993", "1994-1996", "1997-1999", "2000-2002", "2003-2005", "2006-2008", "2009-2011")))
+
+prop.table(table(data_ACM$Year))*100 < 3
+# None of the years are still under-represented.
 ```
-The inertia holded by the first axis is very low (6.3%)
-Let's try the same analysis without the State variable, as the county variable is also contening state information.
 
 ```{r}
-ACM_bird2 <- MCA(data[,-c(1,2,8,10)])
-```
-```{r}
-fviz_eig(ACM_bird2, main="histogram of % inertie", addlabels = T)
+prop.table(table(data_ACM$Number_Fledged))*100 < 3
+# We will group the nest with 5 or 6 fledged chicks with a modality labelled ">5"
+levels(data_ACM$Number_Fledged) <- c(levels(data_ACM$Number_Fledged), ">5")
+data_ACM[which(data_ACM$Number_Fledged == 5 | data_ACM$Number_Fledged == 6),]$Number_Fledged <- as.factor(">5")
+data_ACM$Number_Fledged <- droplevels(data_ACM$Number_Fledged)
 ```
 
-The inertia is less important...
-Let's try without county
+```{r}
+prop.table(table(data_ACM$Initiation_Date))*100 < 3
+# We must delete the data with an initiation date in august and april.
+data_ACM <- data_ACM[-which(data_ACM$Initiation_Date == "august" | 
+                              data_ACM$Initiation_Date == "april"),]
+data_ACM$Initiation_Date <- droplevels(data_ACM$Initiation_Date)
+```
 
 ```{r}
-ACM_bird3 <- MCA(data[,-c(1,3,8,10)])
+prop.table(table(data_ACM$Nest_End_Date))*100 < 3
+# We must delete the data with an end date in august and april.
+data_ACM <- data_ACM[-which(data_ACM$Nest_End_Date == "august" | 
+                              data_ACM$Nest_End_Date == "april"),]
+data_ACM$Nest_End_Date <- droplevels(data_ACM$Nest_End_Date)
 ```
+
+Now, we can check again that no modalities are under-represented (thresold 3%).
+
 ```{r}
-fviz_eig(ACM_bird3, main="histogram of % inertie", addlabels = T)
+# Proportions de chaques modalités dans chaques variables:
+prop.table(table(data_ACM$State))*100
+prop.table(table(data_ACM$County))*100
+prop.table(table(data_ACM$Habitat))*100
+prop.table(table(data_ACM$Species))*100
+prop.table(table(data_ACM$Year))*100
+prop.table(table(data_ACM$Nest_Fate))*100
+prop.table(table(data_ACM$Number_Fledged))*100
+prop.table(table(data_ACM$Initiation_Date))*100
+prop.table(table(data_ACM$Nest_End_Date))*100
 ```
+
+All the modalities are enough represented. We can now start the MCA analysis.
+
+```{r}
+# MCA without the Nest IDs.
+ACM_bird <- MCA(data_ACM[,-1])
+```
+
+```{r}
+fviz_eig(ACM_bird, main="histogram of % inertia", addlabels = T)
+```
+The inertia holded by the first axis is very low (9.3%)
+
 Let's see wich modalities are significantly contributing to the analysis, for the axis 1 and 2
 
 ```{r}
-fviz_contrib(ACM_bird2, choice='var', axes=1)
-fviz_contrib(ACM_bird2, choice='var', axes=2)
+fviz_contrib(ACM_bird, choice='var', axes=1)
+fviz_contrib(ACM_bird, choice='var', axes=2)
 ```
-Let's print only the 10 best modalities
+Let's print only the modalities above the thresold of 1/n, n is the number of modalities, and the modalities above this thresold are significantly contributing to the MCA. 
 
 ```{r}
-fviz_mca_var(ACM_bird2, select.var = list(contrib = 10), col.var='blue', repel = T)
+# We set the thresold for significant modalities
+threshold <- (1/nrow(ACM_bird$var$contrib))*100
+
+# We extract significant contributions for dim 1
+var_contrib <- get_mca_var(ACM_bird)$contrib
+significant_vars_dim1 <- rownames(var_contrib)[var_contrib[, 1] > threshold]
+length(significant_vars_dim1)
+
+# We extract significant contributions for dim 2
+significant_vars_dim2 <- rownames(var_contrib)[var_contrib[, 2] > threshold]
+length(significant_vars_dim2)
+
+significant_vars_tot <- unique(c(significant_vars_dim1, significant_vars_dim2))
+length(significant_vars_tot)
+# There is 24 significant modalities on dimension 1 and 2. Let's print them on the graph
+
+fviz_mca_var(ACM_bird, col.var='blue', repel = T, alpha.var = "contrib")
+fviz_mca_var(ACM_bird, col.var='blue', repel = T, select.var = list(contrib = 24))
 ```
+
+```{r}
+# Representation of the individuals between axis 1 and 2, coloring for each variable
+plotellipses(ACM_bird, means = F)
+```
+
+We can see that the nests are clearly separated by the state they come from. The other variable are forming less distincs groups.
+
 
 
 
