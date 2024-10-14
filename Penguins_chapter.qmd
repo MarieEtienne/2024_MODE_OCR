@@ -161,8 +161,7 @@ data <- data %>%
     sex = Sex,
     delta_15_N = Delta.15.N..o.oo.,
     delta_13_C = Delta.13.C..o.oo.,
-    species = Species,
-  ) 
+    species = Species)
 
 names(data)
 
@@ -215,22 +214,31 @@ Some graphs :
 ```{r}
 ggplot(data, aes(x = flipper_length, y = body_mass, color = species))+
   geom_point()+
+  scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
   theme_classic()
 ```
 
 ```{r}
 ggplot(data, aes(x = culmen_length, y = culmen_depth, color = species))+
   geom_point()+
+  scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
   theme_classic()
 ```
 
-```{r}
-ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species, shape = island))+
+```{r, fig.width=10, fig.height=5}
+ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species))+
   geom_point()+
-  theme_classic()
+  scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
+  theme_bw()+
+  facet_grid(~island)
 ```
 
+<<<<<<< HEAD
+### PCA : 
+
+=======
 ## PCA:
+>>>>>>> Penguins
 ```{r}
 # Selection of quantitative data
 data_numeric <- select_if(data, is.numeric)
@@ -246,31 +254,91 @@ data_scales <- scale(data_numeric)
 # PCA realization
 acp_data= PCA(data_scales, graph = F)
 summary(acp_data)
+```
 
-#Correlation circle
-fviz_pca_var(acp_data)
 
+Histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, keep 2 dimensions and 78.4% inertia.  
+```{r}
 #Variance for each component
-fviz_eig(acp_data)
+va_propre = fviz_eig(acp_data, main ="", choice = "variance",
+         label_size =50, addlabels = T,
+         barfill  = "grey",barcolor = "grey")+
+   ylim(c(0,60))
+va_propre
+```
+Determind the absolut contribution of variables to each axis.  
 
+```{r,warning=FALSE,message=FALSE, fig.height=2, fig.width=5, fig.align = "center"}
 #Contribution of axis variables axis 1 and 2
-fviz_contrib(acp_data, choice="var", axes=1) #axe 1
-fviz_contrib(acp_data, choice="var", axes=2) #axe 1
+c1 = fviz_contrib(acp_data,choice = "var",axes =1,
+                  fill = "grey",color = "grey")+ labs(title = "Axe 1") #For axe 1
+c2 = fviz_contrib(acp_data,choice = "var",axes =2,
+                  fill = "grey",color = "grey")+ labs(title = "Axe 2") #For axe 2
+grid.arrange(c1,c2, ncol = 2)
+```
 
-# Projection of individuals and differentiation according to species
-fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$species, addEllipses = T, pointshape = 19)
+First graph show the result of PCA on axes 1 and 2. *A priori* clustering by the Species has been performed.  
 
+```{r,warning=FALSE,message=FALSE, fig.height=7, fig.width=12, fig.align = "center"}
 #Projection of variables and individuals and differentiation according to species
-fviz_pca_biplot(acp_data, label="var", habillage=data$species, title = "Projection of variables and individuals according to species", ylim=c(-3,3.5), xlim = c(-3.5,3.5))
+bi_plot = fviz_pca_biplot(acp_data, label="var", 
+                habillage=data$species, 
+                addEllipses = T,
+                ellipse.alpha = F,
+                title = "Projection of variables and individuals according to species", 
+                ylim=c(-3,3.5), xlim = c(-3.5,3.5))+
+  scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
+  theme_minimal()+
+  theme(legend.position = "bottom")
 
-# Projection of individuals and differentiation according to the islands
-fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$island, addEllipses = T, pointshape = 19)
-#Projection of variables and individuals and differentiation according to the islands
-fviz_pca_biplot(acp_data, label="var", habillage=data$island, title = "Projection of variables and individuals and dfferentiation according to the islands", ylim=c(-3,3.5),xlim = c(-3.5,3.5))
+grid.arrange(bi_plot, va_propre, c1, c2,  #names of graphs
+             ncol = 2, nrow = 3, #How many row and col
+             widths = c(2.2,1), #Here, the first col will be bigger than the second
+             layout_matrix = cbind(c(1,1,1), #On the first col only graph 1 for the 3 rows
+                                   c(2,3,4))) #On the second col, the 3 other graphs
+```
+
+Second graph show the result of PCA on axes 1 and 2. *A priori* clustering by the Island has been performed.  
+
+```{r,warning=FALSE,message=FALSE, fig.height=7, fig.width=12, fig.align = "center"}
+#Projection of variables and individuals and differentiation according to species
+bi_plot = fviz_pca_biplot(acp_data, label="var",
+                          habillage=data$island,
+                          addEllipses = T,
+                          ellipse.alpha = F,
+                          title = "Projection of variables and individuals and dfferentiation according to the islands", 
+                          ylim=c(-3,3.5),xlim = c(-3.5,3.5))+
+  scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
+  theme_minimal()+
+  theme(legend.position = "bottom")
+grid.arrange(bi_plot, va_propre, c1, c2,  #names of graphs
+             ncol = 2, nrow = 3, #How many row and col
+             widths = c(2.2,1), #Here, the first col will be bigger than the second
+             layout_matrix = cbind(c(1,1,1), #On the first col only graph 1 for the 3 rows
+                                   c(2,3,4))) #On the second col, the 3 other graphs
+```
+
+
+```{r}
+NA_df <- (colSums(is.na(data)) / nrow(data)) * 100
+
+color_pal <- colorRampPalette(c("limegreen", "yellow", "firebrick"), bias = 20)(10)
+NA_col <- color_pal[as.integer(NA_df/length(NA_df)*9)+1]
+
+# Graphique
+barplot(NA_df, main = "NA quantity per column",
+        ylab = "NA", col = NA_col, las=2, cex.names=0.4)
+
+NA_mean<-mean(NA_df)
+# 0.78% 
+
+abline(h=NA_mean, col = "red", lwd = 2)
 
 ```
 
+
 ## Violin plot :
+
 ```{r violin}
 
 # Violin plot for Culmen Length (beak length)
