@@ -11,7 +11,7 @@ editor: visual
 
     On commence par importer le jeu de données situé dans fichier "BogAnts.txt"
 
-```{r}
+```{r global data, echo=TRUE,include=TRUE}
 #importation
 dataAnts <- read.table("BogAnts.txt", dec=".", header = TRUE)
 
