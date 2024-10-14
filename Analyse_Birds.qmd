@@ -336,11 +336,73 @@ data_ACM$Nest_End_Date <- lapply(X = data_ACM$Nest_End_Date,
 
 data_ACM$Initiation_Date <- as.factor(unlist(data_ACM$Initiation_Date))
 data_ACM$Nest_End_Date <- as.factor(unlist(data_ACM$Nest_End_Date))
+
+## We remove Nest_ID
+data_ACM <- data_ACM |>
+  dplyr::select(-Nest_ID)
+```
+
+Now, we test if each modality is represented by 3% threshold.
+
+```{r}
+## Initiation_Date
+round(100*table(data_ACM$Initiation_Date)/sum(table(data_ACM$Initiation_Date)),
+      1)
+# April and august < 3%
+
+## Nest_End_Date 
+round(100*table(data_ACM$Nest_End_Date)/sum(table(data_ACM$Nest_End_Date)),
+      1)
+# April and august < 3% 
+
+## Number_Fledged
+round(100*table(data_ACM$Number_Fledged)/sum(table(data_ACM$Number_Fledged)),
+      1)
+# 6 is < 3%
+
+## Species
+round(100*table(data_ACM$Species)/sum(table(data_ACM$Species)),
+      1)
+# Henslow's_Sparrow and Western_Meadowlark < 3%
+
+## Habitat
+round(100*table(data_ACM$Habitat)/sum(table(data_ACM$Habitat)),
+      1)
+
+## County
+round(100*table(data_ACM$County)/sum(table(data_ACM$County)),
+      1)
+# Carroll, Carroll/Whiteside, Grundy, Lee, Rock
+```
+
+There is a lot of modalities that are under represented. We have to
+remove the corresponding lines.
+
+```{r}
+##### Initiation Date
+i <- which(data_ACM$Initiation_Date %in% c("august","april"))
+data_ACM <- data_ACM[-i,]
+
+###### Number_fledgeed
+i <- which(data_ACM$Number_Fledged == "6")
+data_ACM <- data_ACM[-i,]
+
+###### Nest_End_Date
+# august
+i <- which(data_ACM$Nest_End_Date == "august")
+data_ACM <- data_ACM[-i,]
+
+##### Species
+i <- which(data_ACM$Species %in% c("Henslow's_Sparrow","Western_Meadowlark"))
+data_ACM <- data_ACM[-i,]
+
+##### County
+i <- which(data_ACM$County %in% c("Carroll", "Carroll/Whiteside", "Grundy", "Lee", "Rock"))
+data_ACM <- data_ACM[-i,]
 ```
 
 Now, we can perform the MCA
 
 ```{r}
-MCA <- MCA(X = data_ACM,
-           graph = TRUE)
+MCA <- MCA(X = data_ACM)
 ```
