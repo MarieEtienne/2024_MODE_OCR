@@ -154,6 +154,7 @@ the analysis can be performed because there are enough data in each modality (> 
 
 
 ### Removal of poorly represented modalities (< 10 data)
+
 ```{r delete_modalites, include=TRUE}
 
 # Count the number of occurrences for each modality in data$Species
@@ -167,10 +168,24 @@ head(data)
 summary(data$Species)
 ```
   
+  
+### Analyzing the potential relationship between Y vs Xs
+
+We can graphically analyze the possible relationships between Y and X. This 
+graphical analysis of the relationships between Y and X **does not allow us to predict the significance of the relationship**. Statistical modeling remains the only available means to identify whether a relationship exists or not.
 
 
+```{r datagraph, include=TRUE, fig.height=3, fig.width=6}
+# Boxplot 
+par(mfrow=c(2,2))
+boxplot(data$Initiation_Date~data$State, varwidth = TRUE, ylab = "Initiation date", xlab = "State", col='darkgrey', main = "")
+boxplot(data$Initiation_Date~data$Habitat, varwidth = TRUE, ylab = "Initiation date", xlab = "Habitat", col='darkgrey', main = "")
+boxplot(data$Initiation_Date~data$Species, varwidth = TRUE, ylab = "Initiation date", xlab = "Species", col='darkgrey', main = "")
+boxplot(data$Initiation_Date~data$Year, varwidth = TRUE, ylab = "Initiation date", xlab = "Year", col='darkgrey', main = "")
+```
 
-
+From the first visualizations, we could make the hypothesis that Year and Species
+influence Initiation_Date
 
 
 
