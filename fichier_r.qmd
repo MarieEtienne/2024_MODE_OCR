@@ -16,8 +16,20 @@ PLAN POUR GLM:
 -   CHARGEMENT DES DONNEES
 
 ```{r}
+# Importation du jeu de données coefla et tri des données
 data_coefla = read.csv(file = "data_coefla.csv", header = T, sep = ";")
-data_chiro = read.csv(file = "data_chiro.csv", header = T, sep = ";")
+
+
+
+```
+
+```{r}
+data_chiro = read.csv(file = "data_chiro_test.csv", header = T, sep = ";")
+names(data_chiro)[1] <- "Annee"
+colnames(data_chiro)
+
+data_chiro = data_chiro %>%
+  select("Annee", "Commune", "Localite", "Date", "Heure", "Espece", "Sexe", "Repro", "Age", "AB", "D5", "D3", "Masse", "MF", "DC", "Milieu") 
 
 ```
 
