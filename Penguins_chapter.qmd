@@ -1,20 +1,20 @@
-------------------------------------------------------------------------
+---
 
-Title: "Exploring data on penguins"\
-Group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline"\
-Bibliography: references.\
-bib execute: \
-freeze: auto \
-output: \
-html_document: \
-toc: true \
-toc_float: true \
-editor: \
-markdown: \
-wrap: 72\
+title: "Exploring data on penguins"
+group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline"
+bibliography: references.
+bib execute:
+freeze: auto
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    number_sections: yes
+    
+---
 
-------------------------------------------------------------------------
-
+# Introduction
 ## Study context
 
 This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#column_name). The dataset was find on kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv
@@ -24,8 +24,6 @@ This dataset was made from differents articles METTRE BIBLIO. Only 3 different s
 This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#colum-name). This dataset was made from differents articles Selon Gorman et al. [@10.1371/journal.pone.0090081] and Horst et al. [@10.32614/RJ-2022-020]. NE FOCNTIONNE PAS MAIS JE VAIS VOIR PLUS TARD Only 3 different species where studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins. AJOUTER LES QUESTIONS DE RECHERCHE ET LES ANALYSES FAITES
 
 ```{r}
-
-
 #| message: false
 #| warning: false
 #| echo: true
@@ -44,8 +42,9 @@ library(rnaturalearth)
 library(rnaturalearthdata)
 library(ggspatial)
 library(gridExtra)
+library(kableExtra)
 ```
-Location : 
+## Location
 
 Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands. 
 
@@ -113,7 +112,7 @@ grid.arrange(gg_antartique, gg_zone_interet, ncol = 2)
 
 ```
 
-## Dataset presentation {#column_name}:
+## Dataset presentation {#column_name}
 
 **Columns name :**
 
@@ -135,16 +134,15 @@ grid.arrange(gg_antartique, gg_zone_interet, ncol = 2)
 -   Delta 13 C : a number denoting the measure of the ratio of stable isotopes 13C:12C\
 -   Comments : a character string with text providing additional relevant information for data
 
+Loading dataset :
 ```{r}
 data <- read.table("penguins_raw.csv", sep = "," , header = TRUE, stringsAsFactors = T)
 summary(data)
 # dim(data)
 ```
 
-
+Modification of colnames :
 ```{r}
-
-# Modification of colnames 
 data <- data %>%
   select(-X) %>%                   # Remove X column 
   #select(-Comments) %>%           # Remove (?)
@@ -166,26 +164,53 @@ data <- data %>%
     species = Species)
 
 names(data)
-# Verification of missing data
+
+```
+
+## Missing values :
+```{r NA}
+# Verification of missing values
 colSums(is.na(data)) 
+
+# Removing "Comments" because not relevant for missing values
+data_NA <- data %>%
+  select(-"Comments")
+
+# Representation of missing values
+NA_df <- (colSums(is.na(data_NA)) / nrow(data_NA)) * 100
+
+color_pal <- colorRampPalette(c("limegreen", "yellow", "firebrick"), bias = 20)(10)
+NA_col <- color_pal[as.integer(NA_df/length(NA_df)*9)+1]
+
+# Graphique
+barplot(NA_df, main = "NA quantity per column",
+        ylab = "NA", col = NA_col, las=2, cex.names=0.4)
+
+NA_mean<-mean(NA_df)
+# 0.78% 
+
+abline(h=NA_mean, col = "red", lwd = 2)
 
 ```
 
 Change species names :
-
 ```{r}
 data = data %>%
   mutate(species = recode(species, "Adelie Penguin (Pygoscelis adeliae)" = "Adelie", "Chinstrap penguin (Pygoscelis antarctica)" = "Chinstrap", "Gentoo penguin (Pygoscelis papua)" = "Gentoo"))
 ```
 
-Distribution of species between the islands :
+# Exploratory analysis
 
+Distribution of species between the islands :
 ```{r}
-table(data$island, data$species)
+species_islands <- table(data$island, data$species)
+kable(species_islands, "html", escape = F, caption = "Distribution of species between the islands") %>%
+  kable_styling(bootstrap_options = c("striped"),
+                full_width = F,
+                position = "center")
 ```
 
-Some graphs :
-
+Some graphs : 
 ```{r}
 ggplot(data, aes(x = flipper_length, y = body_mass, color = species))+
   geom_point()+
@@ -208,10 +233,14 @@ ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species))+
   facet_grid(~island)
 ```
 
+<<<<<<< HEAD
 ### PCA : 
 
+=======
+## PCA:
+>>>>>>> Penguins
 ```{r}
-#Selection of quantitative data
+# Selection of quantitative data
 data_numeric <- select_if(data, is.numeric)
 
 # Remove sample_number 
@@ -222,10 +251,11 @@ data_numeric <- data_numeric %>% select(-c("sample_number","flipper_length"))
 # Normalizing data
 data_scales <- scale(data_numeric)
 
-#PCA realization
+# PCA realization
 acp_data= PCA(data_scales, graph = F)
 summary(acp_data)
 ```
+
 
 Histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, keep 2 dimensions and 78.4% inertia.  
 ```{r}
@@ -305,6 +335,9 @@ NA_mean<-mean(NA_df)
 abline(h=NA_mean, col = "red", lwd = 2)
 
 ```
+
+
+## Violin plot :
 
 ```{r violin}
 
@@ -394,8 +427,8 @@ box3
 
 We have noticed some trends that we will have to confirm with statistical tests.\
 Box1: Gentoo penguins appear to be heavier than the other two species.\
-Box2: penguins from Biscoe Island appear to be heavier than the other two islands.\
-Box3: male penguins appear to be heavier than the other two categories.\
+Box2: Penguins from Biscoe Island appear to be heavier than the other two islands.\
+Box3: Male penguins appear to be heavier than the other two categories.\
 We run anovas to confirm these differences.\
 
 ```{r}
