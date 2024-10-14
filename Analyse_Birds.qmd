@@ -235,6 +235,7 @@ All factors are significant. So we have our candidate model.
 To understand how factors influence Initiation_Date, we need to analyze the 
 coefficients of the model.
 
+
 ### Analysis of the coefficients of the candidate model
 
 
@@ -291,8 +292,88 @@ We obtain the adjusted R² = 0.22. This means that approximately 22% of the
 variance of Initiation_Date is explained by our modeling.
 
 
+## Validation of modeling
+
+The assumptions of ANOVA are the same as for any general linear model, namely 
+**independence**, **normality of residuals** and **homogeneity of variances**.
+In addition, one must check the presence of influential statistical units 
+(i.e. observations having a significant contribution to the construction of the model).
 
 
+### Normality of residuals
+
+```{r ResidNorm, include=TRUE, fig.height=4, fig.width=6}
+par(mfrow=c(1,2))
+# Histogram
+hist(mod2$residuals,col='dodgerblue3',xlab="residuals",main="Check Normality")
+# Quantile-Quantile plot
+qqnorm(mod2$residuals,pch=16,col='dodgerblue3',xlab='')
+qqline(mod2$residuals,col='red',lwd=2)
+```
+
+The residuals seem to follow a Normal Distribution.
+
+
+### Homogeneity of variance
+
+The assumption of homogeneity of variance, that is, that the variation of the
+residuals is approximately equal over the entire range of explanatory variables,
+should be verified by plotting the residuals at the estimated values ​​and the
+residuals at the values ​​of the significant variables. The residuals should
+show **no trend**.
+
+
+```{r Residhomo, include=TRUE, fig.height=6, fig.width=8}
+par(mfrow=c(2,2))
+# residuals vs fitted
+plot(residuals(mod1)~fitted(mod1)
+     , col='dodgerblue3'
+     , pch=16)
+# residuals against state factor
+boxplot(residuals(mod2)~ data$State, 
+        varwidth = TRUE,
+        col='darkgrey',
+        ylab = "Residuals",
+        xlab = "States",
+        main = "")
+# residuals against species factor
+boxplot(residuals(mod2)~ data$Species, 
+        varwidth = TRUE,
+        col='brown',
+        ylab = "Residuals",
+        xlab = "Species",
+        main = "")
+# residuals against year factor
+boxplot(residuals(mod2)~ data$Year, 
+        varwidth = TRUE,
+        col='brown',
+        ylab = "Residuals",
+        xlab = "Years",
+        main = "")
+```
+
+We do not observe any trend. Therefore the hypothesis of homogeneity of 
+variance is verified.
+
+### Independence
+
+ANOVA (like any other general linear model) assumes that all statistical
+units (and therefore residuals) are independent of each other. This issue must 
+be taken into account at the *research design stage*. Given the approach here, 
+the statistical individuals are independent. This assumption is verified.
+
+
+### Verification of influential individuals
+
+```{r Contri, include=TRUE, fig.height=4, fig.width=4}
+par(mfrow = c(1, 1))
+plot(cooks.distance(mod2), type = "h", ylim = c(0, 1))
+abline(h = 1, col = 2,lwd = 3)
+```
+
+There is no influential individual.
+
+All conditions being verified, our modeling can be validated.
 
 
 
