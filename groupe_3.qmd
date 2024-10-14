@@ -1,16 +1,163 @@
 ---
-title: "groupe 3"
-autor: "Gabriel-Marie Arnault, Giuliana Brambilla, Apolline Byrdy, Anaelle Hulbert, Manon Le Bihan, Kilian Prevost, Chloé Van der Swaelmen, Léa Vuille "
+title: "Groupe 3"
+autor: "Gabriel-Marie Arnault, Giuliana Brambilla, Apolline Byrdy, Anaelle Hulbert, Manon Le Bihan, Kilian Prevost, Chloé Van der Swaelmen et Léa Vuille"
+source : "Yannick Outreman, selon les données de Gotelli & Ellison (2002) - Biogeography at a regional scale : determinants of antspecies density in New England bogs and forests. Ecology, 83 : 1604-1609."
 editor: visual
 ---
 
 # **INTRODUCTION** (Apolline et Kilian)
 
+à faire :
+
+-   importation du jeu de données (lien) (A)
+
+```{r global data, echo=TRUE,include=TRUE}
+#importation
+dataAnts <- read.table("BogAnts.txt", dec=".", header = TRUE)
+
+#Passer la localisation en facteur 
+dataAnts$Location<-as.factor(dataAnts$Location)
+
+#vérification du type des variables 
+str(dataAnts)
+```
+
+-   Quel article, auteur, journal, référence
+
+-   contexte biologique
+
+-   Question de recherche
+
+-   données et variables
+
+-   Quel modèle et pourquoi
+
+-   packages pouvant servir (K)
+
+-   vérifier si données manquantes (K)
+
+-   mini summary (A) summary(dataAnts)
+
 # **EXPLORATION DU JEU DE DONNEES**
 
 ## 1. Présentation du jeu de données (Léa et Giuliana)
 
-## 2. Analyse des interactions entre les variables (Chloé et Manon)
+## **2. Analyse des interactions entre les variables Y et Xs (Chloé et Manon)**
+
+```{r dataCov2, include=TRUE, fig.height=4, fig.width=9}
+#Ligne ajouté qui sera supprimée, c'est juste pour avoir les données correctes
+par(mfrow=c(1,3))
+
+dataAnts$LogArea<-log(dataAnts$Area)
+
+```
+
+###**2.1 Analyser la relation potentielle entre Y et les Xs**
+
+Afin de tester la relation éventuelle entre la variable réponse Y et les variables explicatives Xs, il sera indispensable de réaliser la modélisation statistique, c'est le seul moyen qui nous permet de tester la significativité des relations. Seulement, nous pouvons commencer par réaliser des analyses graphiques pour mieux visualiser et se faire une idée.
+
+
+```{r datagraph, include=TRUE, fig.height=7, fig.width=7}
+
+par(mfrow=c(2,2))
+
+# Pour la variable Latitude
+plot(dataAnts$Nsp~dataAnts$Latitude,pch=16,col='deepskyblue4',xlab='Latitude',ylab='Richesse spécifique des fourmis', main = "Figure 1")
+
+# Pour la variable Altitude
+plot(dataAnts$Nsp~dataAnts$Elevation,pch=16,col='deepskyblue4',xlab='Altitude',ylab='Richesse spécifique des fourmis', main = "Figure 2")
+
+# Pour la variable Superficie de la tourbière
+plot(dataAnts$Nsp~dataAnts$LogArea,pch=16,col='deepskyblue4',xlab='Superficie de la tourbière',ylab='Richesse spécifique des fourmis', main = "Figure 3")
+
+# Pour la variable Localisation
+boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Richesse spécifique des fourmis", xlab = "Localisation", col=c('saddlebrown','palegreen4'), main = "Figure 4")
+```
+
+**Conclusion des différents graphiques :**
+
+Relation entre X et la latitude (Fig. 1) : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevée. Nous pouvons alors dire qu'il semble que plus on est au Nord, moins il y a d'espèces de fourmis. 
+
+Relation entre X et l'altitude (Fig. 2) : Dans ce graphique-ci, nous pouvons voir à nouveau que plus l'altitude est importante, moins la richesse spécifique est élevée. Nous pouvons alors se dire qu'il semble que plus le relief est élévé moins il y a d'espèces de fourmis. 
+
+Relation entre X et la surperficie de la tourbière (Fig. 3) : Ici, il ne semble pas y avoir de relation entre la richesse spécifique des fourmis et la surperficie des tourbières. 
+
+Relation entre X et localisation (Fig. 4) : Il semble ici y avoir une relation entre le lieu et la richesse spécifique des fourmis, avec une richesse spécifique plus importante en forêt que dans les tourbières.
+
+**Conclusion générale :** 
+
+Il semble que plus les espèces se situent au nord et dans un haut relief, moins la richesse spécifique de fournis est grande. De plus, si on se trouve en forêt, il y aura une richesse spécifique plus importante que dans les tourbières.
+
+###**2.2 Analyse des éventuelles interactions entre les Xs**
+
+Nous cherchons à étudier les interactions entre le facteur et les 3 covariables. On exclut alors l'interaction entre les variables explicatives quantitatives. Nous passons par une approche graphique afin d'estimer le possible effet interactif entre ces différentes variables.
+
+```{r dataInter, include=TRUE, fig.height=3, fig.width=8}
+
+par(mfrow=c(1,3))
+
+# Interactions entre Latitude & Localisation
+plot(dataAnts$Nsp~dataAnts$Latitude,type='n',ylab = "Richesse spécifique de fourmis",xlab="Latitude", main="Figure 5")
+points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$Latitude[dataAnts$Location=="Bog"],pch=16,cex=2,col='saddlebrown')
+points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$Latitude[dataAnts$Location=="Forest"],pch=17,cex=2,col='palegreen4')
+
+# Interactions entre Altitude & Localisation
+plot(dataAnts$Nsp~dataAnts$Elevation,type='n',ylab = "Richesse spécifique de fourmis",xlab="Altitude", main="Figure 6")
+points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$Elevation[dataAnts$Location=="Bog"],pch=16,cex=2,col='saddlebrown')
+points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$Elevation[dataAnts$Location=="Forest"],pch=17,cex=2,col='palegreen4')
+
+# Interactions entre Superficie de la tourbière & Localisation
+plot(dataAnts$Nsp~dataAnts$LogArea,type='n',ylab = "Richesse spécifique de fourmis",xlab="Superficie de la tourbière", main="Figure 7")
+points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$LogArea[dataAnts$Location=="Bog"],pch=16,cex=2,col='saddlebrown')
+points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Location=="Forest"],pch=17,cex=2,col='palegreen4')
+
+```
+
+En règle générale, on peut penser qu'il y a une interaction entre les covariables si les pentes formées par les deux nuages de points sont différentes. Ici les nuages ne permettent pas de voir clairement de similitude ou de différence de tendance pour chaque graphique. Il est donc difficile de conclure sur ces interactions.
+
+###**2.3 Vérifier une éventuelle colinéarité entre les Xs**
+
+Nous cherchons à éviter la colinéarité des variables explicatives dans notre modélisation, afin de ne pas avoir plusieurs variables qui donnent la même information. Pour ce faire, nous devons vérifier les liens statistiques qu'il peut y avoir entre les variables, \[1\] en calculant la corrélation entre les variables Xs quantitatives, \[2\] puis en étudiant l'influence du X qualitative sur les Xs quantitatives à l'aide de graphiques plot.
+
+```{r datacolin, include=TRUE, fig.height=4, fig.width=8}
+
+# Vérifier la colinéarité entre les variables continues indépendantes
+
+# On fait un graphique pour chaque paire de covariables
+newdata<-cbind(dataAnts$Latitude,dataAnts$Elevation,dataAnts$LogArea)
+colnames(newdata)<-c('Latitude','Altitude','Log Superficie tourbière')
+newdata<-data.frame(newdata)
+plot(newdata,pch=16,col='deepskyblue4',main="Figure 8")
+
+#On calcule la corrélation de chaque paire de covariables
+#Ajout du package corrplot
+library(corrplot)
+M<-cor(newdata)
+corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
+mtext("Figure 9", side = 2, line = -6, cex = 1, las = 1)
+
+
+par(mfrow=c(1,3))
+
+# On vérifie la collinéarité entre catégories et variables continues
+#Latitude et Localisation
+boxplot(dataAnts$Latitude~dataAnts$Location, varwidth = TRUE, ylab = "Latitude", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 10")
+
+#Altitude et Localisation
+boxplot(dataAnts$Elevation~dataAnts$Location, varwidth = TRUE, ylab = "Altitude", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 11")
+
+#Superficie de la tourbière et Localisation
+boxplot(dataAnts$LogArea~dataAnts$Location, varwidth = TRUE, ylab = "Superficie de la tourbière", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 12")
+
+```
+
+**Conclusion des différents graphiques :** 
+
+Nous pouvons observer sur le premier graphique (Fig. 8) que les nuages de points ne semblent pas montrer de tendance à la colinéarité. Cette impression est confirmée par les valeurs calculées dans la figure suivante (Fig. 9), les valeurs sont largement inférieures à 0,7, qui est très souvent utilisé comme seuil de colinéarité (au-delà les variables sont considérées corrélées). Le chevauchement presque total des boxplot (Fig. 10, 11, 12) confirme encore une fois la non colinéarité des facteurs.
+
+**Conclusion générale :** 
+
+Il ne semble pas y avoir de colinéarité entre les variables, nous pouvons donc toutes les concerver. 
 
 # **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
 
