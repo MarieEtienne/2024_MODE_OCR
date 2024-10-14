@@ -1,10 +1,6 @@
 ---
-
-
 title: "Effets du pâturage sur les prairies suédoises"
-group: "Bastien, Elia, Caroline, Alexia, Marine, Lily, Julie" 
->>>>>>> 75e9da09555ae3bad45e7f54a26d7c51188f42d7
-
+author: "Bastien, Elia, Caroline, Alexia, Marine, Lily, Julie" 
 bibliography: references.bib
 execute: 
   freeze: auto
@@ -13,21 +9,6 @@ output:
    toc: true
    toc_float: true
 ---
-IMPORTATION DES PACKAGES
-
-```{r}
-library(tidyverse)
-library(FactoMineR)
-library(dplyr)
-```
-
-IMPORTATION DES DONNEES
-
-```{r}
-df <- read.table("pollen.csv", sep = ";" , header = TRUE)
-```
-
-INTRODUCTION 
 
 Les ecosystemes terrestres ont ete domines pendant plusieurs millions d'annees par les grands mammiferes herbivores, qui ont ensuite decline à la fin du Pleistocene sous la pression des premieres populations humaines prehistoriques. La perte de ces especes de grands herbivores (aurochs, chevaux et anes sauvages, rhinoceros laineux...) a egalement ete synonyme de la perte des services ecosystemiques qu'ils apportaient. (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7148574/)
 
@@ -42,6 +23,7 @@ Blabla sur l'experience
 
 Effet du paturage sur la richesse specifique
 ```{r}
+<<<<<<< HEAD
 df %>% ggplot(data = df) + 
 ```
 
@@ -73,12 +55,72 @@ ggplot(data=df)+
 ```
 
 
-Partie 3 : effet du paturage sur les strategies de pollinisation
+
+PARTIE 3: GRAZINF EFFECT ON POLLINISATION STRATEGIES 
+
+Data importation
+
+```{r pollen_read_data}
+df <- read_delim("pollen.csv", delim = ";", 
+    escape_double = FALSE, trim_ws = TRUE)
+```
+
+
+
+```{r}
+# renommer la premiere colonne pour Marine et Alexia car var treatment est ?..treatment et pose pblm
+names(df)[1] <- "treatment"
+names(df)
+```
+
 ```{r}
 # Boxplot 
 par(mfrow=c(1,2))
 
 boxplot(df$RatioPoll~df$?..treatment, varwidth = TRUE, ylab = "Ratio Pollinisation", xlab = "treatment", col='blue', main = "")
 
+```
+
+
+The boxplot shows no significant differences between plots grazed and those not grazed.
+
+```{r}
+# Anova
+poll1<-lm(RatioPoll~1,data=df)
+poll2<-lm(RatioPoll~treatment,data=df)
+anova(poll1,poll2)
+```
+
+The P-value is not significant at the 5% threshold, so we reject the hypothesis that grazing has an effect on the RatioPoll. The Anova test confirms our graphical observation: there is no difference between the grazed and natural plots.
+
+```{r}
+poll3<-LinearModel(RatioPoll~(treatment+season+year+observer+R.score+S.score+C.score)*
+                     (treatment+season+year+observer+R.score+S.score+C.score),data=df,selection = "aic")
+poll3
+```
+
+The model proposed by R does have a lower BIC than our initial model. However, some of the interactions retained by R have no significant effect. We decided to test a model without these interactions. 
+
+```{r}
+poll4<-LinearModel(RatioPoll~( treatment + season + year + 
+    observer + R.score + S.score + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score + 
+    observer:R.score + R.score:C.score),data=df)
+poll4
+```
+We have observed that the R.score:C.score interaction is not significant, we test a new model without it.
+```{r}
+poll5<-LinearModel(RatioPoll~( treatment + season + year + 
+    observer + R.score + S.score + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score + 
+    observer:R.score ),data=df)
+poll5
+```
+We delete R.score because it is the less significant.
+
+```{r}
+poll6<-LinearModel(RatioPoll~( season + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score ),data=df)
+poll6
 ```
 
