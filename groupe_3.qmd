@@ -128,6 +128,14 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 
 ### c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité (Giu)
 
+Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
+
+```{r equilibre des modalites}
+summary(dataAnts$Location)
+```
+
+Ici les données sont bien réparties entre les deux modalités (Bog = tourbières et Forest = forêts).
+
 ## 2. Analyse des interactions entre les variables (Chloé et Manon)
 
 # **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
