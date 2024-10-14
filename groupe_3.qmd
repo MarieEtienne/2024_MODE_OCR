@@ -209,6 +209,7 @@ Cela peut être dû à :
 
 -   Des interactions sont manquantes. Il faut les ajouter au modèle.
 
+<<<<<<< Updated upstream
 -   Une inflation des zéros se produit. Il faut utiliser une regression Binomiale négative à inflation des zéros. (*source*)
 
 -   Une dépendance entre les données et un facteur ou une variable est présente. Il faut utiliser un modèle linéaire général mixte. (*source*)
@@ -218,6 +219,17 @@ Cela peut être dû à :
 -   La fonction de lien est mauvaise. Il faut changer la fonction de lien.
 
 -   La variation de $Y$ est grande. Il faut utiliser un modèle linéaire généralisé suivant une loi binomiale négative. (*source*)
+=======
+-   Une inflation des zéros se produit. Il faut utiliser une regression Binomiale négative à inflation des zéros. (@Long_J.S._1997)
+
+-   Une dépendance entre les données et un facteur ou une variable est présente. Il faut utiliser un modèle linéaire général mixte. (@Johnson_et_al._2015)
+
+-   Relation entre les données et les variables ou facteurs n'est pas linéaire. Il faut utiliser un modèle additif généralisé. (@Irz_et_Levi-Valensin_2016)
+
+-   La fonction de lien est mauvaise. Il faut changer la fonction de lien.
+
+-   La variation de $Y$ est grande. Il faut utiliser un modèle linéaire généralisé suivant une loi binomiale négative. (@Chahine_1965)
+>>>>>>> Stashed changes
 
 Dans notre exemple, nous allons calculer le 'scale parameter'. Pour cela nous allons utiliser la commande :
 
