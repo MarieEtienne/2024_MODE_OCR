@@ -86,7 +86,7 @@ ggplot(data=df)+
 
 
 
-PARTIE 3: GRAZINF EFFECT ON POLLINISATION STRATEGIES 
+PARTIE 3: GRAZING EFFECT ON POLLINISATION STRATEGIES 
 
 Data importation
 
@@ -154,3 +154,12 @@ poll6<-LinearModel(RatioPoll~( season + C.score + treatment:R.score +
 poll6
 ```
 
+
+Now,we want to check the normality of residuals 
+```{r}
+pollfinal<-lm(RatioPoll~( season + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score ),data=df)
+res<-residuals(pollfinal)
+hist(res,main="Histogram residuals",xlab="Residus")
+shapiro.test(res)
+```
