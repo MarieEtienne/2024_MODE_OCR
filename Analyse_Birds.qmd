@@ -185,10 +185,30 @@ boxplot(data$Initiation_Date~data$Year, varwidth = TRUE, ylab = "Initiation date
 ```
 
 From the first visualizations, we could make the hypothesis that Year and Species
-influence Initiation_Date
+influence Initiation_Date.
 
 
+### Analysis of possible interactions between the four Xs
+
+The interaction between two factors can only be tested if the factors are
+crossed (all the modalities of one factor are represented in all
+the modalities of the other factor and vice versa = a complete factorial design).
+To estimate the presence of interactive effects, we will develop a graphical approach.
 
 
+```{r dataInter, include=TRUE, fig.height=4, fig.width=7}
+# Interaction table
+table(data$State,data$Habitat)
+table(data$State,data$Species)
+table(data$State,data$Year)
+table(data$Habitat,data$Species)
+table(data$Habitat,data$Year)
+table(data$Species,data$Year)
+
+```
+
+
+Subsequently, we will not analyze the interactions between the factors since 
+the factors are not crossed.
 
   
