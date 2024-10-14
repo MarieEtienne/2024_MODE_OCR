@@ -8,7 +8,8 @@ editor: visual
 
 Principe de l'exploration du jeu de données d'après l'article cité en cours.
 
-```{r importation du jeu de donnes}
+```{r Importation du jeu de donnees, echo=TRUE, message=FALSE, include=TRUE}
+
 #importation
 dataAnts <- read.table("BogAnts.txt", dec=".", header = TRUE)
 
@@ -18,6 +19,7 @@ dataAnts$Location<-as.factor(dataAnts$Location)
 #vérification du type des variables 
 str(dataAnts)
 ```
+
 
 -   Quel article, auteur, journal, référence
 
@@ -35,18 +37,18 @@ str(dataAnts)
 
 -   mini summary (A) summary(dataAnts)
 
+
 # **EXPLORATION DU JEU DE DONNEES**
 
-## 1. Présentation du jeu de données (Léa et Giuliana)
+## 1. Présentation du jeu de données 
 
 ```{r Library}
 library(ggplot2)
 library(patchwork)
 ```
 
-### a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$ (Giu)
 
-site ggplot2 : https://r4ds.hadley.nz/data-visualize
+### a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$ 
 
 La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
 
@@ -124,9 +126,65 @@ qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
 
 La distribution de $Y$ (exponentielle négative) et la nature du jeu de données (comptage sans aggrégation) suggèrent que $Y$ suit une loi de Poisson. Cette hypothèse est appuyée par l'écart à la normalité des valeurs de $Y$ observé dans le Q-Q plot.
 
-### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de X (Léa)
+### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de X 
 
-### c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité (Giu)
+Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.*
+
+De même que pour la variable réponse Y : 
+
+```{r Premier graph, message=FALSE, warning=FALSE, paged.print=FALSE}
+p1 <- ggplot(dataAnts) +
+  aes(x=Latitude, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  geom_jitter(width=0, height=0.1) +
+  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) + # Valeurs de l'axe X
+  labs(title = "Variable explicative Latitude",
+       subtitle = "Observation des valeurs extrèmes",
+       x= "Latitude") +  # Titres
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
+        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
+        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+        axis.title.x = element_text(size = 8, color = "darkblue"),
+        plot.title = element_text(size = 14, face = "bold", color = "black"),
+        plot.subtitle = element_text(size = 10, color = "black")
+        )   
+
+p2 <- ggplot(dataAnts) +
+  aes(x = Latitude) +  # Utiliser Latitude sur l'axe X
+  geom_histogram(binwidth = 0.25, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
+  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) +  # Valeurs de l'axe X
+  scale_y_continuous(breaks = seq(0, 10, by = 2)) +  # Valeurs de l'axe X
+  labs(subtitle = "Observation de la distribution",
+       x = "Latitude") +  # Titres
+  theme_minimal() +  # Appliquer un thème minimal
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"), 
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.subtitle = element_text(size = 10, color = "black")
+  ) 
+
+p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
+  labs(subtitle = "Quantile-Quantile Plot",
+       caption = "D'après le jeu de données dataAnts",
+       x = "Théorique Quantiles",
+       y = "Quantiles Observés") +
+  scale_y_continuous(breaks = seq(41, 46, by = 1), limits=c(41,46)) + # Valeurs de l'axe X
+  stat_qq() +  # Ajoute les points du Q-Q plot
+  stat_qq_line(col = "red") +  # Ajoute la ligne théorique
+  theme_minimal() + # Applique un thème minimal
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey") 
+  ) 
+
+(p1 / p2) | p3 + 
+  plot_layout(guides = "collect")
+```
+
+### c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité 
 
 Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
 
