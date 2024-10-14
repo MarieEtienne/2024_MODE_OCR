@@ -97,11 +97,9 @@ library(lattice)# Graphiques multipanneaux (A CHANGER?)
 # Vérification de la présence de valeurs manquantes
 colSums(is.na(dataAnts))
 # Aucune valeur manquante
+
+summary(dataAnts)
 ```
-
--   mini summary (A)
-
-    summary(dataAnts)
 
 # **EXPLORATION DU JEU DE DONNEES**
 
