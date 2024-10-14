@@ -58,30 +58,39 @@ Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à
 # Boxplot 
 bp <- ggplot(data = dataAnts, aes(y = Nsp))+
   geom_boxplot()+
-  labs(title = "Boxplot",
+  labs(subtitle = "Boxplot",
        y = "richesse spécifique")+
   theme(
     panel.background = element_rect(fill="white"),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     axis.text.x = element_blank(),
-    axis.ticks.x = element_blank()
+    axis.ticks.x = element_blank(),
+    
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
   )
 
 # Cleveland plot 
 cp <- ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
   geom_jitter(width = 0.1, size = 3, color = "black")+
-  labs(title = "Cleveland plot",
+  labs(subtitle = "Cleveland plot",
        x = "richesse spécifique")+
+  theme_minimal()+
   theme(
-    panel.background = element_rect(fill="white"),
-    panel.grid.major.y = element_line(color="gray"),
-    panel.grid.minor.y = element_line(color="gray"),
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank(),
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank(),
     axis.title.y = element_blank(),
+    
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
   )
 
 ## Affichage 
@@ -102,17 +111,31 @@ La distribution des valeurs de $Y$ peut être visualisée grâce à un **histogr
 hg <- ggplot(data = dataAnts, aes(x = Nsp))+
   geom_histogram(binwidth = 2, fill = "blue", color = "black")+
   theme_minimal()+
-  labs(title = "Histogramme",
+  labs(subtitle = "Histogramme",
        x = "richesse spécifique",
-       y = "fréquence")
+       y = "fréquence")+
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
+    )
 
 qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
   geom_qq_line(color = "red", size = 1.2)+
   geom_qq()+
   theme_minimal()+
-  labs(title = "Q-Q plot",
+  labs(subtitle = "Q-Q plot",
        x = "quantiles théoriques",
-       y = "quantiles observés")
+       y = "quantiles observés")+
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
+  )
 
 # Affichage
 (hg + qqp) +
