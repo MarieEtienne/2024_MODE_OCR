@@ -58,6 +58,7 @@ antarctica <- world[world$continent == "Antarctica", ]
 
 rectangle_coords <- st_as_sfc(st_bbox(c(xmin = -90, xmax = -55, ymin = -75, ymax = -60), crs = st_crs(4326)))
 
+antarctic_proj <- "+proj=laea +lat_0=-90 +datum=WGS84"
 # Transform the rectangle into the polar projection system
 rectangle_proj <- st_transform(rectangle_coords, crs = antarctic_proj)
 
