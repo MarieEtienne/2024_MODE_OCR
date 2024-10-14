@@ -40,7 +40,7 @@ str(dataAnts)
 
 ## 1. Présentation du jeu de données
 
-```{r Library, echo=FALSE}
+```{r Library, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 library(ggplot2)
 library(patchwork)
 ```
@@ -53,7 +53,7 @@ La première étape de l'exploration du jeu de données consiste à vérifier la
 
 Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à un **Cleveland plot** des valeurs de $Y$.
 
-```{r valeurs aberrantes de Y, echo=FALSE}
+```{r valeurs aberrantes de Y, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 # Boxplot 
 bp <- ggplot(data = dataAnts, aes(y = Nsp))+
@@ -106,7 +106,7 @@ $Y$ ne présente pas de valeurs extrêmes ou aberrantes.
 
 La distribution des valeurs de $Y$ peut être visualisée grâce à un **histogramme** ou à un **Normal Q-Q plot**.
 
-```{r distribution de Y, echo=FALSE}
+```{r distribution de Y, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
 # Histogramme 
 hg <- ggplot(data = dataAnts, aes(x = Nsp))+
@@ -147,13 +147,17 @@ qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
 
 La distribution de $Y$ (exponentielle négative) et la nature du jeu de données (comptage sans aggrégation) suggèrent que $Y$ suit une loi de Poisson. Cette hypothèse est appuyée par l'écart à la normalité des valeurs de $Y$ observé dans le Q-Q plot.
 
+[**Conclusion**]{.underline} **:**
+
+Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
+
 ### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$
 
 Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.*
 
 De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
 
-[**La latitude :**]{.underline}
+[**La latitude**]{.underline} **:**
 
 ```{r Latitude, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 p1 <- ggplot(dataAnts) +
@@ -210,7 +214,7 @@ On ne constate pas de valeur aberrante sur le Cleveland plot ou sur l'histogramm
 
 On remarque grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
 
-[**L'élévation :**]{.underline}
+[**L'élévation**]{.underline} **:**
 
 ```{r Elevation, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 p4 <- ggplot(dataAnts) +
@@ -268,7 +272,7 @@ On ne constate pas de valeur aberrantes sur le Cleveland plot ou sur l'histogram
 
 On remarque grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici interressant d'utilisé un modèle linéaire généralisé et non un modèle linéaire classique.
 
-[**L'aire :**]{.underline}
+[**L'aire**]{.underline} **:**
 
 ```{r Area, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 p4 <- ggplot(dataAnts) +
@@ -382,17 +386,21 @@ On ne constate pas de valeur aberrante sur le Cleveland plot ou sur l'histogramm
 
 [**Conclusion**]{.underline} **:**
 
-L'analyse de valeurs aberrantes et de la distribution des variables suggère qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
+L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
 
 ### c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité
 
 Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
 
-```{r equilibre des modalites}
+```{r equilibre des modalites, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 summary(dataAnts$Location)
 ```
 
 Ici les données sont bien réparties entre les deux modalités (Bog = tourbières et Forest = forêts).
+
+[**Conclusion**]{.underline} **:**
+
+L'analyse de valeurs aberrantes et de la distribution de la variable qualitative suggèrent qu'elle peut être utilisée dans la construction du modèle.
 
 ## 2. Analyse des interactions entre les variables (Chloé et Manon)
 
