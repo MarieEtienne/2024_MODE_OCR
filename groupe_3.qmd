@@ -32,13 +32,17 @@ library(patchwork)
 
 ### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de X (Léa)
 
+Le jeu de données dispose de 3 variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.*
+
+De même que pour la variabel réponse Y
+
 ```{r Premier graph, message=FALSE, warning=FALSE, paged.print=FALSE}
 p1 <- ggplot(dataAnts) +
   aes(x=Latitude, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
-  geom_jitter(width=0, height=0.2) +
+  geom_jitter(width=0, height=0.1) +
   scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) + # Valeurs de l'axe X
-  labs(title = "Test de la latitude",
-       subtitle = "Juste pour la distrib",
+  labs(title = "Variable explicative Latitude",
+       subtitle = "Observation des valeurs extrèmes",
        x= "Latitude") +  # Titres
   theme_minimal() +
   theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
@@ -54,22 +58,23 @@ p2 <- ggplot(dataAnts) +
   geom_histogram(binwidth = 0.25, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
   scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) +  # Valeurs de l'axe X
   scale_y_continuous(breaks = seq(0, 10, by = 2)) +  # Valeurs de l'axe X
-  labs(       subtitle = "Distribution des latitudes",
+  labs(subtitle = "Observation de la distribution",
        x = "Latitude") +  # Titres
   theme_minimal() +  # Appliquer un thème minimal
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"), 
+    axis.title.y = element_text(size = 8, color = "darkblue"),
     plot.subtitle = element_text(size = 10, color = "black")
   ) 
 
 p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
-  labs(title = "Quantile-Quantile Plot",
+  labs(subtitle = "Quantile-Quantile Plot",
+       caption = "D'après le jeu de données dataAnts",
        x = "Théorique Quantiles",
        y = "Quantiles Observés") +
   scale_y_continuous(breaks = seq(41, 46, by = 1), limits=c(41,46)) + # Valeurs de l'axe X
   stat_qq() +  # Ajoute les points du Q-Q plot
   stat_qq_line(col = "red") +  # Ajoute la ligne théorique
-  
   theme_minimal() + # Applique un thème minimal
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"),
