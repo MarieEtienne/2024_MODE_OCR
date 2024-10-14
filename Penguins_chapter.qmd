@@ -31,11 +31,7 @@ This document is a report on the analysis of a dataset on penguins. This dataset
 
 library(factoextra) # for data visualization
 library(FactoMineR) # for PCA
-library(tidyverse)  # for data manipulation
-library(dplyr)      # for data manipulation
-library(ggplot2)    # for data visualization
-
-# On a vraiment besoin d'importer dplyr et ggplot2, alors qu'on a deja importer tidyverse ?
+library(tidyverse)  # for data manipulation and visualization
 
 library(sf)
 library(rnaturalearth)
@@ -116,7 +112,7 @@ grid.arrange(gg_antartique, gg_zone_interet, ncol = 2)
 
 **Columns name :**
 
--   studyName :Sampling expedition from which data were collected, generated, etc.\
+-   studyName : Sampling expedition from which data were collected, generated, etc.\
 -   Sample Number : an integer denoting the continuous numbering sequence for each sample\
 -   Species : a character string denoting the penguin species\
 -   Region : a character string denoting the region of Palmer LTER sampling grid\
@@ -145,7 +141,6 @@ Modification of colnames :
 ```{r}
 data <- data %>%
   select(-X) %>%                   # Remove X column 
-  #select(-Comments) %>%           # Remove (?)
   rename(                          # we rename the columns of the dataset
     sample_number = Sample.Number,
     id = Individual.ID,
@@ -159,6 +154,7 @@ data <- data %>%
     flipper_length = Flipper.Length..mm.,
     body_mass = Body.Mass..g.,
     sex = Sex,
+    comments = Comments,
     delta_15_N = Delta.15.N..o.oo.,
     delta_13_C = Delta.13.C..o.oo.,
     species = Species)
@@ -168,13 +164,13 @@ names(data)
 ```
 
 ## Missing values :
-```{r NA}
+```{r}
 # Verification of missing values
 colSums(is.na(data)) 
 
 # Removing "Comments" because not relevant for missing values
 data_NA <- data %>%
-  select(-"Comments")
+  select(-"comments")
 
 # Representation of missing values
 NA_df <- (colSums(is.na(data_NA)) / nrow(data_NA)) * 100
@@ -209,37 +205,79 @@ kable(species_islands, "html", escape = F, caption = "Distribution of species be
                 full_width = F,
                 position = "center")
 ```
+We can see from this table that the *Adelie* species is present on all three islands, while the *Chrinstrap* and *Gentoo* species are only present on 2 islands, Dream and Biscoe respectively. 
 
-Some graphs : 
+Some graphs and interpretations : 
 ```{r}
 ggplot(data, aes(x = flipper_length, y = body_mass, color = species))+
   geom_point()+
   scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
-  theme_classic()
+  geom_smooth(method = "lm", col = "red", se = TRUE)+
+  theme_bw()+
+  theme(legend.position = "none")+
+  facet_grid(~species)
 ```
+It would appear that there is a positive linear trend between the body_mass variable and flipper_lenght for each specie.
+
+Check with linear regression : 
+
+```{r}
+
+rl1 <- lm(body_mass ~ flipper_length + species + species:flipper_length, data = data)
+summary(rl1)
+
+```
+These results show a highly significant effect of fin length for all species, with a greater effect for the *Gentoo* species. There was also a significant difference in body mass between species except between *Adélie* and *Chinstrap*. 
+
+In conclusion, we can say that fin length influences body mass and that this effect varies according to species.
+
 
 ```{r}
 ggplot(data, aes(x = culmen_length, y = culmen_depth, color = species))+
   geom_point()+
   scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
-  theme_classic()
+  geom_smooth(method = "lm", col = "red", se = TRUE)+
+  theme_bw()+
+  theme(legend.position = "none")+
+  facet_grid(~species)
 ```
+It would appear that there is a positive linear trend between the culmen_depth variable and culmen_length for each specie.
+
+Check with linear regression : 
+```{r}
+rl2 <- lm(culmen_depth ~ culmen_length + species + species:culmen_length, data = data)
+summary(rl2)
+```
+These results show that beak length is significant and positive in *Adélie*. In the species *Chinstrap* and *Gentoo*, the beak depth is smaller and is significant in *Gentoo*. At the interaction level, it is not significant, which means that the effect of bill length on depth is relatively the same for 3 species. 
+
+We can conclude that beak depth depends on beak length but this does not vary between species. Gentoo* penguins have a shallower beak than the others.
 
 ```{r, fig.width=10, fig.height=5}
 ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species))+
   geom_point()+
   scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
+  geom_smooth(method = "lm", col = "red", se = TRUE)+
   theme_bw()+
-  facet_grid(~island)
+  theme(legend.position = "none")+
+  facet_grid(~species)
 ```
+There seem to be different trends between species. 
 
-<<<<<<< HEAD
+We check this using a linear model :
+```{r}
+rl3 <- lm(delta_13_C ~ delta_15_N + species + species:delta_15_N, data = data)
+summary(rl3)
+```
+These results show that the relationship between nitrogen 15 and carbon 13 is positive and significant in *Adélie*, this relationship is reduced in *Chinstrap* and even more so in *Gentoo*. *Chinstrap* and Gentoo* have significantly higher carbon-13 values than Adélie*. The interactions between nitrogen 15 and the species are significant, showing that the effect of nitrogen 15 on carbon 13 varies according to the species. 
+
+In conclusion, this model shows that the effect of nitrogen 15 on carbon 13 is highly species-dependent, with differences between species.
+
+
 ### PCA : 
 
 =======
 ## PCA:
->>>>>>> Penguins
-```{r}
+``` {r}
 # Selection of quantitative data
 data_numeric <- select_if(data, is.numeric)
 
@@ -258,7 +296,8 @@ summary(acp_data)
 
 
 Histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, keep 2 dimensions and 78.4% inertia.  
-```{r}
+
+```{r} 
 #Variance for each component
 va_propre = fviz_eig(acp_data, main ="", choice = "variance",
          label_size =50, addlabels = T,
@@ -268,7 +307,7 @@ va_propre
 ```
 Determind the absolut contribution of variables to each axis.  
 
-```{r,warning=FALSE,message=FALSE, fig.height=2, fig.width=5, fig.align = "center"}
+```{r,warning=FALSE,message=FALSE, fig.height=2, fig.width=5, fig.align = "center"} 
 #Contribution of axis variables axis 1 and 2
 c1 = fviz_contrib(acp_data,choice = "var",axes =1,
                   fill = "grey",color = "grey")+ labs(title = "Axe 1") #For axe 1
@@ -279,7 +318,7 @@ grid.arrange(c1,c2, ncol = 2)
 
 First graph show the result of PCA on axes 1 and 2. *A priori* clustering by the Species has been performed.  
 
-```{r,warning=FALSE,message=FALSE, fig.height=7, fig.width=12, fig.align = "center"}
+```{r,warning=FALSE,message=FALSE, fig.height=7, fig.width=12, fig.align = "center"} 
 #Projection of variables and individuals and differentiation according to species
 bi_plot = fviz_pca_biplot(acp_data, label="var", 
                 habillage=data$species, 
