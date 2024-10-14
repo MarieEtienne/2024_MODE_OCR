@@ -9,6 +9,7 @@ editor: visual
 Principe de l'exploration du jeu de données d'après l'article cité en cours.
 
 ```{r Importation du jeu de donnees, echo=TRUE, message=FALSE, include=TRUE}
+
 #importation
 dataAnts <- read.table("BogAnts.txt", dec=".", header = TRUE)
 
@@ -19,6 +20,24 @@ dataAnts$Location<-as.factor(dataAnts$Location)
 str(dataAnts)
 ```
 
+
+-   Quel article, auteur, journal, référence
+
+-   contexte biologique
+
+-   données et variables
+
+-   Question de recherche
+
+-   Quel modèle et pourquoi
+
+-   packages pouvant servir (K)
+
+-   vérifier si données manquantes (K)
+
+-   mini summary (A) summary(dataAnts)
+
+
 # **EXPLORATION DU JEU DE DONNEES**
 
 ## 1. Présentation du jeu de données (Léa et Giuliana)
@@ -28,7 +47,53 @@ library(ggplot2)
 library(patchwork)
 ```
 
+
 ### a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$ (Giu)
+
+site ggplot2 : https://r4ds.hadley.nz/data-visualize
+
+La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
+
+**Valeurs aberrantes :** dans un jeu de données écologiques, il est probable de rencontrer des individus présentant des valeurs extrêmes pour la variable réponse. Ces individus, en raison de leurs valeurs inhabituelles, peuvent avoir un impact disproportionné sur la construction du modèle. Toutefois, ces valeurs extrêmes peuvent résulter soit de la variabilité naturelle des phénomènes écologiques, soit d'erreurs (par exemple, des erreurs de mesure ou de manipulation). Identifier ces individus avant l'analyse statistique permet de prévenir les erreurs et de justifier, si nécessaire, l'exclusion de certaines valeurs aberrantes pour améliorer la robustesse du modèle.
+
+Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à un **Cleveland plot** des valeurs de $Y$.
+
+```{r valeurs aberrantes}
+par(mfrow=c(1,2))
+
+# Boxplot 
+ggplot(data = dataAnts, aes(y = Nsp))+
+  geom_boxplot()+
+  labs(y = "richesse spécifique")+
+  theme(
+    panel.background = element_rect(fill="white"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.margin = margin(10,20,10,20),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+
+# Cleveland plot 
+ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
+  geom_jitter(width = 0.1, size = 3, color = "blue")+
+  theme(
+    panel.background = element_rect(fill="white"),
+    panel.grid.major = element_rect(),
+    panel.grid.minor = element_blank(),
+    plot.margin = margin(10,20,10,20),
+  )
+  
+  
+  
+
+
+```
+
+**Distribution des valeurs :** analyser la distribution des valeurs de $Y$ permet d'identifier *a priori* la loi de probabilité qui expliquera au mieux les processus écologiques en cours. Cela est d'autant plus intéressant si les données suggèrent une relation non linéaire ou asymétrique.
+
+La distribution des valeurs de $Y$ peut être visualisée grâce à un **histogramme** ou à un **Normal Q-Q plot**.
+
 
 ### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de X (Léa)
 
