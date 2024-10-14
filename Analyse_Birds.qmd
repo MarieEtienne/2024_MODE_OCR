@@ -44,25 +44,80 @@ refaire analyse de bases cf ASA
 
 ```{r}
 # Datatset import under the name of "data"
-data <- read.table("Bird_dataset.csv", sep="\t", header = TRUE)
+data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE, stringsAsFactors = T)
 ```
 
 ```{r}
 # Charge the librairies
 library(ggplot2)
+library(FactoMineR)
+library(factoextra)
 ```
 
 ```{r}
+# Nest_Fate and Year as a factor (currently a quantitative variable)
+data$Nest_Fate = as.factor(data$Nest_Fate)
+data$Year = as.factor(data$Year)
+
 # View the firsts lignes of the dataset
 head(data)
 ```
 ## Data exploration
-# Repartition of the data through time
+
+Création d'une ACM
 
 ```{r}
-# Creation of a barplot
-ggplot(data, aes(x="Year"))+
-  geom_bar(stat="bin", width=0.7, fill="steelblue")+
-  theme_minimal()
+# Proportions de chaques modalités dans chaques variables:
+prop.table(table(data$State))
+prop.table(table(data$County))
+prop.table(table(data$Habitat))
+prop.table(table(data$Species))
+prop.table(table(data$Year))
+prop.table(table(data$Nest_Fate))
+prop.table(table(data$Number_Fledged))
 ```
+Certaines variables sont sous-représentées (<0.003)
+
+```{r}
+# All variable in factor for the MCA
+data$Number_Fledged <- as.factor(data$Number_Fledged)
+# MCA without the quantitative variables (Initiation date and Nest end date) and the Nest IDs.
+ACM_bird <- MCA(data[,-c(1,8,10)])
+```
+
+```{r}
+fviz_eig(ACM_bird, main="histogram of % inertie", addlabels = T)
+```
+The inertia holded by the first axis is very low (6.3%)
+Let's try the same analysis without the State variable, as the county variable is also contening state information.
+
+```{r}
+ACM_bird2 <- MCA(data[,-c(1,2,8,10)])
+```
+```{r}
+fviz_eig(ACM_bird2, main="histogram of % inertie", addlabels = T)
+```
+
+The inertia is less important...
+Let's try without county
+
+```{r}
+ACM_bird3 <- MCA(data[,-c(1,3,8,10)])
+```
+```{r}
+fviz_eig(ACM_bird3, main="histogram of % inertie", addlabels = T)
+```
+Let's see wich modalities are significantly contributing to the analysis, for the axis 1 and 2
+
+```{r}
+fviz_contrib(ACM_bird2, choice='var', axes=1)
+fviz_contrib(ACM_bird2, choice='var', axes=2)
+```
+Let's print only the 10 best modalities
+
+```{r}
+fviz_mca_var(ACM_bird2, select.var = list(contrib = 10), col.var='blue', repel = T)
+```
+
+
 
