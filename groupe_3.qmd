@@ -54,7 +54,7 @@ La première étape de l'exploration du jeu de données consiste à vérifier la
 
 Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à un **Cleveland plot** des valeurs de $Y$.
 
-```{r valeurs aberrantes}
+```{r valeurs aberrantes de Y}
 
 # Boxplot 
 bp <- ggplot(data = dataAnts, aes(y = Nsp))+
@@ -96,6 +96,18 @@ $Y$ ne présente pas de valeurs extrêmes ou aberrantes.
 **Distribution des valeurs :** analyser la distribution des valeurs de $Y$ permet d'identifier *a priori* la loi de probabilité qui expliquera au mieux les processus écologiques en cours. Cela est d'autant plus intéressant si les données suggèrent une relation non linéaire ou asymétrique.
 
 La distribution des valeurs de $Y$ peut être visualisée grâce à un **histogramme** ou à un **Normal Q-Q plot**.
+
+```{r distribution de Y}
+
+# Histogramme 
+hg <- ggplot(data = dataAnts, aes(x = Nsp))+
+  geom_histogram(binwidth = 2, fill = "blue", color = "black")+
+  theme_minimal()+
+  labs(title = "Histogramme",
+       x = "richesse spécifique",
+       y = "fréquence")
+
+```
 
 ### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de X (Léa)
 
