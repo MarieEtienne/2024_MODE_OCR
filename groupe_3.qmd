@@ -183,6 +183,7 @@ Nous allons donc calculer la qualité du modèle avec les commandes suivantes :
 (mod1$null.deviance-mod1$deviance)/mod1$null.deviance
 
 # Some others estimates of deviance explained - package 'rcompanion'
+library(rcompanion)
 nagelkerke(mod1)
 ```
 
