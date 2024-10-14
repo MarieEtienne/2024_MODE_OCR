@@ -466,7 +466,11 @@ We will perform an ANOVA to see the effect of qualitatives variables (state, hab
 
 We need to check the type of the variables :
   
-```{r Ini_factor data, include=false}
+```{r Ini_factor data}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
 # Dataset : variables as factors
 
 data$State<-as.factor(data$State)
