@@ -670,7 +670,7 @@ modlm<-lm(body_mass ~ species + island + clutch_completion + culmen_length + cul
 ```
 
 Now we are going to select the best model "by hand"
-```{r full model}
+```{r full model selection}
 drop1(modlm,test="F") #test significativté des variables avec test fischer
 ```
 We exclude the variable "island" of the model, because it is the non-significant variable with the highest p-value.
