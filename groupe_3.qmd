@@ -235,6 +235,32 @@ Ici, la dispersion est de 1,02. Il n'y a pas de surdispersion.
 
 ### Vérification des individus influents
 
+Afin de vérifier qu'aucun individu est une influence trop importante dans l'analyse, nous allons faire une représentation graphique du poid de chaque individus. Si individus dépasse un poid de 1, il est trop influent dans l'analyse. L'analyse n'est pas valide et il faut la refaire en retirant cet individus.
+
+```{r Contri, include=TRUE, fig.height=4, fig.width=4}
+
+par(mfrow = c(1, 1))
+plot(cooks.distance(mod1), type = "h", ylim = c(0, 1))
+abline(h = 1, col = 2,lwd = 3)
+
+```
+
+Ici, il n'y a pas d'individus trop influent.
+
 ### Analyses des résidus avec DHARMa (bonus)
+
+Pour une représentation graphique différente, nous pouvons utiliser le package DHARMa. Ce package permet d'analyser les résidus et plus particulièrement leur surdispersion et les valeurs abérantes. Ce package met en couleur rouge les résidus ne respèctant les valeurs attendues.
+
+```{r Dharma, include=TRUE}
+#testDispersion(mod1)
+simulationOutput <- simulateResiduals(fittedModel = mod1, plot = F)
+residuals(simulationOutput)
+plot(simulationOutput)
+residuals(simulationOutput, quantileFunction = qnorm, outlierValues = c(-7,7))
+#Représentation des résidus selon la covariable
+plotResiduals(simulationOutput, form = dataAnts$Latitude)
+```
+
+Dans notre exemple, les résidus ne sont pas surdispersés et ne montre pas de valeurs abérantes.
 
 # **CONCLUSION** (Apolline et Kilian)
