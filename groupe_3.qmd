@@ -38,16 +38,14 @@ str(dataAnts)
 
 # **EXPLORATION DU JEU DE DONNEES**
 
-## 1. Présentation du jeu de données (Léa et Giuliana)
+## 1. Présentation du jeu de données
 
 ```{r Library, echo=FALSE}
 library(ggplot2)
 library(patchwork)
 ```
 
-### a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$ (Giu)
-
-site ggplot2 : https://r4ds.hadley.nz/data-visualize
+### a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$
 
 La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
 
@@ -55,41 +53,105 @@ La première étape de l'exploration du jeu de données consiste à vérifier la
 
 Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à un **Cleveland plot** des valeurs de $Y$.
 
-```{r valeurs aberrantes, echo=FALSE}
-par(mfrow=c(1,2))
+```{r valeurs aberrantes de Y, echo=FALSE}
 
 # Boxplot 
-ggplot(data = dataAnts, aes(y = Nsp))+
+bp <- ggplot(data = dataAnts, aes(y = Nsp))+
   geom_boxplot()+
-  labs(y = "richesse spécifique")+
+  labs(subtitle = "Boxplot",
+       y = "richesse spécifique")+
   theme(
     panel.background = element_rect(fill="white"),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    plot.margin = margin(10,20,10,20),
     axis.text.x = element_blank(),
-    axis.ticks.x = element_blank()
+    axis.ticks.x = element_blank(),
+    
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
   )
 
 # Cleveland plot 
-ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
-  geom_jitter(width = 0.1, size = 3, color = "blue")
-  
-  
-  
+cp <- ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
+  geom_jitter(width = 0.1, size = 3, color = "black")+
+  labs(subtitle = "Cleveland plot",
+       x = "richesse spécifique")+
+  theme_minimal()+
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.y = element_blank(),
+    
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
+  )
 
 
+## Affichage 
+(bp + cp) + 
+  plot_layout(widths = c(1, 2)) + 
+  plot_annotation(title = "Analyse des valeurs aberrantes de Y")
 ```
+
+$Y$ ne présente pas de valeurs extrêmes ou aberrantes.
 
 **Distribution des valeurs :** analyser la distribution des valeurs de $Y$ permet d'identifier *a priori* la loi de probabilité qui expliquera au mieux les processus écologiques en cours. Cela est d'autant plus intéressant si les données suggèrent une relation non linéaire ou asymétrique.
 
 La distribution des valeurs de $Y$ peut être visualisée grâce à un **histogramme** ou à un **Normal Q-Q plot**.
 
-### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de X (Léa)
+```{r distribution de Y, echo=FALSE}
 
-Le jeu de données dispose de 3 variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.*
+# Histogramme 
+hg <- ggplot(data = dataAnts, aes(x = Nsp))+
+  geom_histogram(binwidth = 2, fill = "blue", color = "black")+
+  theme_minimal()+
+  labs(subtitle = "Histogramme",
+       x = "richesse spécifique",
+       y = "fréquence")+
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
+    )
 
-De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs abérrantes ainsi que la distribution de chacune des variables réponses.
+qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
+  geom_qq_line(color = "red", size = 1.2)+
+  geom_qq()+
+  theme_minimal()+
+  labs(subtitle = "Q-Q plot",
+       x = "quantiles théoriques",
+       y = "quantiles observés")+
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
+  )
+
+# Affichage
+(hg + qqp) +
+  plot_layout(widths = c(1, 2)) + 
+  plot_annotation(title = "Analyse de la distribution de Y")
+
+```
+
+La distribution de $Y$ (exponentielle négative) et la nature du jeu de données (comptage sans aggrégation) suggèrent que $Y$ suit une loi de Poisson. Cette hypothèse est appuyée par l'écart à la normalité des valeurs de $Y$ observé dans le Q-Q plot.
+
+### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$
+
+Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.*
+
+De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
 
 [**La latitude :**]{.underline}
 
@@ -144,9 +206,9 @@ p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
   plot_layout(guides = "collect")
 ```
 
-On ne constate pas de valeurs abbérantes sur le Cleveland plot ou sur l'histogramme.
+On ne constate pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
 
-On remarque grace au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici interressant d'utilisé un modèle linéaire généralisé et non un modèle linéaire classique.
+On remarque grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
 
 [**L'élévation :**]{.underline}
 
@@ -202,9 +264,9 @@ p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
 
 ```
 
-On ne constate pas de valeurs abbérantes sur le Cleveland plot ou sur l'histogramme.
+On ne constate pas de valeur aberrantes sur le Cleveland plot ou sur l'histogramme.
 
-On remarque grace au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici interressant d'utilisé un modèle linéaire généralisé et non un modèle linéaire classique.
+On remarque grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici interressant d'utilisé un modèle linéaire généralisé et non un modèle linéaire classique.
 
 [**L'aire :**]{.underline}
 
@@ -260,7 +322,7 @@ p6 <- ggplot(dataAnts, aes(sample = Area)) +
 
 ```
 
-On constate des valeurs abbérantes sur le Cleveland plot et sur l'histogramme en raison de la présence de tourbières très étendues. Nous devons effectuer une transformation de cette variable et envisager une transformation logarithmique.
+Nous constatons des valeurs aberrantes sur le Cleveland plot et sur l'histogramme en raison de la présence de tourbières très étendues. Nous pouvons effectuer une transformation de cette variable et envisager une transformation logarithmique.
 
 ```{r LogArea, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 dataAnts$LogArea<-log(dataAnts$Area)
@@ -316,13 +378,21 @@ p6 <- ggplot(dataAnts, aes(sample = LogArea)) +
 
 ```
 
-On ne constate pas de valeurs abbérantes sur le Cleveland plot ou sur l'histogramme.
+On ne constate pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
 
 [**Conclusion**]{.underline} **:**
 
-Au sein du jeu de données, 3 variables explicatives quantitatives sont utilisable : *Latitude*, *Elevation* et *LogArea.*
+L'analyse de valeurs aberrantes et de la distribution des variables suggère qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
 
-### c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité (Giu)
+### c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité
+
+Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
+
+```{r equilibre des modalites}
+summary(dataAnts$Location)
+```
+
+Ici les données sont bien réparties entre les deux modalités (Bog = tourbières et Forest = forêts).
 
 ## 2. Analyse des interactions entre les variables (Chloé et Manon)
 
