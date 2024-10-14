@@ -122,7 +122,7 @@ qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
 
 ```
 
-La distribution de $Y$ (exponentielle négative) et la nature du jeu de données (comptage sans aggrégation) suggèrent que $Y$ suit une loi de Poisson.
+La distribution de $Y$ (exponentielle négative) et la nature du jeu de données (comptage sans aggrégation) suggèrent que $Y$ suit une loi de Poisson. Cette hypothèse est appuyée par l'écart à la normalité des valeurs de $Y$ observé dans le Q-Q plot.
 
 ### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de X (Léa)
 
