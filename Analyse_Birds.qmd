@@ -466,7 +466,7 @@ We will perform an ANOVA to see the effect of qualitatives variables (state, hab
 
 We need to check the type of the variables :
   
-```{r global data, echo=TRUE,include=TRUE}
+```{r Ini_factor data, echo=TRUE,include=TRUE}
 # Dataset : variables as factors
 
 data$State<-as.factor(data$State)
@@ -498,7 +498,7 @@ modalities and the number of individuals per modality
   
 ### Outliers in $Y$ and distribution of values of $Y$
 
-```{r datahist, include=TRUE, fig.height=5, fig.width=5}
+```{r Ini_datahist, include=TRUE, fig.height=5, fig.width=5}
 par(mfrow=c(2,2))
 # Boxplot
 boxplot(data$Initiation_Date,col='dodgerblue3',ylab='Initiation date')
@@ -522,7 +522,7 @@ Y variable seems to follow a Normal Distribution.
 The four $Xs$ are factors. We can analyze the number of modalities and the number of 
 individuals per modality. 
 
-```{r datafact, include=TRUE}
+```{r Ini_datafact, include=TRUE}
 # Factor State
 summary(data$State)
 # Factor Habitat
@@ -549,7 +549,7 @@ the analysis can be performed because there are enough data in each modality (> 
 
 ### Removal of poorly represented modalities (< 10 data)
 
-```{r delete_modalites, include=TRUE}
+```{r Ini_delete_modalites, include=TRUE}
 
 # Count the number of occurrences for each modality in data$Species
 species_count <- table(data$Species)
@@ -569,7 +569,7 @@ We can graphically analyze the possible relationships between Y and X. This
 graphical analysis of the relationships between Y and X **does not allow us to predict the significance of the relationship**. Statistical modeling remains the only available means to identify whether a relationship exists or not.
 
 
-```{r datagraph_2, include=TRUE, fig.height=3, fig.width=6}
+```{r Ini_datagraph, include=TRUE, fig.height=3, fig.width=6}
 # Boxplot 
 par(mfrow=c(2,2))
 boxplot(data$Initiation_Date~data$State, varwidth = TRUE, ylab = "Initiation date", xlab = "State", col='darkgrey', main = "")
@@ -590,7 +590,7 @@ the modalities of the other factor and vice versa = a complete factorial design)
 To estimate the presence of interactive effects, we will develop a graphical approach.
 
 
-```{r dataInter, include=TRUE, fig.height=4, fig.width=7}
+```{r Ini_dataInter, include=TRUE, fig.height=4, fig.width=7}
 # Interaction table
 table(data$State,data$Habitat)
 table(data$State,data$Species)
@@ -606,7 +606,7 @@ Subsequently, we will not analyze the interactions between the factors since
 
 ### Search for candidate model
 
-```{r fullmodel,include=TRUE}
+```{r Ini_fullmodel,include=TRUE}
 # Model formulation
 mod1<-lm(Initiation_Date~State+Habitat+Species+Year,data=data)
 
@@ -618,7 +618,7 @@ Since the Habitat factor is not significant, we can remove it in our search for
 the candidate model.
 
 
-```{r candidate_model,include=TRUE}
+```{r Ini_candidate_model,include=TRUE}
 # Model formulation
 mod2<-lm(Initiation_Date~State+Species+Year,data=data)
 
@@ -635,7 +635,7 @@ coefficients of the model.
 ### Analysis of the coefficients of the candidate model
 
 
-```{r coeff,include=TRUE}
+```{r Ini_coeff_mod2,include=TRUE}
 
 # Coefficients of the model
 summary(mod2)
@@ -679,7 +679,7 @@ summary(mod2)
 
 We can determine the portion of variance of $Y$ explained by our model.
 
-```{r R²,include=TRUE}
+```{r ini_R²,include=TRUE}
 # R² of the model
 summary(mod2)$adj.r.squared
 ```
@@ -698,7 +698,7 @@ In addition, one must check the presence of influential statistical units
 
 ### Normality of residuals
 
-```{r ResidNorm, include=TRUE, fig.height=4, fig.width=6}
+```{r ini_ResidNorm, include=TRUE, fig.height=4, fig.width=6}
 par(mfrow=c(1,2))
 # Histogram
 hist(mod2$residuals,col='dodgerblue3',xlab="residuals",main="Check Normality")
@@ -719,7 +719,7 @@ residuals at the values ​​of the significant variables. The residuals should
 show **no trend**.
 
 
-```{r Residhomo, include=TRUE, fig.height=6, fig.width=8}
+```{r ini_Residhomo, include=TRUE, fig.height=6, fig.width=8}
 par(mfrow=c(2,2))
 # residuals vs fitted
 plot(residuals(mod1)~fitted(mod1)
@@ -761,7 +761,7 @@ the statistical individuals are independent. This assumption is verified.
 
 ### Verification of influential individuals
 
-```{r Contri, include=TRUE, fig.height=4, fig.width=4}
+```{r ini_Contri, include=TRUE, fig.height=4, fig.width=4}
 par(mfrow = c(1, 1))
 plot(cooks.distance(mod2), type = "h", ylim = c(0, 1))
 abline(h = 1, col = 2,lwd = 3)
