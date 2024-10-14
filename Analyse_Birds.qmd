@@ -51,22 +51,13 @@ data <- read.table("Bird_dataset.csv", sep=";", header = TRUE)
 # Charge the librairies
 library(ggplot2)
 library(corrplot)
+library(dplyr)
 ```
 
 ```{r}
 # View the firsts lignes of the dataset
 head(data)
 ```
-## Data exploration
-# Repartition of the data through time
-
-```{r}
-# Creation of a barplot
-ggplot(data, aes(x="Year"))+
-  geom_bar(stat="bin", width=0.7, fill="steelblue")+
-  theme_minimal()
-```
-
 
 
 # ANOVA (Oceane  G.)
@@ -132,11 +123,57 @@ Y variable seems to follow a Normal Distribution.
   
   
   
+### Outliers and distribution of the values of $X$
+
+The four $Xs$ are factors. We can analyze the number of modalities and the number of 
+individuals per modality. 
+
+```{r datafact, include=TRUE}
+# Factor State
+summary(data$State)
+# Factor Habitat
+summary(data$Habitat)
+# Factor Species
+summary(data$Species)
+# Factor Year
+summary(data$Year)
+```
+
+Factor State: The experimental design is not balanced (1071 and 2150 data), but
+the analysis can be performed because there are enough data in each modality (> 10).
+
+Factor Habitat: The experimental design is not balanced (from 392 to 1683 data), but
+the analysis can be performed because there are enough data in each modality (> 10).
+
+Factor Species: The experimental design is not balanced. Several species have less than 10
+data per modality. It will therefore be necessary to remove these data before continuing
+the analysis
+
+Factor Year: The experimental design is not balanced (from 24 to 448 data), but
+the analysis can be performed because there are enough data in each modality (> 10).
+
+
+### Removal of poorly represented modalities (< 10 data)
+```{r delete_modalites, include=TRUE}
+
+# Count the number of occurrences for each modality in data$Species
+species_count <- table(data$Species)
+
+# Keep only terms with 10 or more occurrences
+data <- data %>% filter(Species %in% names(species_count[species_count >= 10]))
+
+# Show filtered data
+head(data)
+summary(data$Species)
+```
   
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
   
