@@ -60,7 +60,7 @@ library(rcompanion)
 # Datatset import under the name of "data"
 dataBirds <- read.csv("Bird_dataset.csv", sep=";", header = TRUE, stringsAsFactors = TRUE)
 dataBirds$Nest_Fate <- as.factor(dataBirds$Nest_Fate)
-dataBirds$Year <- as.factor(dataBirds$Year)
+#dataBirds$Year <- as.factor(dataBirds$Year)
 #Verification de la presence de valeurs manquantes
 colSums(is.na(dataBirds))
 ```
@@ -208,11 +208,23 @@ summary(modfinal)
 ```
 
 ```{r}
+# Pouvoir explicatif
 
+# Estimate of deviance explained
+(modfinal$null.deviance-mod1$deviance)/mod1$null.deviance
+
+# Some others estimates of deviance explained - package 'rcompanion'
+nagelkerke(mod1)
 
 
 ```
 
+```{r}
+#Predictions
+
+plot(fitted(modfinal)~dataBirds$Number_Fledged,col='dodgerblue3',pch=16,ylab="Valeurs estimées par le modèle",xlab="Valeurs observées")
+abline(0,1)
+```
 
 
 
