@@ -40,7 +40,7 @@ str(dataAnts)
 
 ## 1. Présentation du jeu de données (Léa et Giuliana)
 
-```{r Library}
+```{r Library, echo=FALSE}
 library(ggplot2)
 library(patchwork)
 ```
@@ -55,7 +55,7 @@ La première étape de l'exploration du jeu de données consiste à vérifier la
 
 Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à un **Cleveland plot** des valeurs de $Y$.
 
-```{r valeurs aberrantes}
+```{r valeurs aberrantes, echo=FALSE}
 par(mfrow=c(1,2))
 
 # Boxplot 
@@ -73,13 +73,7 @@ ggplot(data = dataAnts, aes(y = Nsp))+
 
 # Cleveland plot 
 ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
-  geom_jitter(width = 0.1, size = 3, color = "blue")+
-  theme(
-    panel.background = element_rect(fill="white"),
-    panel.grid.major = element_rect(),
-    panel.grid.minor = element_blank(),
-    plot.margin = margin(10,20,10,20),
-  )
+  geom_jitter(width = 0.1, size = 3, color = "blue")
   
   
   
@@ -99,7 +93,7 @@ De même que pour la variable réponse Y, il est nécessaire d'observer la prés
 
 [**La latitude :**]{.underline}
 
-```{r Latitude, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r Latitude, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 p1 <- ggplot(dataAnts) +
   aes(x=Latitude, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
   geom_jitter(width=0, height=0.1) +
@@ -156,7 +150,7 @@ On remarque grace au Quantile plot un écart à la normalité. Ceci suggère qu'
 
 [**L'élévation :**]{.underline}
 
-```{r Elevation, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r Elevation, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 p4 <- ggplot(dataAnts) +
   aes(x=Elevation, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
   geom_jitter(width=0, height=0.1) +
@@ -214,7 +208,7 @@ On remarque grace au Quantile plot un écart à la normalité. Ceci suggère qu'
 
 [**L'aire :**]{.underline}
 
-```{r Area, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r Area, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 p4 <- ggplot(dataAnts) +
   aes(x=Area, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
   geom_jitter(width=0, height=0.1) +
@@ -235,7 +229,7 @@ p5 <- ggplot(dataAnts) +
   aes(x = Area) +  # Utiliser Aera sur l'axe X
   geom_histogram(binwidth = 50000, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
   scale_x_continuous(breaks = seq(0, 865000, by = 200000)) +  # Valeurs de l'axe X
-  scale_y_continuous(breaks = seq(0, 30, by = 5)) +  # Valeurs de l'axe X
+  scale_y_continuous(breaks = seq(0, 20, by = 5)) +  # Valeurs de l'axe X
   labs(subtitle = "Histogramme",
        x = "Area") +  # Titres
   theme_minimal() +  # Appliquer un thème minimal
@@ -268,7 +262,7 @@ p6 <- ggplot(dataAnts, aes(sample = Area)) +
 
 On constate des valeurs abbérantes sur le Cleveland plot et sur l'histogramme en raison de la présence de tourbières très étendues. Nous devons effectuer une transformation de cette variable et envisager une transformation logarithmique.
 
-```{r LogArea, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r LogArea, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 dataAnts$LogArea<-log(dataAnts$Area)
 
 p4 <- ggplot(dataAnts) +
