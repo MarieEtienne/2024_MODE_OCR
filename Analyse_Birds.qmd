@@ -61,6 +61,8 @@ data <- bird
 library(ggplot2)
 library(tidyverse)
 library(ggcorrplot)
+library(FactoMineR)
+library(factoextra)
 ```
 
 ```{r}
@@ -318,22 +320,27 @@ num_to_month <- function(num){
 Now, we trasform all the quantitative variable into factors.
 
 ```{r}
+## Conversion into factors
+data_ACM <- data
+data_ACM$Nest_Fate <- as.factor(unlist(data_ACM$Nest_Fate))
+data_ACM$Number_Fledged <- as.factor(data_ACM$Number_Fledged)
+
 ## Conversion into months 
-data2 <- data
-data2$Initiation_Date <- lapply(X = data2$Initiation_Date, 
+data_ACM$Initiation_Date <- lapply(X = data_ACM$Initiation_Date, 
                                 FUN = num_to_month
                                 )
-data2$Nest_End_Date <- lapply(X = data2$Nest_End_Date, 
+data_ACM$Nest_End_Date <- lapply(X = data_ACM$Nest_End_Date, 
                               FUN = num_to_month
                               )
-## Conversion into factors
-data2 <- data2 |>
-  dplyr::mutate(Nest_Fate = as.character(Nest_Fate),
-                Initiation_Date = as.factor(unlist(Initiation_Date)),
-                Number_Fledged = as.factor(Number_Fledged),
-                Nest_End_Date = as.factor(unlist(Nest_End_Date))
-                )
+## Conversion of character into factors
 
-data2$Nest_Fate <- lapply(X = data2$Nest_Fate,
-                          FUN = as.character)
+data_ACM$Initiation_Date <- as.factor(unlist(data_ACM$Initiation_Date))
+data_ACM$Nest_End_Date <- as.factor(unlist(data_ACM$Nest_End_Date))
+```
+
+Now, we can perform the MCA
+
+```{r}
+MCA <- MCA(X = data_ACM,
+           graph = TRUE)
 ```
