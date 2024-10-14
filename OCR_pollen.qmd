@@ -1,10 +1,6 @@
 ---
-
-
 title: "Effets du pâturage sur les prairies suédoises"
-group: "Bastien, Elia, Caroline, Alexia, Marine, Lily, Julie" 
-
-
+author: "Bastien, Elia, Caroline, Alexia, Marine, Lily, Julie" 
 bibliography: references.bib
 execute: 
   freeze: auto
@@ -25,6 +21,7 @@ names(df)[1] <- "treatment"
 names(df)
 ```
 
+
 ```{r}
 # Boxplot 
 par(mfrow=c(1,2))
@@ -32,7 +29,8 @@ boxplot(df$RatioPoll~df$treatment, varwidth = TRUE, ylab = "Ratio Pollinisation"
 
 ```
 
-On observe pas de differences significatives entre les parcelles qui subissent du paturage et celles qui n'en subissent pas d'apres le boxplot.
+
+On n'observe pas de differences significatives entre les parcelles qui subissent du paturage et celles qui n'en subissent pas d'apres le boxplot.
 
 ```{r}
 # Anova
@@ -72,4 +70,3 @@ poll6<-LinearModel(RatioPoll~( season + C.score + treatment:R.score +
     treatment:C.score + year:C.score ),data=df)
 poll6
 ```
-
