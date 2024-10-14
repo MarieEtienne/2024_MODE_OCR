@@ -402,8 +402,14 @@ i <- which(data_ACM$County %in% c("Carroll", "Carroll/Whiteside", "Grundy", "Lee
 data_ACM <- data_ACM[-i,]
 ```
 
+We can remove the variable "State" that can be seen as redundant aside
+"County"
+
 ```{r}
 data_ACM <- tibble::as_tibble(data_ACM)
+
+# data_ACM <- data_ACM |>
+#   dplyr::select(-State)
 ```
 
 Now, we can perform the MCA
@@ -474,4 +480,15 @@ fviz_contrib(mca,
              )
 # Top : Monroe, Prairie, Vesper_Sparow, Dane, 2002, 
 # Bottom : 
+```
+
+Now, we can use a CAH :
+
+```{r}
+mca_g <- as.data.frame(mca$ind$coord[,1:2])
+class <- HCPC(mca_g,
+              nb.clust = 4
+              )
+plot(class$call$t$inert.gain,
+     type = "s")
 ```
