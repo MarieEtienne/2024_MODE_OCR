@@ -449,6 +449,7 @@ Pour une représentation graphique différente, nous pouvons utiliser le package
 
 ```{r Dharma, include=TRUE}
 #testDispersion(mod1)
+library(DHARMa)
 simulationOutput <- simulateResiduals(fittedModel = mod1, plot = F)
 residuals(simulationOutput)
 plot(simulationOutput)
