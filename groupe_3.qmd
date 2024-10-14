@@ -16,9 +16,9 @@ editor: visual
 
 ## 1. Construction du modèle (Gabriel)
 
-On cherche à produire le meilleur modèle pour prédire le nombre d'espèces. La variable réponse est un comptage (variable quantitative discrète) de petit effectifs (\<30), la loi appropriée est donc la loi de **Poisson**. Nous allons donc réaliser la modélisation avec un modèle linéaire généralisée de Poisson.
+Nous cherchons à produire le meilleur modèle pour prédire le nombre d'espèces. La variable réponse est un comptage (variable quantitative discrète) de petit effectifs (\<30), la loi appropriée est donc la loi de **Poisson**. Nous allons donc réaliser la modélisation avec un modèle linéaire généralisé de Poisson.
 
-Pour arriver au modèle dit candidat à tester, nous allons partir du modèle dit complet, c'est-à-dire avec toutes les variables explicatives et interactions, et utiliser une méthode pas à pas arrière ou **Backward selection** pour sélectionner les variables et interactions à conserver.
+Pour arriver au modèle, dit "candidat", à tester, nous allons partir du modèle dit "complet", c'est-à-dire avec toutes les variables explicatives et leurs interactions, et utiliser une méthode pas à pas arrière ou **Backward selection** pour sélectionner les variables et les interactions à conserver.
 
 Commençons avec le modèle complet:
 
@@ -42,9 +42,9 @@ A partir de ce modèle complet nous allons donc éliminer pas à pas les interac
 drop1(mod1,test="Chi")
 ```
 
-Les trois interactions ne sont pas significatives. On enlève l'interaction 'Location:Latitude' car c'est la 'moins significative'. On peut également remarquer que la fonction drop1() nous informe que c'est en enlevant cette interaction que l'on obtient le meilleur AIC.
+Les trois interactions ne sont pas significatives. Nous enlèvons l'interaction 'Location:Latitude' car c'est la 'moins significative'. Nous pouvons également remarquer que la fonction drop1() nous informe que c'est en enlevant cette interaction que nous obtenous le meilleur AIC.
 
-On obtient donc le modèle suivant:
+Nous obtenons donc le modèle suivant:
 
 ```{r}
 # Etape 2
@@ -60,7 +60,7 @@ mod1<-glm(Nsp~ Location
 drop1(mod1,test="Chi")
 ```
 
-De la même façon, on enlève l'interaction 'Location:LogArea'.
+De la même façon, Nous enlèvons l'interaction 'Location:LogArea'.
 
 ```{r}
 # Etape 3
@@ -75,7 +75,7 @@ mod1<-glm(Nsp~ Location
 drop1(mod1,test="Chi")
 ```
 
-On enlève donc également l'interaction 'Location:Elevation'. On regarde donc maintenant la significativité des variables explicatives.
+Nous enlèvons donc également l'interaction 'Location:Elevation'. Nous regardons donc maintenant la significativité des variables explicatives.
 
 ```{r}
 # Etape 4
@@ -89,7 +89,7 @@ mod1<-glm(Nsp~ Location
 drop1(mod1,test="Chi")
 ```
 
-La variable 'LogArea' n'a pas un effet siginificatif, on l'élimine du modèle.
+La variable 'LogArea' n'a pas un effet siginificatif, nous l'éliminons du modèle.
 
 ```{r}
 # Etape 5
@@ -102,7 +102,7 @@ mod1<-glm(Nsp~ Location
 drop1(mod1,test="Chi")
 ```
 
-Les variables explicatives restantes sont significatives, on conserve donc ce modèle comme modèle candidat.
+Les variables explicatives restantes sont significatives, nous conservons donc ce modèle comme modèle candidat.
 
 Nous allons ensuite identifier le modèle candidat avec une autre approche que la significativité des p-values : l'AIC avec le mode stepwise.
 
