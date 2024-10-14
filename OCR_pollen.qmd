@@ -83,14 +83,13 @@ anova(hyp0,hyp1)
 
 The p-value is 2.39e-4 < 0.05. The test is significant, so hypothesis H0 is rejected. Grazing significantly reduces plant size.
 
-Y a t'il d'autres critères qui jouent? 
-On fait une BIC avec tous les facteurs et R nous donne ceux qui ont un impact ((logS, R.score, S.score). 
-Le traitement 
 
 #Mass
 Now, let's study the seed mass of plants in relation to grazing.
 
-Affichage: 
+Graphic representation:
+
+Let's start by representing the seed mass of plants as a function of the applied treatment (grazing or no grazing).
 ```{r}
 boxplot(df$logSeedMass.score~df$treatment, varwidth = TRUE, ylab = "Seed mass (log)", xlab = "Treatment", col='darkgrey', main = "", title = "effect of grazing on seed mass")
 
