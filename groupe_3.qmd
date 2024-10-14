@@ -110,8 +110,12 @@ Le calcul du pseudo R² estimé à 0.60 nous permet de considérer que ce modèl
 
 On en conclut donc que la richesse spécifique des fourmis dans les tourbières du New-England dépend :
 
--   de la localisation : la richesse spécifique est plus forte en forêt qu'en tourbière) ;
+-   de la localisation : la richesse spécifique est plus forte en forêt qu'en tourbière en lien avec le couvert végétal et la lumière disponible ;
 
 -   de la latitude : la richesse spécifique diminue avec la latitude ;
 
 -   et de l'altitude, bien que l'effet de celle-ci soit moindre.
+
+Dans les forêts comme dans les tourbières, la latitude est le prédicteur le plus significatif de la densité des espèces.
+
+Cependant, d'autres recherches à plus grandes échelles sont nécessaires pour généraliser ces résultats, l'étude ne couvrant qu'une zone géographique restreinte avec deux types d'habitats seulement.
