@@ -107,7 +107,22 @@ hg <- ggplot(data = dataAnts, aes(x = Nsp))+
        x = "richesse spécifique",
        y = "fréquence")
 
+qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
+  geom_qq_line(color = "red", size = 1.2)+
+  geom_qq()+
+  theme_minimal()+
+  labs(title = "Q-Q plot",
+       x = "quantiles théoriques",
+       y = "quantiles observés")
+
+# Affichage
+(hg + qqp) +
+  plot_layout(widths = c(1, 2)) + 
+  plot_annotation(title = "Analyse de la distribution de Y")
+
 ```
+
+La distribution de $Y$ (exponentielle négative) et la nature du jeu de données (comptage sans aggrégation) suggèrent que $Y$ suit une loi de Poisson.
 
 ### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de X (Léa)
 
