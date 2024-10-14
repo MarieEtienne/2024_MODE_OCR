@@ -296,7 +296,7 @@ bi_plot = fviz_pca_biplot(acp_data, label="var",
 
 
 
-```{r NA}
+```{r}
 grid.arrange(bi_plot, va_propre, c1, c2,  #names of graphs
              ncol = 2, nrow = 3, #How many row and col
              widths = c(2.2,1), #Here, the first col will be bigger than the second
