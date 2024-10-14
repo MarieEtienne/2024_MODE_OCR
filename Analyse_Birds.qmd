@@ -98,8 +98,6 @@ modalities and the number of individuals per modality
 - 3: Analyze the potential relationship between $Y$ and the $X_{s}$
 
 - 4: Check for the presence of possible interactions between the $X_{s}$
-
-- 5: Check for the presence of possible collinearity between the $X_{s}$
   
   
 ### Outliers in $Y$ and distribution of values of $Y$
@@ -209,6 +207,92 @@ table(data$Species,data$Year)
 
 
 Subsequently, we will not analyze the interactions between the factors since 
-the factors are not crossed.
 
+### Search for candidate model
+
+```{r fullmodel,include=TRUE}
+# Model formulation
+mod1<-lm(Initiation_Date~State+Habitat+Species+Year,data=data)
+
+# Then we check for significance
+drop1(mod1,test="F")
+```
+
+Since the Habitat factor is not significant, we can remove it in our search for
+the candidate model.
+
+
+```{r candidate_model,include=TRUE}
+# Model formulation
+mod2<-lm(Initiation_Date~State+Species+Year,data=data)
+
+# Then we check for significance
+drop1(mod2,test="F")
+```
   
+All factors are significant. So we have our candidate model.
+
+To understand how factors influence Initiation_Date, we need to analyze the 
+coefficients of the model.
+
+### Analysis of the coefficients of the candidate model
+
+
+```{r coeff,include=TRUE}
+
+# Coefficients of the model
+summary(mod2)
+
+# From this listing, you read the coefficients table hereafter :
+
+# Coefficients:
+#                            Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)                 75.7832     3.1611  23.974  < 2e-16 ***
+# StateWisconsin              -4.4838     1.3892  -3.228 0.001261 ** 
+# SpeciesDickcissel           21.9212     1.4579  15.036  < 2e-16 ***
+# SpeciesEastern Meadowlark    0.5278     1.1198   0.471 0.637432    
+# SpeciesGrasshopper Sparrow  10.6652     1.2095   8.818  < 2e-16 ***
+# SpeciesSavannah Sparrow      1.9590     1.2370   1.584 0.113382    
+# SpeciesVesper Sparrow        6.2687     1.7225   3.639 0.000278 ***
+# SpeciesWestern Meadowlark    4.5978     2.3695   1.940 0.052424 .  
+# Year1992                    -8.1836     3.9411  -2.076 0.037930 *  
+# Year1993                    -9.3039     4.1136  -2.262 0.023780 *  
+# Year1994                   -11.0971     4.1890  -2.649 0.008111 ** 
+# Year1995                   -11.7709     2.9221  -4.028 5.75e-05 ***
+# Year1996                   -11.2748     3.0178  -3.736 0.000190 ***
+# Year1997                   -10.4340     2.9302  -3.561 0.000375 ***
+# Year1998                    -9.4950     2.7335  -3.474 0.000520 ***
+# Year1999                    -6.4308     2.6686  -2.410 0.016018 *  
+# Year2000                    -4.7644     2.5708  -1.853 0.063934 .  
+# Year2001                    -6.3518     2.6071  -2.436 0.014893 *  
+# Year2002                   -10.3377     2.7027  -3.825 0.000133 ***
+# Year2003                   -12.4141     3.3412  -3.716 0.000206 ***
+# Year2004                   -17.6615     2.9707  -5.945 3.06e-09 ***
+# Year2005                   -14.4370     3.4662  -4.165 3.20e-05 ***
+# Year2006                   -20.7535     3.0848  -6.728 2.04e-11 ***
+# Year2007                   -15.3033     2.8578  -5.355 9.17e-08 ***
+# Year2008                   -17.9192     2.7567  -6.500 9.28e-11 ***
+# Year2009                   -19.0311     3.2531  -5.850 5.41e-09 ***
+# Year2010                   -15.0863     3.2508  -4.641 3.61e-06 ***
+# Year2011                   -13.2651     3.5681  -3.718 0.000205 ***
+```
+
+
+### Explanatory power of the model: R²
+
+We can determine the portion of variance of $Y$ explained by our model.
+
+```{r R²,include=TRUE}
+# R² of the model
+summary(mod2)$adj.r.squared
+```
+
+We obtain the adjusted R² = 0.22. This means that approximately 22% of the 
+variance of Initiation_Date is explained by our modeling.
+
+
+
+
+
+
+
