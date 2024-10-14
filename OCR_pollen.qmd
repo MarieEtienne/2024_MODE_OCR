@@ -105,10 +105,19 @@ hyp2<-lm(logSeedMass.score~1,data=df)
 hyp3<-lm(logSeedMass.score~treatment,data=df)
 anova(hyp2,hyp3)
 ```
-La p_value= 0.3573> 0.05, donc l'hypothÃ¨se H0 est validÃ©e: il n'y a pas d'effet du paturÃ¢ge sur la masse. 
+La p_value = 0.3573 > 0.05, donc la masse des graines sous l'hypothÃ¨se H1 n'est pas significativement différente de celle sous l'hypothèse H0.
+On peut donc conclure qu'il n'y a pas d'effet du paturÃ¢ge sur la masse des graines.
 
+Test du modèle :
+
+Nous allons donc analyser plus précisemment l'effet du pâturage sur la taille de la plante. Nous voulons savoir si la taille est influencée par le pâturage (traitement) seul ou par son interaction avec d'autres facteurs.
+
+Pour cela, nous allons tester les effets des facteurs et leurs interactions sur la taille des plantes via une analyse du modèle avec le critère de BIC.
 
 ```{r}
+hyp8<-LinearModel(logH~(treatment+season+year+observer+logS+RatioPoll+R.score+C.score+S.score)*
+                    (treatment+season+year+observer+logS+RatioPoll+R.score+C.score+S.score),data=study,selection = "bic")
+hyp8
 
 ```
 
