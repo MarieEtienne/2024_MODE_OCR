@@ -74,3 +74,12 @@ poll6<-LinearModel(RatioPoll~( season + C.score + treatment:R.score +
     treatment:C.score + year:C.score ),data=df)
 poll6
 ```
+
+Now,we want to check the normality of residuals 
+```{r}
+pollfinal<-lm(RatioPoll~( season + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score ),data=df)
+res<-residuals(pollfinal)
+hist(res,main="Histogram residuals",xlab="Residus")
+shapiro.test(res)
+```
