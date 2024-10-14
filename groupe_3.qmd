@@ -269,7 +269,7 @@ mod1<-glm(Nsp~ Location
 drop1(mod1,test="Chi")
 ```
 
-De la même façon, Nous enlèvons l'interaction 'Location:LogArea'.
+De la même façon, nous enlèvons l'interaction 'Location:LogArea'.
 
 ```{r}
 # Etape 3
