@@ -41,6 +41,7 @@ str(dataAnts)
 
 ```{r Library}
 library(ggplot2)
+library(patchwork)
 ```
 
 ### a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$ (Giu)
@@ -54,35 +55,40 @@ La première étape de l'exploration du jeu de données consiste à vérifier la
 Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à un **Cleveland plot** des valeurs de $Y$.
 
 ```{r valeurs aberrantes}
-par(mfrow=c(1,2))
 
 # Boxplot 
-ggplot(data = dataAnts, aes(y = Nsp))+
+bp <- ggplot(data = dataAnts, aes(y = Nsp))+
   geom_boxplot()+
-  labs(y = "richesse spécifique")+
+  labs(title = "Boxplot",
+       y = "richesse spécifique")+
   theme(
     panel.background = element_rect(fill="white"),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    plot.margin = margin(10,20,10,20),
     axis.text.x = element_blank(),
     axis.ticks.x = element_blank()
   )
 
 # Cleveland plot 
-ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
-  geom_jitter(width = 0.1, size = 3, color = "blue")+
+cp <- ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
+  geom_jitter(width = 0.1, size = 3, color = "black")+
+  labs(title = "Cleveland plot",
+       x = "richesse spécifique")+
   theme(
     panel.background = element_rect(fill="white"),
-    panel.grid.major = element_rect(),
-    panel.grid.minor = element_blank(),
-    plot.margin = margin(10,20,10,20),
+    panel.grid.major.y = element_line(color="gray"),
+    panel.grid.minor.y = element_line(color="gray"),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.y = element_blank(),
   )
-  
-  
-  
 
-
+## Affichage 
+(bp + cp) + 
+  plot_layout(widths = c(1, 2)) + 
+  plot_annotation(title = "Analyse des valeurs aberrantes de Y")
 ```
 
 **Distribution des valeurs :** analyser la distribution des valeurs de $Y$ permet d'identifier *a priori* la loi de probabilité qui expliquera au mieux les processus écologiques en cours. Cela est d'autant plus intéressant si les données suggèrent une relation non linéaire ou asymétrique.
