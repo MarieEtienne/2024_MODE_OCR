@@ -37,6 +37,7 @@ library(ggplot2)    # for data visualization
 
 # On a vraiment besoin d'importer dplyr et ggplot2, alors qu'on a deja importer tidyverse ?
 
+
 library(sf)
 library(rnaturalearth)
 library(rnaturalearthdata)
@@ -233,12 +234,10 @@ ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species))+
   facet_grid(~island)
 ```
 
-<<<<<<< HEAD
+
 ### PCA : 
 
-=======
-## PCA:
->>>>>>> Penguins
+
 ```{r}
 # Selection of quantitative data
 data_numeric <- select_if(data, is.numeric)
@@ -257,8 +256,10 @@ summary(acp_data)
 ```
 
 
+
 Histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, keep 2 dimensions and 78.4% inertia.  
 ```{r}
+
 #Variance for each component
 va_propre = fviz_eig(acp_data, main ="", choice = "variance",
          label_size =50, addlabels = T,
@@ -266,7 +267,7 @@ va_propre = fviz_eig(acp_data, main ="", choice = "variance",
    ylim(c(0,60))
 va_propre
 ```
-Determind the absolut contribution of variables to each axis.  
+Determind the absolut contribution of variables to each axis. We can see that 3 variables make a strong contribution to axis 1 (delta_15_N, body_mass and culmen_depth) and 2 to axis 2 (culmen_depth and delta_13_C) (Figure 2). 
 
 ```{r,warning=FALSE,message=FALSE, fig.height=2, fig.width=5, fig.align = "center"}
 #Contribution of axis variables axis 1 and 2
@@ -277,7 +278,7 @@ c2 = fviz_contrib(acp_data,choice = "var",axes =2,
 grid.arrange(c1,c2, ncol = 2)
 ```
 
-First graph show the result of PCA on axes 1 and 2. *A priori* clustering by the Species has been performed.  
+First graph show the result of PCA on axes 1 and 2. *A priori* clustering by the Species has been performed. Gentoo penguins have a greater mass and a longer culmen. Adelies are lighter and have a depth culmen. Chinstrap penguins are the lightest and have a long, depth culmen. Adelies and Chinstrap penguins both have a high concentration of carbon 13 and nitrogen 15.  
 
 ```{r,warning=FALSE,message=FALSE, fig.height=7, fig.width=12, fig.align = "center"}
 #Projection of variables and individuals and differentiation according to species
@@ -291,6 +292,11 @@ bi_plot = fviz_pca_biplot(acp_data, label="var",
   theme_minimal()+
   theme(legend.position = "bottom")
 
+```
+
+
+
+```{r}
 grid.arrange(bi_plot, va_propre, c1, c2,  #names of graphs
              ncol = 2, nrow = 3, #How many row and col
              widths = c(2.2,1), #Here, the first col will be bigger than the second
@@ -298,7 +304,9 @@ grid.arrange(bi_plot, va_propre, c1, c2,  #names of graphs
                                    c(2,3,4))) #On the second col, the 3 other graphs
 ```
 
-Second graph show the result of PCA on axes 1 and 2. *A priori* clustering by the Island has been performed.  
+Second graph show the result of PCA on axes 1 and 2. *A priori* clustering by the Island has been performed. We can see that Gentoo penguins live only on Biscoe Island, while Chinstrap penguins live mainly on Dream Island. Adelie penguins live on these two islands and also on Togersen Island.
+
+The common habitats of Chinstrap and Adelie penguins seem to explain the presence of isotopes in these two species, as they must find a similar diet. 
 
 ```{r,warning=FALSE,message=FALSE, fig.height=7, fig.width=12, fig.align = "center"}
 #Projection of variables and individuals and differentiation according to species
