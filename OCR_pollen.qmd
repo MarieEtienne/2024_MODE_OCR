@@ -29,14 +29,44 @@ df <- read.table("pollen.csv", sep = ";" , header = TRUE)
 
 INTRODUCTION 
 
-Les ecosystemes terrestres ont ete domines pendant plusieurs millions d'annees par les grands mammiferes herbivores, qui ont ensuite decline à la fin du Pleistocene sous la pression des premieres populations humaines prehistoriques. La perte de ces especes de grands herbivores (aurochs, chevaux et anes sauvages, rhinoceros laineux...) a egalement ete synonyme de la perte des services ecosystemiques qu'ils apportaient. (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7148574/)
+Les ecosystemes terrestres ont ete domines pendant plusieurs millions d'annees par les grands mammiferes herbivores, qui ont ensuite decline à la fin du Pleistocene sous la pression des premieres populations humaines prehistoriques. La perte de ces especes de grands herbivores (aurochs, chevaux et anes sauvages, rhinoceros laineux...) a egalement ete synonyme de la perte des services ecosystemiques qu'ils apportaient. @lundgren2020human
 
-Depuis plusieurs annees, le courant du reensauvagement ("rewilding" en anglais) a pour but de restaurer ces services ecosytemique en reintroduisant des especes dans les grands espaces naturels europeens.L'etude presente cherche a evaluer dans quelle mesure les especes d'herbivores introduites ont une influence sur la vegetation. (https://besjournals.onlinelibrary.wiley.com/doi/10.1111/1365-2664.13338)
-
+Depuis plusieurs annees, le courant du reensauvagement ("rewilding" en anglais) a pour but de restaurer ces services ecosytemique en reintroduisant des especes dans les grands espaces naturels europeens.L'etude presente cherche a evaluer dans quelle mesure les especes d'herbivores introduites ont une influence sur la vegetation. @garido2019experimental
 
 PRESENTATION DE L'EXPERIENCE
 
-Blabla sur l'experience
+Le site d'etude est situe a environ 17 km au Sud d'Uppsala. Sur ce site d'etude, trois parcelles ont ete utilisees. Chaque parcelle a ete divisee en deux, avec une partie non paturee et une partie paturee. Quatre jeunes etalons de race Gotland ont ete places dans chaque partie dediee au paturage pendant trois ans.
+
+De nombreuses variables ont ete etudiees :
+- la hauteur des plantes a maturite
+- le poids des graines
+- le nombre d'especes differentes
+- la surface de parcelle occupee par des plantes anemogames 
+- la surface de parcelle occupee par des plantes entomogames 
+- le RCS score *
+D'autres informations ont ete notees a chaque releve comme la saison, l'annee et l'observateur qui a realise l'inventaire. Des informations sur les insectes trouves sur la parcelle ont aussi ete relevees mais ne seront pas utilisees dans notre analyse.
+
+* Le score RCS correspond a un indice de strategie utilisee par les plantes @Wood2018microbiomes
+
+PROBLEMATIQUES
+
+Nous avons choisi d'utiliser le jeu de donnees de @garido2019experimental pour repondre a trois problematiques differentes. Tout d'abord, est-ce que le paturage a un effet sur la richesse specifique vegetale des parcelles ? Ensuite, est-ce que le paturage a un effet sur la morphologie des plantes ? Et enfin, le paturage a-t-il un effet sur la strategie de pollinisation des plantes ?
+
+Pour repondre a ces questions, nous avons transforme le jeu de donnees initial pour obtenir un jeu de donnees de 404 releves. Les variables utilisees sont les suivantes :
+- treatment 
+- season
+- year
+- cover.area.bee 
+- cover.area.gene
+- logh
+- logS
+- richness
+- observer
+- R.score
+- S.score
+- C.score
+- ratio poll
+
 
 
 
