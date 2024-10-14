@@ -104,7 +104,7 @@ drop1(mod1,test="Chi")
 
 Les variables explicatives restantes sont significatives, on conserve donc ce modèle comme modèle candidat.
 
-On va identifier le modèle candidat basé sur la règle de l'AIC et le mode stepwise.
+Nous allons ensuite identifier le modèle candidat avec une autre approche que la significativité des p-values : l'AIC avec le mode stepwise.
 
 ```{r modelAIC, include=TRUE}
 library(MASS)
@@ -130,9 +130,9 @@ summary(modfinal)
 
 Remarque : il est recommandé d'utiliser l'AIC avec plus de 40 individus par paramètre, sinon il existe l'AICc (@YannickOutreman).
 
-Les deux procédures (Backward et StepAIC) convergent : nous obtenons les mêmes modèles candidats.
+Les deux méthodes arrivent au même modèle candidat : Nsp~Latitude+Elevation+LogArea.
 
-Pour comprendre comment les 3 variables explicatives (Latitude, Elevation, LogArea) influencent la richesse spécifique des fourmis, nous devons analyser les coefficients du modèle.
+L'étape suivante est l'analyse des coefficients. Nous allons donc regarder l'effet précis des variables explicatives retenues (Latitude, Elevation, LogArea) sur la richesse spécifique des fourmis. 
 
 ## 2. Analyse des coefficients (Gabriel)
 
@@ -144,9 +144,12 @@ summary(mod1)
 #LocationForest  0.6354389  0.1195664   5.315 1.07e-07 ***
 #Latitude       -0.2357930  0.0616638  -3.824 0.000131 ***
 #Elevation      -0.0011411  0.0003749  -3.044 0.002337 ** 
+
+#Null deviance: 102.76  on 43  degrees of freedom
+#Residual deviance:  40.69  on 40  degrees of freedom
 ```
 
-Ce tableau détaille les coefficients du modèle avec les coefficients associés à chaque effet majeur significatif. Rappelons que pour un facteur, une modalité est appelée "modalité de référence", c'est-à-dire que son coefficient est égal à 0. D'après ce tableau, les coefficients sont :
+Le summary() du modèle nous permet de voir les coefficients correspondant à chaque variable ainsi que l'intercept (basé sur la moyenne de la population). Pour un facteur (variable qualitative) le coefficient correspond à la comparaison entre la modalité donnée et la modalité dite "de référence" dont le coefficient est égal à 0. Les scores de déviance serviront dans la partie suivante. Grâce à ce tableau on peut noter les différents coefficients :
 
 **Location factor**\
 - $Location_{Bog}$ = 0 (modalité de référence du facteur Location)\
@@ -156,7 +159,8 @@ Ce tableau détaille les coefficients du modèle avec les coefficients associés
 **Elevation covariate**\
 - $\beta_{Elevation}$ = $-0.001^{***}$
 
-Ainsi, le modèle candidat s'écrit : $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
+Le modèle candidat avec les coefficients s'écrit donc : 
+$$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
 
 Rappel : pour modéliser une variable quantitative discrète avec un modèle linéaire généralisé on passe par une fonction de lien, ici avec la loi de Poisson on utilise la fonction log().
 
@@ -168,7 +172,7 @@ Un moyen de connaître la qualité du modèle est de calculer un *pseudo R²*. P
 
 $$Pseudo\:R^2=100\:.\:\frac{Déviance\:nulle- Déviance\:résiduelle}{Déviance\:nulle}$$
 
-Nous pouvons calculer le *pseudo R²* de trois manières différentes. Soit avec la méthode de McFadden, celle de Cox et Snell ou celle de Nagelkerke. Les deux dernières méthodes nécessite le package 'rcompagnon'.
+Nous pouvons calculer le *pseudo R²* de trois manières différentes : avec la méthode de McFadden, celle de Cox et Snell ou celle de Nagelkerke. Les deux dernières méthodes nécessitent le package 'rcompagnon'.
 
 Dans notre exemple, comme vu dans la partie précédente, le modèle nul a une déviance de 102,76 et la déviance résiduelle est de 40,69.
 
@@ -199,7 +203,7 @@ Pour cela, nous allons calculer un paramètre appelé 'scale parameter'. Si sa v
 
 ### Vérification de la surdispersion
 
-Quand l'index de dispersion est supérieur à 1,5 , il existe différentes explications.
+Quand l'indice de dispersion est supérieur à 1,5 , il existe différentes explications.
 
 Cela peut être dû à :
 
@@ -233,7 +237,7 @@ Ici, la dispersion est de 1,02. Il n'y a pas de surdispersion.
 
 ### Analyses des résidus
 
-Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les GLM, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $X_s$ significatifs du modèle, on doit valider l'absence de tendance dans leur distribution. Si on constate une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les GLM, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
+Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $X_s$ significatifs du modèle, on doit valider l'absence de tendance dans leur distribution. Si on constate une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
 
 ```{r}
 resid<-residuals(mod1, type="pearson")
@@ -278,11 +282,11 @@ abline(h = 0)
 
 ```
 
-L'histogramme des résidus et le Q-Q plot montrent des résidus relativement normaux. Les quatres graphiques suivant montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. On peut voir que les résidus restent homogènes peu importe les valeurs des variables explicatives.
+L'histogramme des résidus et le Q-Q plot montrent des résidus relativement normaux. Les quatres graphiques suivant montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. Nous pouvons voir que les résidus restent homogènes peu importe les valeurs des variables explicatives. Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
 ### Vérification des individus influents
 
-Afin de vérifier qu'aucun individu est une influence trop importante dans l'analyse, nous allons faire une représentation graphique du poid de chaque individus. Si individus dépasse un poid de 1, il est trop influent dans l'analyse. L'analyse n'est pas valide et il faut la refaire en retirant cet individus.
+Afin de vérifier qu'aucun individu possède une influence trop importante dans l'analyse, nous allons faire une représentation graphique du poids de chaque individus. Si le poids d'un individu dépasse 1, il est trop influent dans l'analyse. L'analyse ne serait donc pas valide et il faudrait la refaire en retirant cet individus.
 
 ```{r Contri, include=TRUE, fig.height=4, fig.width=4}
 
@@ -292,11 +296,11 @@ abline(h = 1, col = 2,lwd = 3)
 
 ```
 
-Ici, il n'y a pas d'individus trop influent.
+Ici, il n'y a pas d'individus trop influents.
 
 ### Analyses des résidus avec DHARMa (bonus)
 
-Pour une représentation graphique différente, nous pouvons utiliser le package DHARMa. Ce package permet d'analyser les résidus et plus particulièrement leur surdispersion et les valeurs abérantes. Ce package met en couleur rouge les résidus ne respèctant les valeurs attendues.
+Pour une représentation graphique différente, nous pouvons utiliser le package 'DHARMa'. Ce package permet d'analyser les résidus et plus particulièrement leur surdispersion et les valeurs aberrantes. Ce package met en couleur rouge les résidus ne respectant pas les valeurs attendues.
 
 ```{r Dharma, include=TRUE}
 #testDispersion(mod1)
@@ -308,6 +312,6 @@ residuals(simulationOutput, quantileFunction = qnorm, outlierValues = c(-7,7))
 plotResiduals(simulationOutput, form = dataAnts$Latitude)
 ```
 
-Dans notre exemple, les résidus ne sont pas surdispersés et ne montre pas de valeurs abérantes.
+Dans notre exemple, les résidus ne sont pas surdispersés et ne montrent pas de valeurs aberrantes.
 
 # **CONCLUSION** (Apolline et Kilian)
