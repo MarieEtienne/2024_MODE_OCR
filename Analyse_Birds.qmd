@@ -20,15 +20,15 @@ The dataset (available following this link  https://zenodo.org/records/8251495 )
 
 These observations are the following:
 
-- ***State***: Illinois or Wisconsin
-- ***County***: Dane (Wisconsin), Grant (Wisconsin), Green (Wisconsin), Iowa (Wisconsin), Lafayette (Wisconsin), Monroe (Wisconsin), Rock (Wisconsin), Lee (Illinois), Ogle (Illinois), Will (Illinois), Grundy (Illinois), Carroll (Illinois), and Jo Daviess (Illinois)
-- ***Habitat***: Cool-season Grassland, Pasture, Prairie, Warm-season Grassland
-- ***Species***: Bobolink, Dickcissel, Eastern Meadowlark, Grasshopper Sparrow, Henslow’s Sparrow, Savannah Sparrow, Vesper Sparrow, and Western Meadowlark
-- ***Years***: from 1991 to 2011
-- ***Nest Fate***
-- ***Initiation Date***
-- ***Number fledged***
-- ***Nest End Date***
+- ***State***: Illinois or Wisconsin - *qualitative explanatory variable*
+- ***County***: Dane (Wisconsin), Grant (Wisconsin), Green (Wisconsin), Iowa (Wisconsin), Lafayette (Wisconsin), Monroe (Wisconsin), Rock (Wisconsin), Lee (Illinois), Ogle (Illinois), Will (Illinois), Grundy (Illinois), Carroll (Illinois), and Jo Daviess (Illinois) - *qualitative explanatory variable*
+- ***Habitat***: Cool-season Grassland, Pasture, Prairie, Warm-season Grassland - *qualitative explanatory variable*
+- ***Species***: Species of birds - Bobolink, Dickcissel, Eastern Meadowlark, Grasshopper Sparrow, Henslow’s Sparrow, Savannah Sparrow, Vesper Sparrow, and Western Meadowlark - *qualitative explanatory variable*
+- ***Years***: from 1991 to 2011 - *qualitative explanatory variable*
+- ***Nest Fate***: the fate of the chicks -> Successly fledged at least one young (1) or Failed (0)- *quantitative explanatory variable*
+- ***Initiation Date***: Date of the first laided egg - *quantitative explanatory variable*
+- ***Number fledged***: Number of chicks that survived and fledged the nest - *quantitative explanatory variable*
+- ***Nest End Date***: the date when the fate of it was recorded - *quantitative explanatory variable*
 
 
 
@@ -68,18 +68,35 @@ colSums(is.na(data_Illinois))
 
 
 ```{r, include=FALSE}
-library(knitr)
-opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")
-library(ggplot2) # graph package
-library(tinytex) # Pour la sortie pdf
-library(corrplot)# Correlation matrix calculus
-library(plot3D)# For 3D plot
-library(DHARMa)# Model diagnosis
-library(rcompanion)# Model pseudo R²
-library(lattice)# Multipanel graphics
+
+# Function to check and install packages if not installed
+install_if_missing <- function(packages) {
+  for (package in packages) {
+    if (!require(package, character.only = TRUE)) {
+      install.packages(package, dependencies = TRUE)
+      library(package, character.only = TRUE)
+    } else {
+      library(package, character.only = TRUE)
+    }
+  }
+}
+
+# List of required packages
+required_packages <- c(
+  "knitr",      # for R Markdown chunk options
+  "ggplot2",    # for graphs
+  "corrplot",   # for correlation matrix calculations
+  "plot3D",     # for 3D plots
+  "DHARMa",     # for model diagnostics
+  "rcompanion", # for pseudo R² in models
+  "lattice"     # for multipanel graphics
+)
+
+# Install and load the packages
+install_if_missing(required_packages)
 ```
 
-
+In this part we choose to explain the nest fate with different variables. We chose to focus on the state of Illinois because adding the state might lead to bad modelling as there might be not enough data for each of them. 
 
 
 # Analysing the relationship between nest fate and county, habitat, species, year, initiation date using a generalized linear model (GLM) with a binomial distribution
@@ -95,7 +112,7 @@ Variables are :
 - *Year* : qualitative explanatory variable
 - *Initiation_Date* : Quantitative explanatory variable
 
-**Aim of the study** : We want to model the faye of the nest as a response of the County, the Habitat, the Species, the Year, the Initiation date. We are looking for a model that could explain the distribution of Nest fate. 
+**Aim of the study** : We want to model the fate of the nest as a response of the County, the Habitat, the Species, the Year, the Initiation date. We are looking for a model that could explain the distribution of Nest fate. 
 
 **Method** : Here our response variable is either a sucess or a failure. This response follows a **binomial distribution** with the probability density function $$P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}$$
 
@@ -167,7 +184,7 @@ summary(data_Illinois$Species)
 summary(data_Illinois$Year)
 ```
 The results tables provided by our script show different things. 
-First of all for the **County** variable we can observe that some counties have very little records. For example Carrol/Whiteside has 5 recors of nest while counties like Jo Daviess have 292 records. This could lead to mis-modelling so attention on the model results is necessary. 
+First of all for the **County** variable we can observe that some counties have very little records. For example Carrol/Whiteside has 5 records of nest while counties like Jo Daviess have 292 records. This could lead to mis-modelling so attention on the model results is necessary. 
 For **Habitat** variable it seems that one habitat in particular (Pasture) has more records than the other.
 For the **Species** variable, similarly to county variable, we observe that some species have more records than others. We observe the same for the **Year** variable. 
 
@@ -235,7 +252,7 @@ Looking at those graphs it doesn't seems like the **Initiation_date**, the **Cou
 
 ### Analysing interaction between Xs
 
-In any modelling approach there is a need to check for interactions between variables. In our study we judges that there is none. 
+In any modelling approach there is a need to check for interactions between variables. In our study we judge that there is none. 
 
 ### Checking collinearity  between $Xs$
 
