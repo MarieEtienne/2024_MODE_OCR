@@ -322,6 +322,7 @@ Now, we trasform all the quantitative variable into factors.
 ```{r}
 ## Conversion into factors
 data_ACM <- data
+data_ACM$Year <- as.factor(data_ACM$Year)
 data_ACM$Nest_Fate <- as.factor(unlist(data_ACM$Nest_Fate))
 data_ACM$Number_Fledged <- as.factor(data_ACM$Number_Fledged)
 
@@ -401,8 +402,62 @@ i <- which(data_ACM$County %in% c("Carroll", "Carroll/Whiteside", "Grundy", "Lee
 data_ACM <- data_ACM[-i,]
 ```
 
+```{r}
+data_ACM <- tibble::as_tibble(data_ACM)
+```
+
 Now, we can perform the MCA
 
 ```{r}
-MCA <- MCA(X = data_ACM)
+mca <- MCA(X = data_ACM)
+```
+
+We can see the inertia :
+
+```{r}
+fviz_eig(X = mca,
+         addlabels = TRUE,
+         barfill = "tomato")
+```
+
+For now, we decide to keep only two axes but three must be chosen.
+
+```{r}
+fviz_mca_var(X = mca, 
+             repel = TRUE
+             )
+
+fviz_mca_ind(X = mca, 
+             col.ind = "blue",
+             repel = FALSE
+             )
+
+fviz_mca_var(X = mca,
+             axex = c(1,3),
+             ylim = c(-1, 2.2),
+             repel = TRUE
+             )
+```
+
+```{r}
+fviz_contrib(mca, 
+             choice = "var", 
+             axes = 1
+             ) 
+# Right : Illinois, Dickcissel, Lee/Ogle
+# Left : Savannah_Sparrow, Winsconsin
+
+fviz_contrib(mca, 
+             choice = "var", 
+             axes = 2,
+             )
+# Top : Monroe, Prarie, 2002, Dane
+# Bottom : Pasture, 
+
+fviz_contrib(mca, 
+             choice = "var", 
+             axes = 3
+             )
+# Top : Monroe, Prairie, Vesper_Sparow, Dane, 2002, 
+# Bottom : 
 ```
