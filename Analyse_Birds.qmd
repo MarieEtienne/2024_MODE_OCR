@@ -569,7 +569,7 @@ We can graphically analyze the possible relationships between Y and X. This
 graphical analysis of the relationships between Y and X **does not allow us to predict the significance of the relationship**. Statistical modeling remains the only available means to identify whether a relationship exists or not.
 
 
-```{r datagraph, include=TRUE, fig.height=3, fig.width=6}
+```{r datagraph_2, include=TRUE, fig.height=3, fig.width=6}
 # Boxplot 
 par(mfrow=c(2,2))
 boxplot(data$Initiation_Date~data$State, varwidth = TRUE, ylab = "Initiation date", xlab = "State", col='darkgrey', main = "")
