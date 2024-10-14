@@ -282,7 +282,7 @@ abline(h = 0)
 
 ```
 
-L'histogramme des résidus et le Q-Q plot montrent des résidus relativement normaux. Les quatres graphiques suivant montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. On peut voir que les résidus restent homogènes peu importe les valeurs des variables explicatives.
+L'histogramme des résidus et le Q-Q plot montrent des résidus relativement normaux. Les quatres graphiques suivant montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. Nous pouvons voir que les résidus restent homogènes peu importe les valeurs des variables explicatives.
 
 ### Vérification des individus influents
 
