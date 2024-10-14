@@ -71,7 +71,7 @@ La loi de Poisson est utile pour décrire des évènements discrets rares et ind
 
 Dans un *glim* type Poisson, la fonction de lien est la fonction **log**. Ainsi, le modèle s'écrit : $$log(\mu_{y})= \alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip} = \eta $$ Les valeurs prédites de $Y$ sont obtenues en appliquant sur $\eta$ la fonction inverse de la fonction de lien, ici la fonction **log** : $$\mu_{y}= e^{\alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip}} = e^{\eta} $$
 
-|||| Les modèles linéaires généralisés de type Poisson ont une structure d'erreur suivant une loi de Poisson. Cette structure d'erreur permet, entre autres, de spécifier correctement la relation entre la moyenne et la variance. Cette relation est utilisée par l'approche du maximum de vraisemblance pour estimer les coefficients et les erreurs standard des paramètres du modèle GLM.||||
+Les modèles linéaires généralisés de type Poisson ont une structure d'erreur qui suivent une loi de Poisson. Cette structure permet, entre autres, de définir avec précision la relation entre la moyenne et la variance. Cette relation est exploitée par la méthode du maximum de vraisemblance pour estimer les coefficients et les erreurs standard des paramètres du modèle GLM.
 
 -   **Configuration de l'environnement et packages**
 
