@@ -23,11 +23,7 @@ dataAnts$Location<-as.factor(dataAnts$Location)
 str(dataAnts)
 ```
 
-<<<<<<< HEAD
 -   **Présentation de l'article**
-=======
--   **Article, auteur, journal, référence**
->>>>>>> cf0fd880ec180f7fae55fbd2da435da211df580f
 
 Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604–1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
 
