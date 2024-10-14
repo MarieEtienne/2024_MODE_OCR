@@ -13,6 +13,10 @@ output:
 
 PARTIE 3: GRAZINF EFFECT ON POLLINISATION STRATEGIES 
 
+```{r pollen_read_data}
+df <- read_delim("pollen.csv", delim = ";", 
+    escape_double = FALSE, trim_ws = TRUE)
+```
 
 
 ```{r}
