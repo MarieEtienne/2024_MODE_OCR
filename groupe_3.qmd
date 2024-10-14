@@ -11,7 +11,7 @@ editor: visual
 
     On commence par importer le jeu de données situé dans fichier "BogAnts.txt"
 
-```{r global data, echo=TRUE,include=TRUE}
+```{r}
 #importation
 dataAnts <- read.table("BogAnts.txt", dec=".", header = TRUE)
 
@@ -93,7 +93,7 @@ library(lattice)# Graphiques multipanneaux (A CHANGER?)
 
 -   **Vérification si des données sont manquantes**
 
-```{r, echo=TRUE,include=TRUE}
+```{r}
 # Vérification de la présence de valeurs manquantes
 colSums(is.na(dataAnts))
 # Aucune valeur manquante
