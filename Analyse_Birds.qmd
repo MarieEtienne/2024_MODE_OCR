@@ -52,6 +52,8 @@ library(DHARMa)# Model diagnosis
 library(rcompanion)# Model pseudo R²
 library(lattice)# Multipanel graphics
 library(ggplot2)
+library(MASS)
+library(rcompanion)
 ```
 
 ```{r}
@@ -156,4 +158,70 @@ boxplot(dataBirds$Nest_End_Date~dataBirds$Year, varwidth = TRUE, ylab = "Initiai
 
 Analyse :
 Pour les Initiation date et les end date en fonction des annees et des especes: On ne note pas de colinearite a vu d'oeil
+
+
+Construction du modele
+
+```{r}
+# Model formulation
+mod1<-glm(Number_Fledged~ Year
+        + Species
+        + Habitat
+        + County
+        + Initiation_Date
+        + Nest_End_Date
+        + State
+        ,data=dataBirds
+        ,family=poisson(link="log"))
+# Then we check for significance
+drop1(mod1,test="Chi")
+```
+
+```{r}
+# Construction d un modele plutot complet (pas d intercation)
+modcomplet<-glm(Number_Fledged~ Year
+        + Species
+        + Habitat
+        + County
+        + Initiation_Date
+        + Nest_End_Date
+        + State
+        ,data=dataBirds
+        ,family=poisson(link="log"))
+
+# Reduction de variable
+modfinal<-stepAIC(modcomplet,direction="both")
+
+#Analyse du modèle final
+drop1(modfinal,test="Chi")
+summary(modfinal)
+
+```
+
+
+```{r}
+#Coefficient des modeles
+summary(mod1)
+summary(modfinal)
+
+
+```
+
+```{r}
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
