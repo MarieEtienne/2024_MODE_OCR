@@ -38,21 +38,6 @@ refaire analyse de bases cf ASA
 # Document R modifié et avec ajouts
 
 
-# Variables presentation:
-
-- Nest_ID : the code to identify each nest.
-- State : the state in which the nest has been found. 2 levels factor : Illinois and Wisconsin.
-- County : the county in the state where the state has been found. 14 levels factor.
-- Habitat : the type of habitat in which the nest has been found. 4 levels factor.
-- Species : the species of the bird that has build the nest. 8 levels factor.
-- Year : the year of the nest building. 21 levels factor.
-- Nest_Fate : variable that says if there is a least one bird hatch in the nest (1) or not (0).
-- Initiation_Date : the date when the bird hatch from the 1st of April (1), May the 1st (31), June the 1st (62), etc.
-- Number_Fledged : the number of birds that hatch on the nest when they hatch. Quantitative variable.
-- Nest-End_Date : the date where the nest either failed of the birds successfully hatch.
-
-
-
 ## Import des données
 
 **Do not forget to set your working directory in the right place**
@@ -79,13 +64,25 @@ library(ggplot2)
 # View the firsts lines of the dataset
 head(data)
 ```
+# Variables presentation:
 
-We want to study the impact of the habitat, the county, the species and the year over the number of young hatched in the nest. 
+- *Nest_ID* : the code to identify each nest.
+- *State* : the state in which the nest has been found. 2 levels factor : Illinois and Wisconsin.
+- *County* : the county in the state where the state has been found. 14 levels factor.
+- *Habitat* : the type of habitat in which the nest has been found. 4 levels factor.
+- *Species* : the species of the bird that has build the nest. 8 levels factor.
+- *Year* : the year of the nest building. 21 levels factor.
+- *Nest_Fate* : variable that says if there is a least one bird hatch in the nest (1) or not (0).
+- *Initiation_Date* : the date when the bird hatch from the 1st of April (1), May the 1st (31), June the 1st (62), etc.
+- *Number_Fledged* : the number of birds that hatch on the nest when they hatch. Quantitative variable.
+- *Nest_End_Date* : the date where the nest either failed of the birds successfully hatch.
+
+We want to study the impact of four qualitative variables, the habitat, the county, the species and the year over the number of young hatched in the nest. 
 
 
 ## Data exploration
 
-### Outlayer values in the response variable $Y$ and values distribution:
+### Outlayer values in the response variable $Y$ (the number of young in the nest, Number_Fledged) and values distribution:
 
 ```{r datahist, include=TRUE, fig.height=5, fig.width=5}
 par(mfrow=c(2,2))
@@ -100,19 +97,41 @@ qqnorm(data$Number_Fledged,pch=16,col='dodgerblue3',xlab='')
 qqline(data$Number_Fledged,col='red',lwd=2)
 ```
 
+There isn't any outlayer values.
+There are a lot of value at 0. Maybe we can study only the number of young when there are some. There could be a normal distribution.
+
+```{r datafact, include=TRUE}
+# Retirer les lignes où une valeur égale à 0 est présente dans n'importe quelle colonne
+data_filtered <- subset(data, Number_Fledged != 0)
+```
+
+```{r datahist, include=TRUE, fig.height=5, fig.width=5}
+par(mfrow=c(2,2))
+# Boxplot
+boxplot(data_filtered$Number_Fledged,col='dodgerblue3',ylab='Number of young in nest')
+# Cleveland plot
+dotchart(data_filtered$Number_Fledged,pch=16,col='dodgerblue3',xlab='Number of young in nest')
+# Histogram
+hist(data_filtered$Number_Fledged,col='dodgerblue3',xlab="Number of young in nest",main="")
+# Quantile-Quantile plot
+qqnorm(data_filtered$Number_Fledged,pch=16,col='dodgerblue3',xlab='')
+qqline(data_filtered$Number_Fledged,col='red',lwd=2)
+```
+
+Now we have a better view of the data.
 
 
 ### Outlayer values in the explanatory variable $Xs$ and values distribution:
 
 ```{r datafact, include=TRUE}
 # Factor County
-summary(data$County)
+summary(data_filtered$County)
 # Factor Habitat
-summary(data$Habitat)
+summary(data_filtered$Habitat)
 # Factor Species
-summary(data$Species)
+summary(data_filtered$Species)
 # Factor Year
-summary(data$Year)
+summary(data_filtered$Year)
 ```
 Problem: there aren't the same number of observations in each level of each factors.
 Suggestion: normalize by the number of observation for each level.
@@ -125,53 +144,124 @@ Suggestion: normalize by the number of observation for each level.
 par(mfrow=c(2,2))
 
 # County
-plot(data$Number_Fledged~data$County,pch=16,col='dodgerblue3',xlab='County',ylab='Number of young in nest')
+boxplot(Number_Fledged~County, varwidth = TRUE, ylab = "Number of young in nest", xlab = "County", col=terrain.colors(14), main = "", data=data_filtered)
 
 # Habitat
-plot(data$Number_Fledged~data$Habitat,pch=16,col='dodgerblue3',xlab='Habitat',ylab='Number of young in nest')
+boxplot(Number_Fledged~Habitat, varwidth = TRUE, ylab = "Number of young in nest", xlab = "Habitat", col=terrain.colors(4), main = "",data=data_filtered)
 
 # Species
-plot(data$Number_Fledged~data$Species,pch=16,col='dodgerblue3',xlab='Species',ylab='Number of young in nest')
+boxplot(Number_Fledged~Species, varwidth = TRUE, ylab = "Number of young in nest", xlab = "Species", col=terrain.colors(8), main = "",data=data_filtered)
 
 # Year
-plot(data$Number_Fledged~data$Year,pch=16,col='dodgerblue3',xlab='Year',ylab='Number of young in nest')
+boxplot(Number_Fledged~Year, varwidth = TRUE, ylab = "Number of young in nest", xlab = "Year", col=terrain.colors(21), main = "",data=data_filtered)
 ```
+It's not easy to see if the variables have an impact because some of them have a lot of levels, but it is possible to see differences between them. The analysis will tell us if they really got an imapct over the number of young in the nest.
 
 
-# Repartition of the data through time
+### Analyze the interactions between Xs
+
+There are a lot of levels so it's hard to plot the interactions. We will see if there are some in the analysis.
+
+```{r dataInter, include=TRUE, fig.height=3, fig.width=8}
+
+par(mfrow=c(1,3))
+# Interactions between County & Habitat
+plot(Number_Fledged~County,type='n',ylab = "Number of young in nest",xlab="County", data=data_filtered)
+points(Number_Fledged[Habitat=="Pasture"]~County[Habitat=="Pasture"],pch=16,cex=2,col='#000099', data=data_filtered)
+points(Number_Fledged[Habitat=="Cool-season Grassland"]~County[Habitat=="Cool-season Grassland"],pch=16,cex=2,col='green', data=data_filtered)
+points(Number_Fledged[Habitat=="Prairie"]~County[Habitat=="Prairie"],pch=16,cex=2,col='red', data=data_filtered)
+points(Number_Fledged[Habitat=="Warm-season Grassland"]~County[Habitat=="Warm-season Grassland"],pch=16,cex=2,col='yellow', data=data_filtered)
 
 
-```{r}
-# Evolution of nest build according to the year
 
-# Counting the number of individuals for each year
-library(dplyr)
-year_count <- data %>%
-  group_by(Year) %>%
-  summarise(nb_individus = n())
-
-# Creation of the graph
-library(ggplot2)
-ggplot(year_count, aes(x = Year, y = nb_individus)) + 
-  geom_bar(stat = "identity", fill = "blue") +
-  labs(title = "Number of nest built by year", x = "Year", y = "Number of individuals")
-
-```
-
-
-```{r}
-
-#Calculer le nombre total de petits par espèce
-young_count <- aggregate(Number_Fledged ~ Species, data = data, sum)
-
-#Créer un graphique en barres avec ggplot2
-library(ggplot2)
-ggplot(young_count, aes(x = Species, y = Number_Fledged)) + 
-  geom_bar(stat = "identity", fill = "blue") +
-  labs(title = "Nombre de petits par espèce", x = "Espèce", y = "Nombre de petits") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
 
 
+# Checking collinearity between categorical independent variables Xs:
 
+```{r datacolin, include=TRUE, fig.height=4, fig.width=8}
+
+contingency_table<-table(data_filtered$Habitat,data_filtered$Species)
+print(contingency_table)
+
+chi2_test<-chisq.test(contingency_table)
+print(chi2_test)
+print(chi2_test$expected)
+
+
+```
+Problem : for most of the variables the chi² test can't be done because of the low number of values in each group. The only one that fulfill the conditions and therefore can be made is between Habitat and Species but the result shows that the variables are correlated.
+
+
+### Statistical Analysis
+
+# Building of the model
+
+
+
+```{r fullmodel,include=TRUE}
+# Model formulation
+mod1<-glm(Number_Fledged~ County
+        + Species
+        + Habitat
+        + Year
+        ,data=data_filtered
+        ,family=poisson(link="log"))
+#type de la variable : poisson et fonction de lien de type log
+# Then we check for significance
+drop1(mod1,test="Chi")
+```
+We decide to remove the less significative variable : here it's Year.
+
+```{r fullmodel,include=TRUE}
+# Model formulation
+mod1<-glm(Number_Fledged~ County
+        + Species
+        + Habitat
+        ,data=data_filtered
+        ,family=poisson(link="log"))
+#type de la variable : poisson et fonction de lien de type log
+# Then we check for significance
+drop1(mod1,test="Chi")
+```
+Now the less significative is Habitat
+
+```{r fullmodel,include=TRUE}
+# Model formulation
+mod1<-glm(Number_Fledged~ County
+        + Species
+        ,data=data_filtered
+        ,family=poisson(link="log"))
+#type de la variable : poisson et fonction de lien de type log
+# Then we check for significance
+drop1(mod1,test="Chi")
+```
+County is still not significative so we have to remove it.
+
+
+```{r fullmodel,include=TRUE}
+# Model formulation
+mod1<-glm(Number_Fledged~ Species
+        ,data=data_filtered
+        ,family=poisson(link="log"))
+#type de la variable : poisson et fonction de lien de type log
+# Then we check for significance
+drop1(mod1,test="Chi")
+
+summary(mod1)
+```
+We have the final model with only the Species.
+ 
+- $Species{Bobolink }$ = 0 (intercept)  
+- $Species{Dickcissel }$ = $-0.18^{**}$ 
+- $Species{Eastern Meadowlark }$ = $-0.14^{**}$ 
+- $Species{Grasshopper Sparrow }$ = $-0.05$ 
+- $Species{Henslow's Sparrow }$ = $-0.18$ 
+- $Species{Savannah Sparrow }$ = $-0.19^{***}$ 
+- $Species{Vesper Sparrow }$ = $-0.32^{***}$
+- $Species{Western Meadowlark }$ = $-0.04$
+
+The equation of the model is the following: 
+
+$$ log(Species\:Richness) = 1.29^{***} + (Species{Bobolink} = 0 ;\:Species{Dickcissel} = -0.18^{**} ; \:Species{Eastern Meadowlark} = -0.14^{**} ; \:Species{Grasshopper Sparrow} = -0.05 ; \:Species{Henslow's Sparrow} = -0.18 ; \:Species{Savannah Sparrow = -0.19^{***} ; \:Species{Vesper Sparrow = -0.32^{***} ; \:Species{Western Meadowlark} = -0.04)$$
