@@ -72,7 +72,7 @@ head(data)
 
 ### Repartition of the data through time
 
-### Rudy part : Statistical tests
+##### Rudy part : Statistical tests
 
 In this part, several statistical tests are performed in order to answer
 questions.
@@ -181,7 +181,7 @@ ggcorrplot(
     low = "tomato2", 
     high = "springgreen3", 
     midpoint = 0.2) +
-  ggtitle("P-values of the correlation tests with the number of fledged birds as variable")
+  ggtitle("P-values of the U-tests with the number of fledged birds as variable")
 
 ```
 
@@ -279,4 +279,61 @@ data_summariser$State <- data_state
 data_summariser$County <- data_county
 
 data_summariser
+```
+
+-   Essayer de faire une ACM en changeant les dates en mois.
+
+```{r}
+### Creation of a function to replace the number by a month 
+
+num_to_month <- function(num){
+  
+  if (num %in% (1:30)){
+    
+    res <- "april"
+  } else if (num %in% (31:61)){
+    
+    res <- "may"
+    
+  } else if (num %in% (62:91)){
+    
+    res <- "june"
+    
+  } else if (num %in% (92:122)){
+    
+    res <- "july"
+    
+  } else if (num %in% (123:153)){
+    
+    res <- "august"
+  } else {
+    
+    res <- "september"
+  }
+  return (res)
+}
+
+```
+
+Now, we trasform all the quantitative variable into factors.
+
+```{r}
+## Conversion into months 
+data2 <- data
+data2$Initiation_Date <- lapply(X = data2$Initiation_Date, 
+                                FUN = num_to_month
+                                )
+data2$Nest_End_Date <- lapply(X = data2$Nest_End_Date, 
+                              FUN = num_to_month
+                              )
+## Conversion into factors
+data2 <- data2 |>
+  dplyr::mutate(Nest_Fate = as.character(Nest_Fate),
+                Initiation_Date = as.factor(unlist(Initiation_Date)),
+                Number_Fledged = as.factor(Number_Fledged),
+                Nest_End_Date = as.factor(unlist(Nest_End_Date))
+                )
+
+data2$Nest_Fate <- lapply(X = data2$Nest_Fate,
+                          FUN = as.character)
 ```
