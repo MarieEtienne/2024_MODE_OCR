@@ -91,6 +91,8 @@ cp <- ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
   plot_annotation(title = "Analyse des valeurs aberrantes de Y")
 ```
 
+$Y$ ne présente pas de valeurs extrêmes ou aberrantes.
+
 **Distribution des valeurs :** analyser la distribution des valeurs de $Y$ permet d'identifier *a priori* la loi de probabilité qui expliquera au mieux les processus écologiques en cours. Cela est d'autant plus intéressant si les données suggèrent une relation non linéaire ou asymétrique.
 
 La distribution des valeurs de $Y$ peut être visualisée grâce à un **histogramme** ou à un **Normal Q-Q plot**.
