@@ -129,7 +129,8 @@ plot(newdata,pch=16,col='deepskyblue4',main="Figure 8")
 #Ajout du package corrplot
 library(corrplot)
 M<-cor(newdata)
-corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8,main="Figure 9")
+corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
+mtext("Figure 9", side = 2, line = -6, cex = 1, las = 1)
 
 # On vérifie la collinéarité entre catégories et variables continues
 #Latitude et Localisation
@@ -142,6 +143,8 @@ boxplot(dataAnts$Elevation~dataAnts$Location, varwidth = TRUE, ylab = "Altitude"
 boxplot(dataAnts$LogArea~dataAnts$Location, varwidth = TRUE, ylab = "Superficie de la tourbière", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 12")
 
 ```
+
+Conclusion des différents graphiques : 
 
 Nous pouvons observer sur le premier graphique (Fig. 8) que les nuages de points ne semblent pas montrer de tendance à la colinéarité. Cette impression est confirmée par les valeurs calculées dans la figure suivante (Fig. 9), les valeurs sont largement inférieures à 0,7, qui est très souvent utilisé comme seuil de colinéarité (au-delà les variables sont considérées corrélées). Le chevauchement presque total des boxplot (Fig. 10, 11, 12) confirme encore une fois la non colinéarité des facteurs.
 
