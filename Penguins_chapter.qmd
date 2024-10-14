@@ -33,7 +33,6 @@ This document is a report on the analysis of a dataset on penguins. This dataset
 
 library(factoextra) # for data visualization
 library(FactoMineR) # for PCA
-library(MASS)       # for model selection
 library(tidyverse)  # for data manipulation
 library(dplyr)      # for data manipulation
 library(ggplot2)    # for data visualization
@@ -693,14 +692,6 @@ All the variable in the model are significant, so we keep all of them in our fin
 ```{r}
 summary(modlm3)
 ```
-
-An other way to select the best model is with the AIC criterion.
-```{r model selection AIC}
-modfinal<-stepAIC(modlm,direction="both")
-summary(modfinal)
-```
-With this method, the best model is the same one than previously with the variable "clutch completion" in addition.
-However, it's not significant so it confirms our first model selection.
 
 Finally, the model can be written as:
 
