@@ -20,18 +20,6 @@ AJOUTER LES QUESTIONS DE RECHERCHE ET LES ANALYSES FAITES
 
 
 ```{r}
-<<<<<<< HEAD
-library(factoextra)
-library(FactoMineR)
-library(tidyverse)
-library(dplyr)
-library(ggplot2)
-=======
-#| message: false
-#| warning: false
-#| echo: true
-#| results: hide
-
 library(factoextra) # for data visualization
 library(FactoMineR) # for PCA
 library(tidyverse)  # for data manipulation
@@ -39,7 +27,6 @@ library(dplyr)      # for data manipulation
 library(ggplot2)    # for data visualization
 
 # On a vraiment besoin d'importer dplyr et ggplot2, alors qu'on a deja importer tidyverse ?
->>>>>>> 299a0e16fe2643030cdf2138547dcd7e54038e3c
 ```
 
 ## Dataset presentation {#colum-name}: 
@@ -151,9 +138,6 @@ data_scales <- scale(data_numeric)
 acp_data= PCA(data_scales, graph = F)
 summary(acp_data)
 
-#Correlation circle
-fviz_pca_var(acp_data)
-
 #Variance for each component
 fviz_eig(acp_data)
 
@@ -161,20 +145,35 @@ fviz_eig(acp_data)
 fviz_contrib(acp_data, choice="var", axes=1) #axe 1
 fviz_contrib(acp_data, choice="var", axes=2) #axe 1
 
+#Correlation circle
+fviz_pca_var(acp_data)
+
 # Projection of individuals and differentiation according to species
-fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$Species, addEllipses = T, pointshape = 19)
+fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$species, addEllipses = T, pointshape = 19)
 
 #Projection of variables and individuals and differentiation according to species
-fviz_pca_biplot(acp_data, label="var", habillage=data$Species, title = "Projection of variables and individuals according to species", ylim=c(-3,3.5), xlim = c(-3.5,3.5))
+fviz_pca_biplot(acp_data, label="var", habillage=data$species, title = "Projection of variables and individuals according to species", ylim=c(-3,3.5), xlim = c(-3.5,3.5))
 
 # Projection of individuals and differentiation according to the islands
-fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$Island, addEllipses = T, pointshape = 19)
+fviz_pca_ind(acp_data, geom.ind = "point", habillage = data$island, addEllipses = T, pointshape = 19)
 #Projection of variables and individuals and differentiation according to the islands
-fviz_pca_biplot(acp_data, label="var", habillage=data$Island, title = "Projection of variables and individuals and dfferentiation according to the islands", ylim=c(-3,3.5),xlim = c(-3.5,3.5))
+fviz_pca_biplot(acp_data, label="var", habillage=data$island, title = "Projection of variables and individuals and dfferentiation according to the islands", ylim=c(-3,3.5),xlim = c(-3.5,3.5))
 
 ```
+First, we look at the inertia of each axis (Figure 1). We can see that the first 2 axes capture almost 78.4% of the inertia, which is very good. If we look at the contribution of the variables for each axis, we can see that 3 variables make a strong contribution to axis 1 (delta_15_N, body_mass and culmen_depth) and 2 to axis 2 (culmen_depth and delta_13_C) (Figure 2).
+
+We then obtain the circle of correlations, which coincide with the contributions previously observed (Figure 3).
+
+We then project the individuals according to their species. We can observe 3 distinct groups corresponding to the 3 species present in the dataset (Figure 4 and 5). Gentoo penguins have a greater mass and a longer culmen. Adelies are lighter and have a depth culmen. Chinstrap penguins are the lightest and have a long, depth culmen. Adelies and Chinstrap penguins both have a high concentration of carbon 13 and nitrogen 15.
+
+Next, we look at the distribution of individuals on the islands, by colouring the individuals with this factor. We can see that Gentoo penguins live only on Biscoe Island, while Chinstrap penguins live mainly on Dream Island. Adelie penguins live on these two islands and also on Togersen Island.
+
+The common habitats of Chinstrap and Adelie penguins seem to explain the presence of isotopes in these two species, as they must find a similar diet.
 
 
+
+
+ 
 ```{r NA}
 NA_df <- (colSums(is.na(data)) / nrow(data)) * 100
 
