@@ -303,7 +303,7 @@ anova3
 Significance tests confirm the trends seen by the eye.
 
 # Model of the body mass
-The aim of this part is to determine wich variable influence the body mass of the penguins.
+The aim of this part is to determine which variable influence the body mass of the penguins.
 ```{r data preparation}
 #selection of the interesting varaibles
 dataLM<-data %>% 
@@ -531,3 +531,38 @@ $$ +\:17.1^{*NS*}. Culmen\:Length\:+\:61.6^{**}. Culmen\:Depth\:+\:17.8^{***}. F
 $$ + (Sex_{Female}= 0\:;\: Sex_{Male}=417.9^{***})\:-\:164.3^{***}. Delta\:15N\:+\:65.2^{*}. Delta\:13C)$$
 
 The model explain 88% of the body mass variance.
+
+## Model validation
+```{r ResidNorm, include=TRUE, fig.height=3, fig.width=6}
+par(mfrow=c(1,2))
+# Histogram
+hist(modlm3$residuals,col='dodgerblue3',xlab="residuals",main="Check Normality")
+# Quantile-Quantile plot
+qqnorm(modlm3$residuals,pch=16,col='dodgerblue3',xlab='')
+qqline(modlm3$residuals,col='red',lwd=2)
+```
+
+Residuals are normaly distribute.
+
+```{r Residhomo, include=TRUE, fig.height=5, fig.width=5}
+# residuals vs fitted
+plot(residuals(modlm3)~fitted(modlm3)
+      , col='dodgerblue3'
+      , pch=16)
+abline(h = 0)
+
+```
+
+There is homogeneity of variance.
+
+```{r Contri, include=TRUE, fig.height=4, fig.width=4}
+
+par(mfrow = c(1, 1))
+plot(cooks.distance(modlm3), type = "h", ylim = c(0, 1))
+abline(h = 1, col = 2,lwd = 3)
+
+```
+There is no influent individual.
+
+The linear model is valid.
+
