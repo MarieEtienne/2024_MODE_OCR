@@ -42,7 +42,7 @@ df %>% ggplot() +
 	geom_boxplot()  
 ```
 
-EFFET DU PÂTURAGE SUR LES STRATÉGIES DE POLLINISATION
+EFFET DU PATURAGE SUR LES STRATGIES DE POLLINISATION
 
 
 ```{r}
@@ -57,3 +57,4 @@ hyp1<-lm(RatioPoll~1,data=df)
 hyp2<-lm(RatioPoll~treatment,data=df)
 anova(hyp1,hyp2)
 ```
+
