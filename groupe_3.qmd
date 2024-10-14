@@ -119,10 +119,9 @@ dataAnts$LogArea<-log(dataAnts$Area)
 
 ```
 
-###**2.1 Analyser la relation potentielle entre Y et les Xs**
+\###**2.1 Analyser la relation potentielle entre Y et les Xs**
 
 Afin de tester la relation éventuelle entre la variable réponse Y et les variables explicatives Xs, il sera indispensable de réaliser la modélisation statistique, c'est le seul moyen qui nous permet de tester la significativité des relations. Seulement, nous pouvons commencer par réaliser des analyses graphiques pour mieux visualiser et se faire une idée.
-
 
 ```{r datagraph, include=TRUE, fig.height=7, fig.width=7}
 
@@ -143,19 +142,19 @@ boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Richesse spéci
 
 **Conclusion des différents graphiques :**
 
-Relation entre X et la latitude (Fig. 1) : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevée. Nous pouvons alors dire qu'il semble que plus on est au Nord, moins il y a d'espèces de fourmis. 
+Relation entre X et la latitude (Fig. 1) : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevée. Nous pouvons alors dire qu'il semble que plus on est au Nord, moins il y a d'espèces de fourmis.
 
-Relation entre X et l'altitude (Fig. 2) : Dans ce graphique-ci, nous pouvons voir à nouveau que plus l'altitude est importante, moins la richesse spécifique est élevée. Nous pouvons alors se dire qu'il semble que plus le relief est élévé moins il y a d'espèces de fourmis. 
+Relation entre X et l'altitude (Fig. 2) : Dans ce graphique-ci, nous pouvons voir à nouveau que plus l'altitude est importante, moins la richesse spécifique est élevée. Nous pouvons alors se dire qu'il semble que plus le relief est élévé moins il y a d'espèces de fourmis.
 
-Relation entre X et la surperficie de la tourbière (Fig. 3) : Ici, il ne semble pas y avoir de relation entre la richesse spécifique des fourmis et la surperficie des tourbières. 
+Relation entre X et la surperficie de la tourbière (Fig. 3) : Ici, il ne semble pas y avoir de relation entre la richesse spécifique des fourmis et la surperficie des tourbières.
 
 Relation entre X et localisation (Fig. 4) : Il semble ici y avoir une relation entre le lieu et la richesse spécifique des fourmis, avec une richesse spécifique plus importante en forêt que dans les tourbières.
 
-**Conclusion générale :** 
+**Conclusion générale :**
 
 Il semble que plus les espèces se situent au nord et dans un haut relief, moins la richesse spécifique de fournis est grande. De plus, si on se trouve en forêt, il y aura une richesse spécifique plus importante que dans les tourbières.
 
-###**2.2 Analyse des éventuelles interactions entre les Xs**
+\###**2.2 Analyse des éventuelles interactions entre les Xs**
 
 Nous cherchons à étudier les interactions entre le facteur et les 3 covariables. On exclut alors l'interaction entre les variables explicatives quantitatives. Nous passons par une approche graphique afin d'estimer le possible effet interactif entre ces différentes variables.
 
@@ -182,7 +181,7 @@ points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Locat
 
 En règle générale, on peut penser qu'il y a une interaction entre les covariables si les pentes formées par les deux nuages de points sont différentes. Ici les nuages ne permettent pas de voir clairement de similitude ou de différence de tendance pour chaque graphique. Il est donc difficile de conclure sur ces interactions.
 
-###**2.3 Vérifier une éventuelle colinéarité entre les Xs**
+\###**2.3 Vérifier une éventuelle colinéarité entre les Xs**
 
 Nous cherchons à éviter la colinéarité des variables explicatives dans notre modélisation, afin de ne pas avoir plusieurs variables qui donnent la même information. Pour ce faire, nous devons vérifier les liens statistiques qu'il peut y avoir entre les variables, \[1\] en calculant la corrélation entre les variables Xs quantitatives, \[2\] puis en étudiant l'influence du X qualitative sur les Xs quantitatives à l'aide de graphiques plot.
 
@@ -218,13 +217,13 @@ boxplot(dataAnts$LogArea~dataAnts$Location, varwidth = TRUE, ylab = "Superficie 
 
 ```
 
-**Conclusion des différents graphiques :** 
+**Conclusion des différents graphiques :**
 
 Nous pouvons observer sur le premier graphique (Fig. 8) que les nuages de points ne semblent pas montrer de tendance à la colinéarité. Cette impression est confirmée par les valeurs calculées dans la figure suivante (Fig. 9), les valeurs sont largement inférieures à 0,7, qui est très souvent utilisé comme seuil de colinéarité (au-delà les variables sont considérées corrélées). Le chevauchement presque total des boxplot (Fig. 10, 11, 12) confirme encore une fois la non colinéarité des facteurs.
 
-**Conclusion générale :** 
+**Conclusion générale :**
 
-Il ne semble pas y avoir de colinéarité entre les variables, nous pouvons donc toutes les concerver. 
+Il ne semble pas y avoir de colinéarité entre les variables, nous pouvons donc toutes les concerver.
 
 # **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
 
