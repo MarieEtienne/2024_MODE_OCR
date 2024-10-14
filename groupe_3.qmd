@@ -128,7 +128,7 @@ summary(modfinal)
 
 ```
 
-Remarque : il est recommandé d'utiliser l'AIC avec plus de 40 individus par paramètre, sinon il existe l'AICc @YannickOutreman.
+Remarque : il est recommandé d'utiliser l'AIC avec plus de 40 individus par paramètre, sinon il existe l'AICc (@YannickOutreman).
 
 Les deux procédures (Backward et StepAIC) convergent : nous obtenons les mêmes modèles candidats.
 
@@ -232,6 +232,53 @@ sum(E1^2) / (N - p)
 Ici, la dispersion est de 1,02. Il n'y a pas de surdispersion.
 
 ### Analyses des résidus
+
+Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les GLM, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $X_s$ significatifs du modèle, on doit valider l'absence de tendance dans leur distribution. Si on constate une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les GLM, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
+
+```{r}
+resid<-residuals(mod1, type="pearson")
+
+par(mfrow=c(3,2))
+# Histogram
+hist(resid,col='dodgerblue3',xlab="residuals",main="")
+# Quantile-Quantile plot
+qqnorm(resid,pch=16,col='dodgerblue3',xlab='')
+qqline(resid,col='red',lwd=2)
+
+# residuals vs fitted
+plot(resid~fitted(mod1)
+      , col='dodgerblue3'
+      , pch=16)
+abline(h = 0)
+
+# residuals against Location factor
+boxplot(resid~ dataAnts$Location, 
+         varwidth = TRUE,
+         ylab = "Residuals",
+         xlab = "Location",
+         main = "")
+
+# residuals against Latitude
+plot(resid~ dataAnts$Latitude, 
+         pch=16,
+         col="dodgerblue3",
+         ylab = "Residuals",
+         xlab = "Latitude",
+         main = "")
+abline(h = 0)
+
+# residuals against Elevation
+plot(resid~ dataAnts$Elevation, 
+         pch=16,
+         col="dodgerblue3",
+         ylab = "Residuals",
+         xlab = "Elevation",
+         main = "")
+abline(h = 0)
+
+```
+
+L'histogramme des résidus et le Q-Q plot montrent des résidus relativement normaux. Les quatres graphiques suivant montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. On peut voir que les résidus restent homogènes peu importe les valeurs des variables explicatives.
 
 ### Vérification des individus influents
 
