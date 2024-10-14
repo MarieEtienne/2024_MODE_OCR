@@ -47,7 +47,7 @@ df %>% ggplot(data = df) +
 
 Partie 2 : effet du paturage sur la morphologie des plantes
 
-Nous pouvons tout d'abord effectuer une observation graphique des donnees.
+Nous pouvons tout d'abord effectuer une analyse morphologique (taille de la plante et masse des graines). 
 
 #Taille
 Affichage:
@@ -105,14 +105,14 @@ hyp2<-lm(logSeedMass.score~1,data=df)
 hyp3<-lm(logSeedMass.score~treatment,data=df)
 anova(hyp2,hyp3)
 ```
-La p_value = 0.3573 > 0.05, donc la masse des graines sous l'hypothÃ¨se H1 n'est pas significativement différente de celle sous l'hypothèse H0.
+La p_value = 0.3573 > 0.05, donc la masse des graines sous l'hypothÃ¨se H1 n'est pas significativement diff?rente de celle sous l'hypoth?se H0.
 On peut donc conclure qu'il n'y a pas d'effet du paturÃ¢ge sur la masse des graines.
 
-Test du modèle :
+Test du mod?le :
 
-Nous allons donc analyser plus précisemment l'effet du pâturage sur la taille de la plante. Nous voulons savoir si la taille est influencée par le pâturage (traitement) seul ou par son interaction avec d'autres facteurs.
+Nous allons donc analyser plus pr?cisemment l'effet du p?turage sur la taille de la plante. Nous voulons savoir si la taille est influenc?e par le p?turage (traitement) seul ou par son interaction avec d'autres facteurs.
 
-Pour cela, nous allons tester les effets des facteurs et leurs interactions sur la taille des plantes via une analyse du modèle avec le critère de BIC.
+Pour cela, nous allons tester les effets des facteurs et leurs interactions sur la taille des plantes via une analyse du mod?le avec le crit?re de BIC.
 
 ```{r}
 hyp8<-LinearModel(logH~(treatment+season+year+observer+logS+RatioPoll+R.score+C.score+S.score)*
