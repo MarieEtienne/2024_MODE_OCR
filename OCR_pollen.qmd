@@ -14,36 +14,10 @@ output:
    toc_float: true
 ---
 
-This chapter is a simple example using R
-
-You can import R package using the code
-
-```{r}
-library(tidyverse)
-library(FactoMineR)
-library(dplyr)
-```
-
-
-and then describe the purpose of your chapter as well as executing R command.
-
-
-For example a basic summary of a dataset is given by 
-
-```{r}
-df <- read.table("pollen.csv", sep = ";" , header = TRUE)
-```
-
-and produce a graph
-
-```{r}
-df %>% ggplot() +
-	aes(x=species, y = body_mass_g) +
-	geom_boxplot()  
-```
-
 
 PARTIE 3: EFFET DU PATURAGE SUR LES STRATEGIES DE POLLINISATION
+
+
 
 ```{r}
 # renommer la premiere colonne pour Marine et Alexia car var treatment est ?..treatment et pose pblm
@@ -57,6 +31,7 @@ par(mfrow=c(1,2))
 boxplot(df$RatioPoll~df$treatment, varwidth = TRUE, ylab = "Ratio Pollinisation", xlab = "treatment", col='blue', main = "")
 
 ```
+
 On observe pas de differences significatives entre les parcelles qui subissent du paturage et celles qui n'en subissent pas d'apres le boxplot.
 
 ```{r}
@@ -97,3 +72,4 @@ poll6<-LinearModel(RatioPoll~( season + C.score + treatment:R.score +
     treatment:C.score + year:C.score ),data=df)
 poll6
 ```
+
