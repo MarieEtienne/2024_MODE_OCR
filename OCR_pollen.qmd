@@ -11,7 +11,7 @@ output:
 ---
 
 
-PARTIE 3: EFFET DU PATURAGE SUR LES STRATEGIES DE POLLINISATION
+PARTIE 3: GRAZINF EFFECT ON POLLINISATION STRATEGIES 
 
 
 
@@ -29,8 +29,7 @@ boxplot(df$RatioPoll~df$treatment, varwidth = TRUE, ylab = "Ratio Pollinisation"
 
 ```
 
-
-On n'observe pas de differences significatives entre les parcelles qui subissent du paturage et celles qui n'en subissent pas d'apres le boxplot.
+The boxplot shows no significant differences between plots grazed and those not grazed.
 
 ```{r}
 # Anova
@@ -39,14 +38,15 @@ poll2<-lm(RatioPoll~treatment,data=df)
 anova(poll1,poll2)
 ```
 
- la P-value n'est pas significative au seuil de 5%, on rejette donc l'hypothèse que le pâturage à un effet sur RatioPoll.Le test Anova confirme notre observation graphique:il n'y a pas de difference entre les parcelles patures et celles naturelles.
+The P-value is not significant at the 5% threshold, so we reject the hypothesis that grazing has an effect on the RatioPoll. The Anova test confirms our graphical observation: there is no difference between the grazed and natural plots.
 
 ```{r}
 poll3<-LinearModel(RatioPoll~(treatment+season+year+observer+R.score+S.score+C.score)*
                      (treatment+season+year+observer+R.score+S.score+C.score),data=df,selection = "aic")
 poll3
 ```
-Le modele proposé par R a bien un BIC plus faible que notre modele initiale. Cependant, certaines interactions gardées par R n'ont pas d'effet significatif. Nous avons decide de tester un modele sans celle ci. 
+
+The model proposed by R does have a lower BIC than our initial model. However, some of the interactions retained by R have no significant effect. We decided to test a model without these interactions. 
 
 ```{r}
 poll4<-LinearModel(RatioPoll~( treatment + season + year + 
@@ -55,7 +55,7 @@ poll4<-LinearModel(RatioPoll~( treatment + season + year +
     observer:R.score + R.score:C.score),data=df)
 poll4
 ```
-On a observe que l'interaction R.score:C.score n'est pas significative, i=on teste un nouveau modele sans elle.
+We have observed that the R.score:C.score interaction is not significant, we test a new model without it.
 ```{r}
 poll5<-LinearModel(RatioPoll~( treatment + season + year + 
     observer + R.score + S.score + C.score + treatment:R.score + 
@@ -63,7 +63,7 @@ poll5<-LinearModel(RatioPoll~( treatment + season + year +
     observer:R.score ),data=df)
 poll5
 ```
-On enlève R.score car c'est le moins significatif 
+We delete R.score because it is the less significant.
 
 ```{r}
 poll6<-LinearModel(RatioPoll~( season + C.score + treatment:R.score + 
