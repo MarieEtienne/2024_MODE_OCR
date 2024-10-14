@@ -1,45 +1,45 @@
 ---
-
-title: "Modèles matriciels et applications"
-group: "Rudy, Tanguy, Manon, Garan, Anaëlle, Oceane, Victor" 
-
-bibliography: references.bib
-execute: 
-  freeze: auto
-output: 
-  html_document:
-   toc: true
-   toc_float: true
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-Le lien du site : https://zenodo.org/records/8251495 
+------------------------------------------------------------------------
 
+title: "Modèles matriciels et applications" group: "Rudy, Tanguy, Manon,
+Garan, Anaëlle, Oceane, Victor"
 
-Pistes 
+bibliography: references.bib execute: freeze: auto output:
+html_document: toc: true toc_float: true ---
 
-Calcul 
+Le lien du site : https://zenodo.org/records/8251495
 
-Taux de succès 
-Taux de survie
+Pistes
 
-voir si habitat préférentiel, région,…
-voir quelles facteurs expliquent taux de succès
+Calcul
 
-voir si décalages entre dates de départ du nid -> facteurs expliquant 
+Taux de succès Taux de survie
 
-voir si habitat préferentiel 
+voir si habitat préférentiel, région,… voir quelles facteurs expliquent
+taux de succès
 
-MAIS ATTENTION à ne pas être biaisé : du genre que des oiseaux d’une certaines espèces ne soit présents que dans un habitat
+voir si décalages entre dates de départ du nid -\> facteurs expliquant
 
-refaire analyse de bases cf ASA 
+voir si habitat préferentiel
+
+MAIS ATTENTION à ne pas être biaisé : du genre que des oiseaux d’une
+certaines espèces ne soit présents que dans un habitat
+
+refaire analyse de bases cf ASA
 
 # Document R modifié et avec ajouts
 
 ## Import des données
 
 **Do not forget to set your working directory in the right place**
-**Menu : Session/Set Working Directory/Choose directory**
-*And indicate Git/2024_MODE_OCR*
+**Menu : Session/Set Working Directory/Choose directory** *And indicate
+Git/2024_MODE_OCR*
+
 ```{r}
 rm(list=ls()) # Properly clear workspace
 library(knitr)
@@ -54,7 +54,6 @@ library(lattice)# Multipanel graphics
 library(ggplot2)
 ```
 
-
 ```{r}
 # Datatset import under the name of "data"
 data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE, stringsAsFactors = TRUE)
@@ -64,20 +63,22 @@ data$Year <- as.factor(data$Year)
 colSums(is.na(data))
 ```
 
-
-
 ```{r}
 # View the firsts lignes of the dataset
 head(data)
 ```
+
 ## Data exploration
+
 # Repartition of the data through time
 
 ```{r}
 # Number of 0 and 1 in the response variable
 table(data$Nest_Fate)
 ```
-We have approximately 66/34% repartition which is good enough to extract variance from the dataset
+
+We have approximately 66/34% repartition which is good enough to extract
+variance from the dataset
 
 ```{r}
 #Cleveland plot
@@ -93,5 +94,55 @@ qqnorm(data$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation_Date')
 qqline(data$Initiation_Date,col='red',lwd=2)
 qqnorm(data$Nest_End_Date,pch=16,col='dodgerblue3',xlab='Nest_End_Date')
 qqline(data$Nest_End_Date,col='red',lwd=2)
+```
+
+```{r}
+# Analyse par variables qualitatives du nombres de modalites et du nombre d'individus par modalite
+
+summary(data$State)
+summary(data$County)
+summary(data$Habitat)
+summary(data$Species)
+summary(data$Year)
+summary(data$Nest_Fate)
+
+```
+
+Repartition plutot inegale des donnees \> pour certaines modalites nous
+avons tres/trop peu de donnees
+
+```{r}
+#Analyse de relation potentielle entre Number fledged et nos variables explicatives
+plot(data$Number_Fledged~data$Habitat,pch=16,col='dodgerblue3',xlab='Habitat',ylab='Number Fledged')
+plot(data$Number_Fledged~data$County,pch=16,col='dodgerblue3',xlab='County',ylab='Number Fledged')
+plot(data$Number_Fledged~data$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation Date',ylab='Number Fledged')
+plot(data$Number_Fledged~data$Nest_Fate,pch=16,col='dodgerblue3',xlab='Nest fate',ylab='Number Fledged')
+plot(data$Number_Fledged~data$Nest_End_Date,pch=16,col='dodgerblue3',xlab='Nest end date', ylab='Number Fledged')
+plot(data$Number_Fledged~data$State,pch=16,col='dodgerblue3',xlab='State',ylab='Number Fledged')
+plot(data$Number_Fledged~data$Year,pch=16,col='dodgerblue3',xlab='Year',ylab='Number Fledged')
+plot(data$Number_Fledged~data$Species,pch=16,col='dodgerblue3',xlab='Species',ylab='Number Fledged')
+
+```
+
+Interpretation \> Habitat \> Globablement ils se valent tous mais
+potentiellement dans les prairies le nombre de fledged est plus faible
+County \> Forte dissimilarite en fonction des county \> potentiellement
+explicatif ? Initiation date et End date \> tres homogene meme si leger
+cone \> donc vers le milieu de la saison peut etre un avantage State \>
+Pas de difference significative entre les states Year \> Certaines
+annees c est l hecatombe \> forte variabilite par an \> facteur
+aleatoire ? Species \> Disparite en fonction des especes mais pas de
+reelle difference significative
+
+Analyse des interactions entre les variables explicatives
+
+```{r}
+
+plot(data$Number_Fledged~data$Habitat,type='n',ylab = "Number Fledged",xlab="Habitat")
+points(data$Number_Fledged[data$species=="Bobolink"]~data$Habitat[data$Species=="Bobolink"],pch=16,cex=1,col='dodgerblue3')
+points(data$Number_Fledged[data$Species=="Western Meadowlark"]~data$Habitat[data$Species=="Western Meadowlark"],pch=17,cex=1,col='darkred')
+
+
+
 ```
 
