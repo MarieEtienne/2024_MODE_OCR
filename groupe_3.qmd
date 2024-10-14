@@ -6,8 +6,6 @@ editor: visual
 
 # **INTRODUCTION** (Apolline et Kilian)
 
-à faire :
-
 -   **Importation du jeu de données**
 
     On commence par importer le jeu de données situé dans fichier "BogAnts.txt"
