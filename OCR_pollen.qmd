@@ -13,32 +13,71 @@ output:
    toc: true
    toc_float: true
 ---
-
-This chapter is a simple example using R
-
-You can import R package using the code
+IMPORTATION DES PACKAGES
 
 ```{r}
 library(tidyverse)
+library(FactoMineR)
+library(dplyr)
 ```
 
-
-and then describe the purpose of your chapter as well as executing R command.
-
-
-For example a basic summary of a dataset is given by 
+IMPORTATION DES DONNEES
 
 ```{r}
-df <- read.table("https://gist.githubusercontent.com/slopp/ce3b90b9168f2f921784de84fa445651/raw/4ecf3041f0ed4913e7c230758733948bc561f434/penguins.csv", sep = "," , header = TRUE)
+df <- read.table("pollen.csv", sep = ";" , header = TRUE)
 ```
 
-and produce a graph
+INTRODUCTION 
+
+Les ecosystemes terrestres ont ete domines pendant plusieurs millions d'annees par les grands mammiferes herbivores, qui ont ensuite decline à la fin du Pleistocene sous la pression des premieres populations humaines prehistoriques. La perte de ces especes de grands herbivores (aurochs, chevaux et anes sauvages, rhinoceros laineux...) a egalement ete synonyme de la perte des services ecosystemiques qu'ils apportaient. (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7148574/)
+
+Depuis plusieurs annees, le courant du reensauvagement ("rewilding" en anglais) a pour but de restaurer ces services ecosytemique en reintroduisant des especes dans les grands espaces naturels europeens.L'etude presente cherche a evaluer dans quelle mesure les especes d'herbivores introduites ont une influence sur la vegetation. (https://besjournals.onlinelibrary.wiley.com/doi/10.1111/1365-2664.13338)
+
+
+PRESENTATION DE L'EXPERIENCE
+
+Blabla sur l'experience
+
+
+
+Effet du paturage sur la richesse specifique
+```{r}
+df %>% ggplot(data = df) + 
+```
+
+
+Partie 2 : effet du paturage sur la morphologie des plantes
+
+Nous pouvons tout d'abord effectuer une observation graphique des donnees.
+
+#Taille
+Commencons par representer la taille des plantes en fonction du paturage.
 
 ```{r}
-df %>% ggplot() +
-	aes(x=species, y = body_mass_g) +
-	geom_boxplot()  
+boxplot(df$logHeight.score~df$?..treatment, varwidth = TRUE, ylab = "LogH", xlab = "Treatment", col='darkgrey', main = "", title = "effet du p?turage sur la hauteur")
+
+ggplot(data=df)+
+  geom_boxplot(aes(x=?..treatment, y=logHeight.score))+
+  geom_jitter(aes(x=?..treatment, y=logHeight.score))
+```
+
+#Masse
+Etudions a present la masse des graines des plantes en fonction du paturage.
+
+```{r}
+boxplot(df$logSeedMass.score~df$?..treatment, varwidth = TRUE, ylab = "LogS", xlab = "Treatment", col='darkgrey', main = "", title = "effet du paturage sur la masse des graines")
+
+ggplot(data=df)+
+  geom_boxplot(aes(x=?..treatment, y=logSeedMass.score))+
+  geom_jitter(aes(x=?..treatment, y=logSeedMass.score))
 ```
 
 
-A citation @bauer2023writing
+Partie 3 : effet du paturage sur les strategies de pollinisation
+```{r}
+# Boxplot 
+par(mfrow=c(1,2))
+
+boxplot(df$RatioPoll~df$?..treatment, varwidth = TRUE, ylab = "Ratio Pollinisation", xlab = "treatment", col='blue', main = "")
+
+```
