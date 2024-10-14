@@ -17,11 +17,13 @@ output:
 # Introduction
 ## Study context
 
+
 This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#column_name). The dataset was find on kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv
 
 This dataset was made from differents articles METTRE BIBLIO. Only 3 different species were studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
 
 This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#colum-name). This dataset was made from differents articles Selon Gorman et al. [@10.1371/journal.pone.0090081] and Horst et al. [@10.32614/RJ-2022-020]. NE FOCNTIONNE PAS MAIS JE VAIS VOIR PLUS TARD Only 3 different species where studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins. AJOUTER LES QUESTIONS DE RECHERCHE ET LES ANALYSES FAITES
+
 
 ```{r}
 #| message: false
@@ -34,6 +36,7 @@ library(FactoMineR) # for PCA
 library(tidyverse)  # for data manipulation
 library(dplyr)      # for data manipulation
 library(ggplot2)    # for data visualization
+library(corrplot)   # for correlation test
 
 # On a vraiment besoin d'importer dplyr et ggplot2, alors qu'on a deja importer tidyverse ?
 
@@ -146,7 +149,7 @@ Modification of colnames :
 ```{r}
 data <- data %>%
   select(-X) %>%                   # Remove X column 
-  #select(-Comments) %>%           # Remove (?)
+  select(-Comments) %>%           # Remove (?)
   rename(                          # we rename the columns of the dataset
     sample_number = Sample.Number,
     id = Individual.ID,
@@ -233,6 +236,7 @@ ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species))+
   theme_bw()+
   facet_grid(~island)
 ```
+
 
 
 ### PCA : 
@@ -460,3 +464,279 @@ anova3
 ```
 
 Significance tests confirm the trends seen by the eye.
+
+# Body mass model
+
+The aim of this part is to determine which variable influence the penguins' body mass.
+```{r data preparation}
+#selection of the interesting variables
+dataLM<-data %>% 
+  select(species,island,clutch_completion,culmen_length,culmen_depth,flipper_length,body_mass,sex,delta_15_N,delta_13_C)
+
+#set the variable type (factors or numerics)
+dataLM$species<-as.factor(dataLM$species)
+dataLM$island<-as.factor(dataLM$island)
+dataLM$clutch_completion<-as.factor(dataLM$clutch_completion)
+dataLM$sex<-as.factor(dataLM$sex)
+dataLM$flipper_length<-as.numeric(dataLM$flipper_length)
+dataLM$body_mass<-as.numeric(dataLM$body_mass)
+
+str(dataLM)
+
+#check if there is missing values 
+colSums(is.na(dataLM))
+
+#delete individual with missing values
+dataLM<-dataLM %>% 
+  drop_na(culmen_length,culmen_depth,flipper_length,body_mass,sex,delta_15_N,delta_13_C)
+
+summary(dataLM)
+```
+## Exploration of the data 
+We begin the analysis by exploring the data and looking for aberrant values.
+First we look at the response variable: body mass
+```{r body mass, include=TRUE, fig.height=6, fig.width=6}
+par(mfrow=c(2,2))
+# Boxplot
+boxplot(dataLM$body_mass,col='dodgerblue3',ylab='body mass')
+# Cleveland plot
+dotchart(dataLM$body_mass,pch=16,col='dodgerblue3',xlab='body mass')
+# Histogram
+hist(dataLM$body_mass,col='dodgerblue3',xlab="body mass",main="")
+# Quantile-Quantile plot
+qqnorm(dataLM$body_mass,pch=16,col='dodgerblue3',xlab='')
+qqline(dataLM$body_mass,col='red',lwd=2)
+```
+There is no aberrant values for the variable body mass.
+
+Than we look at the quantitative explanatory variables.
+```{r covariable, include=TRUE, fig.height=12, fig.width=9}
+par(mfrow=c(5,3))
+
+# Culmen Length
+# Cleveland plot
+dotchart(dataLM$culmen_length,pch=16,col='dodgerblue3',xlab='culmen_length')
+# Histogram
+hist(dataLM$culmen_length,col='dodgerblue3',xlab="culmen_length",main="")
+# Quantile-Quantile plot
+qqnorm(dataLM$culmen_length,pch=16,col='dodgerblue3',xlab='')
+qqline(dataLM$culmen_length,col='red',lwd=2)
+
+# Culmen Depth
+# Cleveland plot
+dotchart(dataLM$culmen_depth,pch=16,col='dodgerblue3',xlab='culmen_depth')
+# Histogram
+hist(dataLM$culmen_depth,col='dodgerblue3',xlab="culmen_depth",main="")
+# Quantile-Quantile plot
+qqnorm(dataLM$culmen_depth,pch=16,col='dodgerblue3',xlab='')
+qqline(dataLM$culmen_depth,col='red',lwd=2)
+
+# Flipper length
+# Cleveland plot
+dotchart(dataLM$flipper_length,pch=16,col='dodgerblue3',xlab='flipper length')
+# Histogram
+hist(dataLM$flipper_length,col='dodgerblue3',xlab="flipper length",main="")
+# Quantile-Quantile plot
+qqnorm(dataLM$flipper_length,pch=16,col='dodgerblue3',xlab='')
+qqline(dataLM$flipper_length,col='red',lwd=2)
+
+# Delta_15_N
+# Cleveland plot
+dotchart(dataLM$delta_15_N,pch=16,col='dodgerblue3',xlab='delta_15_N')
+# Histogram
+hist(dataLM$delta_15_N,col='dodgerblue3',xlab="delta_15_N",main="")
+# Quantile-Quantile plot
+qqnorm(dataLM$delta_15_N,pch=16,col='dodgerblue3',xlab='')
+qqline(dataLM$delta_15_N,col='red',lwd=2)
+
+# Delta_13_C
+# Cleveland plot
+dotchart(dataLM$delta_13_C,pch=16,col='dodgerblue3',xlab='delta_13_C')
+# Histogram
+hist(dataLM$delta_13_C,col='dodgerblue3',xlab="delta_13_C",main="")
+# Quantile-Quantile plot
+qqnorm(dataLM$delta_13_C,pch=16,col='dodgerblue3',xlab='')
+qqline(dataLM$delta_13_C,col='red',lwd=2)
+```
+There is no aberrant values for the quantitative explanatory variable.
+
+Finally we look at the qualitativ explanatory variables.
+```{r cofactors, include=TRUE}
+# Factor Sex
+summary(dataLM$sex)
+# Factor Island
+summary(dataLM$island)
+# Factor Species
+summary(dataLM$species)
+# Factor Clutch completion
+summary(dataLM$clutch_completion)
+```
+We observe that the plan is non orthogonal. 
+
+Secondly, we explore the dynamics between body mass and the explanatory variable, to see if there is some trend. 
+```{r datagraph, include=TRUE, fig.height=15, fig.width=6}
+par(mfrow=c(5,2))
+# Culmen length
+plot(dataLM$body_mass~dataLM$culmen_length,pch=16,col='dodgerblue3',xlab='culmen length',ylab='body mass')
+# Culmen depth
+plot(dataLM$body_mass~dataLM$culmen_depth,pch=16,col='dodgerblue3',xlab='culmen depth',ylab='body mass')
+# Flipper length
+plot(dataLM$body_mass~dataLM$flipper_length,pch=16,col='dodgerblue3',xlab='flipper length',ylab='body mass')
+# delta 15 N
+plot(dataLM$body_mass~dataLM$delta_15_N,pch=16,col='dodgerblue3',xlab='delta 15N',ylab='body mass')
+# delta 13 C
+plot(dataLM$body_mass~dataLM$delta_13_C,pch=16,col='dodgerblue3',xlab='delta 13C',ylab='body mass')
+#Species
+boxplot(dataLM$body_mass~dataLM$species, varwidth = TRUE, ylab = "body mass", xlab = "Species", col='darkgrey', main = "")
+#Island
+boxplot(dataLM$body_mass~dataLM$island, varwidth = TRUE, ylab = "body mass", xlab = "Island", col='brown', main = "")
+#Clutch completion
+boxplot(dataLM$body_mass~dataLM$clutch_completion, varwidth = TRUE, ylab = "body mass", xlab = "Clutch completion", col='brown', main = "")
+#Sex
+boxplot(dataLM$body_mass~dataLM$sex, varwidth = TRUE, ylab = "body mass", xlab = "Sex", col='brown', main = "")
+```
+
+The variables that seems to influence body mass are culmen length, flipper length, delta 15N, species and island. 
+
+Finally we check if there is colinearity between some variable.
+First, between covariables.
+```{r colinearity covariables, include=TRUE, fig.height=5, fig.width=5}
+# Checking collinearity between continuous independent variables
+# We represent plot for each X continuous covariate pair.
+plot(dataLM %>% select_if(is.numeric) %>% select(-body_mass),pch=16,col='dodgerblue3')
+#We calculate correlation between each pair of X covariate
+corrplot.mixed(cor(dataLM %>% select_if(is.numeric)%>% select(-body_mass)),upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
+M<-dataLM %>% select_if(is.numeric) %>% select(-body_mass)
+```
+We chose the threshold at 0.7 so there is no colinearity detected between the covariables.
+
+Then, between cofactors. In order to do so, we plot all the covariable as a function of all cofactors.
+```{r colinearity cofactors,include=TRUE, fig.height=15, fig.width=12}
+# Checking collinearity between cofactors and covariables
+par(mfrow=c(5,4))
+#Culmen length and species
+boxplot(dataLM$culmen_length~dataLM$species, varwidth = TRUE, ylab = "Culmen length", xlab = "Species", col='grey', main = "")
+#Culmen length and island
+boxplot(dataLM$culmen_length~dataLM$island, varwidth = TRUE, ylab = "Culmen length", xlab = "Island", col='grey', main = "")
+#Culmen length and sex
+boxplot(dataLM$culmen_length~dataLM$sex, varwidth = TRUE, ylab = "Culmen length", xlab = "Sex", col='grey', main = "")
+#Culmen length and clutch completion
+boxplot(dataLM$culmen_length~dataLM$clutch_completion, varwidth = TRUE, ylab = "Culmen length", xlab = "Clutch completion", col='grey', main = "")
+
+#Culmen depth and species
+boxplot(dataLM$culmen_depth~dataLM$species, varwidth = TRUE, ylab = "Culmen depth", xlab = "Species", col='grey', main = "")
+#Culmen depth and island
+boxplot(dataLM$culmen_depth~dataLM$island, varwidth = TRUE, ylab = "Culmen depth", xlab = "Island", col='grey', main = "")
+#Culmen depth and sex
+boxplot(dataLM$culmen_depth~dataLM$sex, varwidth = TRUE, ylab = "Culmen depth", xlab = "Sex", col='grey', main = "")
+#Culmen depth and clutch completion
+boxplot(dataLM$culmen_depth~dataLM$clutch_completion, varwidth = TRUE, ylab = "Culmen depth", xlab = "Clutch completion", col='grey', main = "")
+
+#Flipper length and species
+boxplot(dataLM$flipper_length~dataLM$species, varwidth = TRUE, ylab = "Flipper length", xlab = "Species", col='grey', main = "")
+#Flipper length and island
+boxplot(dataLM$flipper_length~dataLM$island, varwidth = TRUE, ylab = "Flipper length", xlab = "Island", col='grey', main = "")
+#Flipper length and sex
+boxplot(dataLM$flipper_length~dataLM$sex, varwidth = TRUE, ylab = "Flipper length", xlab = "Sex", col='grey', main = "")
+#Flipper length and clutch completion
+boxplot(dataLM$flipper_length~dataLM$clutch_completion, varwidth = TRUE, ylab = "Flipper length", xlab = "Clutch completion", col='grey', main = "")
+
+#delta 15N and species
+boxplot(dataLM$delta_15_N~dataLM$species, varwidth = TRUE, ylab = "delta 15N", xlab = "Species", col='grey', main = "")
+#delta 15N and island
+boxplot(dataLM$delta_15_N~dataLM$island, varwidth = TRUE, ylab = "delta 15N", xlab = "Island", col='grey', main = "")
+#delta 15N and sex
+boxplot(dataLM$delta_15_N~dataLM$sex, varwidth = TRUE, ylab = "delta 15N", xlab = "Sex", col='grey', main = "")
+#delta 15N and clutch completion
+boxplot(dataLM$delta_15_N~dataLM$clutch_completion, varwidth = TRUE, ylab = "delta 15N", xlab = "Clutch completion", col='grey', main = "")
+
+#delta 13C and species
+boxplot(dataLM$delta_13_C~dataLM$species, varwidth = TRUE, ylab = "delta 13C", xlab = "Species", col='grey', main = "")
+#delta 13C and island
+boxplot(dataLM$delta_13_C~dataLM$island, varwidth = TRUE, ylab = "delta 13C", xlab = "Island", col='grey', main = "")
+#delta 13C and sex
+boxplot(dataLM$delta_13_C~dataLM$sex, varwidth = TRUE, ylab = "delta 13C", xlab = "Sex", col='grey', main = "")
+#delta 13C and clutch completion
+boxplot(dataLM$delta_13_C~dataLM$clutch_completion, varwidth = TRUE, ylab = "delta 13C", xlab = "Clutch completion", col='grey', main = "")
+
+```
+
+## Statistics analysis - Model selection
+
+We build the statistical model, including all explanatory variable at first.
+```{r full model}
+modlm<-lm(body_mass ~ species + island + clutch_completion + culmen_length + culmen_depth + flipper_length + sex + delta_15_N + delta_13_C,data=dataLM) #full model
+```
+
+Now we are going to select the best model "by hand"
+```{r full model selection}
+drop1(modlm,test="F") #test significativté des variables avec test fischer
+```
+We exclude the variable "island" of the model, because it is the non-significant variable with the highest p-value.
+Then, we create a new model (without the variable "island") and test for significance.
+```{r model2}
+modlm2<-lm(body_mass ~ species + clutch_completion + culmen_length + 
+    culmen_depth + flipper_length + sex + delta_15_N + delta_13_C, data=dataLM)
+drop1(modlm2,test="F")
+```
+As previously, we exclude the variable "clutch_completion" of the model, because it is non-significant.
+We build a new model and test again for variables' significance.
+
+```{r model3}
+modlm3<-lm(body_mass ~ species + culmen_length + 
+    culmen_depth + flipper_length + sex + delta_15_N + delta_13_C, data=dataLM)
+drop1(modlm3,test="F")
+```
+All the variable in the model are significant, so we keep all of them in our final model. The best model is thus: body_mass ~ species + culmen_length + culmen_depth + flipper_length + sex + delta_15_N + delta_13_C
+
+```{r}
+summary(modlm3)
+```
+
+Finally, the model can be written as:
+
+$$ Body\:Mass = 1467.1\:+\:(Species_{Adeliae} = 0 \:;\:Species_{Pygoscelis antarctica} = -245.1^{**}\:;\:Species_{Pygoscelis papua} = 882.1^{***})$$
+$$ +\:17.1^{*NS*}. Culmen\:Length\:+\:61.6^{**}. Culmen\:Depth\:+\:17.8^{***}. Flipper\:Length $$
+$$ + (Sex_{Female}= 0\:;\: Sex_{Male}=417.9^{***})\:-\:164.3^{***}. Delta\:15N\:+\:65.2^{*}. Delta\:13C)$$
+
+We can also notice that the model explain 88% of the body mass variance.
+
+## Model validation
+We need the validation of the model. Because it is a linear model, we need independence of the variable, normality and homoscedasticity of residuals.
+
+Here, we assume an independence of variables as we don't have the details of the data collection. 
+
+We check the normality of residuals.
+```{r ResidNorm, include=TRUE, fig.height=3, fig.width=6}
+par(mfrow=c(1,2))
+# Histogram
+hist(modlm3$residuals,col='dodgerblue3',xlab="residuals",main="Check Normality")
+# Quantile-Quantile plot
+qqnorm(modlm3$residuals,pch=16,col='dodgerblue3',xlab='')
+qqline(modlm3$residuals,col='red',lwd=2)
+```
+Residuals have a normal distribution.
+
+We check the homoscedasticity of residuals.
+```{r Residhomo, include=TRUE, fig.height=5, fig.width=5}
+# residuals vs fitted
+plot(residuals(modlm3)~fitted(modlm3)
+      , col='dodgerblue3'
+      , pch=16)
+abline(h = 0)
+
+```
+The variance is homogeneous.
+
+We also verify that there isn't an individual that is particularly influential. 
+```{r Contri, include=TRUE, fig.height=4, fig.width=4}
+
+par(mfrow = c(1, 1))
+plot(cooks.distance(modlm3), type = "h", ylim = c(0, 1))
+abline(h = 1, col = 2,lwd = 3)
+
+```
+As all the bar are lower that 1, there is no influential individual.
+
+We can conclude that the linear model is valid.
+
