@@ -48,6 +48,12 @@ Pour repondre a ces questions, nous avons transforme le jeu de donnees initial p
 - C.score
 - ratio poll
 
+IMPORTATION DU JEU DE DONNEES 
+
+```{r}
+df <- read.table('Pollen.csv', sep = ';', header = TRUE)
+```
+
 IMPORTATION DES PACKAGES
 
 ```{r}
@@ -56,27 +62,40 @@ library(FactoMineR)
 library(dplyr)
 ```
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PARTIE 1 : Effet du paturage sur la richesse specifique
 
-Partie 1 : Effet du paturage sur la richesse specifique
+# Visualisation des donnees
 ```{r}
 ggplot(data=df)+
   geom_boxplot(aes(x=treatment, y=num.species))+
   geom_jitter(aes(x=treatment, y=num.species))
 ```
-La richesse specifique des zones paturees semble etre
-plus importante que dans les zones non paturees. 
+La richesse specifique des zones paturees semble etre plus importante que dans les zones non paturees. 
 
 ```{r}
 hyp1<-lm(num.species~1,data=df)
 hyp0<-lm(num.species~treatment,data=df)
 anova(hyp0,hyp1)
 ```
-La p-value est inferieure a 0,05 donc
-le paturage a un effet significatif sur la richesse
-specifique. 
+La p-value est inferieure a 0,05 donc le paturage a un effet significatif sur la richesse specifique. 
+
+# Choix du modele : dans cette partie, nous considerons que le paturage (treatment) depend de la saison et de l'annee d'observation. 
+
+```{r}
+modComplet<-LinearModel(num.species~(treatment+season+year)*(treatment),data=df,selection = "aic")
+modComplet
+```
+Les resultats pour le modele complet sont les suivants : p-value: 2.554e-16, AIC = 649, BIC = 681
+Cependant, le modele choisi selon le critere AIC montre les resultats suivants : p-value: 1.41e-17, 
+AIC = 645.2 et BIC = 669.2. Le critere AIC etant plus petit pour ce modele que le modele complet, on choisit
+de conserver : num.species ~ treatment + season + year + treatment:year. Il y a donc interaction entre le paturage et son annee d'observation.   
+
+# Validation du modele choisi
 
 
-Partie 2 : effet du paturage sur la morphologie des plantes
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Partie 2 : effet du paturage sur la morphologie des plantes
 
 Nous pouvons tout d'abord effectuer une observation graphique des donnees.
 
@@ -104,7 +123,7 @@ ggplot(data=df)+
 
 
 
-PARTIE 3: GRAZING EFFECT ON POLLINISATION STRATEGIES 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PARTIE 3: GRAZING EFFECT ON POLLINISATION STRATEGIES 
 
 Data importation
 
