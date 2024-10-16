@@ -91,8 +91,28 @@ AIC = 645.2 et BIC = 669.2. Le critere AIC etant plus petit pour ce modele que l
 de conserver : num.species ~ treatment + season + year + treatment:year. Il y a donc interaction entre le paturage et son annee d'observation.   
 
 # Validation du modele choisi
+modelAIC<-lm(num.species~treatment+season+year+treatment:year,data=df)
 
+res<-residuals(modelAIC)
+boxplot(res~treatment,data=df)
+bartlett.test(res~treatment,data=df)
 
+boxplot(res~season,data=df)
+bartlett.test(res~season,data=df)
+
+boxplot(res~year,data=df)
+bartlett.test(res~year,data=df)
+
+boxplot(res~treatment:year,data=df)
+df$interaction <- interaction(df$treatment, df$year)
+bartlett.test(res ~ interaction, data = df)
+
+Pour les tests de Bartlett, les p-value sont toutes supérieures à 0.05, ce qui veut dire que l'homoscédasticité est respectée pour tous nos paramètres soit que les variances sont toutes égales pour toutes nos observations.
+
+hist(res,main="Histogramme residus",xlab="Residus")
+shapiro.test(res)
+
+La normalité des résidus est respectée car notre p-value est superieure a 0,05 : les donnees sont compatibles avec une distribution normale. Notre modele lineaire est donc valide car la normalite des residus est une hypothese cle pour appliquer ce modele.
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Partie 2 : effet du paturage sur la morphologie des plantes
