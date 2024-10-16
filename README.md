@@ -26,7 +26,7 @@ https://www.markdownguide.org/
 ### Individual Evaluation  **10**
 	* Git correctly setup "email and user name allow to identify individual contribution **1**
 	* Commit message are clear and useful **2**
-	* Advanced use of commit history using rebase **2**
-	* Review of other work are useful, comments are meaningful **2**
+	* Advanced use of commit history using rebase **1**
+	* Review of other work are useful, comments are meaningful **3**
 	* Manage the pull request **1**
 	* Overall contribution to the chapter (important, normal, less important than the rest of the group) **2** 
