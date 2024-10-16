@@ -408,8 +408,8 @@ We can remove the variable "State" that can be seen as redundant aside
 ```{r}
 data_ACM <- tibble::as_tibble(data_ACM)
 
-# data_ACM <- data_ACM |>
-#   dplyr::select(-State)
+data_ACM <- data_ACM |>
+  dplyr::select(-State)
 ```
 
 Now, we can perform the MCA
@@ -478,7 +478,7 @@ fviz_contrib(mca,
              choice = "var", 
              axes = 3
              )
-# Top : Monroe, Prairie, Vesper_Sparow, Dane, 2002, 
+# Top : Monroe, Prairie, Vesper_Sparow, Dane, 2002,   
 # Bottom : 
 ```
 
@@ -487,8 +487,102 @@ Now, we can use a CAH :
 ```{r}
 mca_g <- as.data.frame(mca$ind$coord[,1:2])
 class <- HCPC(mca_g,
-              nb.clust = 4
+              nb.clust = 3
               )
 plot(class$call$t$inert.gain,
      type = "s")
+```
+
+```{r}
+fviz_nbclust(x = mca_g,
+             method = "silhouette",
+             FUNcluster = kmeans,
+             linecolor = "green3"
+             )
+```
+
+```{r}
+fviz_cluster(class, axes = c(1,2), ellipse.type = "convex")
+```
+
+#### Réalisation of an FAMD
+
+Here, we perform an FAMD on the initial dataframe. The ID are removed
+because of their uselessness.
+
+```{r}
+data_famd <- data
+### Conversion of the Year into factor
+data_famd$Year <- as.factor(data_famd$Year)
+
+### Removing of ID
+data_famd <- data_famd |>
+  dplyr::select(-Nest_ID)
+```
+
+We can perform the famd :
+
+```{r}
+famd <- FAMD(base = data_famd)
+```
+
+First, let's see the summary :
+
+```{r}
+summary(famd)
+```
+
+We can couple the summary with a plot of the inertia per axes :
+
+```{r}
+fviz_eig(X = famd,
+         addlabels = TRUE)
+```
+
+*Conclusion :* We can see that keeping three axes is necessary to cover
+as much inertia as possible while being parcimonious. Now, we can see
+the contribution of the variables to the factorial axes :
+
+```{r}
+fviz_contrib(X = famd,
+             choice = "var",
+             axes = 1
+             )
+fviz_contrib(X = famd,
+             choice = "var",
+             axes = 2
+             )
+fviz_contrib(X = famd,
+             choice = "var",
+             axes = 3
+             )
+famd$var$contrib[,1:3] > 1/9*100
+```
+
+And now, let's observe the projections of the variables and of the
+observations :
+
+```{r}
+### Axes 1 and 2
+fviz_famd_var(X = famd, 
+              repel = TRUE,
+              axes = c(1,2),
+              col.var = "red"
+              )
+fviz_famd_ind(X = famd, 
+              repel = FALSE,
+              axes = c(1,2),
+              col.ind = "orange"
+              )
+### Axes 1 and 3
+fviz_famd_var(X = famd, 
+              repel = TRUE,
+              axes = c(1,3),
+              col.var = "blue"
+              )
+fviz_famd_ind(X = famd, 
+              repel = FALSE,
+              axes = c(1,3),
+              col.ind = "skyblue4"
+              )
 ```
