@@ -11,7 +11,8 @@ output:
 ---
 
 
-PARTIE 3: GRAZING EFFECT ON POLLINISATION STRATEGIES 
+**PARTIE 3: GRAZING EFFECT ON POLLINISATION STRATEGIES**
+
 packages
 ```{r pollen_read_data}
 library(tidyverse)
@@ -93,7 +94,7 @@ res<-residuals(pollfinal)
 hist(res,main="Histogram residuals",xlab="Residus")
 shapiro.test(res)
 ```
-The residuals are not normally distributed. We're going to try and do some transformations using log and sqrt. In fact, they appear to have a negative binomial distribution. We will therefore apply a generalised negative binomial model. 
+The residuals are not normally distributed. We're going to try and do some transformations using log and sqrt. In fact, they appear to have a negative binomial distribution.
 ```{r TransfoLog}
 poll7<-LinearModel(log(RatioPoll+1)~(treatment + season + year + 
     observer + R.score + C.score + treatment:R.score + 
@@ -123,4 +124,4 @@ hist(res,main="Histogram residuals",xlab="Residus")
 shapiro.test(res)
 
 ```
-
+ **Conclusion: ** We cannot evaluate the impact of grazing on the pollination strategy of plants because the constraints of the general linear model are not respected. In addition, we cannot apply a generalised linear model given the type and values of our data. 
