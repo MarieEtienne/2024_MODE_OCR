@@ -11,7 +11,13 @@ output:
 ---
 
 
-PARTIE 3: GRAZINF EFFECT ON POLLINISATION STRATEGIES 
+PARTIE 3: GRAZING EFFECT ON POLLINISATION STRATEGIES 
+packages
+```{r pollen_read_data}
+library(tidyverse)
+library(FactoMineR)
+library(dplyr)
+```
 
 ```{r pollen_read_data}
 df <- read_delim("pollen.csv", delim = ";", 
@@ -67,19 +73,53 @@ poll5<-LinearModel(RatioPoll~( treatment + season + year +
     observer:R.score ),data=df)
 poll5
 ```
-We delete R.score because it is the less significant.
+The p-value of S.score is not significant and does not appear in any significant interactions. We therefore decide to remove it
 
 ```{r}
-poll6<-LinearModel(RatioPoll~( season + C.score + treatment:R.score + 
-    treatment:C.score + year:C.score ),data=df)
+poll6<-LinearModel(RatioPoll~( treatment + season + year + 
+    observer + R.score + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score + 
+    observer:R.score ),data=df)
 poll6
 ```
 
 Now,we want to check the normality of residuals 
 ```{r}
-pollfinal<-lm(RatioPoll~( season + C.score + treatment:R.score + 
+pollfinal<-lm(RatioPoll~(treatment + season + year + 
+    observer + R.score + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score + 
+    observer:R.score ),data=df)
+res<-residuals(pollfinal)
+hist(res,main="Histogram residuals",xlab="Residus")
+shapiro.test(res)
+```
+The residuals are not normally distributed. We're going to try and do some transformations using log and sqrt. In fact, they appear to have a negative binomial distribution. We will therefore apply a generalised negative binomial model. 
+```{r}
+poll7<-LinearModel(log(RatioPoll+1)~(treatment + season + year + 
+    observer + R.score + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score + 
+    observer:R.score ),data=df )
+poll7
+
+pollfinal<-lm(log(RatioPoll+1)~( season + C.score + treatment:R.score + 
     treatment:C.score + year:C.score ),data=df)
 res<-residuals(pollfinal)
 hist(res,main="Histogram residuals",xlab="Residus")
 shapiro.test(res)
+
+```
+
+The p-value of the shapiro test is still less than 0.05, so the residuals are still not normally distributed. We will therefore apply a generalised model (poisson, binomiale négative. 
+
+```{r}
+poll7<-LinearModel(sqrt(RatioPoll)~( season + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score ),data=df)
+poll7
+
+pollfinal<-lm(sqrt(RatioPoll)~( season + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score ),data=df)
+res<-residuals(pollfinal)
+hist(res,main="Histogram residuals",xlab="Residus")
+shapiro.test(res)
+
 ```
