@@ -567,18 +567,35 @@ observations :
 fviz_famd_var(X = famd, 
               repel = TRUE,
               axes = c(1,2),
-              col.var = "red"
+              col.var = "red",
+              "quali.var"
+              )
+fviz_famd_var(X = famd, 
+              repel = TRUE,
+              axes = c(1,2),
+              col.var = "red",
+              "quanti.var"
               )
 fviz_famd_ind(X = famd, 
               repel = FALSE,
               axes = c(1,2),
               col.ind = "orange"
               )
+```
+
+```{r}
 ### Axes 1 and 3
 fviz_famd_var(X = famd, 
               repel = TRUE,
               axes = c(1,3),
-              col.var = "blue"
+              col.var = "blue",
+              "quali.var"
+              )
+fviz_famd_var(X = famd, 
+              repel = TRUE,
+              axes = c(1,3),
+              col.var = "blue",
+              "quanti.var"
               )
 fviz_famd_ind(X = famd, 
               repel = FALSE,
