@@ -25,14 +25,14 @@ df <- read_delim("pollen.csv", delim = ";",
 ```
 
 
-```{r}
+```{r rename_firstvariable}
 # renommer la premiere colonne pour Marine et Alexia car var treatment est ?..treatment et pose pblm
 names(df)[1] <- "treatment"
 names(df)
 ```
 
 
-```{r}
+```{r boxplot}
 # Boxplot 
 par(mfrow=c(1,2))
 boxplot(df$RatioPoll~df$treatment, varwidth = TRUE, ylab = "Ratio Pollinisation", xlab = "treatment", col='blue', main = "")
@@ -41,7 +41,7 @@ boxplot(df$RatioPoll~df$treatment, varwidth = TRUE, ylab = "Ratio Pollinisation"
 
 The boxplot shows no significant differences between plots grazed and those not grazed.
 
-```{r}
+```{r anova}
 # Anova
 poll1<-lm(RatioPoll~1,data=df)
 poll2<-lm(RatioPoll~treatment,data=df)
@@ -50,7 +50,7 @@ anova(poll1,poll2)
 
 The P-value is not significant at the 5% threshold, so we reject the hypothesis that grazing has an effect on the RatioPoll. The Anova test confirms our graphical observation: there is no difference between the grazed and natural plots.
 
-```{r}
+```{r fullmodel}
 poll3<-LinearModel(RatioPoll~(treatment+season+year+observer+R.score+S.score+C.score)*
                      (treatment+season+year+observer+R.score+S.score+C.score),data=df,selection = "aic")
 poll3
@@ -58,7 +58,7 @@ poll3
 
 The model proposed by R does have a lower BIC than our initial model. However, some of the interactions retained by R have no significant effect. We decided to test a model without these interactions. 
 
-```{r}
+```{r coeff}
 poll4<-LinearModel(RatioPoll~( treatment + season + year + 
     observer + R.score + S.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
@@ -66,7 +66,7 @@ poll4<-LinearModel(RatioPoll~( treatment + season + year +
 poll4
 ```
 We have observed that the R.score:C.score interaction is not significant, we test a new model without it.
-```{r}
+```{r coeff}
 poll5<-LinearModel(RatioPoll~( treatment + season + year + 
     observer + R.score + S.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
@@ -75,7 +75,7 @@ poll5
 ```
 The p-value of S.score is not significant and does not appear in any significant interactions. We therefore decide to remove it
 
-```{r}
+```{r coeff}
 poll6<-LinearModel(RatioPoll~( treatment + season + year + 
     observer + R.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
@@ -84,7 +84,7 @@ poll6
 ```
 
 Now,we want to check the normality of residuals 
-```{r}
+```{r ResidNorm}
 pollfinal<-lm(RatioPoll~(treatment + season + year + 
     observer + R.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
@@ -94,7 +94,7 @@ hist(res,main="Histogram residuals",xlab="Residus")
 shapiro.test(res)
 ```
 The residuals are not normally distributed. We're going to try and do some transformations using log and sqrt. In fact, they appear to have a negative binomial distribution. We will therefore apply a generalised negative binomial model. 
-```{r}
+```{r TransfoLog}
 poll7<-LinearModel(log(RatioPoll+1)~(treatment + season + year + 
     observer + R.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
@@ -109,9 +109,9 @@ shapiro.test(res)
 
 ```
 
-The p-value of the shapiro test is still less than 0.05, so the residuals are still not normally distributed. We will therefore apply a generalised model (poisson, binomiale négative. 
+The p-value of the shapiro test is still less than 0.05, so the residuals are still not normally distributed. 
 
-```{r}
+```{r TransfoSqrt}
 poll7<-LinearModel(sqrt(RatioPoll)~( season + C.score + treatment:R.score + 
     treatment:C.score + year:C.score ),data=df)
 poll7
@@ -123,3 +123,4 @@ hist(res,main="Histogram residuals",xlab="Residus")
 shapiro.test(res)
 
 ```
+
