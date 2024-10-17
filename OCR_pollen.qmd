@@ -207,7 +207,7 @@ poll3
 
 The model proposed by R does have a lower BIC than our initial model. However, some of the interactions retained by R have no significant effect. We decided to test a model without these interactions. 
 
-```{r coeff}
+```{r coeff1}
 poll4<-LinearModel(RatioPoll~( treatment + season + year + 
     observer + R.score + S.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
@@ -216,7 +216,7 @@ poll4
 ```
 
 We have observed that the R.score:C.score interaction is not significant, we test a new model without it.
-```{r coeff}
+```{r coeff2}
 poll5<-LinearModel(RatioPoll~( treatment + season + year + 
     observer + R.score + S.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
@@ -226,7 +226,7 @@ poll5
 
 The p-value of S.score is not significant and does not appear in any significant interactions. We therefore decide to remove it
 
-```{r coeff}
+```{r coeff3}
 poll6<-LinearModel(RatioPoll~( treatment + season + year + 
     observer + R.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
