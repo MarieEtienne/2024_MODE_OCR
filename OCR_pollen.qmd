@@ -51,7 +51,7 @@ Pour repondre a ces questions, nous avons transforme le jeu de donnees initial p
 IMPORTATION DU JEU DE DONNEES 
 
 ```{r}
-df <- read.table('Pollen.csv', sep = ';', header = TRUE)
+df <- read.table('pollen.csv', sep = ';', header = TRUE)
 ```
 
 IMPORTATION DES PACKAGES
