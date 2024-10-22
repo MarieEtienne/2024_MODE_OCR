@@ -77,8 +77,6 @@ Les modèles linéaires généralisés de type Poisson ont une structure d'erreu
 Pour analyser nos données on configure la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion* et *lattice*.
 
 ```{r init, include=FALSE}
-#Configuration de la session :
-rm(list=ls()) # Nettoyage de l'environnement de travail
 #Chargement des packages R :
 library(knitr)
 opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")#(TROUVER L'UTILITE ET PEUT-ÊTRE RETIRER)
@@ -93,7 +91,7 @@ library(lattice)# Graphiques multipanneaux (A CHANGER?)
 
 -   **Vérification si des données sont manquantes**
 
-```{r data lack, echo=TRUE,include=TRUE}
+```{r datalack, echo=TRUE,include=TRUE}
 # Vérification de la présence de valeurs manquantes
 colSums(is.na(dataAnts))
 # Aucune valeur manquante
