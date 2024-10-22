@@ -835,9 +835,20 @@ There is no influential individual.
 All conditions being verified, our modeling can be validated.
 
 
+### Conclusion of our ANOVA  
+
+The explanatory variables retained in our model are "State", "Species" and "Year".
+
+The equation of our model is:
+
+$$
+\text{Y} = 75.7832 - 4.4838 \cdot \text{State}_{\text{Wisconsin}} + 21.9212 \cdot \text{Species}_{\text{Dickcissel}} + 0.5278 \cdot \text{Species}_{\text{Eastern Meadowlark}} + 10.6652 \cdot \text{Species}_{\text{Grasshopper Sparrow}} + 1.9590 \cdot \text{Species}_{\text{Savannah Sparrow}} + 6.2687 \cdot \text{Species}_{\text{Vesper Sparrow}} + 4.5978 \cdot \text{Species}_{\text{Western Meadowlark}} - 8.1836 \cdot \text{Year}_{1992} - 9.3039 \cdot \text{Year}_{1993} - 11.0971 \cdot \text{Year}_{1994} - 11.7709 \cdot \text{Year}_{1995} - 11.2748 \cdot \text{Year}_{1996} - 10.4340 \cdot \text{Year}_{1997} - 9.4950 \cdot \text{Year}_{1998} - 6.4308 \cdot \text{Year}_{1999} - 4.7644 \cdot \text{Year}_{2000} - 6.3518 \cdot \text{Year}_{2001} - 10.3377 \cdot \text{Year}_{2002} - 12.4141 \cdot \text{Year}_{2003} - 17.6615 \cdot \text{Year}_{2004} - 14.4370 \cdot \text{Year}_{2005} - 20.7535 \cdot \text{Year}_{2006} - 15.3033 \cdot \text{Year}_{2007} - 17.9192 \cdot \text{Year}_{2008} - 19.0311 \cdot \text{Year}_{2009} - 15.0863 \cdot \text{Year}_{2010} - 13.2651 \cdot \text{Year}_{2011}
+$$
 
 
+In this equation each variable takes the value 1 if the corresponding condition is true and 0 otherwise.
 
-
+But despite all the conditions of the model being validated, this model only explains 
+22% (R² = 0.22) of our variable Y (Initiation_Date).
 
 
