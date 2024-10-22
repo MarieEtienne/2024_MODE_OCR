@@ -125,7 +125,7 @@ library(lattice)# Graphiques multipanneaux (A CHANGER?)
 
 -   **Vérification si des données sont manquantes**
 
-```{r global data, echo=TRUE,include=TRUE}
+```{r data lack, echo=TRUE,include=TRUE}
 # Vérification de la présence de valeurs manquantes
 colSums(is.na(dataAnts))
 # Aucune valeur manquante
@@ -431,7 +431,7 @@ nagelkerke(mod1)
 Ici, l'estimation de la déviance expliquée est de 60% ou 75%, en fonction de la méthode utilisée.
 
 ```{r Prediction,include=TRUE, fig.height=6, fig.width=6}
-plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Valeurs estimées par le modèle",xlab="Valeurs observées")
+plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Valeurs estimées par le modèle",xlab="Valeurs observées", main="figure 13")
 abline(0,1)
 ```
 
@@ -479,22 +479,23 @@ Ici, la dispersion est de 1,02. Il n'y a pas de surdispersion.
 
 ### Analyses des résidus
 
-Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $X_s$ significatifs du modèle, on doit valider l'absence de tendance dans leur distribution. Si on constate une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
+
+Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $X_s$ significatifs du modèle, nous devons valider l'absence de tendance dans leur distribution. Si nous constatons une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
 
 ```{r}
 resid<-residuals(mod1, type="pearson")
 
 par(mfrow=c(3,2))
 # Histogram
-hist(resid,col='dodgerblue3',xlab="residuals",main="")
+hist(resid,col='dodgerblue3',xlab="residuals",main="figure 14")
 # Quantile-Quantile plot
-qqnorm(resid,pch=16,col='dodgerblue3',xlab='')
+qqnorm(resid,pch=16,col='dodgerblue3',xlab='', main="figure 15")
 qqline(resid,col='red',lwd=2)
 
 # residuals vs fitted
 plot(resid~fitted(mod1)
       , col='dodgerblue3'
-      , pch=16)
+      , pch=16, main="figure 16")
 abline(h = 0)
 
 # residuals against Location factor
@@ -502,7 +503,7 @@ boxplot(resid~ dataAnts$Location,
          varwidth = TRUE,
          ylab = "Residuals",
          xlab = "Location",
-         main = "")
+         main = "figure 17")
 
 # residuals against Latitude
 plot(resid~ dataAnts$Latitude, 
@@ -510,7 +511,7 @@ plot(resid~ dataAnts$Latitude,
          col="dodgerblue3",
          ylab = "Residuals",
          xlab = "Latitude",
-         main = "")
+         main = "figure 18")
 abline(h = 0)
 
 # residuals against Elevation
@@ -519,7 +520,7 @@ plot(resid~ dataAnts$Elevation,
          col="dodgerblue3",
          ylab = "Residuals",
          xlab = "Elevation",
-         main = "")
+         main = "figure 19")
 abline(h = 0)
 
 ```
@@ -533,7 +534,7 @@ L'histogramme des résidus et le Q-Q plot montrent des résidus relativement nor
 ```{r Contri, include=TRUE, fig.height=4, fig.width=4}
 
 par(mfrow = c(1, 1))
-plot(cooks.distance(mod1), type = "h", ylim = c(0, 1))
+plot(cooks.distance(mod1), type = "h", ylim = c(0, 1), main="figure 20")
 abline(h = 1, col = 2,lwd = 3)
 
 ```
@@ -569,7 +570,7 @@ De même, on ne détecte pas la présence d'individus influents pouvant biaiser 
 
 Le calcul du pseudo R² estimé à 0.60 nous permet de considérer que ce modèle explique bien nos données (la déviance du modèle nul étant de 102.76 et la déviance résiduelle de 40.69).
 
-On en conclut donc que la richesse spécifique des fourmis dans les tourbières du New-England dépend :
+Nous en concluons donc que la richesse spécifique des fourmis dans les tourbières du New-England dépend :
 
 -   de la localisation : la richesse spécifique est plus forte en forêt qu'en tourbière en lien avec le couvert végétal et la lumière disponible ;
 
