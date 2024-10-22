@@ -7,7 +7,7 @@ editor: visual
 
 # **INTRODUCTION** (Apolline et Kilian)
 
--   importation du jeu de données 
+-   importation du jeu de données
 
 On commence par importer le jeu de données situé dans un fichier "BogAnts.txt"
 
@@ -276,9 +276,9 @@ summary(modfinal)
 
 Remarque : il est recommandé d'utiliser l'AIC avec plus de 40 individus par paramètre, sinon il existe l'AICc (@YannickOutreman).
 
-Les deux méthodes arrivent au même modèle candidat : Nsp~Latitude+Elevation+LogArea.
+Les deux méthodes arrivent au même modèle candidat : Nsp\~Latitude+Elevation+LogArea.
 
-L'étape suivante est l'analyse des coefficients. Nous allons donc regarder l'effet précis des variables explicatives retenues (Latitude, Elevation, LogArea) sur la richesse spécifique des fourmis. 
+L'étape suivante est l'analyse des coefficients. Nous allons donc regarder l'effet précis des variables explicatives retenues (Latitude, Elevation, LogArea) sur la richesse spécifique des fourmis.
 
 ## 2. Analyse des coefficients (Gabriel)
 
@@ -305,8 +305,7 @@ Le summary() du modèle nous permet de voir les coefficients correspondant à ch
 **Elevation covariate**\
 - $\beta_{Elevation}$ = $-0.001^{***}$
 
-Le modèle candidat avec les coefficients s'écrit donc : 
-$$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
+Le modèle candidat avec les coefficients s'écrit donc : $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
 
 Rappel : pour modéliser une variable quantitative discrète avec un modèle linéaire généralisé on passe par une fonction de lien, ici avec la loi de Poisson on utilise la fonction log().
 
