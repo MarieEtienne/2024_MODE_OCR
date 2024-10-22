@@ -9,7 +9,7 @@ editor: visual
 
 -   importation du jeu de données
 
-On commence par importer le jeu de données situé dans un fichier "BogAnts.txt"
+Nous commençons par importer le jeu de données situé dans un fichier "BogAnts.txt"
 
 ```{r global data, echo=TRUE,include=TRUE}
 #importation
