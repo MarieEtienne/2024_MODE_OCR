@@ -18,7 +18,7 @@ PLAN POUR GLM:
 ```{r}
 # Importation du jeu de données coefla et tri des données
 data_coefla = read.csv(file = "data_coefla.csv", header = T, sep = ";")
-
+test
 
 
 ```
