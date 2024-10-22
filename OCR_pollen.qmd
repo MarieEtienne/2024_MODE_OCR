@@ -55,7 +55,7 @@ Graphic representation:
 
 Let's start by representing plant size as a function of the applied treatment (grazing or no grazing).
 
-```{r}
+```{r effect_treatment_on_height_graph}
 boxplot(df$logHeight.score~df$treatment, varwidth = TRUE, ylab = "plant height (log)", xlab = "Treatment", col='darkgrey', main = "", title = "effect of grazing on the height")
 
 ggplot(data=df)+
@@ -75,7 +75,7 @@ Hypothesis H1: Grazing has an effect on plant size.
 We perform an ANOVA to compare a random model with our model.
 
 
-```{r}
+```{r model_treatment_height_anova}
 hyp0<-lm(logHeight.score~1,data=df)
 hyp1<-lm(logHeight.score~treatment,data=df)
 anova(hyp0,hyp1)
@@ -90,7 +90,7 @@ Now, let's study the seed mass of plants in relation to grazing.
 Graphic representation:
 
 Let's start by representing the seed mass of plants as a function of the applied treatment (grazing or no grazing).
-```{r}
+```{r effect_treatment_on_seed_mass_graph}
 boxplot(df$logSeedMass.score~df$treatment, varwidth = TRUE, ylab = "Seed mass (log)", xlab = "Treatment", col='darkgrey', main = "", title = "effect of grazing on seed mass")
 
 ggplot(data=df)+
@@ -106,7 +106,7 @@ Hypothesis H1: Grazing has an effect on seed mass.
 
 We perform an ANOVA to compare the model where we only consider the effect of grazing with a model where the effect of grazing is random.
 
-```{r}
+```{r model_treatment_seed_mass_anova}
 hyp2<-lm(logSeedMass.score~1,data=df)
 hyp3<-lm(logSeedMass.score~treatment,data=df)
 anova(hyp2,hyp3)
@@ -114,13 +114,13 @@ anova(hyp2,hyp3)
 The p-value = 0.3573 > 0.05, so the seed mass under hypothesis H1 is not significantly different from that under hypothesis H0.
 We can conclude that there is no effect of grazing on seed mass.
 
-Model test :
+#Model test :
 
 We will now analyze the effect of grazing on plant size more precisely. We want to know if the size is influenced by grazing (treatment) alone or by its interaction with other factors.
 
 For this analysis, we will test the effects of grazing and its interaction with other factors on plant size through model analysis using the BIC criterion.
 
-```{r}
+```{r final_linear_model_height_bic}
 hyp4<-LinearModel(logHeight.score~(treatment+season+year+observer+logSeedMass.score+RatioPoll+R.score+C.score+S.score)*
                     (treatment+season+year+observer+logSeedMass.score+RatioPoll+R.score+C.score+S.score), data=df, selection = "bic")
 hyp4
