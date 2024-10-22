@@ -53,7 +53,7 @@ Let's begin with a morphological analysis (plant high and seed mass).
 
 Graphic representation:
 
-Let’s start by representing plant size as a function of the applied treatment (grazing or no grazing).
+Let's start by representing plant size as a function of the applied treatment (grazing or no grazing).
 
 ```{r}
 boxplot(df$logHeight.score~df$treatment, varwidth = TRUE, ylab = "plant height (log)", xlab = "Treatment", col='darkgrey', main = "", title = "effect of grazing on the height")
@@ -118,7 +118,7 @@ Model test :
 
 We will now analyze the effect of grazing on plant size more precisely. We want to know if the size is influenced by grazing (treatment) alone or by its interaction with other factors.
 
-To do this, we will test the effects of grazing and its interaction with other factors on plant size through model analysis using the BIC criterion.
+For this analysis, we will test the effects of grazing and its interaction with other factors on plant size through model analysis using the BIC criterion.
 
 ```{r}
 hyp4<-LinearModel(logHeight.score~(treatment+season+year+observer+logSeedMass.score+RatioPoll+R.score+C.score+S.score)*
@@ -127,13 +127,9 @@ hyp4
 
 ```
 
+After the analysis, the final model with the lower BIC is : logH ~ treatment + logS + RatioPoll + R.score + C.score + S.score + treatment:logS + treatment:RatioPoll + logS:R.score + logS:S.score + RatioPoll:C.score + R.score:C.score + C.score:S.score
+
+The results show that the factor treatment (grazing) by itself has no significant effect (p-value = 0.21 > 0.05) on the height of plants and same goes for R.score and S.score. 
+This means that the effect of treatment that we previously saw was mainly due to interactions between treatment and other factors.
 
 
-Partie 3 : effet du paturage sur les strategies de pollinisation
-```{r}
-# Boxplot 
-par(mfrow=c(1,2))
-
-boxplot(df$RatioPoll~df$treatment, varwidth = TRUE, ylab = "Ratio Pollinisation", xlab = "Traitement", col='blue', main = "")
-
-```
