@@ -7,9 +7,9 @@ editor: visual
 
 # **INTRODUCTION** (Apolline et Kilian)
 
-à faire :
+-   importation du jeu de données
 
--   importation du jeu de données (lien) (A)
+On commence par importer le jeu de données situé dans un fichier "BogAnts.txt"
 
 ```{r global data, echo=TRUE,include=TRUE}
 #importation
@@ -20,9 +20,11 @@ dataAnts$Location<-as.factor(dataAnts$Location)
 str(dataAnts)
 ```
 
--   Quel article, auteur, journal, référence
+-   Présentation de l'article
 
--   contexte biologique
+Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604-1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
+
+-   Contexte Biologique
 
 -   Question de recherche
 
