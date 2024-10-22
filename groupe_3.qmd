@@ -114,9 +114,6 @@ Pour analyser nos données on configure la session en nettoyant l'espace de trav
 
 ```{r init, include=FALSE, message=FALSE, warning=FALSE,}
 
-#Configuration de la session :
-rm(list=ls()) # Nettoyage de l'environnement de travail
-
 #Chargement des packages R :
 library(knitr)
 opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")#(TROUVER L'UTILITE ET PEUT-ÊTRE RETIRER)
