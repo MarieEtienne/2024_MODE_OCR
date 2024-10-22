@@ -635,7 +635,8 @@ table(data$Species,data$Year)
 ```
 
 
-Subsequently, we will not analyze the interactions between the factors since 
+Subsequently, we will not analyze the interactions between the factors since
+there is no interaction between the Xs variables. 
 
 ### Search for candidate model
 
