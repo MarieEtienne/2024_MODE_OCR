@@ -1,0 +1,12 @@
+
+model {
+  for (i in 1:N) {
+    repro_positive[i] ~ dbin(p[i], total_individuals[i])  # Distribution binomiale
+    logit(p[i]) <- a + b.temp * temp[i] + b.rain * rain[i]  # Régression logistique
+  }
+  
+  a ~ dnorm(0, 0.001)  # Prior sur l'intercept
+  b.temp ~ dnorm(0, 0.001)  # Prior sur l'effet de la température
+  b.rain ~ dnorm(0, 0.001)  # Prior sur l'effet de la pluie
+}
+
