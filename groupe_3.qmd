@@ -7,11 +7,14 @@ editor: visual
 
 # **INTRODUCTION** (Apolline et Kilian)
 
+Principe de l'exploration du jeu de données d'après l'article cité en cours.
+
 -   **Importation du jeu de données**
 
-    On commence par importer le jeu de données situé dans fichier "BogAnts.txt"
+On commence par importer le jeu de données situé dans fichier "BogAnts.txt"
 
-```{r global data, echo=TRUE,include=TRUE}
+```{r Importation du jeu de donnees, echo=TRUE, message=FALSE, include=TRUE}
+
 #importation
 dataAnts <- read.table("BogAnts.txt", dec=".", header = TRUE)
 
@@ -108,7 +111,12 @@ Les modèles linéaires généralisés de type Poisson ont une structure d'erreu
 
 Pour analyser nos données on configure la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion* et *lattice*.
 
-```{r init, include=FALSE}
+
+```{r init, include=FALSE, message=FALSE, warning=FALSE,}
+
+#Configuration de la session :
+rm(list=ls()) # Nettoyage de l'environnement de travail
+
 #Chargement des packages R :
 library(knitr)
 opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")#(TROUVER L'UTILITE ET PEUT-ÊTRE RETIRER)
@@ -119,6 +127,7 @@ library(plot3D)# Pour les graphiques 3D
 library(DHARMa)# Diagnostic du modèle
 library(rcompanion)# Modèle pseudo R²
 library(lattice)# Graphiques multipanneaux (A CHANGER?)
+library(patchwork)# Afficher plusieurs ggplot sur une page
 ```
 
 -   **Vérification si des données sont manquantes**
@@ -130,11 +139,366 @@ colSums(is.na(dataAnts))
 summary(dataAnts)
 ```
 
-
-
 # **EXPLORATION DU JEU DE DONNEES**
 
-## 1. Présentation du jeu de données (Léa et Giuliana)
+## 1. Présentation du jeu de données
+
+### a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$ 
+
+La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
+
+**Valeurs aberrantes :** dans un jeu de données écologiques, il est probable de rencontrer des individus présentant des valeurs extrêmes pour la variable réponse. Ces individus, en raison de leurs valeurs inhabituelles, peuvent avoir un impact disproportionné sur la construction du modèle. Toutefois, ces valeurs extrêmes peuvent résulter soit de la variabilité naturelle des phénomènes écologiques, soit d'erreurs (par exemple, des erreurs de mesure ou de manipulation). Identifier ces individus avant l'analyse statistique permet de prévenir les erreurs et de justifier, si nécessaire, l'exclusion de certaines valeurs aberrantes pour améliorer la robustesse du modèle.
+
+Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à un **Cleveland plot** des valeurs de $Y$.
+
+```{r valeurs aberrantes de Y, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+# Boxplot 
+bp <- ggplot(data = dataAnts, aes(y = Nsp))+
+  geom_boxplot()+
+  labs(subtitle = "Boxplot",
+       y = "richesse spécifique")+
+  theme(
+    panel.background = element_rect(fill="white"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
+  )
+
+# Cleveland plot 
+cp <- ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
+  geom_jitter(width = 0.1, size = 3, color = "black")+
+  labs(subtitle = "Cleveland plot",
+       x = "richesse spécifique")+
+  theme_minimal()+
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.y = element_blank(),
+    
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
+  )
+
+
+## Affichage 
+(bp + cp) + 
+  plot_layout(widths = c(1, 2)) + 
+  plot_annotation(title = "Analyse des valeurs aberrantes de Y")
+```
+
+$Y$ ne présente pas de valeurs extrêmes ou aberrantes.
+
+**Distribution des valeurs :** analyser la distribution des valeurs de $Y$ permet d'identifier *a priori* la loi de probabilité qui expliquera au mieux les processus écologiques en cours. Cela est d'autant plus intéressant si les données suggèrent une relation non linéaire ou asymétrique.
+
+La distribution des valeurs de $Y$ peut être visualisée grâce à un **histogramme** ou à un **Normal Q-Q plot**.
+
+```{r distribution de Y, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+# Histogramme 
+hg <- ggplot(data = dataAnts, aes(x = Nsp))+
+  geom_histogram(binwidth = 2, fill = "blue", color = "black")+
+  theme_minimal()+
+  labs(subtitle = "Histogramme",
+       x = "richesse spécifique",
+       y = "fréquence")+
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
+    )
+
+qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
+  geom_qq_line(color = "red", size = 1.2)+
+  geom_qq()+
+  theme_minimal()+
+  labs(subtitle = "Q-Q plot",
+       x = "quantiles théoriques",
+       y = "quantiles observés")+
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
+  )
+
+# Affichage
+(hg + qqp) +
+  plot_layout(widths = c(1, 2)) + 
+  plot_annotation(title = "Analyse de la distribution de Y")
+
+```
+
+La distribution de $Y$ (exponentielle négative) et la nature du jeu de données (comptage sans aggrégation) suggèrent que $Y$ suit une loi de Poisson. Cette hypothèse est appuyée par l'écart à la normalité des valeurs de $Y$ observé dans le Q-Q plot.
+
+[**Conclusion**]{.underline} **:**
+
+Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
+
+### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$ 
+
+Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.*
+
+De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
+
+[**La latitude**]{.underline} **:**
+
+```{r Latitude, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+p1 <- ggplot(dataAnts) +
+  aes(x=Latitude, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  geom_jitter(width=0, height=0.1) +
+  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) + # Valeurs de l'axe X
+  labs(title = "Variable explicative Latitude",
+       subtitle = "Cleveland Plot",
+       x= "Latitude") +  # Titres
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
+        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
+        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+        axis.title.x = element_text(size = 8, color = "darkblue"),
+        plot.title = element_text(size = 14, face = "bold", color = "black"),
+        plot.subtitle = element_text(size = 10, color = "black")
+        )   
+
+p2 <- ggplot(dataAnts) +
+  aes(x = Latitude) +  # Utiliser Latitude sur l'axe X
+  geom_histogram(binwidth = 0.25, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
+  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) +  # Valeurs de l'axe X
+  scale_y_continuous(breaks = seq(0, 10, by = 2)) +  # Valeurs de l'axe X
+  labs(subtitle = "Histogramme",
+       x = "Latitude") +  # Titres
+  theme_minimal() +  # Appliquer un thème minimal
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"), 
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.subtitle = element_text(size = 10, color = "black")
+  ) 
+
+p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
+  labs(subtitle = "Quantile-Quantile Plot",
+       caption = "D'après le jeu de données dataAnts",
+       x = "Quantiles Théorique",
+       y = "Quantiles Observés") +
+  stat_qq() +  # Ajoute les points du Q-Q plot
+  stat_qq_line(col = "red", size = 1) +  # Ajoute la ligne théorique
+  theme_minimal() + # Applique un thème minimal
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey") 
+  ) 
+
+(p1 / p2) | p3 + 
+  plot_layout(guides = "collect")
+```
+
+On ne constate pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
+
+On remarque grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
+
+[**L'élévation**]{.underline} **:**
+
+```{r Elevation, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+p4 <- ggplot(dataAnts) +
+  aes(x=Elevation, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  geom_jitter(width=0, height=0.1) +
+  scale_x_continuous(breaks = seq(0, 545, by = 100)) + # Valeurs de l'axe X
+  labs(title = "Variable explicative Elevation",
+       subtitle = "Cleveland Plot",
+       x= "Elevation") +  # Titres
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
+        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
+        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+        axis.title.x = element_text(size = 8, color = "darkblue"),
+        plot.title = element_text(size = 14, face = "bold", color = "black"),
+        plot.subtitle = element_text(size = 10, color = "black")
+        )   
+
+p5 <- ggplot(dataAnts) +
+  aes(x = Elevation) +  # Utiliser Elevation sur l'axe X
+  geom_histogram(binwidth = 75, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
+  scale_x_continuous(breaks = seq(0, 545, by = 100)) +  # Valeurs de l'axe X
+  scale_y_continuous(breaks = seq(0, 10, by = 2)) +  # Valeurs de l'axe X
+  labs(subtitle = "Histogramme",
+       x = "Elevation") +  # Titres
+  theme_minimal() +  # Appliquer un thème minimal
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"), 
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.subtitle = element_text(size = 10, color = "black")
+  ) 
+
+p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
+  labs(subtitle = "Quantile-Quantile Plot",
+       caption = "D'après le jeu de données dataAnts",
+       x = "Théorique Quantiles",
+       y = "Quantiles Observés") +
+  stat_qq() +  # Ajoute les points du Q-Q plot
+  stat_qq_line(col = "red", size = 1) +  # Ajoute la ligne théorique
+  theme_minimal() + # Applique un thème minimal
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey") 
+  ) 
+
+(p4 / p5) | p6 + 
+  plot_layout(guides = "collect")
+
+```
+
+On ne constate pas de valeur aberrantes sur le Cleveland plot ou sur l'histogramme.
+
+On remarque grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici interressant d'utilisé un modèle linéaire généralisé et non un modèle linéaire classique.
+
+[**L'aire**]{.underline} **:**
+
+```{r Area, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+p4 <- ggplot(dataAnts) +
+  aes(x=Area, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  geom_jitter(width=0, height=0.1) +
+  scale_x_continuous(breaks = seq(0, 865000, by = 200000)) + # Valeurs de l'axe X
+  labs(title = "Variable explicative Area",
+       subtitle = "Cleveland Plot",
+       x= "Area") +  # Titres
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
+        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
+        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+        axis.title.x = element_text(size = 8, color = "darkblue"),
+        plot.title = element_text(size = 14, face = "bold", color = "black"),
+        plot.subtitle = element_text(size = 10, color = "black")
+        )   
+
+p5 <- ggplot(dataAnts) +
+  aes(x = Area) +  # Utiliser Aera sur l'axe X
+  geom_histogram(binwidth = 50000, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
+  scale_x_continuous(breaks = seq(0, 865000, by = 200000)) +  # Valeurs de l'axe X
+  scale_y_continuous(breaks = seq(0, 20, by = 5)) +  # Valeurs de l'axe X
+  labs(subtitle = "Histogramme",
+       x = "Area") +  # Titres
+  theme_minimal() +  # Appliquer un thème minimal
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"), 
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.subtitle = element_text(size = 10, color = "black")
+  ) 
+
+p6 <- ggplot(dataAnts, aes(sample = Area)) +
+  labs(subtitle = "Quantile-Quantile Plot",
+       caption = "D'après le jeu de données dataAnts",
+       x = "Quantiles Théorique",
+       y = "Quantiles Observés") +
+  stat_qq() +  # Ajoute les points du Q-Q plot
+  stat_qq_line(col = "red", size = 1) +  # Ajoute la ligne théorique
+  theme_minimal() + # Applique un thème minimal
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey") 
+  ) 
+
+(p4 / p5) | p6 + 
+  plot_layout(guides = "collect")
+
+```
+
+Nous constatons des valeurs aberrantes sur le Cleveland plot et sur l'histogramme en raison de la présence de tourbières très étendues. Nous pouvons effectuer une transformation de cette variable et envisager une transformation logarithmique.
+
+```{r LogArea, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+dataAnts$LogArea<-log(dataAnts$Area)
+
+p4 <- ggplot(dataAnts) +
+  aes(x=LogArea, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  geom_jitter(width=0, height=0.1) +
+  scale_x_continuous(breaks = seq(2, 15, by = 2)) + # Valeurs de l'axe X
+  labs(title = "Variable explicative LogArea",
+       subtitle = "Cleveland Plot",
+       x= "LogArea") +  # Titres
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
+        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
+        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+        axis.title.x = element_text(size = 8, color = "darkblue"),
+        plot.title = element_text(size = 14, face = "bold", color = "black"),
+        plot.subtitle = element_text(size = 10, color = "black")
+        )   
+
+p5 <- ggplot(dataAnts) +
+  aes(x = LogArea) +  # Utiliser Aera sur l'axe X
+  geom_histogram(binwidth = 2, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
+  scale_x_continuous(breaks = seq(2, 15, by = 2)) +  # Valeurs de l'axe X
+  scale_y_continuous(breaks = seq(0, 30, by = 5)) +  # Valeurs de l'axe X
+  labs(subtitle = "Histogramme",
+       x = "LogArea") +  # Titres
+  theme_minimal() +  # Appliquer un thème minimal
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"), 
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.subtitle = element_text(size = 10, color = "black")
+  ) 
+
+p6 <- ggplot(dataAnts, aes(sample = LogArea)) +
+  labs(subtitle = "Quantile-Quantile Plot",
+       caption = "D'après le jeu de données dataAnts",
+       x = "Quantiles Théorique",
+       y = "Quantiles Observés") +
+  stat_qq() +  # Ajoute les points du Q-Q plot
+  stat_qq_line(col = "red", size = 1) +  # Ajoute la ligne théorique
+  theme_minimal() + # Applique un thème minimal
+  theme(
+    axis.title.x = element_text(size = 8, color = "darkblue"),
+    axis.title.y = element_text(size = 8, color = "darkblue"),
+    plot.title = element_text(size = 14, face = "bold", color = "black"),       
+    plot.subtitle = element_text(size = 10, color = "black"),                  
+    plot.caption = element_text(size = 4, face = "italic", color = "darkgrey") 
+  ) 
+
+(p4 / p5) | p6 + 
+  plot_layout(guides = "collect")
+
+```
+
+On ne constate pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
+
+[**Conclusion**]{.underline} **:**
+
+L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
+
+### c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité
+
+Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
+
+```{r equilibre des modalites, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+summary(dataAnts$Location)
+```
+
+Ici les données sont bien réparties entre les deux modalités (Bog = tourbières et Forest = forêts).
+
+[**Conclusion**]{.underline} **:**
+
+L'analyse de valeurs aberrantes et de la distribution de la variable qualitative suggèrent qu'elle peut être utilisée dans la construction du modèle.
 
 ## **2. Analyse des interactions entre les variables Y et Xs (Chloé et Manon)**
 
