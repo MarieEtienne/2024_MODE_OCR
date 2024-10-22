@@ -27,6 +27,38 @@ str(dataAnts)
 
 -   **Présentation de l'article**
 
+Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604--1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
+
+-   **Contexte Biologique**
+
+Gotelli et Ellison sont deux écologues, le premier étant spécialisé sur des questions d'organisation des communautés animales et végétales, le second sur la désintégration et le réassemblage des écosystèmes suite à des perturbations naturelles et anthropiques. Ils se sont ici intéressés à l'influence du gradient latitudinal sur la richesse spécifique chez les fourmis de l'Etat de la Nouvelle-Angleterre au Nord-Est des Etats-Unis. Leur étude a été réalisée sur 22 sites où, pour chacun, 25 pièges ont été placés dans une tourbière ombrotrophe et 25 dans la forêt environnante. Les espèces de fourmis contenues dans les pièges sont par la suite identifiées en laboratoire et, pour un site et un habitat donnés, ils ont calculé la richesse spécifique (nombre total d'espèces présentes).
+
+-   **Données et variables**
+
+Les variables utilisées sont :\
+- *Site* : le nom du site échantillonné\
+- *Latitude* : la latitude du site (quantitative)\
+- *Altitude* : l'altitude du site (quantitative)\
+- *Area* : la superficie de la tourbière du site (quantitative)\
+- *Location* : la localisation des pièges ("Bog" ou "Forest") (qualitative)\
+- *Nsp* : la richesse spécifique des fourmis, égalmeent la variable réponse
+
+-   **Question de recherche**
+
+Parmi les trois questions que se posent Gotelli et Ellison dans cette étude, on s'intéresse ici aux deux première :
+
+1\) La densité des espèces est-elle en corrélation avec la latitude sur une étendue latitudinale aussi étroite ?
+
+2\) Le gradient latitudinal persiste-t-il après un contrôle statistique des différences entre les sites dans la composition de la végétation ?
+
+En d'autres termes : quelles sont les variables quantitatives (latitude, altitude, aire) et qualitatives (localisation) qui déterminent la richesse spécifique des fourmis dans les tourbières du New-England ?
+
+-   **Quel modèle et pourquoi ?**
+
+Pour modéliser la relation entre une variable réponse quantitative $Y$ et des variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives on utilise des modèles linéaires généraux, ou *glm*, (régression linéaire, ANCOVA, ANOVA). Pour pouvoir utiliser ces *glm*, trois conditions d'application sont nécessaires : *l'homogénéité des variances*, *l'indépendance des résidus* et *la normalité des résidus*. Cependant, les réponses $Y$ analysées en écologie, peuvent parfois être discrètes et s'écarter de l'hypothèse normale.
+
+Pour les variables réponses discrètes (comptages, données binaires), la variance de $Y$ varie généralement avec la moyenne de $Y$. Cette relation semble alors indiquer que la variance ne peut être homogène dans un jeu de données, du fait de sa dépendance à la moyenne. Or, les modèles linéaires généraux ont pour hypothèse d'application une variance constante (c'est-à-dire une homogénéité de la variance). Par ailleurs, lorsque l'on applique un modèle linéaire général à des données de comptage, les valeurs prédites obtenues peuvent être négatives (ce qui est impossible au regard de la nature de $Y$) et les résidus non distribués normalement. Donc, l'utilisation d'un modèle linéaire général (*glm*) sur des réponses discrètes génère très généralement des écarts par rapport aux conditions d'application. En conclusion, il devient necessaire d'utiliser une méthode plus adaptée à l'analyse de variables réponses discrètes telle que les Modèles linéaires généralisés (*glim*).
+
 Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604–1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
 
 -   **Contexte Biologique**
@@ -79,9 +111,12 @@ Les modèles linéaires généralisés de type Poisson ont une structure d'erreu
 
 Pour analyser nos données on configure la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion* et *lattice*.
 
+
 ```{r init, include=FALSE, message=FALSE, warning=FALSE,}
+
 #Configuration de la session :
 rm(list=ls()) # Nettoyage de l'environnement de travail
+
 #Chargement des packages R :
 library(knitr)
 opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")#(TROUVER L'UTILITE ET PEUT-ÊTRE RETIRER)
@@ -97,7 +132,7 @@ library(patchwork)# Afficher plusieurs ggplot sur une page
 
 -   **Vérification si des données sont manquantes**
 
-```{r global data, echo=TRUE,include=TRUE}
+```{r datalack, echo=TRUE,include=TRUE}
 # Vérification de la présence de valeurs manquantes
 colSums(is.na(dataAnts))
 # Aucune valeur manquante
@@ -467,17 +502,9 @@ L'analyse de valeurs aberrantes et de la distribution de la variable qualitative
 
 ## **2. Analyse des interactions entre les variables Y et Xs (Chloé et Manon)**
 
-```{r dataCov2, include=TRUE, fig.height=4, fig.width=9}
-#Ligne ajouté qui sera supprimée, c'est juste pour avoir les données correctes
-par(mfrow=c(1,3))
-
-dataAnts$LogArea<-log(dataAnts$Area)
-
-```
-
 \###**2.1 Analyser la relation potentielle entre Y et les Xs**
 
-Afin de tester la relation éventuelle entre la variable réponse Y et les variables explicatives Xs, il sera indispensable de réaliser la modélisation statistique, c'est le seul moyen qui nous permet de tester la significativité des relations. Seulement, nous pouvons commencer par réaliser des analyses graphiques pour mieux visualiser et se faire une idée.
+Afin de tester la relation éventuelle entre la variable réponse Y et les variables explicatives Xs, il sera indispensable de réaliser la modélisation statistique, c'est le seul moyen qui nous permet de tester la significativité des relations. Cependant, nous pouvons commencer par réaliser des analyses graphiques pour mieux visualiser les données et se faire une idée.
 
 ```{r datagraph, include=TRUE, fig.height=7, fig.width=7}
 
@@ -498,9 +525,9 @@ boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Richesse spéci
 
 **Conclusion des différents graphiques :**
 
-Relation entre X et la latitude (Fig. 1) : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevée. Nous pouvons alors dire qu'il semble que plus on est au Nord, moins il y a d'espèces de fourmis.
+Relation entre X et la latitude (Fig. 1) : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevée. Nous pouvons dire que plus on se trouve au Nord, moins il y a d'espèces de fourmis.
 
-Relation entre X et l'altitude (Fig. 2) : Dans ce graphique-ci, nous pouvons voir à nouveau que plus l'altitude est importante, moins la richesse spécifique est élevée. Nous pouvons alors se dire qu'il semble que plus le relief est élévé moins il y a d'espèces de fourmis.
+Relation entre X et l'altitude (Fig. 2) : Dans ce graphique-ci, nous pouvons voir à nouveau que plus l'altitude est importante, moins la richesse spécifique est élevée. Il semble que plus le relief est élévé moins il y a d'espèces de fourmis.
 
 Relation entre X et la surperficie de la tourbière (Fig. 3) : Ici, il ne semble pas y avoir de relation entre la richesse spécifique des fourmis et la surperficie des tourbières.
 
@@ -508,7 +535,7 @@ Relation entre X et localisation (Fig. 4) : Il semble ici y avoir une relation e
 
 **Conclusion générale :**
 
-Il semble que plus les espèces se situent au nord et dans un haut relief, moins la richesse spécifique de fournis est grande. De plus, si on se trouve en forêt, il y aura une richesse spécifique plus importante que dans les tourbières.
+Il semble que plus les espèces se situent au nord et dans un haut relief, moins la richesse spécifique de fourmis est grande. De plus, si on se trouve en forêt, il y aura une richesse spécifique plus importante que dans les tourbières.
 
 \###**2.2 Analyse des éventuelles interactions entre les Xs**
 
@@ -561,7 +588,7 @@ mtext("Figure 9", side = 2, line = -6, cex = 1, las = 1)
 
 par(mfrow=c(1,3))
 
-# On vérifie la collinéarité entre catégories et variables continues
+# On vérifie la colinéarité entre catégories et variables continues
 #Latitude et Localisation
 boxplot(dataAnts$Latitude~dataAnts$Location, varwidth = TRUE, ylab = "Latitude", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 10")
 
@@ -758,7 +785,7 @@ nagelkerke(mod1)
 Ici, l'estimation de la déviance expliquée est de 60% ou 75%, en fonction de la méthode utilisée.
 
 ```{r Prediction,include=TRUE, fig.height=6, fig.width=6}
-plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Valeurs estimées par le modèle",xlab="Valeurs observées")
+plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Valeurs estimées par le modèle",xlab="Valeurs observées", main="figure 13")
 abline(0,1)
 ```
 
@@ -806,22 +833,23 @@ Ici, la dispersion est de 1,02. Il n'y a pas de surdispersion.
 
 ### Analyses des résidus
 
-Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $X_s$ significatifs du modèle, on doit valider l'absence de tendance dans leur distribution. Si on constate une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
+
+Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $X_s$ significatifs du modèle, nous devons valider l'absence de tendance dans leur distribution. Si nous constatons une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
 
 ```{r}
 resid<-residuals(mod1, type="pearson")
 
 par(mfrow=c(3,2))
 # Histogram
-hist(resid,col='dodgerblue3',xlab="residuals",main="")
+hist(resid,col='dodgerblue3',xlab="residuals",main="figure 14")
 # Quantile-Quantile plot
-qqnorm(resid,pch=16,col='dodgerblue3',xlab='')
+qqnorm(resid,pch=16,col='dodgerblue3',xlab='', main="figure 15")
 qqline(resid,col='red',lwd=2)
 
 # residuals vs fitted
 plot(resid~fitted(mod1)
       , col='dodgerblue3'
-      , pch=16)
+      , pch=16, main="figure 16")
 abline(h = 0)
 
 # residuals against Location factor
@@ -829,7 +857,7 @@ boxplot(resid~ dataAnts$Location,
          varwidth = TRUE,
          ylab = "Residuals",
          xlab = "Location",
-         main = "")
+         main = "figure 17")
 
 # residuals against Latitude
 plot(resid~ dataAnts$Latitude, 
@@ -837,7 +865,7 @@ plot(resid~ dataAnts$Latitude,
          col="dodgerblue3",
          ylab = "Residuals",
          xlab = "Latitude",
-         main = "")
+         main = "figure 18")
 abline(h = 0)
 
 # residuals against Elevation
@@ -846,7 +874,7 @@ plot(resid~ dataAnts$Elevation,
          col="dodgerblue3",
          ylab = "Residuals",
          xlab = "Elevation",
-         main = "")
+         main = "figure 19")
 abline(h = 0)
 
 ```
@@ -860,7 +888,7 @@ L'histogramme des résidus et le Q-Q plot montrent des résidus relativement nor
 ```{r Contri, include=TRUE, fig.height=4, fig.width=4}
 
 par(mfrow = c(1, 1))
-plot(cooks.distance(mod1), type = "h", ylim = c(0, 1))
+plot(cooks.distance(mod1), type = "h", ylim = c(0, 1), main="figure 20")
 abline(h = 1, col = 2,lwd = 3)
 
 ```
@@ -896,7 +924,7 @@ De même, on ne détecte pas la présence d'individus influents pouvant biaiser 
 
 Le calcul du pseudo R² estimé à 0.60 nous permet de considérer que ce modèle explique bien nos données (la déviance du modèle nul étant de 102.76 et la déviance résiduelle de 40.69).
 
-On en conclut donc que la richesse spécifique des fourmis dans les tourbières du New-England dépend :
+Nous en concluons donc que la richesse spécifique des fourmis dans les tourbières du New-England dépend :
 
 -   de la localisation : la richesse spécifique est plus forte en forêt qu'en tourbière en lien avec le couvert végétal et la lumière disponible ;
 
