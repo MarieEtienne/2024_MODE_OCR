@@ -7,25 +7,6 @@ editor: visual
 
 # **INTRODUCTION**
 
--   **Importation du jeu de données**
-
-On commence par importer le jeu de données situé dans fichier "BogAnts.txt"
-
-```{r Importation du jeu de donnees, echo=TRUE, message=FALSE, include=TRUE}
-
-#Configuration de la session :
-rm(list=ls()) # Nettoyage de l'environnement de travail
-
-#importation
-dataAnts <- read.table("BogAnts.txt", dec=".", header = TRUE)
-
-#Passer la localisation en facteur 
-dataAnts$Location<-as.factor(dataAnts$Location)
-
-#vérification du type des variables 
-str(dataAnts)
-```
-
 -   **Présentation de l'article**
 
 Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604--1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
@@ -54,37 +35,24 @@ Parmi les trois questions que se posent Gotelli et Ellison dans cette étude, no
 
 En d'autres termes : quelles sont les variables quantitatives (latitude, altitude, aire) et qualitatives (localisation) qui déterminent la richesse spécifique des fourmis dans les tourbières du New-England ?
 
--   **Quel modèle et pourquoi ?**
+-   **Importation du jeu de données**
 
-Pour modéliser la relation entre une variable réponse quantitative $Y$ et des variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives nous utilisons des modèles linéaires généraux, ou *glm*, (régression linéaire, ANCOVA, ANOVA). Pour pouvoir utiliser ces *glm*, trois conditions d'application sont nécessaires : *l'homogénéité des variances*, *l'indépendance des résidus* et *la normalité des résidus*. Cependant, les réponses $Y$ analysées en écologie, peuvent parfois être discrètes et s'écarter de l'hypothèse normale.
+Dès lors, on peut importer le jeu de données situé dans fichier "BogAnts.txt"
 
-Pour les variables réponses discrètes (comptages, données binaires), la variance de $Y$ varie généralement avec la moyenne de $Y$. Cette relation semble alors indiquer que la variance ne peut être homogène dans un jeu de données, du fait de sa dépendance à la moyenne. Or, les modèles linéaires généraux ont pour hypothèse d'application une variance constante (c'est-à-dire une homogénéité de la variance). Par ailleurs, lorsque l'on applique un modèle linéaire général à des données de comptage, les valeurs prédites obtenues peuvent être négatives (ce qui est impossible au regard de la nature de $Y$) et les résidus non distribués normalement. Donc, l'utilisation d'un modèle linéaire général (*glm*) sur des réponses discrètes génère très généralement des écarts par rapport aux conditions d'application. En conclusion, il devient necessaire d'utiliser une méthode plus adaptée à l'analyse de variables réponses discrètes telle que les Modèles linéaires généralisés (*glim*).
+```{r Importation du jeu de donnees, echo=TRUE, message=FALSE, include=TRUE}
 
-Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604--1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
+#Configuration de la session :
+rm(list=ls()) # Nettoyage de l'environnement de travail
 
--   **Contexte Biologique**
+#importation
+dataAnts <- read.table("BogAnts.txt", dec=".", header = TRUE)
 
-Gotelli et Ellison sont deux écologues, le premier étant spécialisé sur des questions d'organisation des communautés animales et végétales, le second sur la désintégration et le réassemblage des écosystèmes suite à des perturbations naturelles et anthropiques. Ils se sont ici intéressés à l'influence du gradient latitudinal sur la richesse spécifique chez les fourmis de l'Etat de la Nouvelle-Angleterre au Nord-Est des Etats-Unis. Leur étude a été réalisée sur 22 sites où, pour chacun, 25 pièges ont été placés dans une tourbière ombrotrophe et 25 dans la forêt environnante. Les espèces de fourmis contenues dans les pièges sont par la suite identifiées en laboratoire et, pour un site et un habitat donnés, ils ont calculé la richesse spécifique (nombre total d'espèces présentes).
+#Passer la localisation en facteur 
+dataAnts$Location<-as.factor(dataAnts$Location)
 
--   **Données et variables**
-
-Les variables utilisées sont :\
-- *Site* : le nom du site échantillonné\
-- *Latitude* : la latitude du site (quantitative)\
-- *Altitude* : l'altitude du site (quantitative)\
-- *Area* : la superficie de la tourbière du site (quantitative)\
-- *Location* : la localisation des pièges ("Bog" ou "Forest") (qualitative)\
-- *Nsp* : la richesse spécifique des fourmis, égalmeent la variable réponse
-
--   **Question de recherche**
-
-Parmi les trois questions que se posent Gotelli et Ellison dans cette étude, nous s'intéressons ici aux deux première :
-
-1\) La densité des espèces est-elle en corrélation avec la latitude sur une étendue latitudinale aussi étroite ?
-
-2\) Le gradient latitudinal persiste-t-il après un contrôle statistique des différences entre les sites dans la composition de la végétation ?
-
-En d'autres termes : quelles sont les variables quantitatives (latitude, altitude, aire) et qualitatives (localisation) qui déterminent la richesse spécifique des fourmis dans les tourbières du New-England ?
+#vérification du type des variables 
+str(dataAnts)
+```
 
 -   **Quel modèle et pourquoi ?**
 
@@ -137,6 +105,9 @@ colSums(is.na(dataAnts))
 # Aucune valeur manquante
 summary(dataAnts)
 ```
+-   **Déroulé de l'analyse**
+A partir de cela, nous allons dans un premier temps examiner le jeu de données (valeurs abérantes, potentielles relations entre Y et Xs, ...) afin d'avoir une première impression. 
+Par la suite, nous réaliserons notre analyse statistique en constuisant et affinant notre modèle. Enfin, nous analyserons ses coefficients et son pouvoir explicatif afin de le valider ou non. 
 
 # **EXPLORATION DU JEU DE DONNEES**
 
