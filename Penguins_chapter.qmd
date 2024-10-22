@@ -177,8 +177,7 @@ names(data)
 colSums(is.na(data)) 
 
 # Removing "Comments" because not relevant for missing values
-data_NA <- data %>%
-  select(-"Comments")
+data_NA <- data 
 
 # Representation of missing values
 NA_df <- (colSums(is.na(data_NA)) / nrow(data_NA)) * 100
@@ -238,6 +237,39 @@ ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species))+
 ```
 
 
+In this Data set, we would like to compare the different qualitative variables :\
+- *Culmen Length*\
+- *Culmen Depth*\
+- *Flipper Length*\
+- *Body Mass*\
+- *Delta 13C*\
+- *Delta 15N*\
+
+```{r}
+sub_data_num = data%>%
+  select(culmen_length, culmen_depth,flipper_length,body_mass,delta_13_C,delta_15_N)%>%
+  na.omit() # we delete the few individuals with NA
+
+matcor = cor(sub_data_num,method = "pearson")
+matcor
+```
+
+The representation of this matrix isn't the best. We can use the library *corrplot* to make some visual correlation matrix.
+
+We used the following code:
+
+```{r}
+library(corrplot)
+
+corrplot(matcor, method = "number", type = "upper",order = "hclust", tl.col="black", tl.srt=45)
+corrplot(matcor, type = "upper",order = "hclust", tl.col="black", tl.srt=45)
+
+```
+
+Now, we want to observe whether certain qualitative variables have an effect on body mass. We will therefore try to create a graph for each factor (qualitative variables) according to body mass:\
+- *Species*\
+- *Island*\
+- *Sex*\
 
 ### PCA : 
 
@@ -262,6 +294,8 @@ summary(acp_data)
 
 
 Histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, keep 2 dimensions and 78.4% inertia.  
+
+
 ```{r}
 
 #Variance for each component
@@ -389,52 +423,18 @@ ggplot(data, aes(x = species, y = body_mass, fill = species)) +
 ```
 
 
-In this Data set, we would like to compare the different qualitative variables :\
-- *Culmen Length*\
-- *Culmen Depth*\
-- *Flipper Length*\
-- *Body Mass*\
-- *Delta 13C*\
-- *Delta 15N*\
 
-```{r}
-sub_data_num = data%>%
-  select(culmen_length, culmen_depth,flipper_length,body_mass,delta_13_C,delta_15_N)%>%
-  na.omit() # we delete the few individuals with NA
-
-matcor = cor(sub_data_num,method = "pearson")
-matcor
-```
-
-The representation of this matrix isn't the best. We can use the library *corrplot* to make some visual correlation matrix.
-
-We used the following code:
-
-```{r}
-library(corrplot)
-
-corrplot(matcor, method = "number", type = "upper",order = "hclust", tl.col="black", tl.srt=45)
-corrplot(matcor, type = "upper",order = "hclust", tl.col="black", tl.srt=45)
-
-```
-
-Now, we want to observe whether certain qualitative variables have an effect on body mass. We will therefore try to create a graph for each factor (qualitative variables) according to body mass:\
-- *Species*\
-- *Island*\
-- *Sex*\
-
-```{r}
+```{r,include=TRUE, fig.height=6, fig.width=6}
+par(mfrow=c(3,3))
 box1 <- ggplot(data = data)+
   geom_boxplot(aes(x=species,y=body_mass, fill = species))
-box1
 
 box2 <- ggplot(data = data)+
   geom_boxplot(aes(x=island,y=body_mass, fill = island))
-box2
 
 box3 <- ggplot(data = data)+
   geom_boxplot(aes(x=sex,y=body_mass, fill = sex))
-box3
+box1;box2;box3
 ```
 
 We have noticed some trends that we will have to confirm with statistical tests.\
@@ -444,26 +444,28 @@ Box3: Male penguins appear to be heavier than the other two categories.\
 We run anovas to confirm these differences.\
 
 ```{r}
-mod1= lm(body_mass~species, data = data)
+anova1 = aov(data$body_mass~data$species)
 
-anova1 = anova(mod1)
+summary(anova1)
+```
+There is a significant *difference between the body mass of these 3 species*, almost 2 of them.
 
-anova1
+```{r}
+anova2 = aov(body_mass~island, data = data)
 
-mod2 = lm(body_mass~island, data = data)
+summary(anova2)
+```
+There is a significant *difference between the body mass of these 3 islands*, almost 2 of them.
 
-anova2 = anova(mod2)
 
-anova2
+```{r}
+anova3 = aov(body_mass~sex, data = data)
 
-mod3 = lm(body_mass~sex, data = data)
-
-anova3 = anova(mod3)
-
-anova3
+summary(anova3)
 ```
 
-Significance tests confirm the trends seen by the eye.
+There is a significant *difference between the body mass and the sex.*
+
 
 # Body mass model
 
@@ -481,7 +483,7 @@ dataLM$sex<-as.factor(dataLM$sex)
 dataLM$flipper_length<-as.numeric(dataLM$flipper_length)
 dataLM$body_mass<-as.numeric(dataLM$body_mass)
 
-str(dataLM)
+str(dataLM) # check
 
 #check if there is missing values 
 colSums(is.na(dataLM))
@@ -600,14 +602,7 @@ The variables that seems to influence body mass are culmen length, flipper lengt
 
 Finally we check if there is colinearity between some variable.
 First, between covariables.
-```{r colinearity covariables, include=TRUE, fig.height=5, fig.width=5}
-# Checking collinearity between continuous independent variables
-# We represent plot for each X continuous covariate pair.
-plot(dataLM %>% select_if(is.numeric) %>% select(-body_mass),pch=16,col='dodgerblue3')
-#We calculate correlation between each pair of X covariate
-corrplot.mixed(cor(dataLM %>% select_if(is.numeric)%>% select(-body_mass)),upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
-M<-dataLM %>% select_if(is.numeric) %>% select(-body_mass)
-```
+
 We chose the threshold at 0.7 so there is no colinearity detected between the covariables.
 
 Then, between cofactors. In order to do so, we plot all the covariable as a function of all cofactors.
