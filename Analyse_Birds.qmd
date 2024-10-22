@@ -1,51 +1,31 @@
 ---
-
 title: "Modèles matriciels et applications"
-
-group: "Rudy, Tanguy, Manon, Garan, Anaëlle, Oceane, Victor" 
-
-
-bibliography: references.bib
+group: "Rudy, Tanguy, Manon, Garan, Anaëlle, Oceane, Victor"
+editor: 
+  markdown: 
+    wrap: 72
+bibliography: references.bib 
 execute: 
-  freeze: auto
-output: 
-  html_document:
-   toc: true
-   toc_float: true
+  freeze: auto 
+output: html_document 
+toc: true 
+toc_float: true
 ---
 
-Le lien du site : https://zenodo.org/records/8251495 
+------------------------------------------------------------------------
 
+```{r library}
+# Charge the librairies
+library(ggplot2)
+```
 
-Pistes 
-
-Calcul 
-
-Taux de succès 
-Taux de survie
-
-voir si habitat préférentiel, région, …
-voir quelles facteurs expliquent taux de succès
-
-voir si décalages entre dates de départ du nid -> facteurs expliquant 
-
-voir si habitat préferentiel 
-
-MAIS ATTENTION à ne pas être biaisé : du genre que des oiseaux d’une certaines espèces ne soit présents que dans un habitat
-
-refaire analyse de bases cf ASA 
-
-# Document R modifié et avec ajouts
-
-
-## Import des données
+# Data importation
 
 **Do not forget to set your working directory in the right place**
-**Menu : Session/Set Working Directory/Choose directory**
-*And indicate Git/2024_MODE_OCR*
+**Menu : Session/Set Working Directory/Choose directory** *And indicate
+Git/2024_MODE_OCR*
 
-
-```{r}
+```{r data_import}
 # Dataset import under the name of "data"
 data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE, stringsAsFactors = TRUE)
 data$Nest_Fate <- as.factor(data$Nest_Fate)
@@ -55,32 +35,42 @@ data$Year <- as.factor(data$Year)
 colSums(is.na(data))
 ```
 
-```{r}
-# Charge the librairies
-library(ggplot2)
-```
-
-```{r}
+```{r data_view}
 # View the firsts lines of the dataset
 head(data)
 ```
-# Variables presentation:
 
-- *Nest_ID* : the code to identify each nest.
-- *State* : the state in which the nest has been found. 2 levels factor : Illinois and Wisconsin.
-- *County* : the county in the state where the state has been found. 14 levels factor.
-- *Habitat* : the type of habitat in which the nest has been found. 4 levels factor.
-- *Species* : the species of the bird that has build the nest. 8 levels factor.
-- *Year* : the year of the nest building. 21 levels factor.
-- *Nest_Fate* : variable that says if there is a least one bird hatch in the nest (1) or not (0).
-- *Initiation_Date* : the date when the bird hatch from the 1st of April (1), May the 1st (31), June the 1st (62), etc.
-- *Number_Fledged* : the number of birds that hatch on the nest when they hatch. Quantitative variable.
-- *Nest_End_Date* : the date where the nest either failed of the birds successfully hatch.
+## Variables presentation:
 
-We want to study the impact of four qualitative variables, the habitat, the county, the species and the year over the number of young hatched in the nest. 
+-   *Nest_ID* : the code to identify each nest.
+-   *State* : the state in which the nest has been found. 2 levels
+    factor : Illinois and Wisconsin.
+-   *County* : the county in the state where the state has been found.
+    14 levels factor.
+-   *Habitat* : the type of habitat in which the nest has been found. 4
+    levels factor.
+-   *Species* : the species of the bird that has build the nest. 8
+    levels factor.
+-   *Year* : the year of the nest building. 21 levels factor.
+-   *Nest_Fate* : variable that says if there is a least one bird hatch
+    in the nest (1) or not (0).
+-   *Initiation_Date* : the date when the bird hatch from the 1st of
+    April (1), May the 1st (31), June the 1st (62), etc.
+-   *Number_Fledged* : the number of birds that hatch on the nest when
+    they hatch. Quantitative variable.
+-   *Nest_End_Date* : the date where the nest either failed of the birds
+    successfully hatch.
+
+We want to study the impact of four qualitative variables, the habitat, the county, the species and the year over the number of young hatched in the nest *"Number_Fledged"*. It is a counting variable, which imply that it follows a Poisson distribution. A negative binomial distribution could be used but is preferred when the count values are high (which is not really the case here since the highest value is of 6)
+
+A Poisson law is used to describe rare, discrete and independent events. Hence the variable $Y$ that follows a Poisson distribution of parameter $\lambda$ is written:
+$$Pr(Y=y)=\frac{e^{-\lambda}.\lambda^y}{y!}$$
+where $y$ represent the value of the count (here $y$ ∈ [0-6]) and $\lambda$ is the mean value and variance of the Poisson distribution (because in a Poisson law E($y$)= Var($y$)=$\lambda$).
 
 
-## Data exploration
+# Data exploration
+
+Before any analysis, it is important to have a look about the data.
 
 ### Outlayer values in the response variable $Y$ (the number of young in the nest, Number_Fledged) and values distribution:
 
@@ -97,15 +87,14 @@ qqnorm(data$Number_Fledged,pch=16,col='dodgerblue3',xlab='')
 qqline(data$Number_Fledged,col='red',lwd=2)
 ```
 
-There isn't any outlayer values.
-There are a lot of value at 0. Maybe we can study only the number of young when there are some. There could be a normal distribution.
+There isn't any outlayer values. There are a lot of value at 0. Maybe we can study only the number of young when there are some. There could be a normal distribution.
 
-```{r datafact, include=TRUE}
-# Retirer les lignes où une valeur égale à 0 est présente dans n'importe quelle colonne
+```{r data_filtered, include=TRUE}
+# Get rid of the lines where the Number of young individuals in the nest is equal to 0
 data_filtered <- subset(data, Number_Fledged != 0)
 ```
 
-```{r datahist, include=TRUE, fig.height=5, fig.width=5}
+```{r datahist2, include=TRUE, fig.height=5, fig.width=5}
 par(mfrow=c(2,2))
 # Boxplot
 boxplot(data_filtered$Number_Fledged,col='dodgerblue3',ylab='Number of young in nest')
@@ -120,7 +109,6 @@ qqline(data_filtered$Number_Fledged,col='red',lwd=2)
 
 Now we have a better view of the data.
 
-
 ### Outlayer values in the explanatory variable $Xs$ and values distribution:
 
 ```{r datafact, include=TRUE}
@@ -133,9 +121,9 @@ summary(data_filtered$Species)
 # Factor Year
 summary(data_filtered$Year)
 ```
-Problem: there aren't the same number of observations in each level of each factors.
-Suggestion: normalize by the number of observation for each level.
 
+Problem: there aren't the same number of observations in each level of each factors. 
+Suggestion: normalize by the number of observation for each level.
 
 ### Analyze the relation between Y and Xs
 
@@ -155,12 +143,13 @@ boxplot(Number_Fledged~Species, varwidth = TRUE, ylab = "Number of young in nest
 # Year
 boxplot(Number_Fledged~Year, varwidth = TRUE, ylab = "Number of young in nest", xlab = "Year", col=terrain.colors(21), main = "",data=data_filtered)
 ```
-It's not easy to see if the variables have an impact because some of them have a lot of levels, but it is possible to see differences between them. The analysis will tell us if they really got an imapct over the number of young in the nest.
 
+It's not easy to see if the variables have an impact because some of them have a lot of levels, but it is possible to see small differences between them. The analysis will tell us if they really got an impact over the number of young in the nest.
 
 ### Analyze the interactions between Xs
 
-There are a lot of levels so it's hard to plot the interactions. We will see if there are some in the analysis.
+There are a lot of levels so it's hard to plot the interactions. We will
+see if there are some in the analysis.
 
 ```{r dataInter, include=TRUE, fig.height=3, fig.width=8}
 
@@ -176,10 +165,12 @@ points(Number_Fledged[Habitat=="Warm-season Grassland"]~County[Habitat=="Warm-se
 
 
 ```
+Here the example between county and habitat doesn't show a clear pattern. It's hard to conclude on the interaction aspect.
 
 
-# Checking collinearity between categorical independent variables Xs:
+### Checking collinearity between categorical independent variables Xs:
 
+The following code only present it the contingency table between the variables Habitat and Species for convenience, but the same table has to be done with every couple of 4 variables.
 ```{r datacolin, include=TRUE, fig.height=4, fig.width=8}
 
 contingency_table<-table(data_filtered$Habitat,data_filtered$Species)
@@ -191,14 +182,16 @@ print(chi2_test$expected)
 
 
 ```
+
 Problem : for most of the variables the chi² test can't be done because of the low number of values in each group. The only one that fulfill the conditions and therefore can be made is between Habitat and Species but the result shows that the variables are correlated.
 
+# Statistical Analysis
 
-### Statistical Analysis
+Now that we have a better idea of the data implied in this study, we can begin the statistical analysis.
 
-# Building of the model
+## Building of the model
 
-
+Because our response variable follows a poisson distribution we use a link function : **the log function**. 
 
 ```{r fullmodel,include=TRUE}
 # Model formulation
@@ -208,13 +201,13 @@ mod1<-glm(Number_Fledged~ County
         + Year
         ,data=data_filtered
         ,family=poisson(link="log"))
-#type de la variable : poisson et fonction de lien de type log
+# Variable type : poisson. Link fonction : log
 # Then we check for significance
 drop1(mod1,test="Chi")
 ```
 We decide to remove the less significative variable : here it's Year.
 
-```{r fullmodel,include=TRUE}
+```{r model1,include=TRUE}
 # Model formulation
 mod1<-glm(Number_Fledged~ County
         + Species
@@ -225,9 +218,10 @@ mod1<-glm(Number_Fledged~ County
 # Then we check for significance
 drop1(mod1,test="Chi")
 ```
+
 Now the less significative is Habitat
 
-```{r fullmodel,include=TRUE}
+```{r model2,include=TRUE}
 # Model formulation
 mod1<-glm(Number_Fledged~ County
         + Species
@@ -237,10 +231,10 @@ mod1<-glm(Number_Fledged~ County
 # Then we check for significance
 drop1(mod1,test="Chi")
 ```
+
 County is still not significative so we have to remove it.
 
-
-```{r fullmodel,include=TRUE}
+```{r model3,include=TRUE}
 # Model formulation
 mod1<-glm(Number_Fledged~ Species
         ,data=data_filtered
@@ -251,17 +245,62 @@ drop1(mod1,test="Chi")
 
 summary(mod1)
 ```
+
 We have the final model with only the Species.
- 
-- $Species{Bobolink }$ = 0 (intercept)  
-- $Species{Dickcissel }$ = $-0.18^{**}$ 
-- $Species{Eastern Meadowlark }$ = $-0.14^{**}$ 
-- $Species{Grasshopper Sparrow }$ = $-0.05$ 
-- $Species{Henslow's Sparrow }$ = $-0.18$ 
-- $Species{Savannah Sparrow }$ = $-0.19^{***}$ 
-- $Species{Vesper Sparrow }$ = $-0.32^{***}$
-- $Species{Western Meadowlark }$ = $-0.04$
 
-The equation of the model is the following: 
+-   $Species{Bobolink }$ = 0 (intercept)\
+-   $Species{Dickcissel }$ = $-0.18^{**}$
+-   $Species{Eastern Meadowlark }$ = $-0.14^{**}$
+-   $Species{Grasshopper Sparrow }$ = $-0.05$
+-   $Species{Henslow's Sparrow }$ = $-0.18$
+-   $Species{Savannah Sparrow }$ = $-0.19^{***}$
+-   $Species{Vesper Sparrow }$ = $-0.32^{***}$
+-   $Species{Western Meadowlark }$ = $-0.04$
 
-$$ log(Species\:Richness) = 1.29^{***} + (Species{Bobolink} = 0 ;\:Species{Dickcissel} = -0.18^{**} ; \:Species{Eastern Meadowlark} = -0.14^{**} ; \:Species{Grasshopper Sparrow} = -0.05 ; \:Species{Henslow's Sparrow} = -0.18 ; \:Species{Savannah Sparrow = -0.19^{***} ; \:Species{Vesper Sparrow = -0.32^{***} ; \:Species{Western Meadowlark} = -0.04)$$
+The equation of the model is the following:
+
+$$ Number_Fledged = 1.29^{***} + (Species{Bobolink} = 0 ;\:Species{Dickcissel} = -0.18^{**} ; \:Species{Eastern Meadowlark} = -0.14^{**} ; \:Species{Grasshopper Sparrow} = -0.05 ; \:Species{Henslow's Sparrow} = -0.18 ; \:Species{Savannah Sparrow = -0.19^{***} ; \:Species{Vesper Sparrow = -0.32^{***} ; \:Species{Western Meadowlark} = -0.04) $$
+
+According to the model's summary, the null deviance is of 599.76 and residual deviance is of 572.82 in order to estimate the explained deviance, one can use the following formula:\
+
+$$Pseudo\:R^2=100\:.\:\frac{Null\:Deviance- Residual\:Deviance}{Null\:Deviance}$$
+
+```{r deviance, include=TRUE}
+# Estimate of deviance explained
+(mod1$null.deviance-mod1$deviance)/mod1$null.deviance
+```
+
+This is very very bad... The variable species doesn't seem to explain a
+lot of the variation in the number of young individuals in the nest.
+
+
+# Model validation:
+
+The model that we have done is a generalized linear model so there aren't residual normality or homogeneity. However, it is important to check the independence of residuals.
+
+First, when there is counting model like when a Poisson distribution is followed, the overdispersion has to be checked. It can be done with the following code. If the result is over 1, there are overdispersion and the model should be reconsidered.
+
+```{r overdisp, include=TRUE}
+# Scale parameter calculation
+E1 <- resid(mod1, type = "pearson") # (Y - mu) / sqrt(mu)
+N  <- nrow(data_filtered)
+p  <- length(coef(mod1))
+sum(E1^2) / (N - p)
+```
+The value is of 0.44 o it's okay, the residuals aren't overdispersed.
+
+We can also check for the most influential individuals:
+
+```{r Contri, include=TRUE, fig.height=4, fig.width=4}
+
+par(mfrow = c(1, 1))
+plot(cooks.distance(mod1), type = "h", ylim = c(0, 1))
+abline(h = 1, col = 2,lwd = 3)
+
+```
+There aren't very influential individuals which can be logical because of the high number of them and the low impact of species over the number of young individuals in the nest.
+
+
+# Conclusions:
+
+The species of the birds has an impact over the number of young individuals in the nest, but it is clearly not the only variable that explain the variation of the response (only 4% are due to the species). 
