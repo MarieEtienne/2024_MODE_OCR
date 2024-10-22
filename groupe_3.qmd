@@ -155,7 +155,7 @@ Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à
 # Boxplot 
 bp <- ggplot(data = dataAnts, aes(y = Nsp))+
   geom_boxplot()+
-  labs(subtitle = "Boxplot",
+  labs(subtitle = "A. Boxplot",
        y = "richesse spécifique")+
   theme(
     panel.background = element_rect(fill="white"),
@@ -174,7 +174,7 @@ bp <- ggplot(data = dataAnts, aes(y = Nsp))+
 # Cleveland plot 
 cp <- ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
   geom_jitter(width = 0.1, size = 3, color = "black")+
-  labs(subtitle = "Cleveland plot",
+  labs(subtitle = "B. Cleveland plot",
        x = "richesse spécifique")+
   theme_minimal()+
   theme(
@@ -194,10 +194,10 @@ cp <- ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
 ## Affichage 
 (bp + cp) + 
   plot_layout(widths = c(1, 2)) + 
-  plot_annotation(title = "Analyse des valeurs aberrantes de Y")
+  plot_annotation(title = "Figure 1 : Analyse des valeurs aberrantes de Y")
 ```
 
-$Y$ ne présente pas de valeurs extrêmes ou aberrantes.
+D'après la figure 1, $Y$ ne présente pas de valeurs extrêmes ou aberrantes.
 
 **Distribution des valeurs :** analyser la distribution des valeurs de $Y$ permet d'identifier *a priori* la loi de probabilité qui expliquera au mieux les processus écologiques en cours. Cela est d'autant plus intéressant si les données suggèrent une relation non linéaire ou asymétrique.
 
@@ -209,7 +209,7 @@ La distribution des valeurs de $Y$ peut être visualisée grâce à un **histogr
 hg <- ggplot(data = dataAnts, aes(x = Nsp))+
   geom_histogram(binwidth = 2, fill = "blue", color = "black")+
   theme_minimal()+
-  labs(subtitle = "Histogramme",
+  labs(subtitle = "A. Histogramme",
        x = "richesse spécifique",
        y = "fréquence")+
   theme(
@@ -224,7 +224,7 @@ qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
   geom_qq_line(color = "red", size = 1.2)+
   geom_qq()+
   theme_minimal()+
-  labs(subtitle = "Q-Q plot",
+  labs(subtitle = "B. Q-Q plot",
        x = "quantiles théoriques",
        y = "quantiles observés")+
   theme(
@@ -238,11 +238,11 @@ qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
 # Affichage
 (hg + qqp) +
   plot_layout(widths = c(1, 2)) + 
-  plot_annotation(title = "Analyse de la distribution de Y")
+  plot_annotation(title = "Figure 2 : Analyse de la distribution de Y")
 
 ```
 
-La distribution de $Y$ (exponentielle négative) et la nature du jeu de données (comptage sans aggrégation) suggèrent que $Y$ suit une loi de Poisson. Cette hypothèse est appuyée par l'écart à la normalité des valeurs de $Y$ observé dans le Q-Q plot.
+La distribution de $Y$ (exponentielle négative) et la nature du jeu de données (comptage sans aggrégation) suggèrent que $Y$ suit une loi de Poisson. Cette hypothèse est appuyée par l'écart à la normalité des valeurs de $Y$ observé en figure 2B.
 
 [**Conclusion**]{.underline} **:**
 
@@ -261,8 +261,8 @@ p1 <- ggplot(dataAnts) +
   aes(x=Latitude, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
   geom_jitter(width=0, height=0.1) +
   scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) + # Valeurs de l'axe X
-  labs(title = "Variable explicative Latitude",
-       subtitle = "Cleveland Plot",
+  labs(title = "Figure 3 : Variable explicative Latitude",
+       subtitle = "A. Cleveland Plot",
        x= "Latitude") +  # Titres
   theme_minimal() +
   theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
@@ -278,7 +278,7 @@ p2 <- ggplot(dataAnts) +
   geom_histogram(binwidth = 0.25, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
   scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) +  # Valeurs de l'axe X
   scale_y_continuous(breaks = seq(0, 10, by = 2)) +  # Valeurs de l'axe X
-  labs(subtitle = "Histogramme",
+  labs(subtitle = "B. Histogramme",
        x = "Latitude") +  # Titres
   theme_minimal() +  # Appliquer un thème minimal
   theme(
@@ -288,7 +288,7 @@ p2 <- ggplot(dataAnts) +
   ) 
 
 p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
-  labs(subtitle = "Quantile-Quantile Plot",
+  labs(subtitle = "C. Quantile-Quantile Plot",
        caption = "D'après le jeu de données dataAnts",
        x = "Quantiles Théorique",
        y = "Quantiles Observés") +
@@ -307,9 +307,9 @@ p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
   plot_layout(guides = "collect")
 ```
 
-On ne constate pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
+On ne constate pas de valeur aberrante sur le Cleveland plot (Fig. 3A) ou sur l'histogramme (Fig. 3B).
 
-On remarque grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
+On remarque grâce au Quantile plot (Fig. 3C) un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
 
 [**L'élévation**]{.underline} **:**
 
@@ -318,8 +318,8 @@ p4 <- ggplot(dataAnts) +
   aes(x=Elevation, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
   geom_jitter(width=0, height=0.1) +
   scale_x_continuous(breaks = seq(0, 545, by = 100)) + # Valeurs de l'axe X
-  labs(title = "Variable explicative Elevation",
-       subtitle = "Cleveland Plot",
+  labs(title = "Figure 4 : Variable explicative Elevation",
+       subtitle = "A. Cleveland Plot",
        x= "Elevation") +  # Titres
   theme_minimal() +
   theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
@@ -335,7 +335,7 @@ p5 <- ggplot(dataAnts) +
   geom_histogram(binwidth = 75, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
   scale_x_continuous(breaks = seq(0, 545, by = 100)) +  # Valeurs de l'axe X
   scale_y_continuous(breaks = seq(0, 10, by = 2)) +  # Valeurs de l'axe X
-  labs(subtitle = "Histogramme",
+  labs(subtitle = "B. Histogramme",
        x = "Elevation") +  # Titres
   theme_minimal() +  # Appliquer un thème minimal
   theme(
@@ -345,7 +345,7 @@ p5 <- ggplot(dataAnts) +
   ) 
 
 p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
-  labs(subtitle = "Quantile-Quantile Plot",
+  labs(subtitle = "C. Quantile-Quantile Plot",
        caption = "D'après le jeu de données dataAnts",
        x = "Théorique Quantiles",
        y = "Quantiles Observés") +
@@ -365,9 +365,9 @@ p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
 
 ```
 
-On ne constate pas de valeur aberrantes sur le Cleveland plot ou sur l'histogramme.
+On ne constate pas de valeur aberrantes sur le Cleveland plot (Fig. 4A) ou sur l'histogramme (Fig. 4B).
 
-On remarque grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici interressant d'utilisé un modèle linéaire généralisé et non un modèle linéaire classique.
+On remarque grâce au Quantile plot (Fig. 4C) un écart à la normalité. Ceci suggère qu'il est ici interressant d'utilisé un modèle linéaire généralisé et non un modèle linéaire classique.
 
 [**L'aire**]{.underline} **:**
 
@@ -376,8 +376,8 @@ p4 <- ggplot(dataAnts) +
   aes(x=Area, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
   geom_jitter(width=0, height=0.1) +
   scale_x_continuous(breaks = seq(0, 865000, by = 200000)) + # Valeurs de l'axe X
-  labs(title = "Variable explicative Area",
-       subtitle = "Cleveland Plot",
+  labs(title = "Figure 5 : Variable explicative Area",
+       subtitle = "A. Cleveland Plot",
        x= "Area") +  # Titres
   theme_minimal() +
   theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
@@ -393,7 +393,7 @@ p5 <- ggplot(dataAnts) +
   geom_histogram(binwidth = 50000, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
   scale_x_continuous(breaks = seq(0, 865000, by = 200000)) +  # Valeurs de l'axe X
   scale_y_continuous(breaks = seq(0, 20, by = 5)) +  # Valeurs de l'axe X
-  labs(subtitle = "Histogramme",
+  labs(subtitle = "B. Histogramme",
        x = "Area") +  # Titres
   theme_minimal() +  # Appliquer un thème minimal
   theme(
@@ -403,7 +403,7 @@ p5 <- ggplot(dataAnts) +
   ) 
 
 p6 <- ggplot(dataAnts, aes(sample = Area)) +
-  labs(subtitle = "Quantile-Quantile Plot",
+  labs(subtitle = "C. Quantile-Quantile Plot",
        caption = "D'après le jeu de données dataAnts",
        x = "Quantiles Théorique",
        y = "Quantiles Observés") +
@@ -423,7 +423,7 @@ p6 <- ggplot(dataAnts, aes(sample = Area)) +
 
 ```
 
-Nous constatons des valeurs aberrantes sur le Cleveland plot et sur l'histogramme en raison de la présence de tourbières très étendues. Nous pouvons effectuer une transformation de cette variable et envisager une transformation logarithmique.
+Nous constatons des valeurs aberrantes sur le Cleveland plot (Fig. 5A) et sur l'histogramme (Fig. 5B) en raison de la présence de tourbières très étendues. Nous pouvons effectuer une transformation de cette variable et envisager une transformation logarithmique.
 
 ```{r LogArea, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 dataAnts$LogArea<-log(dataAnts$Area)
@@ -432,8 +432,8 @@ p4 <- ggplot(dataAnts) +
   aes(x=LogArea, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
   geom_jitter(width=0, height=0.1) +
   scale_x_continuous(breaks = seq(2, 15, by = 2)) + # Valeurs de l'axe X
-  labs(title = "Variable explicative LogArea",
-       subtitle = "Cleveland Plot",
+  labs(title = "Figure 6 : Variable explicative LogArea",
+       subtitle = "A. Cleveland Plot",
        x= "LogArea") +  # Titres
   theme_minimal() +
   theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
@@ -449,7 +449,7 @@ p5 <- ggplot(dataAnts) +
   geom_histogram(binwidth = 2, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
   scale_x_continuous(breaks = seq(2, 15, by = 2)) +  # Valeurs de l'axe X
   scale_y_continuous(breaks = seq(0, 30, by = 5)) +  # Valeurs de l'axe X
-  labs(subtitle = "Histogramme",
+  labs(subtitle = "B. Histogramme",
        x = "LogArea") +  # Titres
   theme_minimal() +  # Appliquer un thème minimal
   theme(
@@ -459,7 +459,7 @@ p5 <- ggplot(dataAnts) +
   ) 
 
 p6 <- ggplot(dataAnts, aes(sample = LogArea)) +
-  labs(subtitle = "Quantile-Quantile Plot",
+  labs(subtitle = "C. Quantile-Quantile Plot",
        caption = "D'après le jeu de données dataAnts",
        x = "Quantiles Théorique",
        y = "Quantiles Observés") +
@@ -479,7 +479,7 @@ p6 <- ggplot(dataAnts, aes(sample = LogArea)) +
 
 ```
 
-On ne constate pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
+On ne constate pas de valeur aberrante sur le Cleveland plot (Fig 6A) ou sur l'histogramme (Fig. 6B).
 
 [**Conclusion**]{.underline} **:**
 
@@ -510,27 +510,27 @@ Afin de tester la relation éventuelle entre la variable réponse Y et les varia
 par(mfrow=c(2,2))
 
 # Pour la variable Latitude
-plot(dataAnts$Nsp~dataAnts$Latitude,pch=16,col='deepskyblue4',xlab='Latitude',ylab='Richesse spécifique des fourmis', main = "Figure 1")
+plot(dataAnts$Nsp~dataAnts$Latitude,pch=16,col='deepskyblue4',xlab='Latitude',ylab='Richesse spécifique des fourmis', main = "Figure 7")
 
 # Pour la variable Altitude
-plot(dataAnts$Nsp~dataAnts$Elevation,pch=16,col='deepskyblue4',xlab='Altitude',ylab='Richesse spécifique des fourmis', main = "Figure 2")
+plot(dataAnts$Nsp~dataAnts$Elevation,pch=16,col='deepskyblue4',xlab='Altitude',ylab='Richesse spécifique des fourmis', main = "Figure 8")
 
 # Pour la variable Superficie de la tourbière
-plot(dataAnts$Nsp~dataAnts$LogArea,pch=16,col='deepskyblue4',xlab='Superficie de la tourbière',ylab='Richesse spécifique des fourmis', main = "Figure 3")
+plot(dataAnts$Nsp~dataAnts$LogArea,pch=16,col='deepskyblue4',xlab='Superficie de la tourbière',ylab='Richesse spécifique des fourmis', main = "Figure 9")
 
 # Pour la variable Localisation
-boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Richesse spécifique des fourmis", xlab = "Localisation", col=c('saddlebrown','palegreen4'), main = "Figure 4")
+boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Richesse spécifique des fourmis", xlab = "Localisation", col=c('saddlebrown','palegreen4'), main = "Figure 10")
 ```
 
 **Conclusion des différents graphiques :**
 
-Relation entre X et la latitude (Fig. 1) : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevée. Nous pouvons dire que plus nous se trouve au Nord, moins il y a d'espèces de fourmis.
+Relation entre X et la latitude (Fig. 7) : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevée. Nous pouvons dire que plus nous se trouve au Nord, moins il y a d'espèces de fourmis.
 
-Relation entre X et l'altitude (Fig. 2) : Dans ce graphique-ci, nous pouvons voir à nouveau que plus l'altitude est importante, moins la richesse spécifique est élevée. Il semble que plus le relief est élévé moins il y a d'espèces de fourmis.
+Relation entre X et l'altitude (Fig. 8) : Dans ce graphique-ci, nous pouvons voir à nouveau que plus l'altitude est importante, moins la richesse spécifique est élevée. Il semble que plus le relief est élévé moins il y a d'espèces de fourmis.
 
-Relation entre X et la surperficie de la tourbière (Fig. 3) : Ici, il ne semble pas y avoir de relation entre la richesse spécifique des fourmis et la surperficie des tourbières.
+Relation entre X et la surperficie de la tourbière (Fig. 9) : Ici, il ne semble pas y avoir de relation entre la richesse spécifique des fourmis et la surperficie des tourbières.
 
-Relation entre X et localisation (Fig. 4) : Il semble ici y avoir une relation entre le lieu et la richesse spécifique des fourmis, avec une richesse spécifique plus importante en forêt que dans les tourbières.
+Relation entre X et localisation (Fig. 10) : Il semble ici y avoir une relation entre le lieu et la richesse spécifique des fourmis, avec une richesse spécifique plus importante en forêt que dans les tourbières.
 
 **Conclusion générale :**
 
@@ -545,17 +545,17 @@ Nous cherchons à étudier les interactions entre le facteur et les 3 covariable
 par(mfrow=c(1,3))
 
 # Interactions entre Latitude & Localisation
-plot(dataAnts$Nsp~dataAnts$Latitude,type='n',ylab = "Richesse spécifique de fourmis",xlab="Latitude", main="Figure 5")
+plot(dataAnts$Nsp~dataAnts$Latitude,type='n',ylab = "Richesse spécifique de fourmis",xlab="Latitude", main="Figure 11")
 points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$Latitude[dataAnts$Location=="Bog"],pch=16,cex=2,col='saddlebrown')
 points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$Latitude[dataAnts$Location=="Forest"],pch=17,cex=2,col='palegreen4')
 
 # Interactions entre Altitude & Localisation
-plot(dataAnts$Nsp~dataAnts$Elevation,type='n',ylab = "Richesse spécifique de fourmis",xlab="Altitude", main="Figure 6")
+plot(dataAnts$Nsp~dataAnts$Elevation,type='n',ylab = "Richesse spécifique de fourmis",xlab="Altitude", main="Figure 12")
 points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$Elevation[dataAnts$Location=="Bog"],pch=16,cex=2,col='saddlebrown')
 points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$Elevation[dataAnts$Location=="Forest"],pch=17,cex=2,col='palegreen4')
 
 # Interactions entre Superficie de la tourbière & Localisation
-plot(dataAnts$Nsp~dataAnts$LogArea,type='n',ylab = "Richesse spécifique de fourmis",xlab="Superficie de la tourbière", main="Figure 7")
+plot(dataAnts$Nsp~dataAnts$LogArea,type='n',ylab = "Richesse spécifique de fourmis",xlab="Superficie de la tourbière", main="Figure 13")
 points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$LogArea[dataAnts$Location=="Bog"],pch=16,cex=2,col='saddlebrown')
 points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Location=="Forest"],pch=17,cex=2,col='palegreen4')
 
@@ -575,39 +575,39 @@ Nous cherchons à éviter la colinéarité des variables explicatives dans notre
 newdata<-cbind(dataAnts$Latitude,dataAnts$Elevation,dataAnts$LogArea)
 colnames(newdata)<-c('Latitude','Altitude','Log Superficie tourbière')
 newdata<-data.frame(newdata)
-plot(newdata,pch=16,col='deepskyblue4',main="Figure 8")
+plot(newdata,pch=16,col='deepskyblue4',main="Figure 14")
 
 #On calcule la corrélation de chaque paire de covariables
 #Ajout du package corrplot
 library(corrplot)
 M<-cor(newdata)
 corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
-mtext("Figure 9", side = 2, line = -6, cex = 1, las = 1)
+mtext("Figure 15", side = 2, line = -6, cex = 1, las = 1)
 
 
 par(mfrow=c(1,3))
 
 # Nous vérifions la colinéarité entre catégories et variables continues
 #Latitude et Localisation
-boxplot(dataAnts$Latitude~dataAnts$Location, varwidth = TRUE, ylab = "Latitude", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 10")
+boxplot(dataAnts$Latitude~dataAnts$Location, varwidth = TRUE, ylab = "Latitude", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 16")
 
 #Altitude et Localisation
-boxplot(dataAnts$Elevation~dataAnts$Location, varwidth = TRUE, ylab = "Altitude", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 11")
+boxplot(dataAnts$Elevation~dataAnts$Location, varwidth = TRUE, ylab = "Altitude", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 17")
 
 #Superficie de la tourbière et Localisation
-boxplot(dataAnts$LogArea~dataAnts$Location, varwidth = TRUE, ylab = "Superficie de la tourbière", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 12")
+boxplot(dataAnts$LogArea~dataAnts$Location, varwidth = TRUE, ylab = "Superficie de la tourbière", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 18")
 
 ```
 
 **Conclusion des différents graphiques :**
 
-Nous pouvons observer sur le premier graphique (Fig. 8) que les nuages de points ne semblent pas montrer de tendance à la colinéarité. Cette impression est confirmée par les valeurs calculées dans la figure suivante (Fig. 9), les valeurs sont largement inférieures à 0,7, qui est très souvent utilisé comme seuil de colinéarité (au-delà les variables sont considérées corrélées). Le chevauchement presque total des boxplot (Fig. 10, 11, 12) confirme encore une fois la non colinéarité des facteurs.
+Nous pouvons observer sur le premier graphique (Fig. 14) que les nuages de points ne semblent pas montrer de tendance à la colinéarité. Cette impression est confirmée par les valeurs calculées dans la figure suivante (Fig. 15), les valeurs sont largement inférieures à 0,7, qui est très souvent utilisé comme seuil de colinéarité (au-delà les variables sont considérées corrélées). Le chevauchement presque total des boxplot (Fig. 16, 17, 18) confirme encore une fois la non colinéarité des facteurs.
 
 **Conclusion générale :**
 
 Il ne semble pas y avoir de colinéarité entre les variables, nous pouvons donc toutes les concerver.
 
-# **ANALYSE STATISTIQUE** 
+# **ANALYSE STATISTIQUE**
 
 ## 1. Construction du modèle
 
@@ -784,7 +784,7 @@ nagelkerke(mod1)
 Ici, l'estimation de la déviance expliquée est de 60% ou 75%, en fonction de la méthode utilisée.
 
 ```{r Prediction,include=TRUE, fig.height=6, fig.width=6}
-plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Valeurs estimées par le modèle",xlab="Valeurs observées", main="figure 13")
+plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Valeurs estimées par le modèle",xlab="Valeurs observées", main="figure 19")
 abline(0,1)
 ```
 
@@ -839,15 +839,15 @@ resid<-residuals(mod1, type="pearson")
 
 par(mfrow=c(3,2))
 # Histogram
-hist(resid,col='dodgerblue3',xlab="residuals",main="figure 14")
+hist(resid,col='dodgerblue3',xlab="residuals",main="figure 20")
 # Quantile-Quantile plot
-qqnorm(resid,pch=16,col='dodgerblue3',xlab='', main="figure 15")
+qqnorm(resid,pch=16,col='dodgerblue3',xlab='', main="figure 21")
 qqline(resid,col='red',lwd=2)
 
 # residuals vs fitted
 plot(resid~fitted(mod1)
       , col='dodgerblue3'
-      , pch=16, main="figure 16")
+      , pch=16, main="figure 22")
 abline(h = 0)
 
 # residuals against Location factor
@@ -855,7 +855,7 @@ boxplot(resid~ dataAnts$Location,
          varwidth = TRUE,
          ylab = "Residuals",
          xlab = "Location",
-         main = "figure 17")
+         main = "figure 23")
 
 # residuals against Latitude
 plot(resid~ dataAnts$Latitude, 
@@ -863,7 +863,7 @@ plot(resid~ dataAnts$Latitude,
          col="dodgerblue3",
          ylab = "Residuals",
          xlab = "Latitude",
-         main = "figure 18")
+         main = "figure 24")
 abline(h = 0)
 
 # residuals against Elevation
@@ -872,26 +872,24 @@ plot(resid~ dataAnts$Elevation,
          col="dodgerblue3",
          ylab = "Residuals",
          xlab = "Elevation",
-         main = "figure 19")
+         main = "figure 25")
 abline(h = 0)
 
 ```
 
-L'histogramme des résidus et le Q-Q plot montrent des résidus relativement normaux. Les quatres graphiques suivant montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. Nous pouvons voir que les résidus restent homogènes peu importe les valeurs des variables explicatives.
+L'histogramme des résidus (Fig. 20) et le Q-Q plot (Fig. 21) montrent des résidus relativement normaux. Les quatres graphiques suivant (Fig 22, 23, 24, 25) montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. Nous pouvons voir que les résidus restent homogènes peu importe les valeurs des variables explicatives. Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
 ### Vérification des individus influents
-
-L'histogramme des résidus et le Q-Q plot montrent des résidus relativement normaux. Les quatres graphiques suivant montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. Nous pouvons voir que les résidus restent homogènes peu importe les valeurs des variables explicatives. Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
 ```{r Contri, include=TRUE, fig.height=4, fig.width=4}
 
 par(mfrow = c(1, 1))
-plot(cooks.distance(mod1), type = "h", ylim = c(0, 1), main="figure 20")
+plot(cooks.distance(mod1), type = "h", ylim = c(0, 1), main="figure 26")
 abline(h = 1, col = 2,lwd = 3)
 
 ```
 
-Ici, il n'y a pas d'individus trop influent.
+Ici (Fig. 26), il n'y a pas d'individus trop influent.
 
 ### Analyses des résidus avec DHARMa
 
