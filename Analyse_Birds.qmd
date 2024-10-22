@@ -50,19 +50,9 @@ All theses observations are presented in a table with the following collums :
 
 ```{r,include=FALSE}
 # Datatset import under the name of "data"
+
 data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE)
 
-# Selecting the data of interest (here our study is going to focus on the state of illinois)
-data_Illinois <- subset(data, data$State == "Illinois")
-
-# Converting explanatory variables (or covariates) into factor (they were intially character chain )
-data_Illinois$County <- as.factor(data_Illinois$County)
-data_Illinois$Habitat <- as.factor(data_Illinois$Habitat)
-data_Illinois$Species <- as.factor(data_Illinois$Species)
-data_Illinois$Year <- as.factor(data_Illinois$Year)
-
-# checking for missing values
-colSums(is.na(data_Illinois))
 ```
 
 
@@ -89,19 +79,41 @@ required_packages <- c(
   "plot3D",     # for 3D plots
   "DHARMa",     # for model diagnostics
   "rcompanion", # for pseudo R² in models
-  "lattice"     # for multipanel graphics
+  "lattice",    # for multipanel graphics
+  "dplyr"       # for data manipulation
 )
 
 # Install and load the packages
 install_if_missing(required_packages)
 ```
 
+
+
+
+
+# I. Analysing the relationship between nest fate and county, habitat, species, year, initiation date using a generalized linear model (GLM) with a binomial distribution
+
+## A. Data Exploration
+
 In this part we choose to explain the nest fate with different variables. We chose to focus on the state of Illinois because adding the state might lead to bad modelling as there might be not enough data for each of them. 
 
 
-# Analysing the relationship between nest fate and county, habitat, species, year, initiation date using a generalized linear model (GLM) with a binomial distribution
 
-## I. Data Exploration
+```{r,include=FALSE}
+
+# Selecting the data of interest (here our study is going to focus on the state of illinois)
+data_Illinois <- subset(data, data$State == "Illinois")
+
+# Converting explanatory variables (or covariates) into factor (they were intially character chain )
+data_Illinois$County <- as.factor(data_Illinois$County)
+data_Illinois$Habitat <- as.factor(data_Illinois$Habitat)
+data_Illinois$Species <- as.factor(data_Illinois$Species)
+data_Illinois$Year <- as.factor(data_Illinois$Year)
+
+# checking for missing values
+colSums(is.na(data_Illinois))
+
+```
 
 Variables are :  
 
@@ -183,6 +195,7 @@ summary(data_Illinois$Species)
 # Factor Year
 summary(data_Illinois$Year)
 ```
+
 The results tables provided by our script show different things. 
 First of all for the **County** variable we can observe that some counties have very little records. For example Carrol/Whiteside has 5 records of nest while counties like Jo Daviess have 292 records. This could lead to mis-modelling so attention on the model results is necessary. 
 For **Habitat** variable it seems that one habitat in particular (Pasture) has more records than the other.
@@ -306,7 +319,7 @@ boxplot(data_Illinois$Initiation_Date ~ data_Illinois$Year,
 Here it seems that there is a strong collinearity between *County* and *Habitat* as well as between **Species** and **Year** and also between **Species** and **Habitat**. Therefore, we are not going to keep **County**, **Habitat** and **Year** as explanatory variables in our model. 
 
 
-## II. Statistical Analysis
+## B. Statistical Analysis
 
 ### Model building up
 
@@ -343,6 +356,7 @@ The results table shows that Initiation_Date is not significant. However the AIC
 summary(mod1)
 
 ```
+
 The following equation is the one of the model :
 $$\log\left(\frac{p}{1-p}\right) = -1.097853 + 0.189410 \cdot \text{Species}_{\text{Dickcissel}} - 0.382551 \cdot \text{Species}_{\text{Eastern Meadowlark}} + 0.664586 \cdot \text{Species}_{\text{Grasshopper Sparrow}} - 0.327407 \cdot \text{Species}_{\text{Henslow's Sparrow}} - 0.655641 \cdot \text{Species}_{\text{Savannah Sparrow}} + 0.180147 \cdot \text{Species}_{\text{Vesper Sparrow}} + 0.961508 \cdot \text{Species}_{\text{Western Meadowlark}} + 0.000686 \cdot \text{Initiation\_Date}$$
 
@@ -380,7 +394,7 @@ nagelkerke(mod1)
 ```
 According to this table, the estimate of the explained deviance is **2.9%** which is very low. 
 
-## III. Model validation
+## C. Model validation
 
 
 ### Checking for influential individuals
@@ -436,12 +450,405 @@ for (i in 1:NSim) {
 boxplot(diagZ[2,], col='dodgerblue3',ylab='#Rate of nest fate well-classified')
 mean(diagZ[2,])
 ```
+
+
 Here we have **58%** of good predictions, which is somewhat below the common threshold of 70% for a model to be considered good. This suggests that the model may need improvement.
 
 This result is not surprising given our initial data. Because they are from different studies some variables barely contains some species or years, etc... This could explain why our model is not suitable. 
 
 
+# II. ANOVA
 
 
+Analysis of variance (ANOVA) is one of the most widely used statistical methods in various disciplines. It allows to model the relationship between a quantitative dependent variable $Y$ according to the different modalities of one or more qualitative explanatory variables $Xs$.
+
+We will perform an ANOVA to see the effect of qualitatives variables (state, habitat, species, year) on the quantitative
+variable Initiation_Date in the Bird_dataset.csv dataset.
+
+We need to check the type of the variables :
+  
+```{r Ini_factor data}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Dataset : variables as factors
+
+data$State<-as.factor(data$State)
+data$Habitat<-as.factor(data$Habitat)
+data$Species<-as.factor(data$Species)
+data$Year<-as.factor(data$Year)
+str(data)
+
+```
+
+```{r Ini_missing_data}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Checking for missing data
+
+colSums(is.na(data))  
+```
+  
+There is no missing data here.
+  
+  
+Before any modeling, we must explore the data in order to avoid possible errors. 
+Below we present the list of steps to follow before proceeding to the modeling:
+
+- 1: Check for the presence of outliers in $Y$ and the distribution of the 
+values of $Y$
+
+- 2: If $X$ is a **quantitative** explanatory variable, check for the presence 
+of outliers and the distribution of the values of $X$ **OR/AND** 
+If $X$ is a **qualitative** explanatory variable, analyze the number of 
+modalities and the number of individuals per modality
+
+- 3: Analyze the potential relationship between $Y$ and the $X_{s}$
+
+- 4: Check for the presence of possible interactions between the $X_{s}$
+  
+  
+### Outliers in $Y$ and distribution of values of $Y$
+
+```{r Ini_datahist, fig.height=5, fig.width=5}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+par(mfrow=c(2,2))
+# Boxplot
+boxplot(data$Initiation_Date,col='dodgerblue3',ylab='Initiation date')
+# Cleveland plot
+dotchart(data$Initiation_Date,pch=16,col='dodgerblue3',xlab='Initiation date')
+# Histogram
+hist(data$Initiation_Date,col='dodgerblue3',xlab="Initiation date",main="")
+# Quantile-Quantile plot
+qqnorm(data$Initiation_Date,pch=16,col='dodgerblue3',xlab='')
+qqline(data$Initiation_Date,col='red',lwd=2)
+```
+  
+  
+The different graphs show us no outliers for Initiation_Date. In addition, our 
+Y variable seems to follow a Normal Distribution.
+  
+  
+  
+### Outliers and distribution of the values of $X$
+
+The four $Xs$ are factors. We can analyze the number of modalities and the number of 
+individuals per modality. 
+
+```{r Ini_datafact}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Factor State
+summary(data$State)
+# Factor Habitat
+summary(data$Habitat)
+# Factor Species
+summary(data$Species)
+# Factor Year
+summary(data$Year)
+```
+
+Factor State: The experimental design is not balanced (1071 and 2150 data), but
+the analysis can be performed because there are enough data in each modality (> 10).
+
+Factor Habitat: The experimental design is not balanced (from 392 to 1683 data), but
+the analysis can be performed because there are enough data in each modality (> 10).
+
+Factor Species: The experimental design is not balanced. Several species have less than 10
+data per modality. It will therefore be necessary to remove these data before continuing
+the analysis
+
+Factor Year: The experimental design is not balanced (from 24 to 448 data), but
+the analysis can be performed because there are enough data in each modality (> 10 : 
+threshold from which we consider that carrying out statistical analyses makes sense.
+You can choose your own threshold).
+
+
+### Removal of poorly represented modalities (< 10 data)
+
+```{r Ini_delete_modalites}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Count the number of occurrences for each modality in data$Species
+species_count <- table(data$Species)
+
+# Keep only terms with 10 or more occurrences
+data <- data %>% filter(Species %in% names(species_count[species_count >= 10]))
+
+# Show filtered data
+head(data)
+summary(data$Species)
+```
+  
+  
+### Analyzing the potential relationship between Y vs Xs
+
+We can graphically analyze the possible relationships between Y and X. This 
+graphical analysis of the relationships between Y and X **does not allow us to predict the significance of the relationship**. Statistical modeling remains the only available means to identify whether a relationship exists or not.
+
+
+```{r Ini_datagraph, fig.height=3, fig.width=6}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Boxplot 
+par(mfrow=c(1,2))
+boxplot(data$Initiation_Date~data$State, varwidth = TRUE, ylab = "Initiation date", xlab = "State", col='darkgrey', main = "")
+boxplot(data$Initiation_Date~data$Habitat, varwidth = TRUE, ylab = "Initiation date", xlab = "Habitat", col='darkgrey', main = "")
+boxplot(data$Initiation_Date~data$Species, varwidth = TRUE, ylab = "Initiation date", xlab = "Species", col='darkgrey', main = "")
+boxplot(data$Initiation_Date~data$Year, varwidth = TRUE, ylab = "Initiation date", xlab = "Year", col='darkgrey', main = "")
+```
+
+From the first visualizations, we could make the hypothesis that Year and Species
+influence Initiation_Date.
+
+
+### Analysis of possible interactions between the four Xs
+
+The interaction between two factors can only be tested if the factors are
+crossed (all the modalities of one factor are represented in all
+the modalities of the other factor and vice versa = a complete factorial design).
+To estimate the presence of interactive effects, we will develop a graphical approach.
+
+
+```{r Ini_dataInter, fig.height=4, fig.width=7}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Interaction table
+table(data$State,data$Habitat)
+table(data$State,data$Species)
+table(data$State,data$Year)
+table(data$Habitat,data$Species)
+table(data$Habitat,data$Year)
+table(data$Species,data$Year)
+
+```
+
+
+Subsequently, we will not analyze the interactions between the factors since
+there is no interaction between the Xs variables. 
+
+### Search for candidate model
+
+```{r Ini_fullmodel}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Model formulation
+mod1<-lm(Initiation_Date~State+Habitat+Species+Year,data=data)
+
+# Then we check for significance
+drop1(mod1,test="F")
+```
+
+Since the Habitat factor is not significant, we can remove it in our search for
+the candidate model.
+
+
+```{r Ini_candidate_model}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Model formulation
+mod2<-lm(Initiation_Date~State+Species+Year,data=data)
+
+# Then we check for significance
+drop1(mod2,test="F")
+```
+  
+All factors are significant. So we have our candidate model.
+
+To understand how factors influence Initiation_Date, we need to analyze the 
+coefficients of the model.
+
+
+### Analysis of the coefficients of the candidate model
+
+
+```{r Ini_coeff_mod2}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Coefficients of the model
+summary(mod2)
+
+# From this listing, you read the coefficients table hereafter :
+
+# Coefficients:
+#                            Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)                 75.7832     3.1611  23.974  < 2e-16 ***
+# StateWisconsin              -4.4838     1.3892  -3.228 0.001261 ** 
+# SpeciesDickcissel           21.9212     1.4579  15.036  < 2e-16 ***
+# SpeciesEastern Meadowlark    0.5278     1.1198   0.471 0.637432    
+# SpeciesGrasshopper Sparrow  10.6652     1.2095   8.818  < 2e-16 ***
+# SpeciesSavannah Sparrow      1.9590     1.2370   1.584 0.113382    
+# SpeciesVesper Sparrow        6.2687     1.7225   3.639 0.000278 ***
+# SpeciesWestern Meadowlark    4.5978     2.3695   1.940 0.052424 .  
+# Year1992                    -8.1836     3.9411  -2.076 0.037930 *  
+# Year1993                    -9.3039     4.1136  -2.262 0.023780 *  
+# Year1994                   -11.0971     4.1890  -2.649 0.008111 ** 
+# Year1995                   -11.7709     2.9221  -4.028 5.75e-05 ***
+# Year1996                   -11.2748     3.0178  -3.736 0.000190 ***
+# Year1997                   -10.4340     2.9302  -3.561 0.000375 ***
+# Year1998                    -9.4950     2.7335  -3.474 0.000520 ***
+# Year1999                    -6.4308     2.6686  -2.410 0.016018 *  
+# Year2000                    -4.7644     2.5708  -1.853 0.063934 .  
+# Year2001                    -6.3518     2.6071  -2.436 0.014893 *  
+# Year2002                   -10.3377     2.7027  -3.825 0.000133 ***
+# Year2003                   -12.4141     3.3412  -3.716 0.000206 ***
+# Year2004                   -17.6615     2.9707  -5.945 3.06e-09 ***
+# Year2005                   -14.4370     3.4662  -4.165 3.20e-05 ***
+# Year2006                   -20.7535     3.0848  -6.728 2.04e-11 ***
+# Year2007                   -15.3033     2.8578  -5.355 9.17e-08 ***
+# Year2008                   -17.9192     2.7567  -6.500 9.28e-11 ***
+# Year2009                   -19.0311     3.2531  -5.850 5.41e-09 ***
+# Year2010                   -15.0863     3.2508  -4.641 3.61e-06 ***
+# Year2011                   -13.2651     3.5681  -3.718 0.000205 ***
+```
+
+
+### Explanatory power of the model: R²
+
+We can determine the portion of variance of $Y$ explained by our model.
+
+```{r ini_R²}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# R² of the model
+summary(mod2)$adj.r.squared
+```
+
+We obtain the adjusted R² = 0.22. This means that approximately 22% of the 
+variance of Initiation_Date is explained by our modeling.
+
+
+## Validation of modeling
+
+The assumptions of ANOVA are the same as for any general linear model, namely 
+**independence**, **normality of residuals** and **homogeneity of variances**.
+In addition, one must check the presence of influential statistical units 
+(i.e. observations having a significant contribution to the construction of the model).
+
+
+### Normality of residuals
+
+```{r ini_ResidNorm, fig.height=4, fig.width=6}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
+par(mfrow=c(1,2))
+# Histogram
+hist(mod2$residuals,col='dodgerblue3',xlab="residuals",main="Check Normality")
+# Quantile-Quantile plot
+qqnorm(mod2$residuals,pch=16,col='dodgerblue3',xlab='')
+qqline(mod2$residuals,col='red',lwd=2)
+```
+
+The residuals seem to follow a Normal Distribution.
+
+
+### Homogeneity of variance
+
+The assumption of homogeneity of variance is the fact that the variation of the
+residuals is approximately equal over the entire range of explanatory variables,
+should be verified by plotting the residuals at the estimated values ​​and the
+residuals at the values ​​of the significant variables. The residuals should
+show **no trend**.
+
+
+```{r ini_Residhomo, fig.height=6, fig.width=8}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
+par(mfrow=c(2,2))
+# residuals vs fitted
+plot(residuals(mod1)~fitted(mod1)
+     , col='dodgerblue3'
+     , pch=16)
+# residuals against state factor
+boxplot(residuals(mod2)~ data$State, 
+        varwidth = TRUE,
+        col='darkgrey',
+        ylab = "Residuals",
+        xlab = "States",
+        main = "")
+# residuals against species factor
+boxplot(residuals(mod2)~ data$Species, 
+        varwidth = TRUE,
+        col='brown',
+        ylab = "Residuals",
+        xlab = "Species",
+        main = "")
+# residuals against year factor
+boxplot(residuals(mod2)~ data$Year, 
+        varwidth = TRUE,
+        col='brown',
+        ylab = "Residuals",
+        xlab = "Years",
+        main = "")
+```
+
+We do not observe any trend. Therefore the hypothesis of homogeneity of 
+variance is verified.
+
+### Independence
+
+ANOVA (like any other general linear model) assumes that all statistical
+units (and therefore residuals) are independent of each other. This issue must 
+be taken into account at the *research design stage*. Given the approach here, 
+the statistical individuals are independent. This assumption is verified.
+
+
+### Verification of influential individuals
+
+```{r ini_Contri, fig.height=4, fig.width=4}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show the code"
+
+par(mfrow = c(1, 1))
+plot(cooks.distance(mod2), type = "h", ylim = c(0, 1))
+abline(h = 1, col = 2,lwd = 3)
+```
+
+There is no influential individual.
+
+All conditions being verified, our modeling can be validated.
+
+
+### Conclusion of our ANOVA  
+
+The explanatory variables retained in our model are "State", "Species" and "Year".
+
+The equation of our model is:
+
+$$
+\text{Y} = 75.7832 - 4.4838 \cdot \text{State}_{\text{Wisconsin}} + 21.9212 \cdot \text{Species}_{\text{Dickcissel}} + 0.5278 \cdot \text{Species}_{\text{Eastern Meadowlark}} + 10.6652 \cdot \text{Species}_{\text{Grasshopper Sparrow}} + 1.9590 \cdot \text{Species}_{\text{Savannah Sparrow}} + 6.2687 \cdot \text{Species}_{\text{Vesper Sparrow}} + 4.5978 \cdot \text{Species}_{\text{Western Meadowlark}} - 8.1836 \cdot \text{Year}_{1992} - 9.3039 \cdot \text{Year}_{1993} - 11.0971 \cdot \text{Year}_{1994} - 11.7709 \cdot \text{Year}_{1995} - 11.2748 \cdot \text{Year}_{1996} - 10.4340 \cdot \text{Year}_{1997} - 9.4950 \cdot \text{Year}_{1998} - 6.4308 \cdot \text{Year}_{1999} - 4.7644 \cdot \text{Year}_{2000} - 6.3518 \cdot \text{Year}_{2001} - 10.3377 \cdot \text{Year}_{2002} - 12.4141 \cdot \text{Year}_{2003} - 17.6615 \cdot \text{Year}_{2004} - 14.4370 \cdot \text{Year}_{2005} - 20.7535 \cdot \text{Year}_{2006} - 15.3033 \cdot \text{Year}_{2007} - 17.9192 \cdot \text{Year}_{2008} - 19.0311 \cdot \text{Year}_{2009} - 15.0863 \cdot \text{Year}_{2010} - 13.2651 \cdot \text{Year}_{2011}
+$$
+
+
+In this equation each variable takes the value 1 if the corresponding condition is true and 0 otherwise.
+
+But despite all the conditions of the model being validated, this model only explains 
+22% (R² = 0.22) of our variable Y (Initiation_Date).
 
 
