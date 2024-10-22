@@ -507,10 +507,11 @@ fviz_cluster(class, axes = c(1,2), ellipse.type = "convex")
 
 #### Réalisation of an FAMD
 
-Here, we perform an FAMD on the initial dataframe. The ID are removed
+Here, we perform an FAMD on the initial dataframe. The FAMD is used for
+table with qualitative and quanitative variables. The ID are removed
 because of their uselessness.
 
-```{r}
+```{r famd.format}
 data_famd <- data
 ### Conversion of the Year into factor
 data_famd$Year <- as.factor(data_famd$Year)
@@ -520,21 +521,21 @@ data_famd <- data_famd |>
   dplyr::select(-Nest_ID)
 ```
 
-We can perform the famd :
+We can perform the famd ; it takes some times.
 
-```{r}
+```{r famd.real}
 famd <- FAMD(base = data_famd, ncp = 3)
 ```
 
 First, let's see the summary :
 
-```{r}
+```{r famd.summary}
 summary(famd)
 ```
 
 We can couple the summary with a plot of the inertia per axes :
 
-```{r}
+```{r famd.eig}
 fviz_eig(X = famd,
          addlabels = TRUE)
 ```
@@ -543,7 +544,7 @@ fviz_eig(X = famd,
 as much inertia as possible while being parcimonious. Now, we can see
 the contribution of the variables to the factorial axes :
 
-```{r}
+```{r fam.contrib}
 fviz_contrib(X = famd,
              choice = "var",
              axes = 1
@@ -562,7 +563,7 @@ famd$var$contrib[,1:3] > 1/9*100
 And now, let's observe the projections of the variables and of the
 observations :
 
-```{r}
+```{r famd_axes_12}
 ### Axes 1 and 2
 fviz_famd_var(X = famd, 
               repel = TRUE,
@@ -583,7 +584,9 @@ fviz_famd_ind(X = famd,
               )
 ```
 
-```{r}
+With this projetion, we can see a separation
+
+```{r famd_axes_13}
 ### Axes 1 and 3
 fviz_famd_var(X = famd, 
               repel = TRUE,
@@ -602,4 +605,6 @@ fviz_famd_ind(X = famd,
               axes = c(1,3),
               col.ind = "skyblue4"
               )
+
+
 ```
