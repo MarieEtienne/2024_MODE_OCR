@@ -461,13 +461,12 @@ This result is not surprising given our initial data. Because they are from diff
 
 ```{r poisson_data_conversion}
 data$Nest_Fate <- as.factor(data$Nest_Fate)
+data$County <- as.factor(data$County)
+data$Habitat <- as.factor(data$Habitat)
 data$Year <- as.factor(data$Year)
 ```
 
 
--   *Nest_ID* : the code to identify each nest.
--   *State* : the state in which the nest has been found. 2 levels
-    factor : Illinois and Wisconsin.
 -   *County* : the county in the state where the state has been found.
     14 levels factor.
 -   *Habitat* : the type of habitat in which the nest has been found. 4
@@ -475,14 +474,8 @@ data$Year <- as.factor(data$Year)
 -   *Species* : the species of the bird that has build the nest. 8
     levels factor.
 -   *Year* : the year of the nest building. 21 levels factor.
--   *Nest_Fate* : variable that says if there is a least one bird hatch
-    in the nest (1) or not (0).
--   *Initiation_Date* : the date when the bird hatch from the 1st of
-    April (1), May the 1st (31), June the 1st (62), etc.
 -   *Number_Fledged* : the number of birds that hatch on the nest when
     they hatch. Quantitative variable.
--   *Nest_End_Date* : the date where the nest either failed of the birds
-    successfully hatch.
 
 We want to study the impact of four qualitative variables, the habitat, the county, the species and the year over the number of young hatched in the nest *"Number_Fledged"*. It is a counting variable, which imply that it follows a Poisson distribution. A negative binomial distribution could be used but is preferred when the count values are high (which is not really the case here since the highest value is of 6)
 
@@ -491,7 +484,7 @@ $$Pr(Y=y)=\frac{e^{-\lambda}.\lambda^y}{y!}$$
 where $y$ represent the value of the count (here $y$ ∈ [0-6]) and $\lambda$ is the mean value and variance of the Poisson distribution (because in a Poisson law E($y$)= Var($y$)=$\lambda$).
 
 
-# Data exploration
+## A. Data exploration
 
 Before any analysis, it is important to have a look about the data.
 
@@ -602,7 +595,7 @@ print(chi2_test$expected)
 
 Problem : for most of the variables the chi² test can't be done because of the low number of values in each group. The only one that fulfill the conditions and therefore can be made is between Habitat and Species but the result shows that the variables are correlated.
 
-# Statistical Analysis
+## B. Statistical Analysis
 
 Now that we have a better idea of the data implied in this study, we can begin the statistical analysis.
 
@@ -691,7 +684,7 @@ This is very very bad... The variable species doesn't seem to explain a
 lot of the variation in the number of young individuals in the nest.
 
 
-# Model validation:
+## C. Model validation:
 
 The model that we have done is a generalized linear model so there aren't residual normality or homogeneity. However, it is important to check the independence of residuals.
 
@@ -718,7 +711,7 @@ abline(h = 1, col = 2,lwd = 3)
 There aren't very influential individuals which can be logical because of the high number of them and the low impact of species over the number of young individuals in the nest.
 
 
-# Conclusions:
+## Conclusions:
 
 The species of the birds has an impact over the number of young individuals in the nest, but it is clearly not the only variable that explain the variation of the response (only 4% are due to the species). 
 
