@@ -7,99 +7,36 @@ editor: visual
 
 # **INTRODUCTION** (Apolline et Kilian)
 
--   **Importation du jeu de données**
+-   importation du jeu de données
 
-    On commence par importer le jeu de données situé dans fichier "BogAnts.txt"
+Nous commençons par importer le jeu de données situé dans un fichier "BogAnts.txt"
 
 ```{r global data, echo=TRUE,include=TRUE}
 #importation
 dataAnts <- read.table("BogAnts.txt", dec=".", header = TRUE)
-
 #Passer la localisation en facteur 
 dataAnts$Location<-as.factor(dataAnts$Location)
-
 #vérification du type des variables 
 str(dataAnts)
 ```
 
--   **Présentation de l'article**
+-   Présentation de l'article
 
-Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604–1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
+Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604-1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
 
--   **Contexte Biologique**
+-   Contexte Biologique
 
-Gotelli et Ellison sont deux écologues, le premier étant spécialisé sur des questions d'organisation des communautés animales et végétales, le second sur la désintégration et le réassemblage des écosystèmes suite à des perturbations naturelles et anthropiques. Ils se sont ici intéressés à l'influence du gradient latitudinal sur la richesse spécifique chez les fourmis de l'Etat de la Nouvelle-Angleterre au Nord-Est des Etats-Unis. Leur étude a été réalisée sur 22 sites où, pour chacun, 25 pièges ont été placés dans une tourbière ombrotrophe et 25 dans la forêt environnante. Les espèces de fourmis contenues dans les pièges sont par la suite identifiées en laboratoire et, pour un site et un habitat donnés, ils ont calculé la richesse spécifique (nombre total d'espèces présentes).
+-   Question de recherche
 
--   **Données et variables**
+-   données et variables
 
-Les variables utilisées sont :\
-- *Site* : le nom du site échantillonné\
-- *Latitude* : la latitude du site (quantitative)\
-- *Altitude* : l'altitude du site (quantitative)\
-- *Area* : la superficie de la tourbière du site (quantitative)\
-- *Location* : la localisation des pièges ("Bog" ou "Forest") (qualitative)\
-- *Nsp* : la richesse spécifique des fourmis, égalmeent la variable réponse
+-   Quel modèle et pourquoi
 
--   **Question de recherche**
+-   packages pouvant servir (K)
 
-Parmi les trois questions que se posent Gotelli et Ellison dans cette étude, on s'intéresse ici aux deux première :
+-   vérifier si données manquantes (K)
 
-1\) La densité des espèces est-elle en corrélation avec la latitude sur une étendue latitudinale aussi étroite ?
-
-2\) Le gradient latitudinal persiste-t-il après un contrôle statistique des différences entre les sites dans la composition de la végétation ?
-
-En d'autres termes : quelles sont les variables quantitatives (latitude, altitude, aire) et qualitatives (localisation) qui déterminent la richesse spécifique des fourmis dans les tourbières du New-England ?
-
--   **Quel modèle et pourquoi ?**
-
-Pour modéliser la relation entre une variable réponse quantitative $Y$ et des variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives on utilise des modèles linéaires généraux, ou *glm*, (régression linéaire, ANCOVA, ANOVA). Pour pouvoir utiliser ces *glm*, trois conditions d'application sont nécessaires : *l'homogénéité des variances*, *l'indépendance des résidus* et *la normalité des résidus*. Cependant, les réponses $Y$ analysées en écologie, peuvent parfois être discrètes et s'écarter de l'hypothèse normale.
-
-Pour les variables réponses discrètes (comptages, données binaires), la variance de $Y$ varie généralement avec la moyenne de $Y$. Cette relation semble alors indiquer que la variance ne peut être homogène dans un jeu de données, du fait de sa dépendance à la moyenne. Or, les modèles linéaires généraux ont pour hypothèse d'application une variance constante (c'est-à-dire une homogénéité de la variance). Par ailleurs, lorsque l'on applique un modèle linéaire général à des données de comptage, les valeurs prédites obtenues peuvent être négatives (ce qui est impossible au regard de la nature de $Y$) et les résidus non distribués normalement. Donc, l'utilisation d'un modèle linéaire général (*glm*) sur des réponses discrètes génère très généralement des écarts par rapport aux conditions d'application. En conclusion, il devient necessaire d'utiliser une méthode plus adaptée à l'analyse de variables réponses discrètes telle que les Modèles linéaires généralisés (*glim*).
-
-Voici les étapes à suivre pour établir un modèle linéaire généralisé :\
-1. Formuler l'hypothèse de la loi de distribution de la variable réponse $Y_{i}$\
-... ... ... ... ... ...
-
-Une modélisation linéaire généralisée s'écrit comme suit : $$g(\mu_{y})= \alpha+ \beta_{1}.X_{i1}+ \beta_{2}.X_{i2}+\beta_{3}.X_{i3}+...\beta_{p}.X_{ip} = \eta $$ Le prédicteur linéaire, $\eta$, est issu du modèle linéaire comme la somme des $p$ termes associés à chacun des paramètres $\beta_{p}$. Sa valeur est obtenue en transformant la valeur de $Y$ par la fonction de lien, et la valeur prédite de $Y$ est obtenue en appliquant à $\eta$ la fonction inverse de la fonction de lien .
-
-Pour illustrer ce propos nous nous intéressons à des comptages. Un comptage est une variable aléatoire discrète et positive. Il est possible que la distribution de ses valeurs suive une loi de Poisson, Binomiale Négative voire une loi Normale lorsque les valeurs sont très importantes.
-
-Notre exemple illustre une distribution suivant la loi de Poisson.
-
-La loi de Poisson est utile pour décrire des évènements discrets rares et indépendants. Ainsi, une variable $Y$ qui suit une loi de Poisson de paramètre $\lambda$ s'écrit comme suit : $$Pr(Y=y)=\frac{e^{-\lambda}.\lambda^y}{y!}$$ où $y$ représente le nombre observé d'occurences (i.e., $y$=0, 1, 2...} et $\lambda$ la moyenne et la variance de la distribution de Poisson (i.e. dans la loi de Poisson : E($y$)= Var($y$)=$\lambda$).
-
-Dans un *glim* type Poisson, la fonction de lien est la fonction **log**. Ainsi, le modèle s'écrit : $$log(\mu_{y})= \alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip} = \eta $$ Les valeurs prédites de $Y$ sont obtenues en appliquant sur $\eta$ la fonction inverse de la fonction de lien, ici la fonction **log** : $$\mu_{y}= e^{\alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip}} = e^{\eta} $$
-
-Les modèles linéaires généralisés de type Poisson ont une structure d'erreur qui suivent une loi de Poisson. Cette structure permet, entre autres, de définir avec précision la relation entre la moyenne et la variance. Cette relation est exploitée par la méthode du maximum de vraisemblance pour estimer les coefficients et les erreurs standard des paramètres du modèle GLM.
-
--   **Configuration de l'environnement et packages**
-
-Pour analyser nos données on configure la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion* et *lattice*.
-
-```{r init, include=FALSE}
-#Configuration de la session :
-rm(list=ls()) # Nettoyage de l'environnement de travail
-#Chargement des packages R :
-library(knitr)
-opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")#(TROUVER L'UTILITE ET PEUT-ÊTRE RETIRER)
-library(ggplot2) # Package pour de meilleurs visuels graphiques
-library(tinytex) # Pour la sortie pdf
-library(corrplot)# Calcul de matrice de corrélation
-library(plot3D)# Pour les graphiques 3D
-library(DHARMa)# Diagnostic du modèle
-library(rcompanion)# Modèle pseudo R²
-library(lattice)# Graphiques multipanneaux (A CHANGER?)
-```
-
--   **Vérification si des données sont manquantes**
-
-```{r global data, echo=TRUE,include=TRUE}
-# Vérification de la présence de valeurs manquantes
-colSums(is.na(dataAnts))
-# Aucune valeur manquante
-
-summary(dataAnts)
-```
+-   mini summary (A) summary(dataAnts)
 
 # **EXPLORATION DU JEU DE DONNEES**
 
@@ -225,9 +162,9 @@ Il ne semble pas y avoir de colinéarité entre les variables, nous pouvons donc
 
 ## 1. Construction du modèle (Gabriel)
 
-On cherche à produire le meilleur modèle pour prédire le nombre d'espèces. La variable réponse est un comptage (variable quantitative discrète) de petit effectifs (\<30), la loi appropriée est donc la loi de **Poisson**. Nous allons donc réaliser la modélisation avec un modèle linéaire généralisée de Poisson.
+Nous cherchons à produire le meilleur modèle pour prédire le nombre d'espèces. La variable réponse est un comptage (variable quantitative discrète) de petit effectifs (\<30), la loi appropriée est donc la loi de **Poisson**. Nous allons donc réaliser la modélisation avec un modèle linéaire généralisé de Poisson.
 
-Pour arriver au modèle dit candidat à tester, nous allons partir du modèle dit complet, c'est-à-dire avec toutes les variables explicatives et interactions, et utiliser une méthode pas à pas arrière ou **Backward selection** pour sélectionner les variables et interactions à conserver.
+Pour arriver au modèle, dit "candidat", à tester, nous allons partir du modèle dit "complet", c'est-à-dire avec toutes les variables explicatives et leurs interactions, et utiliser une méthode pas à pas arrière ou **Backward selection** pour sélectionner les variables et les interactions à conserver.
 
 Commençons avec le modèle complet:
 
@@ -251,9 +188,9 @@ A partir de ce modèle complet nous allons donc éliminer pas à pas les interac
 drop1(mod1,test="Chi")
 ```
 
-Les trois interactions ne sont pas significatives. On enlève l'interaction 'Location:Latitude' car c'est la 'moins significative'. On peut également remarquer que la fonction drop1() nous informe que c'est en enlevant cette interaction que l'on obtient le meilleur AIC.
+Les trois interactions ne sont pas significatives. Nous enlèvons l'interaction 'Location:Latitude' car c'est la 'moins significative'. Nous pouvons également remarquer que la fonction drop1() nous informe que c'est en enlevant cette interaction que nous obtenous le meilleur AIC.
 
-On obtient donc le modèle suivant:
+Nous obtenons donc le modèle suivant:
 
 ```{r}
 # Etape 2
@@ -269,7 +206,7 @@ mod1<-glm(Nsp~ Location
 drop1(mod1,test="Chi")
 ```
 
-De la même façon, on enlève l'interaction 'Location:LogArea'.
+De la même façon, nous enlèvons l'interaction 'Location:LogArea'.
 
 ```{r}
 # Etape 3
@@ -284,7 +221,7 @@ mod1<-glm(Nsp~ Location
 drop1(mod1,test="Chi")
 ```
 
-On enlève donc également l'interaction 'Location:Elevation'. On regarde donc maintenant la significativité des variables explicatives.
+Nous enlèvons donc également l'interaction 'Location:Elevation'. Nous regardons donc maintenant la significativité des variables explicatives.
 
 ```{r}
 # Etape 4
@@ -298,7 +235,7 @@ mod1<-glm(Nsp~ Location
 drop1(mod1,test="Chi")
 ```
 
-La variable 'LogArea' n'a pas un effet siginificatif, on l'élimine du modèle.
+La variable 'LogArea' n'a pas un effet siginificatif, nous l'éliminons du modèle.
 
 ```{r}
 # Etape 5
@@ -311,9 +248,9 @@ mod1<-glm(Nsp~ Location
 drop1(mod1,test="Chi")
 ```
 
-Les variables explicatives restantes sont significatives, on conserve donc ce modèle comme modèle candidat.
+Les variables explicatives restantes sont significatives, nous conservons donc ce modèle comme modèle candidat.
 
-On va identifier le modèle candidat basé sur la règle de l'AIC et le mode stepwise.
+Nous allons ensuite identifier le modèle candidat avec une autre approche que la significativité des p-values : l'AIC avec le mode stepwise.
 
 ```{r modelAIC, include=TRUE}
 library(MASS)
@@ -339,9 +276,9 @@ summary(modfinal)
 
 Remarque : il est recommandé d'utiliser l'AIC avec plus de 40 individus par paramètre, sinon il existe l'AICc (@YannickOutreman).
 
-Les deux procédures (Backward et StepAIC) convergent : nous obtenons les mêmes modèles candidats.
+Les deux méthodes arrivent au même modèle candidat : Nsp\~Latitude+Elevation+LogArea.
 
-Pour comprendre comment les 3 variables explicatives (Latitude, Elevation, LogArea) influencent la richesse spécifique des fourmis, nous devons analyser les coefficients du modèle.
+L'étape suivante est l'analyse des coefficients. Nous allons donc regarder l'effet précis des variables explicatives retenues (Latitude, Elevation, LogArea) sur la richesse spécifique des fourmis.
 
 ## 2. Analyse des coefficients (Gabriel)
 
@@ -353,9 +290,12 @@ summary(mod1)
 #LocationForest  0.6354389  0.1195664   5.315 1.07e-07 ***
 #Latitude       -0.2357930  0.0616638  -3.824 0.000131 ***
 #Elevation      -0.0011411  0.0003749  -3.044 0.002337 ** 
+
+#Null deviance: 102.76  on 43  degrees of freedom
+#Residual deviance:  40.69  on 40  degrees of freedom
 ```
 
-Ce tableau détaille les coefficients du modèle avec les coefficients associés à chaque effet majeur significatif. Rappelons que pour un facteur, une modalité est appelée "modalité de référence", c'est-à-dire que son coefficient est égal à 0. D'après ce tableau, les coefficients sont :
+Le summary() du modèle nous permet de voir les coefficients correspondant à chaque variable ainsi que l'intercept (basé sur la moyenne de la population). Pour un facteur (variable qualitative) le coefficient correspond à la comparaison entre la modalité donnée et la modalité dite "de référence" dont le coefficient est égal à 0. Les scores de déviance serviront dans la partie suivante. Grâce à ce tableau on peut noter les différents coefficients :
 
 **Location factor**\
 - $Location_{Bog}$ = 0 (modalité de référence du facteur Location)\
@@ -365,7 +305,7 @@ Ce tableau détaille les coefficients du modèle avec les coefficients associés
 **Elevation covariate**\
 - $\beta_{Elevation}$ = $-0.001^{***}$
 
-Ainsi, le modèle candidat s'écrit : $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
+Le modèle candidat avec les coefficients s'écrit donc : $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
 
 Rappel : pour modéliser une variable quantitative discrète avec un modèle linéaire généralisé on passe par une fonction de lien, ici avec la loi de Poisson on utilise la fonction log().
 
@@ -377,7 +317,7 @@ Un moyen de connaître la qualité du modèle est de calculer un *pseudo R²*. P
 
 $$Pseudo\:R^2=100\:.\:\frac{Déviance\:nulle- Déviance\:résiduelle}{Déviance\:nulle}$$
 
-Nous pouvons calculer le *pseudo R²* de trois manières différentes. Soit avec la méthode de McFadden, celle de Cox et Snell ou celle de Nagelkerke. Les deux dernières méthodes nécessite le package 'rcompagnon'.
+Nous pouvons calculer le *pseudo R²* de trois manières différentes : avec la méthode de McFadden, celle de Cox et Snell ou celle de Nagelkerke. Les deux dernières méthodes nécessitent le package 'rcompagnon'.
 
 Dans notre exemple, comme vu dans la partie précédente, le modèle nul a une déviance de 102,76 et la déviance résiduelle est de 40,69.
 
@@ -388,6 +328,7 @@ Nous allons donc calculer la qualité du modèle avec les commandes suivantes :
 (mod1$null.deviance-mod1$deviance)/mod1$null.deviance
 
 # Some others estimates of deviance explained - package 'rcompanion'
+library(rcompanion)
 nagelkerke(mod1)
 ```
 
@@ -408,7 +349,7 @@ Pour cela, nous allons calculer un paramètre appelé 'scale parameter'. Si sa v
 
 ### Vérification de la surdispersion
 
-Quand l'index de dispersion est supérieur à 1,5 , il existe différentes explications.
+Quand l'indice de dispersion est supérieur à 1,5 , il existe différentes explications.
 
 Cela peut être dû à :
 
@@ -418,15 +359,15 @@ Cela peut être dû à :
 
 -   Des interactions sont manquantes. Il faut les ajouter au modèle.
 
--   Une inflation des zéros se produit. Il faut utiliser une regression Binomiale négative à inflation des zéros. (*source*)
+-   Une inflation des zéros se produit. Il faut utiliser une regression Binomiale négative à inflation des zéros. (@Long_J.S._1997)
 
--   Une dépendance entre les données et un facteur ou une variable est présente. Il faut utiliser un modèle linéaire général mixte. (*source*)
+-   Une dépendance entre les données et un facteur ou une variable est présente. Il faut utiliser un modèle linéaire général mixte. (@Johnson_et_al._2015)
 
--   Relation entre les données et les variables ou facteurs n'est pas linéaire. Il faut utiliser un modèle additif généralisé. (*source*)
+-   Relation entre les données et les variables ou facteurs n'est pas linéaire. Il faut utiliser un modèle additif généralisé. (@Irz_et_Levi-Valensin_2016)
 
 -   La fonction de lien est mauvaise. Il faut changer la fonction de lien.
 
--   La variation de $Y$ est grande. Il faut utiliser un modèle linéaire généralisé suivant une loi binomiale négative. (*source*)
+-   La variation de $Y$ est grande. Il faut utiliser un modèle linéaire généralisé suivant une loi binomiale négative. (@Chahine_1965)
 
 Dans notre exemple, nous allons calculer le 'scale parameter'. Pour cela nous allons utiliser la commande :
 
@@ -442,7 +383,8 @@ Ici, la dispersion est de 1,02. Il n'y a pas de surdispersion.
 
 ### Analyses des résidus
 
-Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $X_s$ significatifs du modèle, on doit valider l'absence de tendance dans leur distribution. Si on constate une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les GLM, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
+
+Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $X_s$ significatifs du modèle, nous devons valider l'absence de tendance dans leur distribution. Si nous constatons une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
 
 ```{r}
 resid<-residuals(mod1, type="pearson")
@@ -487,11 +429,11 @@ abline(h = 0)
 
 ```
 
-L'histogramme des résidus et le Q-Q plot montrent des résidus relativement normaux. Les quatres graphiques suivant montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. On peut voir que les résidus restent homogènes peu importe les valeurs des variables explicatives.
+L'histogramme des résidus et le Q-Q plot montrent des résidus relativement normaux. Les quatres graphiques suivant montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. Nous pouvons voir que les résidus restent homogènes peu importe les valeurs des variables explicatives.
 
 ### Vérification des individus influents
 
-Afin de vérifier qu'aucun individu est une influence trop importante dans l'analyse, nous allons faire une représentation graphique du poid de chaque individus. Si individus dépasse un poid de 1, il est trop influent dans l'analyse. L'analyse n'est pas valide et il faut la refaire en retirant cet individus.
+L'histogramme des résidus et le Q-Q plot montrent des résidus relativement normaux. Les quatres graphiques suivant montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. Nous pouvons voir que les résidus restent homogènes peu importe les valeurs des variables explicatives. Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
 ```{r Contri, include=TRUE, fig.height=4, fig.width=4}
 
@@ -505,10 +447,11 @@ Ici, il n'y a pas d'individus trop influent.
 
 ### Analyses des résidus avec DHARMa (bonus)
 
-Pour une représentation graphique différente, nous pouvons utiliser le package DHARMa. Ce package permet d'analyser les résidus et plus particulièrement leur surdispersion et les valeurs abérantes. Ce package met en couleur rouge les résidus ne respèctant les valeurs attendues.
+Pour une représentation graphique différente, nous pouvons utiliser le package 'DHARMa'. Ce package permet d'analyser les résidus et plus particulièrement leur surdispersion et les valeurs aberrantes. Ce package met en couleur rouge les résidus ne respectant pas les valeurs attendues.
 
 ```{r Dharma, include=TRUE}
 #testDispersion(mod1)
+library(DHARMa)
 simulationOutput <- simulateResiduals(fittedModel = mod1, plot = F)
 residuals(simulationOutput)
 plot(simulationOutput)
@@ -517,7 +460,7 @@ residuals(simulationOutput, quantileFunction = qnorm, outlierValues = c(-7,7))
 plotResiduals(simulationOutput, form = dataAnts$Latitude)
 ```
 
-Dans notre exemple, les résidus ne sont pas surdispersés et ne montre pas de valeurs abérantes.
+Dans notre exemple, les résidus ne sont pas surdispersés et ne montrent pas de valeurs aberrantes.
 
 # **CONCLUSION** (Apolline et Kilian)
 
@@ -531,7 +474,7 @@ De même, on ne détecte pas la présence d'individus influents pouvant biaiser 
 
 Le calcul du pseudo R² estimé à 0.60 nous permet de considérer que ce modèle explique bien nos données (la déviance du modèle nul étant de 102.76 et la déviance résiduelle de 40.69).
 
-On en conclut donc que la richesse spécifique des fourmis dans les tourbières du New-England dépend :
+Nous en concluons donc que la richesse spécifique des fourmis dans les tourbières du New-England dépend :
 
 -   de la localisation : la richesse spécifique est plus forte en forêt qu'en tourbière en lien avec le couvert végétal et la lumière disponible ;
 
