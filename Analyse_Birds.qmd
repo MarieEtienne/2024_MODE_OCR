@@ -523,7 +523,7 @@ data_famd <- data_famd |>
 We can perform the famd :
 
 ```{r}
-famd <- FAMD(base = data_famd)
+famd <- FAMD(base = data_famd, ncp = 3)
 ```
 
 First, let's see the summary :
