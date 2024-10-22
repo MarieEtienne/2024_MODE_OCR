@@ -161,7 +161,6 @@ data <- data %>%
     flipper_length = Flipper.Length..mm.,
     body_mass = Body.Mass..g.,
     sex = Sex,
-    comments = Comments,
     delta_15_N = Delta.15.N..o.oo.,
     delta_13_C = Delta.13.C..o.oo.,
     species = Species)
