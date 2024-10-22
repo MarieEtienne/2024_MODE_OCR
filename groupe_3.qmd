@@ -5,6 +5,24 @@ source : "Yannick Outreman, selon les données de Gotelli & Ellison (2002) - Bio
 editor: visual
 ---
 
+```{r init, include=FALSE, message=FALSE, warning=FALSE,}
+
+#Configuration de la session :
+rm(list=ls()) # Nettoyage de l'environnement de travail
+
+#Chargement des packages R :
+library(knitr)
+opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")#(TROUVER L'UTILITE ET PEUT-ÊTRE RETIRER)
+library(ggplot2) # Package pour de meilleurs visuels graphiques
+library(tinytex) # Pour la sortie pdf
+library(corrplot)# Calcul de matrice de corrélation
+library(plot3D)# Pour les graphiques 3D
+library(DHARMa)# Diagnostic du modèle
+library(rcompanion)# Modèle pseudo R²
+library(lattice)# Graphiques multipanneaux (A CHANGER?)
+library(patchwork)# Afficher plusieurs ggplot sur une page
+```
+
 # **INTRODUCTION** (Apolline et Kilian)
 
 Principe de l'exploration du jeu de données d'après l'article cité en cours.
@@ -59,7 +77,7 @@ Pour modéliser la relation entre une variable réponse quantitative $Y$ et des 
 
 Pour les variables réponses discrètes (comptages, données binaires), la variance de $Y$ varie généralement avec la moyenne de $Y$. Cette relation semble alors indiquer que la variance ne peut être homogène dans un jeu de données, du fait de sa dépendance à la moyenne. Or, les modèles linéaires généraux ont pour hypothèse d'application une variance constante (c'est-à-dire une homogénéité de la variance). Par ailleurs, lorsque l'on applique un modèle linéaire général à des données de comptage, les valeurs prédites obtenues peuvent être négatives (ce qui est impossible au regard de la nature de $Y$) et les résidus non distribués normalement. Donc, l'utilisation d'un modèle linéaire général (*glm*) sur des réponses discrètes génère très généralement des écarts par rapport aux conditions d'application. En conclusion, il devient necessaire d'utiliser une méthode plus adaptée à l'analyse de variables réponses discrètes telle que les Modèles linéaires généralisés (*glim*).
 
-Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604–1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
+Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604--1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
 
 -   **Contexte Biologique**
 
@@ -111,25 +129,6 @@ Les modèles linéaires généralisés de type Poisson ont une structure d'erreu
 
 Pour analyser nos données on configure la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion* et *lattice*.
 
-
-```{r init, include=FALSE, message=FALSE, warning=FALSE,}
-
-#Configuration de la session :
-rm(list=ls()) # Nettoyage de l'environnement de travail
-
-#Chargement des packages R :
-library(knitr)
-opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")#(TROUVER L'UTILITE ET PEUT-ÊTRE RETIRER)
-library(ggplot2) # Package pour de meilleurs visuels graphiques
-library(tinytex) # Pour la sortie pdf
-library(corrplot)# Calcul de matrice de corrélation
-library(plot3D)# Pour les graphiques 3D
-library(DHARMa)# Diagnostic du modèle
-library(rcompanion)# Modèle pseudo R²
-library(lattice)# Graphiques multipanneaux (A CHANGER?)
-library(patchwork)# Afficher plusieurs ggplot sur une page
-```
-
 -   **Vérification si des données sont manquantes**
 
 ```{r datalack, echo=TRUE,include=TRUE}
@@ -143,7 +142,7 @@ summary(dataAnts)
 
 ## 1. Présentation du jeu de données
 
-### a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$ 
+### a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$
 
 La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
 
@@ -249,7 +248,7 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
 
-### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$ 
+### b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$
 
 Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.*
 
@@ -832,7 +831,6 @@ sum(E1^2) / (N - p)
 Ici, la dispersion est de 1,02. Il n'y a pas de surdispersion.
 
 ### Analyses des résidus
-
 
 Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $X_s$ significatifs du modèle, nous devons valider l'absence de tendance dans leur distribution. Si nous constatons une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
 
