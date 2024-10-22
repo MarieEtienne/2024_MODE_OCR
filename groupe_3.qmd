@@ -756,7 +756,7 @@ Le summary() du modèle nous permet de voir les coefficients correspondant à ch
 **Elevation covariate**\
 - $\beta_{Elevation}$ = $-0.001^{***}$
 
-Le modèle candidat avec les coefficients s'écrit donc : $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
+Le modèle candidat avec les coefficients s'écrit donc (équation 5) : $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$ {#eq-5}
 
 Rappel : pour modéliser une variable quantitative discrète avec un modèle linéaire généralisé nous passons par une fonction de lien, ici avec la loi de Poisson nous utilisons la fonction log().
 
@@ -764,9 +764,9 @@ Rappel : pour modéliser une variable quantitative discrète avec un modèle lin
 
 Afin de connaître la qualité de notre modèle, nous allons calculer la distance entre le modèle candidat et le modèle nul. Le modèle nul est un modèle qui résume les données avec un unique paramètre : la moyenne de $Y$. Ce modèle n'explique pas les données.
 
-Un moyen de connaître la qualité du modèle est de calculer un *pseudo R²*. Pour cela, nous déterminons la distance entre la déviance du modèle nul et la déviance résiduelle du modèle candidat.
+Un moyen de connaître la qualité du modèle est de calculer un *pseudo R²*. Pour cela, nous déterminons la distance entre la déviance du modèle nul et la déviance résiduelle du modèle candidat (équation 6).
 
-$$Pseudo\:R^2=100\:.\:\frac{Déviance\:nulle- Déviance\:résiduelle}{Déviance\:nulle}$$
+$$Pseudo\:R^2=100\:.\:\frac{Déviance\:nulle- Déviance\:résiduelle}{Déviance\:nulle}$$ {#eq-6}
 
 Nous pouvons calculer le *pseudo R²* de trois manières différentes : avec la méthode de McFadden, celle de Cox et Snell ou celle de Nagelkerke. Les deux dernières méthodes nécessitent le package 'rcompagnon'.
 
@@ -895,7 +895,7 @@ abline(h = 1, col = 2,lwd = 3)
 
 Ici, il n'y a pas d'individus trop influent.
 
-### Analyses des résidus avec DHARMa (bonus)
+### Analyses des résidus avec DHARMa
 
 Pour une représentation graphique différente, nous pouvons utiliser le package 'DHARMa'. Ce package permet d'analyser les résidus et plus particulièrement leur surdispersion et les valeurs aberrantes. Ce package met en couleur rouge les résidus ne respectant pas les valeurs attendues.
 
@@ -914,7 +914,7 @@ Dans notre exemple, les résidus ne sont pas surdispersés et ne montrent pas de
 
 # **CONCLUSION** (Apolline et Kilian)
 
-Le modèle que nous retenons est le suivant
+Le modèle que nous retenons est le suivant (équation 5) :
 
 $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
 
