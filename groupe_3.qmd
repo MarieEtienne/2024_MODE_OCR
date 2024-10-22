@@ -264,9 +264,9 @@ p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
 
 ```
 
-Nous ne constatons pas de valeur aberrantes sur le Cleveland plot ou sur l'histogramme.
+Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
 
-Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici interressant d'utilisé un modèle linéaire généralisé et non un modèle linéaire classique.
+Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé et non un modèle linéaire classique.
 
 [**L'aire :**]{.underline}
 
