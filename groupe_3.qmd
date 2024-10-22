@@ -5,9 +5,7 @@ source : "Yannick Outreman, selon les données de Gotelli & Ellison (2002) - Bio
 editor: visual
 ---
 
-# **INTRODUCTION** (Apolline et Kilian)
-
-Principe de l'exploration du jeu de données d'après l'article cité en cours.
+# **INTRODUCTION**
 
 -   **Importation du jeu de données**
 
@@ -501,7 +499,7 @@ Ici les données sont bien réparties entre les deux modalités (Bog = tourbièr
 
 L'analyse de valeurs aberrantes et de la distribution de la variable qualitative suggèrent qu'elle peut être utilisée dans la construction du modèle.
 
-## **2. Analyse des interactions entre les variables Y et Xs (Chloé et Manon)**
+## **2. Analyse des interactions entre les variables Y et Xs**
 
 \###**2.1 Analyser la relation potentielle entre Y et les Xs**
 
@@ -609,9 +607,9 @@ Nous pouvons observer sur le premier graphique (Fig. 8) que les nuages de points
 
 Il ne semble pas y avoir de colinéarité entre les variables, nous pouvons donc toutes les concerver.
 
-# **ANALYSE STATISTIQUE** (Anaelle et Gabriel)
+# **ANALYSE STATISTIQUE** 
 
-## 1. Construction du modèle (Gabriel)
+## 1. Construction du modèle
 
 Nous cherchons à produire le meilleur modèle pour prédire le nombre d'espèces. La variable réponse est un comptage (variable quantitative discrète) de petit effectifs (\<30), la loi appropriée est donc la loi de **Poisson**. Nous allons donc réaliser la modélisation avec un modèle linéaire généralisé de Poisson.
 
@@ -731,7 +729,7 @@ Les deux méthodes arrivent au même modèle candidat : Nsp\~Latitude+Elevation+
 
 L'étape suivante est l'analyse des coefficients. Nous allons donc regarder l'effet précis des variables explicatives retenues (Latitude, Elevation, LogArea) sur la richesse spécifique des fourmis.
 
-## 2. Analyse des coefficients (Gabriel)
+## 2. Analyse des coefficients
 
 ```{r}
 # Coefficients du modèle
@@ -760,7 +758,7 @@ Le modèle candidat avec les coefficients s'écrit donc (équation 5) : $$ log(S
 
 Rappel : pour modéliser une variable quantitative discrète avec un modèle linéaire généralisé nous passons par une fonction de lien, ici avec la loi de Poisson nous utilisons la fonction log().
 
-## 3. Pouvoir explicatif du modèle (Anaelle)
+## 3. Pouvoir explicatif du modèle
 
 Afin de connaître la qualité de notre modèle, nous allons calculer la distance entre le modèle candidat et le modèle nul. Le modèle nul est un modèle qui résume les données avec un unique paramètre : la moyenne de $Y$. Ce modèle n'explique pas les données.
 
@@ -790,7 +788,7 @@ plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Valeurs estimées 
 abline(0,1)
 ```
 
-## 4. Validation du modèle (Anaelle)
+## 4. Validation du modèle
 
 L'*indépendance des résidus* est la seule chose qui limite le modèle linéaire généralisé. L'analyse des résidus permet donc d'identifier d'éventuelles tendances et de vérifier la présence d'unités statistiques influentes.
 
@@ -912,7 +910,7 @@ plotResiduals(simulationOutput, form = dataAnts$Latitude)
 
 Dans notre exemple, les résidus ne sont pas surdispersés et ne montrent pas de valeurs aberrantes.
 
-# **CONCLUSION** (Apolline et Kilian)
+# **CONCLUSION**
 
 Le modèle que nous retenons est le suivant (équation 5) :
 
