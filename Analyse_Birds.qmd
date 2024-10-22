@@ -48,14 +48,14 @@ refaire analyse de bases cf ASA
 **Menu : Session/Set Working Directory/Choose directory** *And indicate
 Git/2024_MODE_OCR*
 
-```{r}
+```{r importdataset}
 # Datatset import under the name of "data"
 # data <- read.table("Bird_dataset.csv", sep="\t", header = TRUE)
 bird <- read.table("Bird_dataset.txt", header = TRUE, stringsAsFactors = TRUE)
 data <- bird
 ```
 
-```{r}
+```{r loadlibraries}
 # Charge the librairies
 library(ggplot2)
 library(tidyverse)
@@ -64,7 +64,7 @@ library(factoextra)
 library(FactoMineR)
 ```
 
-```{r}
+```{r viewdata}
 # View the firsts lignes of the dataset
 head(data)
 ```
@@ -86,7 +86,7 @@ H0 : there is no differences between species
 First, we observe the data with a boxplot. There is no significant
 differences through the boxplots.
 
-```{r}
+```{r boxplots}
 ggplot(data = data, 
        aes(x = Habitat, 
            y = Nest_End_Date)
@@ -102,7 +102,7 @@ ggplot(data = data,
 Then, we test the normality of the data. All the p-values are ranged in
 a dataframe.
 
-```{r}
+```{r testnormality}
 data |>
   # Selection of only two columns of interest
   dplyr::select(  
@@ -119,7 +119,7 @@ data |>
 Conclusion : each subset does not follow the normality. We can perform a
 U test (non parametric test) :
 
-```{r}
+```{r Utest}
 # Construction of an empty 8x8 dataframe. It will contains each p-value of the U test
 cor_df <- as.data.frame(
   matrix(nrow = 8, ncol = 8, NA)
@@ -165,7 +165,7 @@ for (sp1 in (1:(length(species)))){
 
 Now, we can observe the p-values in the following matrix :
 
-```{r}
+```{r printpvalues}
 ggcorrplot(
   corr = cor_df,
   lab = TRUE,
@@ -202,7 +202,7 @@ function of a factor AND to see the means.
 
 Here, we summarise with the factor : Species.
 
-```{r}
+```{r estimators}
 ## Calculation of the mean of each variables depending on the Species
 data_sp <- data |>
   dplyr::select(
@@ -272,7 +272,7 @@ data_sp
 We create a list called data_summariser that will contains each
 previously created tables.
 
-```{r}
+```{r summarizedata}
 data_summariser <-list()  # Creation of the due list data_summariser
 data_summariser$Species <- data_sp # Add the Species table
 data_summariser$Habitat <- data_hab 
@@ -284,7 +284,7 @@ data_summariser
 
 -   Essayer de faire une ACM en changeant les dates en mois.
 
-```{r}
+```{r datesinmonth}
 ### Creation of a function to replace the number by a month 
 
 num_to_month <- function(num){
@@ -307,7 +307,7 @@ num_to_month <- function(num){
 
 Now, we trasform all the quantitative variable into factors.
 
-```{r}
+```{r quantitativeintofactor}
 ## Conversion into months 
 data_ACM <- data
 data_ACM$Initiation_Date <- lapply(X = data_ACM$Initiation_Date, 
@@ -331,7 +331,7 @@ data_ACM <- data_ACM |>
 
 Before doing the MCA analysis, we must verify that all the modalities represent at least 3% of the data
 
-```{r}
+```{r proptable}
 # Proportions de chaques modalités dans chaques variables:
 prop.table(table(data_ACM$State))*100
 prop.table(table(data_ACM$County))*100
@@ -344,7 +344,7 @@ prop.table(table(data_ACM$Initiation_Date))*100
 prop.table(table(data_ACM$Nest_End_Date))*100
 ```
 Some of the modalities are under-represented. We must delete them. 
-```{r}
+```{r sortingcounty}
 prop.table(table(data_ACM$County))*100 < 3
 # We must delete the data of counties Carroll, Carroll/Whiteside, Grundy, Lee and Rock
 data_ACM <- data_ACM[-which(data_ACM$County == "Carroll" | 
@@ -355,7 +355,7 @@ data_ACM <- data_ACM[-which(data_ACM$County == "Carroll" |
 data_ACM$County <- droplevels(data_ACM$County)
 ```
 
-```{r}
+```{r sortingspecies}
 prop.table(table(data_ACM$Species))*100 < 3
 # We must delete the data of species Henslow's_Sparrow and Western_Meadowlark
 data_ACM <- data_ACM[-which(data_ACM$Species == "Henslow's_Sparrow" | 
@@ -363,7 +363,7 @@ data_ACM <- data_ACM[-which(data_ACM$Species == "Henslow's_Sparrow" |
 data_ACM$Species <- droplevels(data_ACM$Species)
 ```
 
-```{r}
+```{r sortingyears}
 prop.table(table(data_ACM$Year))*100 < 3
 summary(prop.table(table(data_ACM$Year))*100 < 3)
 # As half of the modalities are under-represented, we will regroup the years by 3.
@@ -383,7 +383,7 @@ prop.table(table(data_ACM$Year))*100 < 3
 # None of the years are still under-represented.
 ```
 
-```{r}
+```{r sortingnumber_fledged}
 prop.table(table(data_ACM$Number_Fledged))*100 < 3
 # We will group the nest with 5 or 6 fledged chicks with a modality labelled ">5"
 levels(data_ACM$Number_Fledged) <- c(levels(data_ACM$Number_Fledged), ">5")
@@ -391,7 +391,7 @@ data_ACM[which(data_ACM$Number_Fledged == 5 | data_ACM$Number_Fledged == 6),]$Nu
 data_ACM$Number_Fledged <- droplevels(data_ACM$Number_Fledged)
 ```
 
-```{r}
+```{r sortinginitiation_date}
 prop.table(table(data_ACM$Initiation_Date))*100 < 3
 # We must delete the data with an initiation date in august and april.
 data_ACM <- data_ACM[-which(data_ACM$Initiation_Date == "august" | 
@@ -399,7 +399,7 @@ data_ACM <- data_ACM[-which(data_ACM$Initiation_Date == "august" |
 data_ACM$Initiation_Date <- droplevels(data_ACM$Initiation_Date)
 ```
 
-```{r}
+```{r sortingnest_end_date}
 prop.table(table(data_ACM$Nest_End_Date))*100 < 3
 # We must delete the data with an end date in august and april.
 data_ACM <- data_ACM[-which(data_ACM$Nest_End_Date == "august" | 
@@ -409,7 +409,7 @@ data_ACM$Nest_End_Date <- droplevels(data_ACM$Nest_End_Date)
 
 Now, we can check again that no modalities are under-represented (thresold 3%).
 
-```{r}
+```{r proptableagain}
 # Proportions de chaques modalités dans chaques variables:
 prop.table(table(data_ACM$State))*100
 prop.table(table(data_ACM$County))*100
@@ -424,25 +424,25 @@ prop.table(table(data_ACM$Nest_End_Date))*100
 
 All the modalities are enough represented. We can now start the MCA analysis.
 
-```{r}
+```{r mca}
 # MCA without the Nest IDs.
 ACM_bird <- MCA(data_ACM[,-1])
 ```
 
-```{r}
+```{r inertiaofaxis}
 fviz_eig(ACM_bird, main="histogram of % inertia", addlabels = T)
 ```
 The inertia holded by the first axis is very low (9.3%)
 
 Let's see wich modalities are significantly contributing to the analysis, for the axis 1 and 2
 
-```{r}
+```{r contributionsofmodalities}
 fviz_contrib(ACM_bird, choice='var', axes=1)
 fviz_contrib(ACM_bird, choice='var', axes=2)
 ```
 Let's print only the modalities above the thresold of 1/n, n is the number of modalities, and the modalities above this thresold are significantly contributing to the MCA. 
 
-```{r}
+```{r printcontributingmodalities}
 # We set the thresold for significant modalities
 threshold <- (1/nrow(ACM_bird$var$contrib))*100
 
@@ -463,13 +463,18 @@ fviz_mca_var(ACM_bird, col.var='blue', repel = T, alpha.var = "contrib")
 fviz_mca_var(ACM_bird, col.var='blue', repel = T, select.var = list(contrib = 24))
 ```
 
-```{r}
+```{r printindividals_modalities}
 # Representation of the individuals between axis 1 and 2, coloring for each variable
 plotellipses(ACM_bird, means = F)
 ```
 
-We can see that the nests are clearly separated by the state they come from. The other variable are forming less distincs groups.
+We can see that the nests are clearly separated by the state they come from. 
+We can see a light shift on axis 2 with the nest fate values. The other variables
+are forming less distinct groups. 
 
+On axis 1, the most contributing variable is the state Illinois. It is associated with the specie Dickcissel, with the county Will and Lee/Ogle, years 1994-1996, and the warm season on Grassland. On the other side of the axis, the specie Savannah Sparrow is higly associated with years 2000-2002, and also with the county Lafayette and Iowa and the state Wisconsin.
 
+On axis 2, the most contributing variable is the county Dane, and associated with years 2006-2008 and cool season Grassland. It is also associated with the specie Bobolink, the nest fate equal 1, and the number fledged superior or equal to 5. To say otherwise, the nesting birds have a better success in the county Dane, especially between 2006 and 2008 and during the cool season in grasslands. The specie Bobolink is also highly successive in nesting a lot of chicks. 
+On the other side of the axis, the variable contributing are years 1997-1999, state Illinois, nest end in July, habitat pasture and county Jo Daviess, with nest fate 0 and number fledged 0. Therefore, it is most likely that these conditions are decreasing the probabilities of success in nesting chicks.
 
 
