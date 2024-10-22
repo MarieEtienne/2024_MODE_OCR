@@ -206,9 +206,9 @@ p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
   plot_layout(guides = "collect")
 ```
 
-On ne constate pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
+Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
 
-On remarque grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
+Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
 
 [**L'élévation :**]{.underline}
 
@@ -264,9 +264,9 @@ p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
 
 ```
 
-On ne constate pas de valeur aberrantes sur le Cleveland plot ou sur l'histogramme.
+Nous ne constatons pas de valeur aberrantes sur le Cleveland plot ou sur l'histogramme.
 
-On remarque grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici interressant d'utilisé un modèle linéaire généralisé et non un modèle linéaire classique.
+Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici interressant d'utilisé un modèle linéaire généralisé et non un modèle linéaire classique.
 
 [**L'aire :**]{.underline}
 
@@ -378,11 +378,11 @@ p6 <- ggplot(dataAnts, aes(sample = LogArea)) +
 
 ```
 
-On ne constate pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
+Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
 
 [**Conclusion**]{.underline} **:**
 
-L'analyse de valeurs aberrantes et de la distribution des variables suggère qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
+L'analyse de valeurs aberrantes et de la distribution des variables suggère qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea* peuvent être utilisées dans la construction du modèle.
 
 ### c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité
 
