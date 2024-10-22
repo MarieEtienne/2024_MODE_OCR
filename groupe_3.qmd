@@ -5,6 +5,24 @@ source : "Yannick Outreman, selon les données de Gotelli & Ellison (2002) - Bio
 editor: visual
 ---
 
+```{r init, include=FALSE, message=FALSE, warning=FALSE,}
+
+#Configuration de la session :
+rm(list=ls()) # Nettoyage de l'environnement de travail
+
+#Chargement des packages R :
+library(knitr)
+opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")#(TROUVER L'UTILITE ET PEUT-ÊTRE RETIRER)
+library(ggplot2) # Package pour de meilleurs visuels graphiques
+library(tinytex) # Pour la sortie pdf
+library(corrplot)# Calcul de matrice de corrélation
+library(plot3D)# Pour les graphiques 3D
+library(DHARMa)# Diagnostic du modèle
+library(rcompanion)# Modèle pseudo R²
+library(lattice)# Graphiques multipanneaux (A CHANGER?)
+library(patchwork)# Afficher plusieurs ggplot sur une page
+```
+
 # **INTRODUCTION** (Apolline et Kilian)
 
 Principe de l'exploration du jeu de données d'après l'article cité en cours.
@@ -110,24 +128,6 @@ Les modèles linéaires généralisés de type Poisson ont une structure d'erreu
 -   **Configuration de l'environnement et packages**
 
 Pour analyser nos données on configure la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion* et *lattice*.
-
-```{r init, include=FALSE, message=FALSE, warning=FALSE,}
-
-#Configuration de la session :
-rm(list=ls()) # Nettoyage de l'environnement de travail
-
-#Chargement des packages R :
-library(knitr)
-opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")#(TROUVER L'UTILITE ET PEUT-ÊTRE RETIRER)
-library(ggplot2) # Package pour de meilleurs visuels graphiques
-library(tinytex) # Pour la sortie pdf
-library(corrplot)# Calcul de matrice de corrélation
-library(plot3D)# Pour les graphiques 3D
-library(DHARMa)# Diagnostic du modèle
-library(rcompanion)# Modèle pseudo R²
-library(lattice)# Graphiques multipanneaux (A CHANGER?)
-library(patchwork)# Afficher plusieurs ggplot sur une page
-```
 
 -   **Vérification si des données sont manquantes**
 
