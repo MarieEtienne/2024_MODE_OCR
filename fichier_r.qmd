@@ -17,9 +17,90 @@ PLAN POUR GLM:
 
 ```{r}
 data_coefla = read.csv(file = "data_coefla.csv", header = T, sep = ";")
-data_chiro = read.csv(file = "data_chiro.csv", header = T, sep = ";")
+data_chiro  = read.csv(file = "data_chiro_test.csv" , header = T, sep = ";")
+data_chiro$Masse<-as.numeric(data_chiro$Masse)
+data_chiro$Age<-as.factor(data_chiro$Age)
+plot(data_chiro$Age)
+
+#Lune <- function(date){
+#  sortie <- c()
+#  for(i in 1:length(date)){
+#  date_num <- as.numeric(as_date(date[i]))
+#  sortie[i] <- (0.5*(cos((date_num-21)*((2*pi)/(29.530589)))#+1))
+#  }
+#  return(sortie)
+#  }
+
+
+length(data_rep$Date[6])
+
+
+
+data_rep <- data_chiro[which(is.na(data_chiro$Repro)==F),]
+
+# Lune(as.character(data_rep$Date[6]))
+
+
+
+#test <- Lune(data_rep$Date)
+
+data_rep$Date <-as.numeric(format(as_date(data_rep$Date),"%j"))
+
+
+data <- data_rep[,c(1,3,4,6,7,8)]
+
+data$Lune <- test
+
+round_date <-floor(data$Date)
+
+
+repro_sum <- c()
+for (d in round_date){
+  repro_sum <- c(repro_sum,length(data$Repro[which(data$Repro>0 & round_date==d)])/length(data$Repro[which(round_date==d)]))
+}
+
+
+
+#plot(unique(round_date),unique(repro_sum),pch=19,ylim=c(0,0.35))
+```
+
+
+```{r}
+Lune <- function(date){
+  sortie <- c()
+  for(i in 1:length(date)){
+  date_num <- as.numeric(as_date(date[i]))
+  sortie[i] <- (0.5*(cos((date_num-21)*((2*pi)/(29.530589)))+1))
+  }
+  return(sortie)
+  }
+
 
 ```
+```{r}
+
+
+mu <- mean(repro_sum)
+sig <- var(repro_sum)
+
+alpha <- mu*((mu*(1-mu))/(sig)-1)
+beta <- alpha * (1-mu)/mu
+
+
+x <- seq(0,1,0.05)
+pdfB <- (x^(alpha-1)*(1-x)^(beta-1))/((gamma(alpha)*gamma(beta))/(gamma(alpha+beta)))
+hist(repro_sum,probability = T,ylim = c(0,4),breaks=20)
+lines(x,pdfB)
+
+
+```
+
+```{r}
+plot(density(repro_sum,from=0,to=1,kernel = 'biweight'))
+lines(x,pdfB)
+
+```
+
 
 -   EXPLORATION DU JEU DE DONNEE
 
