@@ -566,7 +566,9 @@ data per modality. It will therefore be necessary to remove these data before co
 the analysis
 
 Factor Year: The experimental design is not balanced (from 24 to 448 data), but
-the analysis can be performed because there are enough data in each modality (> 10).
+the analysis can be performed because there are enough data in each modality (> 10 : 
+threshold from which we consider that carrying out statistical analyses makes sense.
+You can choose your own threshold).
 
 
 ### Removal of poorly represented modalities (< 10 data)
