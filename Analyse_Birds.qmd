@@ -462,7 +462,8 @@ This result is not surprising given our initial data. Because they are from diff
 
 Analysis of variance (ANOVA) is one of the most widely used statistical methods in various disciplines. It allows to model the relationship between a quantitative dependent variable $Y$ according to the different modalities of one or more qualitative explanatory variables $Xs$.
 
-We will perform an ANOVA to see the effect of qualitatives variables (state, habitat, species, year) on the quantitative Initiation_Date in the Bird_dataset.csv dataset.
+We will perform an ANOVA to see the effect of qualitatives variables (state, habitat, species, year) on the quantitative
+variable Initiation_Date in the Bird_dataset.csv dataset.
 
 We need to check the type of the variables :
   
