@@ -108,17 +108,9 @@ summary(dataAnts)
 
 ## **2. Analyse des interactions entre les variables Y et Xs (Chloé et Manon)**
 
-```{r dataCov2, include=TRUE, fig.height=4, fig.width=9}
-#Ligne ajouté qui sera supprimée, c'est juste pour avoir les données correctes
-par(mfrow=c(1,3))
-
-dataAnts$LogArea<-log(dataAnts$Area)
-
-```
-
 \###**2.1 Analyser la relation potentielle entre Y et les Xs**
 
-Afin de tester la relation éventuelle entre la variable réponse Y et les variables explicatives Xs, il sera indispensable de réaliser la modélisation statistique, c'est le seul moyen qui nous permet de tester la significativité des relations. Seulement, nous pouvons commencer par réaliser des analyses graphiques pour mieux visualiser et se faire une idée.
+Afin de tester la relation éventuelle entre la variable réponse Y et les variables explicatives Xs, il sera indispensable de réaliser la modélisation statistique, c'est le seul moyen qui nous permet de tester la significativité des relations. Cependant, nous pouvons commencer par réaliser des analyses graphiques pour mieux visualiser les données et se faire une idée.
 
 ```{r datagraph, include=TRUE, fig.height=7, fig.width=7}
 
@@ -139,9 +131,9 @@ boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Richesse spéci
 
 **Conclusion des différents graphiques :**
 
-Relation entre X et la latitude (Fig. 1) : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevée. Nous pouvons alors dire qu'il semble que plus on est au Nord, moins il y a d'espèces de fourmis.
+Relation entre X et la latitude (Fig. 1) : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevée. Nous pouvons dire que plus on se trouve au Nord, moins il y a d'espèces de fourmis.
 
-Relation entre X et l'altitude (Fig. 2) : Dans ce graphique-ci, nous pouvons voir à nouveau que plus l'altitude est importante, moins la richesse spécifique est élevée. Nous pouvons alors se dire qu'il semble que plus le relief est élévé moins il y a d'espèces de fourmis.
+Relation entre X et l'altitude (Fig. 2) : Dans ce graphique-ci, nous pouvons voir à nouveau que plus l'altitude est importante, moins la richesse spécifique est élevée. Il semble que plus le relief est élévé moins il y a d'espèces de fourmis.
 
 Relation entre X et la surperficie de la tourbière (Fig. 3) : Ici, il ne semble pas y avoir de relation entre la richesse spécifique des fourmis et la surperficie des tourbières.
 
@@ -149,7 +141,7 @@ Relation entre X et localisation (Fig. 4) : Il semble ici y avoir une relation e
 
 **Conclusion générale :**
 
-Il semble que plus les espèces se situent au nord et dans un haut relief, moins la richesse spécifique de fournis est grande. De plus, si on se trouve en forêt, il y aura une richesse spécifique plus importante que dans les tourbières.
+Il semble que plus les espèces se situent au nord et dans un haut relief, moins la richesse spécifique de fourmis est grande. De plus, si on se trouve en forêt, il y aura une richesse spécifique plus importante que dans les tourbières.
 
 \###**2.2 Analyse des éventuelles interactions entre les Xs**
 
@@ -202,7 +194,7 @@ mtext("Figure 9", side = 2, line = -6, cex = 1, las = 1)
 
 par(mfrow=c(1,3))
 
-# On vérifie la collinéarité entre catégories et variables continues
+# On vérifie la colinéarité entre catégories et variables continues
 #Latitude et Localisation
 boxplot(dataAnts$Latitude~dataAnts$Location, varwidth = TRUE, ylab = "Latitude", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 10")
 
