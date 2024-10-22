@@ -767,7 +767,7 @@ The residuals seem to follow a Normal Distribution.
 
 ### Homogeneity of variance
 
-The assumption of homogeneity of variance, that is, that the variation of the
+The assumption of homogeneity of variance is the fact that the variation of the
 residuals is approximately equal over the entire range of explanatory variables,
 should be verified by plotting the residuals at the estimated values ​​and the
 residuals at the values ​​of the significant variables. The residuals should
