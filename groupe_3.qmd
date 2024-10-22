@@ -48,7 +48,7 @@ Les variables utilisées sont :\
 
 -   **Question de recherche**
 
-Parmi les trois questions que se posent Gotelli et Ellison dans cette étude, on s'intéresse ici aux deux première :
+Parmi les trois questions que se posent Gotelli et Ellison dans cette étude, nous nous intéressons ici aux deux premières :
 
 1\) La densité des espèces est-elle en corrélation avec la latitude sur une étendue latitudinale aussi étroite ?
 
@@ -58,7 +58,7 @@ En d'autres termes : quelles sont les variables quantitatives (latitude, altitud
 
 -   **Quel modèle et pourquoi ?**
 
-Pour modéliser la relation entre une variable réponse quantitative $Y$ et des variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives on utilise des modèles linéaires généraux, ou *glm*, (régression linéaire, ANCOVA, ANOVA). Pour pouvoir utiliser ces *glm*, trois conditions d'application sont nécessaires : *l'homogénéité des variances*, *l'indépendance des résidus* et *la normalité des résidus*. Cependant, les réponses $Y$ analysées en écologie, peuvent parfois être discrètes et s'écarter de l'hypothèse normale.
+Pour modéliser la relation entre une variable réponse quantitative $Y$ et des variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives nous utilisons des modèles linéaires généraux, ou *glm*, (régression linéaire, ANCOVA, ANOVA). Pour pouvoir utiliser ces *glm*, trois conditions d'application sont nécessaires : *l'homogénéité des variances*, *l'indépendance des résidus* et *la normalité des résidus*. Cependant, les réponses $Y$ analysées en écologie, peuvent parfois être discrètes et s'écarter de l'hypothèse normale.
 
 Pour les variables réponses discrètes (comptages, données binaires), la variance de $Y$ varie généralement avec la moyenne de $Y$. Cette relation semble alors indiquer que la variance ne peut être homogène dans un jeu de données, du fait de sa dépendance à la moyenne. Or, les modèles linéaires généraux ont pour hypothèse d'application une variance constante (c'est-à-dire une homogénéité de la variance). Par ailleurs, lorsque l'on applique un modèle linéaire général à des données de comptage, les valeurs prédites obtenues peuvent être négatives (ce qui est impossible au regard de la nature de $Y$) et les résidus non distribués normalement. Donc, l'utilisation d'un modèle linéaire général (*glm*) sur des réponses discrètes génère très généralement des écarts par rapport aux conditions d'application. En conclusion, il devient necessaire d'utiliser une méthode plus adaptée à l'analyse de variables réponses discrètes telle que les Modèles linéaires généralisés (*glim*).
 
@@ -80,7 +80,7 @@ Les variables utilisées sont :\
 
 -   **Question de recherche**
 
-Parmi les trois questions que se posent Gotelli et Ellison dans cette étude, on s'intéresse ici aux deux première :
+Parmi les trois questions que se posent Gotelli et Ellison dans cette étude, nous s'intéressons ici aux deux première :
 
 1\) La densité des espèces est-elle en corrélation avec la latitude sur une étendue latitudinale aussi étroite ?
 
@@ -90,13 +90,16 @@ En d'autres termes : quelles sont les variables quantitatives (latitude, altitud
 
 -   **Quel modèle et pourquoi ?**
 
-Pour modéliser la relation entre une variable réponse quantitative $Y$ et des variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives on utilise des modèles linéaires généraux, ou *glm*, (régression linéaire, ANCOVA, ANOVA). Pour pouvoir utiliser ces *glm*, trois conditions d'application sont nécessaires : *l'homogénéité des variances*, *l'indépendance des résidus* et *la normalité des résidus*. Cependant, les réponses $Y$ analysées en écologie, peuvent parfois être discrètes et s'écarter de l'hypothèse normale.
+Pour modéliser la relation entre une variable réponse quantitative $Y$ et des variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives nous utilisons des modèles linéaires généraux, ou *glm*, (régression linéaire, ANCOVA, ANOVA). Pour pouvoir utiliser ces *glm*, trois conditions d'application sont nécessaires : *l'homogénéité des variances*, *l'indépendance des résidus* et *la normalité des résidus*. Cependant, les réponses $Y$ analysées en écologie, peuvent parfois être discrètes et s'écarter de l'hypothèse normale.
 
 Pour les variables réponses discrètes (comptages, données binaires), la variance de $Y$ varie généralement avec la moyenne de $Y$. Cette relation semble alors indiquer que la variance ne peut être homogène dans un jeu de données, du fait de sa dépendance à la moyenne. Or, les modèles linéaires généraux ont pour hypothèse d'application une variance constante (c'est-à-dire une homogénéité de la variance). Par ailleurs, lorsque l'on applique un modèle linéaire général à des données de comptage, les valeurs prédites obtenues peuvent être négatives (ce qui est impossible au regard de la nature de $Y$) et les résidus non distribués normalement. Donc, l'utilisation d'un modèle linéaire général (*glm*) sur des réponses discrètes génère très généralement des écarts par rapport aux conditions d'application. En conclusion, il devient necessaire d'utiliser une méthode plus adaptée à l'analyse de variables réponses discrètes telle que les Modèles linéaires généralisés (*glim*).
 
 Voici les étapes à suivre pour établir un modèle linéaire généralisé :\
 1. Formuler l'hypothèse de la loi de distribution de la variable réponse $Y_{i}$\
-... ... ... ... ... ...
+2. Explorer les données (valeurs aberrantes, distribution des valeurs,)\
+3. Analyser les interactions entre les variables Y et Xs (Analyse relations entre x, entre x, recherche de colinéarité entre x)\
+4. Procéder aux analyses statistiques (construction du modèle, analyse des coefficients, pouvoir explicatif du modèle)\
+5. Conclure quant aux résultats
 
 Une modélisation linéaire généralisée s'écrit comme suit : $$g(\mu_{y})= \alpha+ \beta_{1}.X_{i1}+ \beta_{2}.X_{i2}+\beta_{3}.X_{i3}+...\beta_{p}.X_{ip} = \eta $$ Le prédicteur linéaire, $\eta$, est issu du modèle linéaire comme la somme des $p$ termes associés à chacun des paramètres $\beta_{p}$. Sa valeur est obtenue en transformant la valeur de $Y$ par la fonction de lien, et la valeur prédite de $Y$ est obtenue en appliquant à $\eta$ la fonction inverse de la fonction de lien .
 
@@ -112,7 +115,7 @@ Les modèles linéaires généralisés de type Poisson ont une structure d'erreu
 
 -   **Configuration de l'environnement et packages**
 
-Pour analyser nos données on configure la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion* et *lattice*.
+Pour analyser nos données nous configurons la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion* et *lattice*.
 
 ```{r init, include=FALSE, message=FALSE, warning=FALSE,}
 #Chargement des packages R :
@@ -523,7 +526,7 @@ boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Richesse spéci
 
 **Conclusion des différents graphiques :**
 
-Relation entre X et la latitude (Fig. 1) : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevée. Nous pouvons dire que plus on se trouve au Nord, moins il y a d'espèces de fourmis.
+Relation entre X et la latitude (Fig. 1) : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevée. Nous pouvons dire que plus nous se trouve au Nord, moins il y a d'espèces de fourmis.
 
 Relation entre X et l'altitude (Fig. 2) : Dans ce graphique-ci, nous pouvons voir à nouveau que plus l'altitude est importante, moins la richesse spécifique est élevée. Il semble que plus le relief est élévé moins il y a d'espèces de fourmis.
 
@@ -533,11 +536,11 @@ Relation entre X et localisation (Fig. 4) : Il semble ici y avoir une relation e
 
 **Conclusion générale :**
 
-Il semble que plus les espèces se situent au nord et dans un haut relief, moins la richesse spécifique de fourmis est grande. De plus, si on se trouve en forêt, il y aura une richesse spécifique plus importante que dans les tourbières.
+Il semble que plus les espèces se situent au nord et dans un haut relief, moins la richesse spécifique de fourmis est grande. De plus, si nous se trouve en forêt, il y aura une richesse spécifique plus importante que dans les tourbières.
 
 \###**2.2 Analyse des éventuelles interactions entre les Xs**
 
-Nous cherchons à étudier les interactions entre le facteur et les 3 covariables. On exclut alors l'interaction entre les variables explicatives quantitatives. Nous passons par une approche graphique afin d'estimer le possible effet interactif entre ces différentes variables.
+Nous cherchons à étudier les interactions entre le facteur et les 3 covariables. Nous excluons alors l'interaction entre les variables explicatives quantitatives. Nous passons par une approche graphique afin d'estimer le possible effet interactif entre ces différentes variables.
 
 ```{r dataInter, include=TRUE, fig.height=3, fig.width=8}
 
@@ -560,7 +563,7 @@ points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Locat
 
 ```
 
-En règle générale, on peut penser qu'il y a une interaction entre les covariables si les pentes formées par les deux nuages de points sont différentes. Ici les nuages ne permettent pas de voir clairement de similitude ou de différence de tendance pour chaque graphique. Il est donc difficile de conclure sur ces interactions.
+En règle générale, nous pouvons penser qu'il y a une interaction entre les covariables si les pentes formées par les deux nuages de points sont différentes. Ici les nuages ne permettent pas de voir clairement de similitude ou de différence de tendance pour chaque graphique. Il est donc difficile de conclure sur ces interactions.
 
 \###**2.3 Vérifier une éventuelle colinéarité entre les Xs**
 
@@ -570,7 +573,7 @@ Nous cherchons à éviter la colinéarité des variables explicatives dans notre
 
 # Vérifier la colinéarité entre les variables continues indépendantes
 
-# On fait un graphique pour chaque paire de covariables
+# Nous faisons un graphique pour chaque paire de covariables
 newdata<-cbind(dataAnts$Latitude,dataAnts$Elevation,dataAnts$LogArea)
 colnames(newdata)<-c('Latitude','Altitude','Log Superficie tourbière')
 newdata<-data.frame(newdata)
@@ -586,7 +589,7 @@ mtext("Figure 9", side = 2, line = -6, cex = 1, las = 1)
 
 par(mfrow=c(1,3))
 
-# On vérifie la colinéarité entre catégories et variables continues
+# Nous vérifions la colinéarité entre catégories et variables continues
 #Latitude et Localisation
 boxplot(dataAnts$Latitude~dataAnts$Location, varwidth = TRUE, ylab = "Latitude", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 10")
 
@@ -702,7 +705,7 @@ Nous allons ensuite identifier le modèle candidat avec une autre approche que l
 
 ```{r modelAIC, include=TRUE}
 library(MASS)
-# On construit le modèle complet
+# Nous construisons le modèle complet
 modelcomplet<- glm(Nsp~ Location
         + Latitude
         + Elevation
@@ -743,7 +746,7 @@ summary(mod1)
 #Residual deviance:  40.69  on 40  degrees of freedom
 ```
 
-Le summary() du modèle nous permet de voir les coefficients correspondant à chaque variable ainsi que l'intercept (basé sur la moyenne de la population). Pour un facteur (variable qualitative) le coefficient correspond à la comparaison entre la modalité donnée et la modalité dite "de référence" dont le coefficient est égal à 0. Les scores de déviance serviront dans la partie suivante. Grâce à ce tableau on peut noter les différents coefficients :
+Le summary() du modèle nous permet de voir les coefficients correspondant à chaque variable ainsi que l'intercept (basé sur la moyenne de la population). Pour un facteur (variable qualitative) le coefficient correspond à la comparaison entre la modalité donnée et la modalité dite "de référence" dont le coefficient est égal à 0. Les scores de déviance serviront dans la partie suivante. Grâce à ce tableau nous pouvons noter les différents coefficients :
 
 **Location factor**\
 - $Location_{Bog}$ = 0 (modalité de référence du facteur Location)\
@@ -755,13 +758,13 @@ Le summary() du modèle nous permet de voir les coefficients correspondant à ch
 
 Le modèle candidat avec les coefficients s'écrit donc : $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
 
-Rappel : pour modéliser une variable quantitative discrète avec un modèle linéaire généralisé on passe par une fonction de lien, ici avec la loi de Poisson on utilise la fonction log().
+Rappel : pour modéliser une variable quantitative discrète avec un modèle linéaire généralisé nous passons par une fonction de lien, ici avec la loi de Poisson nous utilisons la fonction log().
 
 ## 3. Pouvoir explicatif du modèle (Anaelle)
 
 Afin de connaître la qualité de notre modèle, nous allons calculer la distance entre le modèle candidat et le modèle nul. Le modèle nul est un modèle qui résume les données avec un unique paramètre : la moyenne de $Y$. Ce modèle n'explique pas les données.
 
-Un moyen de connaître la qualité du modèle est de calculer un *pseudo R²*. Pour cela, on détermine la distance entre la déviance du modèle nul et la déviance résiduelle du modèle candidat.
+Un moyen de connaître la qualité du modèle est de calculer un *pseudo R²*. Pour cela, nous déterminons la distance entre la déviance du modèle nul et la déviance résiduelle du modèle candidat.
 
 $$Pseudo\:R^2=100\:.\:\frac{Déviance\:nulle- Déviance\:résiduelle}{Déviance\:nulle}$$
 
@@ -917,7 +920,7 @@ $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Fores
 
 Son index de dispersion est estimé à 1.02 ce qui montre une absence de surdispersion permettant de valider notre modèle.
 
-De même, on ne détecte pas la présence d'individus influents pouvant biaiser le modèle.
+De même, nous ne détectons pas la présence d'individus influents pouvant biaiser le modèle.
 
 Le calcul du pseudo R² estimé à 0.60 nous permet de considérer que ce modèle explique bien nos données (la déviance du modèle nul étant de 102.76 et la déviance résiduelle de 40.69).
 
