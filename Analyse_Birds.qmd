@@ -505,7 +505,7 @@ fviz_nbclust(x = mca_g,
 fviz_cluster(class, axes = c(1,2), ellipse.type = "convex")
 ```
 
-#### Réalisation of an FAMD
+#### Rudy part : Réalisation of an FAMD
 
 Here, we perform an FAMD on the initial dataframe. The FAMD is used for
 table with qualitative and quanitative variables. The ID are removed
@@ -549,15 +549,19 @@ fviz_contrib(X = famd,
              choice = "var",
              axes = 1
              )
+### County / State / Year / Species
 fviz_contrib(X = famd,
              choice = "var",
              axes = 2
              )
+### Year / Habitat / County / Species
+
 fviz_contrib(X = famd,
              choice = "var",
              axes = 3
              )
 famd$var$contrib[,1:3] > 1/9*100
+### County / Habitat / Year / Species
 ```
 
 And now, let's observe the projections of the variables and of the
@@ -569,6 +573,7 @@ fviz_famd_var(X = famd,
               repel = TRUE,
               axes = c(1,2),
               col.var = "red",
+              alpha.var = 2,
               "quali.var"
               )
 fviz_famd_var(X = famd, 
@@ -582,7 +587,33 @@ fviz_famd_ind(X = famd,
               axes = c(1,2),
               col.ind = "orange"
               )
+
 ```
+
+The projection of the variables shows an homogeneous scatterplots. The
+projection of the observations suggests two groups of individuals,
+separated merely by the axe of the ordinates. To determine the kinds of
+the groups, we have to gather variables. The right side is characterised
+by :
+
+-   Year = 1991, 1992, 1993, 1995, 1996 et 1997, 1998
+
+-   County = Lee, Lee/Ogle, Grundy, Rock, Will (Illinois)
+
+-   State : Illinois
+
+-   Species : Jo_Daviess, Dickcissel, Western_Meadowlark,
+
+-   Habitat : Prairie, Warm-season Grassland
+
+The left side is characterised by :
+
+-   Year : 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006
+-   County : Iowa, Dane, Green , Monroe, Lafayette
+-   State : Wisconsin
+-   Species : Bobolink, Savanah Sparrow, Henslow's Sparrow, Eastern
+    Meadowlark
+-   Habitat : Pasture, Cool-season Grassland
 
 With this projetion, we can see a separation
 
@@ -608,3 +639,33 @@ fviz_famd_ind(X = famd,
 
 
 ```
+
+For this projection with the axes 1 and 3, we distinguish three groups.
+
+-   Top : a specific combination of variables : the Vesper Sparrow
+    living in the prairies of Monroe in 2002.
+
+[At the left we see]{.underline} :
+
+-   Year : 1994, 1999, 2000, 2001, 2003, 2004, 2005, 2006, 2010, 2011.
+
+-   State : Wisconsin.
+
+-   Species : Savanahh Sparrow, Bobolink, Eeastern Meadowlark
+
+-   Counties : Grant, Iowa, Green, Lafayette
+
+-   Habitat : Pasture
+
+[At the right we see]{.underline} :
+
+-   Year : 1991, 1993, 1995, 1996, 1997, 1998, 2007, 2009
+
+-   State : Illinois
+
+-   Species : Dickcisel, Jo_Daviess, Western meadowlark, Grasshopper
+    Sparrow,
+
+-   Counties : Carroll, Lee/Ogel, Grundy, Rock, Lee
+
+-   Habitat : Cool and Warm season grassland
