@@ -72,3 +72,8 @@ data_test <- data_clean %>% #ici,
 
 ```
 
+```{r}
+# a faire : agreger les données pour obtenir la somme de Repro par jour julien !
+```
+
+
