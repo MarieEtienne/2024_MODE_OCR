@@ -34,3 +34,20 @@ data_abiot <- data_abiot %>%
 
 
 ```
+
+Fonction qui simule le cycle lunaire pour s'en servir comme proxy de la luminosité nocturne
+
+```{r}
+#Function to compute the moonlight % for a fixed date
+Lune <- function(date){
+  sortie <- c() #crée un vecteur vide pour stocker les résultats (cette fonction nous permet de calculer un vecteur contenant l'intensité lumineuse de la lune pour un vecteur de dates données)
+  for(i in 1:length(date)){ 
+    date_num <- as.numeric(as.Date(date[i],format="%d-%m-%Y")) #on transforme la date en nombre (0=01/01/1970)
+    sortie[i] <- (0.5*(cos((date_num-21)*((2*pi)/(29.530589)))+1)) #formule donnant l'intensité lumineuse de la lune à une date donnée
+  }
+  return(sortie)
+}
+
+data_abiot$Lune <-Lune(data_abiot$date) #Adding moonlight % to the climatic table
+
+```
