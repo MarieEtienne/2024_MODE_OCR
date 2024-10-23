@@ -3,6 +3,7 @@ title: "Titre à trouver"
 author: "TESSIER/GRAVE/DAVID/DENOUAL/SERRE/LAPORTE/LEROUX/BRUZZO"
 date: "2024-10-22"
 output: html_document
+bibliography: references.bib
 ---
 
 #### We have at our disposal 4 datasets including :
@@ -24,6 +25,11 @@ coord_chiro<-read_excel("COORD_CAPTURE.xlsx")
 
 ```
 
+#### Data processing
+
+-   Firstly we concatenate all the abiotic data together
+
+-   Then we start to clean the abiotic the dataset by deleting all years that precede the first event of capture, the we use the Lubridate R package [@grolemund2016lubridate] to formate the data column as we want and the dplyr R package [@wickham2014dplyr] to re-organize the data set
 
 ```{r}
 
@@ -43,7 +49,9 @@ data_abiot <- data_abiot %>%
 
 ```
 
-Function that simulates the lunar cycle as a proxy for night-time luminosity
+#### Computing moonlight intensity
+
+- Function that simulates the lunar cycle as a proxy for night-time luminosity
 
 ```{r}
 #Function to compute the moonlight % for a fixed date
@@ -60,7 +68,9 @@ data_abiot$Lune <-Lune(data_abiot$date) #Adding moonlight % to the climatic tabl
 
 ```
 
-data_chiro table pre-processing :
+#### Data processing
+
+- Data_chiro table pre-processing : We only keep the columns of interest, then we only keep the female individuals because the reproduction indices are mainly observable on females. We only keep adult individuals because this is the age class likely to have reproductive indices.
 
 ```{r}
 data_chiro <- data_chiro %>%
@@ -81,7 +91,9 @@ data_test <- data_clean %>% #ici,
 
 ```
 
-Fonction for converting minute/second degree into decimal degrees
+#### Converting DMS coordinates to decimal coordinates
+
+- Fonction for converting minute/second degree into decimal degrees
 
 ```{r}
 # Fonction pour convertir DMS en degrés décimaux
@@ -107,6 +119,8 @@ convert_dms_to_decimal <- function(dms) {
 
 ```
 
+- We convert the DMS coordinates to decimal coordinates and we merge it with data_chiro by the capture locality
+
 ```{r}
 coord_chiro <- coord_chiro %>%
   rowwise() %>%  # Appliquer la mutation par ligne
@@ -126,4 +140,23 @@ data_chiro <- data_chiro %>%
 data_chiro <- data_chiro%>%
   select(COMMUNE.x,LIEU_DIT,Date,Espèce,Sexe,Repro,Age,Year,julian_day,LAT,LON)%>% #on spécifie les colonnes que l'on garde
   rename(COMMUNE = COMMUNE.x)
+```
+
+```{bib}
+@article{grolemund2016lubridate,
+  title={lubridate: Make dealing with dates a little easier},
+  author={Grolemund, Garrett and Wickham, Hadley and Spinu, Vitalie and Constigan, Imanuel and Lee, Chel Hee and Cotton, Richard and Lyttle, Ian and Chang, Winston},
+  journal={R package version},
+  volume={1},
+  number={6},
+  year={2016}
+}
+
+@article{wickham2014dplyr,
+  title={dplyr},
+  author={Wickham, Hadley and Francois, R and Henry, L and M{\"u}ller, K},
+  journal={A Grammar of Data Manipulation 2020 [Last accessed on 2020 Aug 12] Available from},
+  pages={Rproject},
+  year={2014}
+}
 ```
