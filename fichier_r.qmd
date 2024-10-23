@@ -4,5 +4,15 @@ author: "TESSIER/GRAVE/DAVID/DENOUAL/SERRE/LAPORTE/LEROUX/BRUZZO"
 date: "2024-10-22"
 output: html_document
 ---
+```{r}
+
+library(readxl)
+data_chiro<-read_excel("data_chiro.xlsx") #import data chiro
+data_abiot_50_22<-read.csv("abiot_1950_2022.csv", sep = ";") #import data meteo 1950 -> 2022 #pensez à mettre les sources
+data_abiot_23_24<-read.csv("abiot_2023_2024.csv", sep = ";") #import data meteo 2023 -> 2024
+coord_chiro<-read_excel("COORD_CAPTURE.xlsx")
+
+```
+
 
 #test
