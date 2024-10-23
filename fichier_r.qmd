@@ -35,7 +35,7 @@ data_abiot <- data_abiot %>%
 
 ```
 
-Fonction qui simule le cycle lunaire pour s'en servir comme proxy de la luminosité nocturne
+Function that simulates the lunar cycle as a proxy for night-time luminosity
 
 ```{r}
 #Function to compute the moonlight % for a fixed date
@@ -51,3 +51,18 @@ Lune <- function(date){
 data_abiot$Lune <-Lune(data_abiot$date) #Adding moonlight % to the climatic table
 
 ```
+
+data_chiro table pre-processing : 
+
+```{r}
+data_chiro <- data_chiro %>%
+  select(c(Année, Commune, Localité, Date, Espèce, Sexe, Repro, Age)) %>% #select the columns we want
+  filter(Sexe == "F") %>% #on ne garde que les femelles car très peu d'indices de repro sur les mâles
+  filter(Age == "AD") %>% #on ne conserve que les individus 
+  mutate(Date = ymd(Date)) %>% #date en jour julien
+  mutate(Year = year(Date)) %>% # Créer une nouvelle colonne 'Year' contenant uniquement l'année
+  mutate(Date = format(Date, "%d-%m-%Y"))%>% #formatage de la date
+  mutate(julian_day = yday(Date))%>% #Date =julian_day
+  rename(LIEU_DIT = Localité, COMMUNE = Commune) #on renomme
+```
+
