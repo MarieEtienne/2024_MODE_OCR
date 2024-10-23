@@ -64,6 +64,12 @@ data_chiro <- data_chiro %>%
   mutate(Date = format(Date, "%d-%m-%Y"))%>% #formatage de la date
   mutate(julian_day = yday(Date))%>% #Date =julian_day
   rename(LIEU_DIT = Localité, COMMUNE = Commune) #on renomme
+
+# Agréger les données pour obtenir la somme de Repro par jour julien
+data_test <- data_clean %>% #ici, 
+  group_by(julian_day) %>%
+  summarise(somme_repro = length(Repro))
+
 ```
 
 ```{r}
