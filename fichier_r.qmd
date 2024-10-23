@@ -108,4 +108,22 @@ convert_dms_to_decimal <- function(dms) {
 ```
 
 ```{r}
+coord_chiro <- coord_chiro %>%
+  rowwise() %>%  # Appliquer la mutation par ligne
+  mutate(
+    lon_dms = str_extract(COORD, "^[^N]+W"),  # Extraire la partie longitude
+    lat_dms = str_extract(COORD, "[^W]+N"),   # Extraire la partie latitude
+    Longitude = convert_dms_to_decimal(lon_dms),  # Convertir en décimal
+    Latitude = convert_dms_to_decimal(lat_dms)    # Convertir en décimal
+  ) %>%
+  ungroup() %>%  # Sortir du contexte rowwise
+  select(COMMUNE, LIEU_DIT, Latitude, Longitude)%>% #choisir les colonnes que l'on garde
+  rename(LAT = Latitude, LON = Longitude) #on renomme
+
+data_chiro <- data_chiro %>%
+  inner_join(coord_chiro, by = "LIEU_DIT") # on merge la table des coordonnées décimales à celles des données de capture en fonction du lieu de capture
+
+data_chiro <- data_chiro%>%
+  select(COMMUNE.x,LIEU_DIT,Date,Espèce,Sexe,Repro,Age,Year,julian_day,LAT,LON)%>% #on spécifie les colonnes que l'on garde
+  rename(COMMUNE = COMMUNE.x)
 ```
