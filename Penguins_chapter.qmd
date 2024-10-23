@@ -311,6 +311,48 @@ Now, we want to observe whether certain qualitative variables have an effect on 
 - *Island*\
 - *Sex*\
 
+```{r,include=TRUE, fig.height=5, fig.width=5}
+par(mfrow=c(1,3))
+box1 <- ggplot(data = data)+
+  geom_boxplot(aes(x=species,y=body_mass, fill = species))
+
+box2 <- ggplot(data = data)+
+  geom_boxplot(aes(x=island,y=body_mass, fill = island))
+
+box3 <- ggplot(data = data)+
+  geom_boxplot(aes(x=sex,y=body_mass, fill = sex))
+box1;box2;box3
+```
+
+We have noticed some trends that we will have to confirm with statistical tests.\
+Box1: Gentoo penguins appear to be heavier than the other two species.\
+Box2: Penguins from Biscoe Island appear to be heavier than the other two islands.\
+Box3: Male penguins appear to be heavier than the other two categories.\
+We run anovas to confirm these differences.\
+
+```{r}
+anova1 = aov(data$body_mass~data$species)
+
+summary(anova1)
+```
+There is a significant *difference between the body mass of these 3 species*, almost 2 of them.
+
+```{r}
+anova2 = aov(body_mass~island, data = data)
+
+summary(anova2)
+```
+There is a significant *difference between the body mass of these 3 islands*, almost 2 of them.
+
+
+```{r}
+anova3 = aov(body_mass~sex, data = data)
+
+summary(anova3)
+```
+
+There is a significant *difference between the body mass and the sex.*
+
 ### PCA : 
 
 ```{r}
@@ -329,8 +371,6 @@ data_scales <- scale(data_numeric)
 acp_data= PCA(data_scales, graph = F)
 summary(acp_data)
 ```
-
-
 
 Histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, keep 2 dimensions and 78.4% inertia.  
 
@@ -402,24 +442,6 @@ grid.arrange(bi_plot, va_propre, c1, c2,  #names of graphs
 ```
 
 
-```{r}
-NA_df <- (colSums(is.na(data)) / nrow(data)) * 100
-
-color_pal <- colorRampPalette(c("limegreen", "yellow", "firebrick"), bias = 20)(10)
-NA_col <- color_pal[as.integer(NA_df/length(NA_df)*9)+1]
-
-# Graphique
-barplot(NA_df, main = "NA quantity per column",
-        ylab = "NA", col = NA_col, las=2, cex.names=0.4)
-
-NA_mean<-mean(NA_df)
-# 0.78% 
-
-abline(h=NA_mean, col = "red", lwd = 2)
-
-```
-
-
 ## Violin plot :
 
 ```{r violin}
@@ -460,50 +482,6 @@ ggplot(data, aes(x = species, y = body_mass, fill = species)) +
 ```
 
 
-
-```{r,include=TRUE, fig.height=6, fig.width=6}
-par(mfrow=c(3,3))
-box1 <- ggplot(data = data)+
-  geom_boxplot(aes(x=species,y=body_mass, fill = species))
-
-box2 <- ggplot(data = data)+
-  geom_boxplot(aes(x=island,y=body_mass, fill = island))
-
-box3 <- ggplot(data = data)+
-  geom_boxplot(aes(x=sex,y=body_mass, fill = sex))
-box1;box2;box3
-```
-
-We have noticed some trends that we will have to confirm with statistical tests.\
-Box1: Gentoo penguins appear to be heavier than the other two species.\
-Box2: Penguins from Biscoe Island appear to be heavier than the other two islands.\
-Box3: Male penguins appear to be heavier than the other two categories.\
-We run anovas to confirm these differences.\
-
-```{r}
-anova1 = aov(data$body_mass~data$species)
-
-summary(anova1)
-```
-There is a significant *difference between the body mass of these 3 species*, almost 2 of them.
-
-```{r}
-anova2 = aov(body_mass~island, data = data)
-
-summary(anova2)
-```
-There is a significant *difference between the body mass of these 3 islands*, almost 2 of them.
-
-
-```{r}
-anova3 = aov(body_mass~sex, data = data)
-
-summary(anova3)
-```
-
-There is a significant *difference between the body mass and the sex.*
-
-
 # Body mass model
 
 The aim of this part is to determine which variable influence the penguins' body mass.
@@ -531,6 +509,8 @@ dataLM<-dataLM %>%
 
 summary(dataLM)
 ```
+
+
 ## Exploration of the data 
 We begin the analysis by exploring the data and looking for aberrant values.
 First we look at the response variable: body mass
