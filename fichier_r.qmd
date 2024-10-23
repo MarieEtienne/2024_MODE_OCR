@@ -66,3 +66,8 @@ data_chiro <- data_chiro %>%
   rename(LIEU_DIT = Localité, COMMUNE = Commune) #on renomme
 ```
 
+```{r}
+# a faire : agreger les données pour obtenir la somme de Repro par jour julien !
+```
+
+
