@@ -6,7 +6,10 @@ output: html_document
 ---
 ```{r}
 
+library(dplyr)
 library(readxl)
+library(lubridate)
+
 data_chiro<-read_excel("data_chiro.xlsx") #import data chiro
 data_abiot_50_22<-read.csv("abiot_1950_2022.csv", sep = ";") #import data meteo 1950 -> 2022 #pensez à mettre les sources
 data_abiot_23_24<-read.csv("abiot_2023_2024.csv", sep = ";") #import data meteo 2023 -> 2024
@@ -14,5 +17,18 @@ coord_chiro<-read_excel("COORD_CAPTURE.xlsx")
 
 ```
 
+```{r}
+
+# CLEANING AND CREATING A CLIMATIC TABLE --------------------------------------------------
+data_abiot<-rbind(data_abiot_50_22, data_abiot_23_24) #On concatène les deux tables de données ensemble
+
+data_abiot <- data_abiot %>%
+  filter(AAAAMMJJ >= 20141028) %>% #delete everything before this date
+  mutate(AAAAMMJJ = ymd(AAAAMMJJ)) %>%  # Conversion en format Date
+  mutate(Year = year(AAAAMMJJ)) %>%  # Extraire l'année après conversion en Date
+  mutate(AAAAMMJJ = format(AAAAMMJJ, "%d-%m-%Y")) %>%  # Formater la date en 'dd-mm-YYYY'
+  select(NUM_POSTE, NOM_USUEL, LAT, LON, AAAAMMJJ, RR, TM, TAMPLI, FFM, Year) # finir les pipes
+
+```
 
 #test
