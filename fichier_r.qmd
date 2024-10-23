@@ -4,6 +4,13 @@ author: "TESSIER/GRAVE/DAVID/DENOUAL/SERRE/LAPORTE/LEROUX/BRUZZO"
 date: "2024-10-22"
 output: html_document
 ---
+
+#### We have at our disposal 4 datasets including :
+
+-   the data collected on the species of bats captured by date and location in French Guiana, and containing information on sex, age and reproductive state\
+-   the meteorological data of French Guiana from 1950 to 2024\
+-   the capture locations coordinates (degree minute second)
+
 ```{r}
 
 library(dplyr)
@@ -16,6 +23,7 @@ data_abiot_23_24<-read.csv("abiot_2023_2024.csv", sep = ";") #import data meteo 
 coord_chiro<-read_excel("COORD_CAPTURE.xlsx")
 
 ```
+
 
 ```{r}
 
@@ -52,7 +60,7 @@ data_abiot$Lune <-Lune(data_abiot$date) #Adding moonlight % to the climatic tabl
 
 ```
 
-data_chiro table pre-processing : 
+data_chiro table pre-processing :
 
 ```{r}
 data_chiro <- data_chiro %>%
@@ -73,6 +81,7 @@ data_test <- data_clean %>% #ici,
 
 ```
 
+Fonction for converting minute/second degree into decimal degrees
 
 ```{r}
 # Fonction pour convertir DMS en degrés décimaux
