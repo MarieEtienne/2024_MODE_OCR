@@ -10,51 +10,68 @@ output:
    toc_float: true
 ---
 
-Les ecosystemes terrestres ont ete domines pendant plusieurs millions d'annees par les grands mammiferes herbivores, qui ont ensuite decline à la fin du Pleistocene sous la pression des premieres populations humaines prehistoriques. La perte de ces especes de grands herbivores (aurochs, chevaux et anes sauvages, rhinoceros laineux...) a egalement ete synonyme de la perte des services ecosystemiques qu'ils apportaient. @lundgren2020human
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      INTRODUCTION
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Depuis plusieurs annees, le courant du reensauvagement ("rewilding" en anglais) a pour but de restaurer ces services ecosytemique en reintroduisant des especes dans les grands espaces naturels europeens.L'etude presente cherche a evaluer dans quelle mesure les especes d'herbivores introduites ont une influence sur la vegetation. @garido2019experimental
+Terrestrial ecosystems were dominated for several million years by large herbivorous mammals, which then declined at the end of the Pleistocene under the pressure of the first prehistoric human populations. The loss of these large herbivore species (aurochs, wild horses and anes, woolly rhinoceros...) was also synonymous with the loss of the ecosystem services they provided. @lundgren2020human
 
-PRESENTATION DE L'EXPERIENCE
+For several years, the “rewilding” movement has been aiming to restore these ecosystem services by reintroducing species into large European natural areas, and the present study seeks to assess the extent to which introduced herbivore species have an influence on vegetation. @garido2019experimental
 
-Le site d'etude est situe a environ 17 km au Sud d'Uppsala. Sur ce site d'etude, trois parcelles ont ete utilisees. Chaque parcelle a ete divisee en deux, avec une partie non paturee et une partie paturee. Quatre jeunes etalons de race Gotland ont ete places dans chaque partie dediee au paturage pendant trois ans.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      MATERIALS AND METHODS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-De nombreuses variables ont ete etudiees :
-- la hauteur des plantes a maturite
-- le poids des graines
-- le nombre d'especes differentes
-- la surface de parcelle occupee par des plantes anemogames 
-- la surface de parcelle occupee par des plantes entomogames 
-- le RCS score *
-D'autres informations ont ete notees a chaque releve comme la saison, l'annee et l'observateur qui a realise l'inventaire. Des informations sur les insectes trouves sur la parcelle ont aussi ete relevees mais ne seront pas utilisees dans notre analyse.
 
-* Le score RCS correspond a un indice de strategie utilisee par les plantes @Wood2018microbiomes
+The study site is located approximately 17 km south of Uppsala, Sweden. On this study site, three plots were used. Each plot was divided in two, with an ungrazed part and a grazed part. Four young Gotland stallions were placed in each grazing area for three years.
 
-PROBLEMATIQUES
+Numerous variables were studied:
+- plant height at maturity
+- seed mass
+- species richness
+- plot area occupied by anemogamous plants 
+- plot area occupied by entomogamous plants 
+- RCS score *.
+Other information was noted at each survey, such as the season, year and observer who carried out the inventory. Information on the insects found on the plot was also recorded, but will not be used in our analysis.
 
-Nous avons choisi d'utiliser le jeu de donnees de @garido2019experimental pour repondre a trois problematiques differentes. Tout d'abord, est-ce que le paturage a un effet sur la richesse specifique vegetale des parcelles ? Ensuite, est-ce que le paturage a un effet sur la morphologie des plantes ? Et enfin, le paturage a-t-il un effet sur la strategie de pollinisation des plantes ?
+* The RCS score corresponds to an index of the strategy used by the plants. @Wood2018microbiomes
 
-Pour repondre a ces questions, nous avons transforme le jeu de donnees initial pour obtenir un jeu de donnees de 404 releves. Les variables utilisees sont les suivantes :
-- treatment 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      RESEARCH QUESTIONS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We have chosen to use the  @garido2019experimental dataset to answer three different questions. Firstly, does grazing have an effect on the plant species richness of plots? Secondly, does grazing have an effect on plant morphology? And finally, does grazing have an effect on plant pollination strategies?
+
+To answer these questions, we transformed the initial dataset to obtain a dataset of 404 records. The variables used are :
+- treatment (grazed or ungrazed)
 - season
 - year
-- cover.area.bee 
-- cover.area.gene
-- logh
-- logS
-- richness
+- cover.area.bee (plot area occupied by entomogamous plants)
+- cover.area.gene (plot area occupied by anemogamous plants)
+- logh (log of plant height)
+- logS (log of seed mass)
+- richness (species richness)
 - observer
 - R.score
 - S.score
 - C.score
-- ratio poll
+- ratio poll (cover.area.bee/cover.area.gene)
 
-IMPORTATION DU JEU DE DONNEES 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      DATA IMPORT
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 ```{r}
-df <- read.table('pollen.csv', sep = ';', header = TRUE)
+df <- read.table('pollen.csv', sep = ';',stringsAsFactors=TRUE, header = TRUE)
+df$year <- as.factor(df$year)
+summary (df)
 ```
 
-IMPORTATION DES PACKAGES
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      PACKAGES IMPORT
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 ```{r}
 
