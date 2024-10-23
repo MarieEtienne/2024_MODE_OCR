@@ -27,8 +27,10 @@ data_abiot <- data_abiot %>%
   mutate(AAAAMMJJ = ymd(AAAAMMJJ)) %>%  # Conversion en format Date
   mutate(Year = year(AAAAMMJJ)) %>%  # Extraire l'année après conversion en Date
   mutate(AAAAMMJJ = format(AAAAMMJJ, "%d-%m-%Y")) %>%  # Formater la date en 'dd-mm-YYYY'
-  select(NUM_POSTE, NOM_USUEL, LAT, LON, AAAAMMJJ, RR, TM, TAMPLI, FFM, Year) # finir les pipes
+  select(NUM_POSTE, NOM_USUEL, LAT, LON, AAAAMMJJ, RR, TM, TAMPLI, FFM, Year) %>% # finir les pipes
+  # Inclure la colonne Year
+  rename(date = AAAAMMJJ, rain_mm = RR, Temperature = TM, ampli_Temp = TAMPLI, wind_ms = FFM, COMMUNE = NOM_USUEL)%>% #renommer les colonnes
+  mutate(julian_day = yday(date)) #mettre au format jour julien
+
 
 ```
-
-#test
