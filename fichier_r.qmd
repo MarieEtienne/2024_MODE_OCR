@@ -73,8 +73,30 @@ data_test <- data_clean %>% #ici,
 
 ```
 
+
 ```{r}
+# Fonction pour convertir DMS en degrés décimaux
+convert_dms_to_decimal <- function(dms) {
+  # Séparer les parties de la coordonnée DMS
+  parts <- str_match(dms, "(\\d+)°(\\d+)'(\\d+\\.?\\d*)''\\s([NSEW])")
+  
+  degrees <- as.numeric(parts[, 2]) 
+  minutes <- as.numeric(parts[, 3])
+  seconds <- as.numeric(parts[, 4])
+  direction <- parts[, 5]
+  
+  # Calculer les degrés décimaux
+  decimal <- degrees + minutes / 60 + seconds / 3600
+  
+  # Ajuster en fonction de la direction (S ou W deviennent négatifs)
+  if (direction %in% c("S", "W")) {
+    decimal <- -decimal
+  }
+  
+  return(decimal)
+}
 
 ```
 
-
+```{r}
+```
