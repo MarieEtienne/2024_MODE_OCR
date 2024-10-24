@@ -1,6 +1,4 @@
 ---
-
-
 title: "Effets du pâturage sur les prairies suédoises"
 group: "Bastien, Elia, Caroline, Alexia, Marine, Lily, Julie" 
 >>>>>>> 75e9da09555ae3bad45e7f54a26d7c51188f42d7
@@ -36,29 +34,33 @@ df <- read.table("pollen.csv", sep = ";" , header = TRUE)
 
 and produce a graph
 
-## Effets du pâturage sur la richesse spécifique 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      PARTIE 1 : Effet du paturage sur la richesse specifique
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Visualisation des données 
-
-```{r}
-df<-rename(.data=df,Richesse=num.species, Traitement=treatment)
-```
-Les variables ont été renommées
-
+# Visualisation des donnees
 ```{r}
 ggplot(data=df)+
-  geom_boxplot(aes(x=Traitement, y=Richesse))+
-  geom_jitter(aes(x=Traitement, y=Richesse))
+  geom_boxplot(aes(x=treatment, y=num.species))+
+  geom_jitter(aes(x=treatment, y=num.species)) + 
+  labs(x="Treatment", y="Species richness") +
+  ggtitle('Effect of grassland on species richness')
 ```
-
+La richesse specifique des zones paturees semble etre plus importante que dans les zones non paturees. 
 
 ```{r}
-df %>% ggplot(aes(x=Traitement, y=Richesse)) +
-  geom_boxplot(aes(x=Traitement, y=Richesse))+
-  geom_jitter(aes(x=Traitement, y=Richesse)) +
-  labs(x="Traitement", y="Richesse spécifique") +
-  ggtitle('Influence du pâturage sur la richesse spécifique')
+hyp1<-lm(num.species~1,data=df)
+hyp0<-lm(num.species~treatment,data=df)
+anova(hyp0,hyp1)
 ```
+La p-value est inferieure a 0,05 donc le paturage a un effet significatif sur la richesse specifique. 
+
+# Choix du modele : dans cette partie, nous considerons que le paturage (treatment) depend de la saison et de l'annee d'observation. 
+ 
+
+
+
+
 
 
 A citation @bauer2023writing
