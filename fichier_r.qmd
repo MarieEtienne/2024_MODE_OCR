@@ -165,6 +165,23 @@ coord <- datamap[,c(4,3)] #on récupère les coordonnées de chaque stations mé
 
 ```
 
+```{r}
+dd <- unique(data_merged$Date)
+res<- c()
+for(d in dd){
+  
+  if(length(datamap$date[which(datamap$date==d)])>0){ #On vérifie que les données météo ont une correspondance avec les données de comptage 
+    coord_d <- coord[which(datamap$date==d),]
+    delau <- c()
+    delau<-tryCatch({ tri2nb(coord_d)}, error=function(e){}) #On réalise une triangulantion de delaunay, l'argument tryCatch empeche la boucle for de s'interrompre à cause d'une erreur non-fatale
+    delau.w<- nb2listw(delau, style="S", zero.policy=TRUE)
+    m<-c()
+    m <- moran.test(datamap$rain_mm[which(datamap$date==d)], delau.w, zero.policy=TRUE)
+    }
+} # On réalise un test de moran pour voir s'il y a une autocorélation spatiale de la pluie
+
+```
+
 
 
 ```{bib}
