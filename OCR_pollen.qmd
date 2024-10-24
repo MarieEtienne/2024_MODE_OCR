@@ -85,6 +85,7 @@ boxplot(res~treatment:year,data=df)
 df$interaction <- interaction(df$treatment, df$year)
 bartlett.test(res ~ interaction, data = df)
 ```
+Pour les tests de Bartlett, les p-value sont toutes supérieures à 0.05, ce qui veut dire que l'homoscédasticité est respectée pour tous nos parametres soit que les variances sont toutes egales pour toutes nos observations.
 
 
 A citation @bauer2023writing
