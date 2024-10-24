@@ -24,7 +24,7 @@ library(ade4)
 library(spdep)
 library(tripack)
 library(sp)
-library(geoR)
+#library(geoR)
 
 ```
 
@@ -168,9 +168,6 @@ data_merged = read.csv("data_merged.csv", header = T)
 ```
 
 ```{r Rain, include=FALSE}
-library(spdep)
-library(sp)
-library(geoR)
 
 datamap<-read.csv("data_meteo.csv",row.names = 1)
 coord <- datamap[,c(4,3)] #on récupère les coordonnées de chaque stations météos
