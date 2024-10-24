@@ -151,10 +151,16 @@ points(coord_chiro$LON,coord_chiro$LAT,pch=20,col="blue")
 
 ```
 
-
 Data import :
 
+```{r}
+data_merged = read.csv("data_merged.csv", header = T)
+```
+
 ```{r Rain}
+library(spdep)
+library(sp)
+library(geoR)
 
 datamap<-read.csv("data_meteo.csv",row.names = 1)
 coord <- datamap[,c(4,3)] #on récupère les coordonnées de chaque stations météos
