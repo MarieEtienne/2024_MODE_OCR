@@ -152,9 +152,10 @@ plot(limite[,1],limite[,2],type='l')
 points(data_abiot$LON,data_abiot$LAT,pch=20,col='green')
 points(coord_chiro$LON,coord_chiro$LAT,pch=20,col="blue")
 
+
 ```
 
-Data import
+Data import : 
 ```{r}
 ############################
 ############################
@@ -185,3 +186,4 @@ coord <- datamap[,c(4,3)] #on récupère les coordonnées de chaque stations mé
   year={2014}
 }
 ```
+
