@@ -67,7 +67,6 @@ AIC = 645.2 et BIC = 669.2. Le critere AIC etant plus petit pour ce modele que l
 de conserver : num.species ~ treatment + season + year + treatment:year. Il y a donc interaction entre le paturage et son annee d'observation.   
 
 # Validation du modele choisi avec le test de Bartlett
-
 ```{r}
 modelAIC<-lm(num.species~treatment+season+year+treatment:year,data=df)
 
@@ -87,5 +86,10 @@ bartlett.test(res ~ interaction, data = df)
 ```
 Pour les tests de Bartlett, les p-value sont toutes supérieures à 0.05, ce qui veut dire que l'homoscédasticité est respectée pour tous nos parametres soit que les variances sont toutes egales pour toutes nos observations.
 
+#Test normalité des résidus avec Shapiro.
+hist(res,main="Histogramme residus",xlab="Residus")
+shapiro.test(res)
+
+La normalite des residus est respectee car notre p-value est superieure a 0,05 : les donnees sont compatibles avec une distribution normale. Notre modele lineaire est donc valide car la normalite des residus est une hypothese cle pour appliquer ce modele.
 
 A citation @bauer2023writing
