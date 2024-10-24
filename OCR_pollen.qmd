@@ -146,11 +146,8 @@ paturage:annee
                           PARTIE 3: GRAZING EFFECT ON POLLINISATION STRATEGIES 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-```{r}
-df <- read.table("pollen.csv", sep = ";" , header = TRUE)
-=======
-Data importation
 
+Data importation
 ```{r pollen_read_data}
 df <- read_delim("pollen.csv", delim = ";", 
     escape_double = FALSE, trim_ws = TRUE)
@@ -199,7 +196,7 @@ poll5<-LinearModel(RatioPoll~( treatment + season + year +
     treatment:C.score + year:C.score + 
     observer:R.score ),data=df)
 poll5
-
+```
 The p-value of S.score is not significant and does not appear in any significant interactions. We therefore decide to remove it
 
 ```{r coeff3}
