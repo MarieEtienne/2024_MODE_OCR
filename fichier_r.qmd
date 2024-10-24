@@ -157,7 +157,7 @@ Data import :
 data_merged = read.csv("data_merged.csv", header = T)
 ```
 
-```{r Rain}
+```{r Rain, include=FALSE}
 library(spdep)
 library(sp)
 library(geoR)
@@ -205,7 +205,7 @@ data_merged$Pluie <- res
 
 ```
 
-```{r Temperature}
+```{r Temperature, include=FALSE}
 
 dd <- unique(data_merged$Date)
 res<- c()
@@ -247,7 +247,7 @@ data_merged$Température <- res
 
 ```
 
-```{r Range}
+```{r Range, include=FALSE}
 
 dd <- unique(data_merged$Date)
 res<- c()
