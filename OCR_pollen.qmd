@@ -92,4 +92,9 @@ shapiro.test(res)
 
 La normalite des residus est respectee car notre p-value est superieure a 0,05 : les donnees sont compatibles avec une distribution normale. Notre modele lineaire est donc valide car la normalite des residus est une hypothese cle pour appliquer ce modele.
 
+# Conclusion partie 1 sur la richesse spécifique.
+
+La richesse spécifique depend donc du paturage, de la saison et de l’annee, ainsi que de l’interaction
+paturage:annee
+
 A citation @bauer2023writing
