@@ -24,7 +24,7 @@ library(ade4)
 library(spdep)
 library(tripack)
 library(sp)
-#library(geoR)
+library(geoR)
 
 ```
 
