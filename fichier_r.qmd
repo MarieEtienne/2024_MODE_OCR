@@ -148,7 +148,60 @@ points(data_abiot$LON,data_abiot$LAT,pch=20,col='green')
 points(coord_chiro$LON,coord_chiro$LAT,pch=20,col="blue")
 
 
+
 ```
+
+```{r}
+# Fonction pour joindre les données en minimisant la distance géographique
+merge_with_min_distance <- function(data_chiro, data_abiot) {
+  
+  # Initialiser une liste pour stocker les résultats
+  result_list <- list()
+  
+  # Parcourir chaque ligne de data_chiro
+  for (i in 1:nrow(data_chiro)) {
+    
+    # Filtrer data_abiot par COMMUNE, Year et julian_day
+    filtered_data_abiot <- data_abiot %>%
+      filter(COMMUNE == data_chiro$COMMUNE[i],
+             Year == data_chiro$Year[i],
+             julian_day == data_chiro$julian_day[i])
+    
+    # Si data_abiot contient des lignes correspondantes
+    if (nrow(filtered_data_abiot) > 0) {
+      
+      # Calculer la distance géographique entre le point LAT/LON de data_chiro et chaque point de data_abiot
+      distances <- distHaversine(
+        cbind(filtered_data_abiot$LON, filtered_data_abiot$LAT),
+        c(data_chiro$LON[i], data_chiro$LAT[i])
+      )
+      
+      # Trouver l'indice de la distance minimale
+      min_index <- which.min(distances)
+      
+      # Sélectionner les colonnes de data_abiot associées à la distance minimale
+      best_match <- filtered_data_abiot[min_index, c("rain_mm", "Temperature", "ampli_Temp", "wind_ms")]
+      
+      # Ajouter les colonnes environnementales à la ligne de data_chiro
+      result_list[[i]] <- cbind(data_chiro[i, ], best_match)
+      
+    } else {
+      # Si aucune correspondance trouvée, ajouter NA pour les colonnes environnementales
+      result_list[[i]] <- cbind(data_chiro[i, ], rain_mm = NA, Temperature = NA, ampli_Temp = NA, wind_ms = NA)
+    }
+  }
+  
+  # Combiner tous les résultats en un seul dataframe
+  result_df <- do.call(rbind, result_list)
+  
+  return(result_df)
+}
+
+# Appliquer la fonction
+data_merged <- merge_with_min_distance(data_chiro, data_abiot)
+```
+
+
 
 Data import :
 
