@@ -169,6 +169,13 @@ coord <- datamap[,c(4,3)] #on récupère les coordonnées de chaque stations mé
 ```
 
 ```{r}
+############################
+############################
+# Pluie -------------------------------------------------------------------
+
+datamap<-read.csv("data_meteo.csv",row.names = 1)
+coord <- datamap[,c(4,3)] #on récupère les coordonnées de chaque stations météos
+
 dd <- unique(data_merged$Date)
 res<- c()
 for(d in dd){
@@ -179,8 +186,32 @@ for(d in dd){
     delau<-tryCatch({ tri2nb(coord_d)}, error=function(e){}) #On réalise une triangulantion de delaunay, l'argument tryCatch empeche la boucle for de s'interrompre à cause d'une erreur non-fatale
     delau.w<- nb2listw(delau, style="S", zero.policy=TRUE)
     m<-c()
-    m <- moran.test(datamap$rain_mm[which(datamap$date==d)], delau.w, zero.policy=TRUE)
-    }
-} # On réalise un test de moran pour voir s'il y a une autocorélation spatiale de la pluie
+    m <- moran.test(datamap$rain_mm[which(datamap$date==d)], delau.w, zero.policy=TRUE) # On réalise un test de moran pour voir s'il y a une autocorélation spatiale de la pluie
+    if(m$p.value < 0.05){
+      spatial_point <- c()
+      spatial_point <- SpatialPointsDataFrame(coord_d, as.data.frame(datamap$rain_mm[which(datamap$date==d)]))
+      geodata <- as.geodata(spatial_point)
+      coord <- datamap[,c(4,3)]
+      variograme <- variog(geodata, option  = "sm")
+      m.d <- max(variograme$u)
+      if(length(which(is.na(variograme$v)==T))>0){m.d=variograme$u[which(is.na(variograme$v))][1]}
+      variograme <- variog(geodata, option  = "sm",max.dist = m.d)
+      mod1 <- variofit(variograme,ini.cov.pars = c((0.9*max(variograme$v,na.rm = T)[1]-variograme$u[1]),variograme$u[which(variograme$v==max(variograme$v,na.rm = T)[1])][1]),nugget=variograme$v[1],"exponential")#on réalise une interpolation spatiale 
+      res[which(data_merged$Date==d)] <- as.numeric(krige.conv(geodata, loc = data_merged[which(data_merged$Date==d),c(11,10)] , krige = krige.control(obj.m = mod1))$predict)
+    }else{
+      res[which(data_merged$Date==d)] <- mean(datamap$rain_mm[which(datamap$date==d)])# en l'absence de structure spatiale, on considère que la valeur en tout point est égale à la moyenne des données mesurées
+    }   
+    
+  }else{
+    res[which(data_merged$Date==d)] <- NA
+  }
+  print(d)
+  flush.console()
+  
+  
+}
+
+data_merged$Pluie <- res
+
 
 ```
