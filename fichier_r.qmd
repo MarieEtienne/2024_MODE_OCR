@@ -342,3 +342,11 @@ for(d in dd){
 data_merged$Vent <- res
 
 ```
+
+```{r export, include=FALSE}
+data_clean <- data_merged[,-c(12,13,14,15)]
+write.csv(data_clean,"data_clean.csv")
+# Créer une nouvelle colonne pour indiquer si l'indice de reproduction est différent de 0 (1 si Repro != 0, 0 sinon)
+data_clean <- data_clean %>%
+  mutate(Repro_binary = ifelse(Repro != 0, 1, 0)) #on transforme l'indice repro en binaire pour avoir 0 si pas de repro 1 si repro
+```
