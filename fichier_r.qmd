@@ -12,7 +12,6 @@ bibliography: references.bib
 -   the meteorological data of French Guiana from 1950 to 2024\
 -   the capture locations coordinates (degree minute second)
 
-
 ```{r}
 library(dplyr)
 library(readxl)
@@ -168,7 +167,6 @@ Data import :
 data_merged = read.csv("data_merged.csv", header = T)
 ```
 
-
 ```{r Rain, include=FALSE}
 library(spdep)
 library(sp)
@@ -303,7 +301,7 @@ data_merged$Amplitude <- res
 
 ```
 
-```{r WIND}
+```{r Wind, include=FALSE}
 
 dd <- unique(data_merged$Date)
 res<- c()
