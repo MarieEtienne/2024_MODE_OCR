@@ -86,11 +86,9 @@ Les modèles linéaires généralisés de type Poisson ont une structure d'erreu
 
 -   **7.Configuration de l'environnement et packages**
 
-Pour analyser nos données nous configurons la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion* et *lattice*.
+Pour analyser nos données nous configurons la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion*, *lattice*, *patchwork*, *MASS* et *rcompanion*
 
 ```{r init, include=FALSE, message=FALSE, warning=FALSE,}
-
-opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")#(TROUVER L'UTILITE ET PEUT-ÊTRE RETIRER -> permet de ne pas afficher le code mais seulement les graphiques : permet d'avoir un document plus propre -> à voir si on met partout du coup, où à quelques endroits)
 
 # Chargement des packages R :
 library(knitr)
@@ -233,6 +231,7 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 [**Conclusion**]{.underline} **:**
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
+
 
     ```         
       **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
@@ -849,6 +848,7 @@ Ici, la dispersion est de 1.02. Il n'y a pas de surdispersion.
     ```
 
 Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $Xs$ significatifs du modèle, nous devons valider l'absence de tendance dans leur distribution. Si nous constatons une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
+
 
 ```{r}
 
