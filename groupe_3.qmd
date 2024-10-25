@@ -136,7 +136,7 @@ The first step in exploring the dataset is to check for **potential outliers** i
 
 Outliers can be identified using a **Boxplot** or a **Cleveland plot** of the values of $Y$.
 
-```{r valeurs aberrantes de Y, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r outliers de Y, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Boxplot 
 bp <- ggplot(data = dataAnts, aes(y = Nsp))+
@@ -145,9 +145,9 @@ bp <- ggplot(data = dataAnts, aes(y = Nsp))+
        y = "species richness")+
   theme(
     panel.background = element_rect(fill="white"),
-    panel.grid.major = element_blank(),
+    panel.grid.major = element_blank(), 
     panel.grid.minor = element_blank(),
-    axis.text.x = element_blank(),
+    axis.text.x = element_blank(), 
     axis.ticks.x = element_blank(),
     
     axis.title.x = element_text(size = 8, color = "darkblue"),
@@ -179,7 +179,7 @@ cp <- ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
 ## Display
 (bp + cp) + 
   plot_layout(widths = c(1, 2)) + 
-  plot_annotation(title = "Figure 1 : Analyse des valeurs aberrantes de Y")
+  plot_annotation(title = "Figure 1 : Analyse of Y outliers")
 
 ```
 
@@ -189,7 +189,7 @@ According to Figure 1, $Y$ does not exhibit any extreme or outlier values.
 
 The distribution of $Y$ values can be visualized using a **histogram** or a **Normal Q-Q plot**.
 
-```{r distribution de Y, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r Y distribution, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Histogram
 hg <- ggplot(data = dataAnts, aes(x = Nsp))+
@@ -221,7 +221,7 @@ qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
     plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
   )
 
-# Affichage
+# Display
 (hg + qqp) +
   plot_layout(widths = c(1, 2)) + 
   plot_annotation(title = "Figure 2 : Analyse of Y distribution")
@@ -478,7 +478,7 @@ The analysis of outliers and the distribution of the variables suggest that, aft
 
 When the dataset includes qualitative variables (factors), it is essential to analyze the balance of modalities: if there are more individuals in one modality compared to another, their weight in the model may lead to a biased final interpretation.
 
-```{r equilibre des modalites, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r modalities equilibrium, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 summary(dataAnts$Location)
 
