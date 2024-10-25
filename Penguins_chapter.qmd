@@ -1,8 +1,15 @@
-------------------------------------------------------------------------
-
-title: "Exploring data on penguins" group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline" bibliography: references. bib execute: freeze: auto output: html_document: toc: true toc_float: true toc_depth: 3 number_sections: yes
-
-------------------------------------------------------------------------
+---
+title: "Exploring data on penguins" 
+author: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline" 
+bibliography: references.bib 
+execute:
+  freeze: auto
+output: 
+  html_document: 
+    toc: true 
+    toc_float: true 
+    toc_depth: 3
+---
 
 # Introduction
 
@@ -162,12 +169,8 @@ names(data)
 ```
 
 ## Missing values :
-<<<<<<< HEAD
 
 ```{r NA}
-=======
-```{r}
->>>>>>> 0b00628cfb722b26812d2f8aa9439fbd7bf566dd
 # Verification of missing values
 colSums(is.na(data)) 
 
@@ -210,12 +213,7 @@ kable(species_islands, "html", escape = F, caption = "Distribution of species be
 ```
 We can see from this table that the *Adelie* species is present on all three islands, while the *Chrinstrap* and *Gentoo* species are only present on 2 islands, Dream and Biscoe respectively. 
 
-<<<<<<< HEAD
-Some graphs :
-
-=======
 Some graphs and interpretations : 
->>>>>>> 0b00628cfb722b26812d2f8aa9439fbd7bf566dd
 ```{r}
 ggplot(data, aes(x = flipper_length, y = body_mass, color = species))+
   geom_point()+
@@ -314,12 +312,8 @@ Now, we want to observe whether certain qualitative variables have an effect on 
 - *Island*\
 - *Sex*\
 
-<<<<<<< HEAD
-### PCA :
-=======
-### PCA : 
->>>>>>> 0b00628cfb722b26812d2f8aa9439fbd7bf566dd
 
+### PCA : 
 ```{r}
 # Selection of quantitative data
 data_numeric <- select_if(data, is.numeric)
@@ -337,18 +331,10 @@ acp_data= PCA(data_scales, graph = F)
 summary(acp_data)
 ```
 
-<<<<<<< HEAD
-Histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, keep 2 dimensions and 78.4% inertia.
-
-```{r}
-
-=======
-
 
 Histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, keep 2 dimensions and 78.4% inertia.  
 
 ```{r} 
->>>>>>> 0b00628cfb722b26812d2f8aa9439fbd7bf566dd
 #Variance for each component
 va_propre = fviz_eig(acp_data, main ="", choice = "variance",
          label_size =50, addlabels = T,
@@ -412,23 +398,6 @@ grid.arrange(bi_plot, va_propre, c1, c2,  #names of graphs
              widths = c(2.2,1), #Here, the first col will be bigger than the second
              layout_matrix = cbind(c(1,1,1), #On the first col only graph 1 for the 3 rows
                                    c(2,3,4))) #On the second col, the 3 other graphs
-```
-
-```{r}
-NA_df <- (colSums(is.na(data)) / nrow(data)) * 100
-
-color_pal <- colorRampPalette(c("limegreen", "yellow", "firebrick"), bias = 20)(10)
-NA_col <- color_pal[as.integer(NA_df/length(NA_df)*9)+1]
-
-# Graphique
-barplot(NA_df, main = "NA quantity per column",
-        ylab = "NA", col = NA_col, las=2, cex.names=0.4)
-
-NA_mean<-mean(NA_df)
-# 0.78% 
-
-abline(h=NA_mean, col = "red", lwd = 2)
-
 ```
 
 ## Violin plot :
