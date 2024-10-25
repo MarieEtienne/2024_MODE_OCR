@@ -29,6 +29,8 @@ This document is a report on the analysis of a dataset on penguins. This dataset
 #| code-fold: true
 #| code-summary: "test 1"
 #| results: hide
+#| code-fold: true
+#| code-summary: "Show the code"
 
 
 library(factoextra) # for data visualization
@@ -49,9 +51,13 @@ library(kableExtra)
 
 ## Location
 
-Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands.
+Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands.These three blue points show the location of the data collect in @fig-map_antarctica.
 
-```{r,echo=TRUE,code.fold=TRUE,code.summary="Show the code"}
+```{r}
+#| label: fig-map_antarctica
+#| fig-cap: "Maps of Antarctica with the collect points"
+#| code-fold: true
+#| code-summary: "Show the code"
 # Download country data (including Antarctica)
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
@@ -115,7 +121,7 @@ grid.arrange(gg_antartique, gg_zone_interet, ncol = 2)
 
 ```
 
-These three points show the location of the data collect in Antartica.
+
 
 ## Dataset presentation {#column_name}
 
@@ -147,9 +153,11 @@ summary(data)
 # dim(data)
 ```
 
-Names modification of columns :
+Names modification of columns and species :
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
 data <- data %>%
   select(-X) %>%                   # Remove X column 
   select(-Comments) %>%           # Remove Comments column
@@ -175,13 +183,19 @@ names(data)
 # rename species
 data = data %>%
   mutate(species = recode(species, "Adelie Penguin (Pygoscelis adeliae)" = "Adelie", "Chinstrap penguin (Pygoscelis antarctica)" = "Chinstrap", "Gentoo penguin (Pygoscelis papua)" = "Gentoo"))
+
 ```
 
 These names are easier to understand.
 
 ## Missing values :
+The @fig-missing-val have a red line that represents the mean of NA values in the dataset and the bars are showing the number of NA's for each variables.
 
 ```{r}
+#| label: fig-missing-val
+#| fig-cap: "Number of missing value as a function of each variables"
+#| code-fold: true
+#| code-summary: "Show the code"
 
 # Verification of missing values
 colSums(is.na(data)) 
@@ -195,8 +209,7 @@ color_pal <- colorRampPalette(c("limegreen", "yellow", "firebrick"), bias = 20)(
 NA_col <- color_pal[as.integer(NA_df/length(NA_df)*9)+1]
 
 # Graphique
-barplot(NA_df, main = "NA quantity per column",
-        ylab = "NA", col = NA_col, las=2, cex.names=0.6)
+barplot(NA_df,ylab = "NA", col = NA_col, las=2, cex.names=0.6)
 
 NA_mean<-mean(NA_df)
 # 0.78% 
@@ -206,7 +219,6 @@ abline(h=NA_mean, col = "red", lwd = 2)
 
 ```
 
-The red line represents the mean of NA values in the dataset and the bars are showing the number of NA's for each variables.
 
 # Exploratory analysis
 
@@ -218,6 +230,7 @@ In this Data set, we would like to compare the different qualitative variables :
 - *Delta 13C*\
 - *Delta 15N*\
 
+The representation of this matrix isn't the best.
 ```{r}
 sub_data_num = data%>%
   select(culmen_length, culmen_depth,flipper_length,body_mass,delta_13_C,delta_15_N)%>%
@@ -227,16 +240,25 @@ matcor = cor(sub_data_num,method = "pearson")
 matcor
 ```
 
-The representation of this matrix isn't the best. We can use the library *corrplot* to make some visual correlation matrix.
+We can use the library *corrplot* to make some visual correlation matrix.
 
-We used the following code:
+There is a correlation that we have to remove in a multivariate analysis between the Body Mass and the flipper length as we can see in @fig-cor_mat2 and @fig-cor_mat3.
 
 ```{r}
-library(corrplot)
+#| label: fig-cor_mat2
+#| fig-cap: "Correlation matrix with numbers"
+#| code-fold: true
+#| code-summary: "Show the code"
 
 corrplot(matcor, method = "number", type = "upper",order = "hclust", tl.col="black", tl.srt=45)
-corrplot(matcor, type = "upper",order = "hclust", tl.col="black", tl.srt=45)
+```
 
+```{r}
+#| label: fig-cor_mat3
+#| fig-cap: "Correlation matrix with forms"
+#| code-fold: true
+#| code-summary: "Show the code"
+corrplot(matcor, type = "upper",order = "hclust", tl.col="black", tl.srt=45)
 ```
 
 Now, we want to observe whether certain qualitative variables have an effect on body mass. We will therefore try to create a graph for each factor (qualitative variables) according to body mass:\
@@ -244,13 +266,16 @@ Now, we want to observe whether certain qualitative variables have an effect on 
 - *Island*\
 - *Sex*\
 
-We have noticed some trends that we will have to confirm with statistical tests.\
+We have noticed some trends in @fig-boxplot_trends that we will have to confirm with statistical tests.\
 Box1: Gentoo penguins appear to be heavier than the other two species.\
 Box2: Penguins from Biscoe Island appear to be heavier than the other two islands.\
 Box3: Male penguins appear to be heavier than the other two categories.
 
-```{r,include=TRUE, fig.height=5, fig.width=5}
-
+```{r}
+#| label: fig-boxplot_trends
+#| fig-cap: "Boxplots between body mass and other variables"
+#| code-fold: true
+#| code-summary: "Show the code"
 
 box1 <- ggplot(data = data)+
   geom_boxplot(aes(x=species,y=body_mass, fill = species))
@@ -260,11 +285,68 @@ box2 <- ggplot(data = data)+
 
 box3 <- ggplot(data = data)+
   geom_boxplot(aes(x=sex,y=body_mass, fill = sex))
-grid.arrange(box1,box2,box3)
+global_box <- grid.arrange(box1,box2,box3)
+```
+## Violin plot :
+
+Here is another way to visualize in @fig-violin the distribution between two variables. 
+
+```{r violin, fig.height=3, fig.width=9}
+#| label: fig-violin
+#| fig-cap: Violin plot of body mass as function of many variables
+#| code-fold: true
+#| code-summary: "Show the code"
+
+
+# Violin plot for Culmen Length (beak length)
+v1 <- ggplot(data, aes(x = species, y = culmen_length, fill = species)) +
+  geom_violin(trim = FALSE) +
+  geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
+    stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
+  labs(title = "Distribution of Culmen Length by Species",
+       x = "Species",
+       y = "Culmen Length (mm)") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_text(size = 10, face = "bold"),
+        axis.title.x = element_text(size = 8),  # Taille de l'axe x
+        axis.title.y = element_text(size = 8))
+
+# Violin plot for Flipper Length
+v2 <- ggplot(data, aes(x = species, y = flipper_length, fill = species)) +
+  geom_violin(trim = FALSE) +
+  geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
+    stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
+  labs(title = "Distribution of Flipper Length by Species",
+       x = "Species",
+       y = "Flipper Length (mm)") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_text(size = 10, face = "bold"),
+        axis.title.x = element_text(size = 8),  # Taille de l'axe x
+        axis.title.y = element_text(size = 8))
+
+# Violin plot for Body Mass
+v3 <- ggplot(data, aes(x = species, y = body_mass, fill = species)) +
+  geom_violin(trim = FALSE) +
+  geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
+    stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
+  labs(title = "Distribution of Body Mass by Species",
+       x = "Species",
+       y = "Body Mass (g)") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_text(size = 10, face = "bold"),
+        axis.title.x = element_text(size = 8),  # Taille de l'axe x
+        axis.title.y = element_text(size = 8))
+
+grid.arrange(v1, v2, v3,  #names of graphs  
+             ncol = 3, nrow = 1)
 ```
 
-\
+
 We run anovas to confirm these differences.\
+There is a significant **difference between the body mass of these 3 species**, almost 2 of them, with a p-value of *2e-16*.
 
 ```{r}
 anova1 = aov(data$body_mass~data$species)
@@ -272,7 +354,7 @@ anova1 = aov(data$body_mass~data$species)
 summary(anova1)
 ```
 
-There is a significant *difference between the body mass of these 3 species*, almost 2 of them.
+There is a significant **difference between the body mass of these 3 islands**, almost 2 of them with a p-value of *2e-16*.
 
 ```{r}
 anova2 = aov(body_mass~island, data = data)
@@ -280,7 +362,7 @@ anova2 = aov(body_mass~island, data = data)
 summary(anova2)
 ```
 
-There is a significant *difference between the body mass of these 3 islands*, almost 2 of them.
+There is a significant **difference between the body mass and the sex** with a p-value of *4.9e-16*.
 
 ```{r}
 anova3 = aov(body_mass~sex, data = data)
@@ -288,23 +370,32 @@ anova3 = aov(body_mass~sex, data = data)
 summary(anova3)
 ```
 
-There is a significant *difference between the body mass and the sex.*
 
-Distribution of species between the islands :
+Distribution of species between the islands in @tbl-table-distribution : we can see from this table that the *Adelie* species is present on all three islands, while the *Chrinstrap* and *Gentoo* species are only present on 2 islands, Dream and Biscoe respectively.
 
 ```{r}
+#| label: tbl-table-distribution
+#| tbl-cap: Species distribution between the islands
+#| code-fold: true
+#| code-summary: "Show the code"
+
 species_islands <- table(data$island, data$species)
-kable(species_islands, "html", escape = F, caption = "Distribution of species between the islands") %>%
+kable(species_islands, "html", escape = F) %>%
   kable_styling(bootstrap_options = c("striped"),
                 full_width = F,
                 position = "center")
 ```
 
-We can see from this table that the *Adelie* species is present on all three islands, while the *Chrinstrap* and *Gentoo* species are only present on 2 islands, Dream and Biscoe respectively.
-
 Some graphs and interpretations :
 
+In @fig-bdm-lenght, it would appear that there is a positive linear trend between the body_mass variable and flipper_lenght for each specie.
+
 ```{r}
+#| label: fig-bdm-lenght
+#| fig-cap: Flipper length as a function of body mass 
+#| code-fold: true
+#| code-summary: "Show the code"
+
 ggplot(data, aes(x = flipper_length, y = body_mass, color = species))+
   geom_point()+
   scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
@@ -314,8 +405,6 @@ ggplot(data, aes(x = flipper_length, y = body_mass, color = species))+
   facet_grid(~species)
 ```
 
-It would appear that there is a positive linear trend between the body_mass variable and flipper_lenght for each specie.
-
 Check with linear regression :
 
 ```{r}
@@ -344,7 +433,14 @@ These results show a highly significant effect of fin length for all species, wi
 
 In conclusion, we can say that fin length influences body mass and that this effect varies according to species.
 
+In the @fig-lenght-depth, it would appear that there is a positive linear trend between the culmen_depth variable and culmen_length for each specie.
+
 ```{r}
+#| label: fig-lenght-depth
+#| fig-cap: Culmen length as a function of culmen depth 
+#| code-fold: true
+#| code-summary: "Show the code"
+
 ggplot(data, aes(x = culmen_length, y = culmen_depth, color = species))+
   geom_point()+
   scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
@@ -354,8 +450,6 @@ ggplot(data, aes(x = culmen_length, y = culmen_depth, color = species))+
   facet_grid(~species)
 ```
 
-It would appear that there is a positive linear trend between the culmen_depth variable and culmen_length for each specie.
-
 Check with linear regression :
 
 ```{r}
@@ -367,20 +461,13 @@ These results show that beak length is significant and positive in *Adélie*. In
 
 We can conclude that beak depth depends on beak length but this does not vary between species. Gentoo\* penguins have a shallower beak than the others.
 
-It would appear that there is a positive linear trend between the culmen_depth variable and culmen_length for each specie.
-
-Check with linear regression :
-
-```{r}
-rl2 <- lm(culmen_depth ~ culmen_length + species + species:culmen_length, data = data)
-summary(rl2)
-```
-
-These results show that beak length is significant and positive in *Adélie*. In the species *Chinstrap* and *Gentoo*, the beak depth is smaller and is significant in *Gentoo*. At the interaction level, it is not significant, which means that the effect of bill length on depth is relatively the same for 3 species.
-
-We can conclude that beak depth depends on beak length but this does not vary between species. Gentoo\* penguins have a shallower beak than the others.
-
+In @fig-delta, in the There seems to be different trends between species.
 ```{r, fig.width=10, fig.height=5}
+#| label: fig-delta
+#| fig-cap: Delta_15_N as a function of delta_13_C 
+#| code-fold: true
+#| code-summary: "Show the code"
+
 ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species))+
   geom_point()+
   scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
@@ -390,8 +477,6 @@ ggplot(data, aes(x = delta_15_N, y = delta_13_C, color = species))+
   facet_grid(~species)
 ```
 
-There seems to be different trends between species.
-
 We check this using a linear model :
 
 ```{r}
@@ -399,7 +484,7 @@ rl3 <- lm(delta_13_C ~ delta_15_N + species + species:delta_15_N, data = data)
 summary(rl3)
 ```
 
-These results show that the relationship between nitrogen 15 and carbon 13 is positive and significant in *Adélie*, this relationship is reduced in *Chinstrap* and even more so in *Gentoo*. *Chinstrap* and Gentoo\* have significantly higher carbon-13 values than Adélie\*. The interactions between nitrogen 15 and the species are significant, showing that the effect of nitrogen 15 on carbon 13 varies according to the species.
+These results show that the relationship between nitrogen 15 and carbon 13 is positive and significant in *Adélie*, this relationship is reduced in *Chinstrap* and even more so in *Gentoo*. *Chinstrap* and *Gentoo* have significantly higher carbon-13 values than *Adélie*. The interactions between nitrogen 15 and the species are significant, showing that the effect of nitrogen 15 on carbon 13 varies according to the species.
 
 In conclusion, this model shows that the effect of nitrogen 15 on carbon 13 is highly species-dependent, with differences between species.
 
@@ -422,10 +507,13 @@ acp_data= PCA(data_scales, graph = F)
 summary(acp_data)
 ```
 
-@eig_value_plot is an histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, keep 2 dimensions and 78.4% inertia.
+@fig-eig_value_plot is an histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, keep 2 dimensions and 78.4% inertia.
 
 ```{r}
-#| label: eig_value_plot
+#| label: fig-eig_value_plot
+#| fig-cap: Barplot of eigen values
+#| code-fold: true
+#| code-summary: "Show the code"
 #Variance for each component
 va_propre = fviz_eig(acp_data, main ="", choice = "variance",
          label_size =50, addlabels = T,
@@ -434,10 +522,13 @@ va_propre = fviz_eig(acp_data, main ="", choice = "variance",
 va_propre
 ```
 
-@contribution_plot Determind the absolut contribution of variables to each axis. We can see that 3 variables make a strong contribution to axis 1 (delta_15_N, body_mass and culmen_depth) and 2 to axis 2 (culmen_depth and delta_13_C) (Figure 2).
+@fig-contribution_plot determind the absolut contribution of variables to each axis. We can see that 3 variables make a strong contribution to axis 1 (delta_15_N, body_mass and culmen_depth) and 2 to axis 2 (culmen_depth and delta_13_C).
 
 ```{r,warning=FALSE,message=FALSE, fig.height=2, fig.width=5, fig.align = "center"}
-#| label: contribution_plot
+#| label: fig-contribution_plot
+#| fig-cap: Barplots of absolut contributions of axe 1 and 2
+#| code-fold: true
+#| code-summary: "Show the code"
 
 #Contribution of axis variables axis 1 and 2
 c1 = fviz_contrib(acp_data,choice = "var",axes =1,
@@ -447,23 +538,23 @@ c2 = fviz_contrib(acp_data,choice = "var",axes =2,
 grid.arrange(c1,c2, ncol = 2)
 ```
 
-First graph show the result of PCA on axes 1 and 2. *A priori* clustering by the Species has been performed. Gentoo penguins have a greater mass and a longer culmen. Adelies are lighter and have a depth culmen. Chinstrap penguins are the lightest and have a long, depth culmen. Adelies and Chinstrap penguins both have a high concentration of carbon 13 and nitrogen 15.
+First graph (@fig-projection)  show the result of PCA on axes 1 and 2. *A priori* clustering by the Species has been performed. Gentoo penguins have a greater mass and a longer culmen. Adelies are lighter and have a depth culmen. Chinstrap penguins are the lightest and have a long, depth culmen. Adelies and Chinstrap penguins both have a high concentration of carbon 13 and nitrogen 15.
 
 ```{r,warning=FALSE,message=FALSE, fig.height=7, fig.width=12, fig.align = "center"}
+#| label: fig-projection
+#| fig-cap: Projection of variables and individuals according to species
+#| code-fold: true
+#| code-summary: "Show the code"
+
 #Projection of variables and individuals and differentiation according to species
 bi_plot = fviz_pca_biplot(acp_data, label="var", 
                 habillage=data$species, 
                 addEllipses = T,
-                ellipse.alpha = F,
-                title = "Projection of variables and individuals according to species", 
+                ellipse.alpha = F, 
                 ylim=c(-3,3.5), xlim = c(-3.5,3.5))+
   scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
   theme_minimal()+
   theme(legend.position = "bottom")
-
-```
-
-```{r}
 grid.arrange(bi_plot, va_propre, c1, c2,  #names of graphs
              ncol = 2, nrow = 3, #How many row and col
              widths = c(2.2,1), #Here, the first col will be bigger than the second
@@ -471,91 +562,26 @@ grid.arrange(bi_plot, va_propre, c1, c2,  #names of graphs
                                    c(2,3,4))) #On the second col, the 3 other graphs
 ```
 
-Second graph show the result of PCA on axes 1 and 2. *A priori* clustering by the Island has been performed. We can see that Gentoo penguins live only on Biscoe Island, while Chinstrap penguins live mainly on Dream Island. Adelie penguins live on these two islands and also on Togersen Island.
+Second graph (@fig-projection-islands) show the result of PCA on axes 1 and 2. *A priori* clustering by the Island has been performed. We can see that Gentoo penguins live only on Biscoe Island, while Chinstrap penguins live mainly on Dream Island. Adelie penguins live on these two islands and also on Togersen Island.
 
 The common habitats of Chinstrap and Adelie penguins seem to explain the presence of isotopes in these two species, as they must find a similar diet.
 
-```{r,warning=FALSE,message=FALSE, fig.height=7, fig.width=12, fig.align = "center"}
-#Projection of variables and individuals and differentiation according to species
-bi_plot = fviz_pca_biplot(acp_data, label="var",
-                          habillage=data$island,
-                          addEllipses = T,
-                          ellipse.alpha = F,
-                          title = "Projection of variables and individuals and dfferentiation according to the islands", 
-                          ylim=c(-3,3.5),xlim = c(-3.5,3.5))+
-  scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
-  theme_minimal()+
-  theme(legend.position = "bottom")
-grid.arrange(bi_plot, va_propre, c1, c2,  #names of graphs
-             ncol = 2, nrow = 3, #How many row and col
-             widths = c(2.2,1), #Here, the first col will be bigger than the second
-             layout_matrix = cbind(c(1,1,1), #On the first col only graph 1 for the 3 rows
+```{r}
+#| label: fig-projection-islands
+#| fig-cap: Projection of variables and individuals and dfferentiation according to the islands
+#| code-fold: true
+#| code-summary: "Show the code"
+#Projection of variables and individuals and differentiation according to species 
+bi_plot = fviz_pca_biplot(acp_data, label="var",  habillage=data$island,  addEllipses = T,  ellipse.alpha = F,   ylim=c(-3,3.5),xlim = c(-3.5,3.5))+  
+  scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+  
+  theme_minimal()+  theme(legend.position = "bottom") 
+grid.arrange(bi_plot, va_propre, c1, c2, #names of graphs  
+             ncol = 2, nrow = 3, #How many row and col  
+             widths = c(2.2,1), #Here, the first col will be bigger than the second  
+             layout_matrix = cbind(c(1,1,1), #On the first col only graph 1 for the 3 rows  
                                    c(2,3,4))) #On the second col, the 3 other graphs
 ```
 
-## Violin plot :
-
-```{r violin}
-
-# Violin plot for Culmen Length (beak length)
-ggplot(data, aes(x = species, y = culmen_length, fill = species)) +
-  geom_violin(trim = FALSE) +
-  geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
-    stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
-  labs(title = "Distribution of Culmen Length by Species",
-       x = "Species",
-       y = "Culmen Length (mm)") +
-  theme_minimal() +
-  theme(legend.position = "none")
-
-# Violin plot for Flipper Length
-ggplot(data, aes(x = species, y = flipper_length, fill = species)) +
-  geom_violin(trim = FALSE) +
-  geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
-    stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
-  labs(title = "Distribution of Flipper Length by Species",
-       x = "Species",
-       y = "Flipper Length (mm)") +
-  theme_minimal() +
-  theme(legend.position = "none")
-
-# Violin plot for Body Mass
-ggplot(data, aes(x = species, y = body_mass, fill = species)) +
-  geom_violin(trim = FALSE) +
-  geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
-    stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
-  labs(title = "Distribution of Body Mass by Species",
-       x = "Species",
-       y = "Body Mass (g)") +
-  theme_minimal() +
-  theme(legend.position = "none")
-
-```
-
-```{r,include=TRUE, fig.height=6, fig.width=6}
-par(mfrow=c(3,3))
-box1 <- ggplot(data = data)+
-  geom_boxplot(aes(x=species,y=body_mass, fill = species))
-
-box2 <- ggplot(data = data)+
-  geom_boxplot(aes(x=island,y=body_mass, fill = island))
-
-box3 <- ggplot(data = data)+
-  geom_boxplot(aes(x=sex,y=body_mass, fill = sex))
-box1;box2;box3
-```
-
-We have noticed some trends that we will have to confirm with statistical tests.\
-Box1: Gentoo penguins appear to be heavier than the other two species.\
-Box2: Penguins from Biscoe Island appear to be heavier than the other two islands.\
-Box3: Male penguins appear to be heavier than the other two categories.\
-We run anovas to confirm these differences.\
-
-```{r}
-anova1 = aov(data$body_mass~data$species)
-
-summary(anova1)
-```
 
 There is a significant *difference between the body mass of these 3 species*, almost 2 of them.
 
