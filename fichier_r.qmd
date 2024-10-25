@@ -88,11 +88,12 @@ data_abiot$Lune <-Lune(data_abiot$date) #Adding moonlight % to the climatic tabl
 ```{r}
 data_chiro <- data_chiro %>%
   select(c(Année, Commune, Localité, Date, Espèce, Sexe, Repro, Age)) %>% #select the columns we want
-  filter(Sexe == "F") %>% #on ne garde que les femelles car très peu d'indices de repro sur les mâles
-  filter(Age == "AD") %>% #on ne conserve que les individus 
-  mutate(Date = ymd(Date)) %>% #date en jour julien
-  mutate(Year = year(Date)) %>% # Créer une nouvelle colonne 'Year' contenant uniquement l'année
-  mutate(Date = format(Date, "%d-%m-%Y"))%>% #formatage de la date
+  filter(Sexe == "F") %>% 
+  filter(Age == "AD") %>% 
+  filter(is.na(Repro)*1==0)%>%
+  mutate(Date = ymd(Date)) %>%  
+  mutate(Year = year(Date)) %>% 
+  mutate(Date = format(Date, "%d-%m-%Y"))%>% 
   mutate(julian_day = yday(Date))%>% #Date =julian_day
   rename(LIEU_DIT = Localité, COMMUNE = Commune) #on renomme
 ```
