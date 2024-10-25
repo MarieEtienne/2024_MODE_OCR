@@ -522,70 +522,70 @@ Relation entre $X$ et localisation (Fig. 10) : Il semble ici y avoir une relatio
 
 Il semble que plus les espèces se situent au nord et dans un haut relief, moins la richesse spécifique de fourmis est grande. De plus, si nous nous trouvons en forêt, il y aura une richesse spécifique plus importante que dans les tourbières.
 
--   **2.Analyse des éventuelles interactions entre les Xs**
+-   **2.Analysis of Potential Interactions Among the X Variables**
 
-Nous cherchons à étudier les interactions entre le facteur et les 3 covariables. Nous excluons alors l'interaction entre les variables explicatives quantitatives. Nous passons par une approche graphique afin d'estimer le possible effet interactif entre ces différentes variables.
+We aim to study interactions between the factor and the three covariates. Thus, we exclude any interaction among the quantitative explanatory variables. We use a graphical approach to estimate the potential interactive effect among these different variables.
 
 ```{r interactions Xs, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 par(mfrow=c(1,3))
 
-# Interactions entre Latitude & Localisation
-plot(dataAnts$Nsp~dataAnts$Latitude,type='n',ylab = "Richesse spécifique de fourmis",xlab="Latitude", main="Figure 11")
+# Interactions between Latitude & Location
+plot(dataAnts$Nsp~dataAnts$Latitude,type='n',ylab = "Ant specific richness",xlab="Latitude", main="Figure 11")
 points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$Latitude[dataAnts$Location=="Bog"],pch=16,cex=2,col='saddlebrown')
 points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$Latitude[dataAnts$Location=="Forest"],pch=17,cex=2,col='palegreen4')
 
-# Interactions entre Altitude & Localisation
-plot(dataAnts$Nsp~dataAnts$Elevation,type='n',ylab = "Richesse spécifique de fourmis",xlab="Altitude", main="Figure 12")
+# Interactions between Altitude & Localisation
+plot(dataAnts$Nsp~dataAnts$Elevation,type='n',ylab = "Ant specific richness",xlab="Elevation", main="Figure 12")
 points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$Elevation[dataAnts$Location=="Bog"],pch=16,cex=2,col='saddlebrown')
 points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$Elevation[dataAnts$Location=="Forest"],pch=17,cex=2,col='palegreen4')
 
-# Interactions entre Superficie de la tourbière & Localisation
-plot(dataAnts$Nsp~dataAnts$LogArea,type='n',ylab = "Richesse spécifique de fourmis",xlab="Superficie de la tourbière", main="Figure 13")
+# Interactions between Superficie de la tourbière & Localisation
+plot(dataAnts$Nsp~dataAnts$LogArea,type='n',ylab = "Ant specific richness",xlab="Bog area", main="Figure 13")
 points(dataAnts$Nsp[dataAnts$Location=="Bog"]~dataAnts$LogArea[dataAnts$Location=="Bog"],pch=16,cex=2,col='saddlebrown')
 points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Location=="Forest"],pch=17,cex=2,col='palegreen4')
 
 ```
 
-En règle générale, nous pouvons penser qu'il y a une interaction entre les covariables si les pentes formées par les deux nuages de points sont différentes. Ici les nuages ne permettent pas de voir clairement de similitude ou de différence de tendance pour chaque graphique. Il est donc difficile de conclure sur ces interactions.
+Generally, we can assume an interaction between covariates if the slopes formed by the two point clouds are different. Here, the clouds do not clearly reveal any similarity or difference in trend for each graph. It is therefore difficult to draw conclusions about these interactions.
 
--   **3.Vérifier une éventuelle colinéarité entre les Xs**
+-   **3.Checking for Potential Collinearity Among the X Variables**
 
-Nous cherchons à éviter la colinéarité des variables explicatives dans notre modélisation, afin de ne pas avoir plusieurs variables qui donnent la même information. Pour ce faire, nous devons vérifier les liens statistiques qu'il peut y avoir entre les variables, \[1\] en calculant la corrélation entre les variables $Xs$ quantitatives, \[2\] puis en étudiant l'influence du $X$ qualitative sur les $Xs$ quantitatives à l'aide de graphiques plot.
+We aim to avoid collinearity among the explanatory variables in our modeling to prevent multiple variables from providing the same information. To do this, we must examine the statistical relationships that may exist among the variables by calculating the correlation between quantitative $X$ variables, and analyzing the influence of the qualitative $X$ on the quantitative $X$ variables using plot graphics.
 
-```{r colinéarité1, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r colinéarity1, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
-# Nous vérifions la colinéarité entre les variables continues indépendantes
-# Nous faisons un graphique pour chaque paire de covariables
+# Checking for collinearity between independent continuous variables
+# Creating a scatterplot for each pair of covariates
 newdata<-cbind(dataAnts$Latitude,dataAnts$Elevation,dataAnts$LogArea)
-colnames(newdata)<-c('Latitude','Altitude','Log Superficie tourbière')
+colnames(newdata)<-c('Latitude','Elevation','Log Bog area')
 newdata<-data.frame(newdata)
 plot(newdata,pch=16,col='deepskyblue4',main="Figure 14")
 
-# On calcule la corrélation de chaque paire de covariables
+# Calculating correlation for each pair of covariates
 M<-cor(newdata)
 corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
 mtext("Figure 15", side = 2, line = -6, cex = 1, las = 1)
 
 par(mfrow=c(1,3))
 
-# Nous vérifions la colinéarité entre catégories et variables continues
-# Latitude et Localisation
-boxplot(dataAnts$Latitude~dataAnts$Location, varwidth = TRUE, ylab = "Latitude", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 16")
+# Checking for collinearity between categories and continuous variables
+# Latitude and Location
+boxplot(dataAnts$Latitude~dataAnts$Location, varwidth = TRUE, ylab = "Latitude", xlab = "Location",col=c('saddlebrown','palegreen4'), main = "Figure 16")
 
-# Altitude et Localisation
-boxplot(dataAnts$Elevation~dataAnts$Location, varwidth = TRUE, ylab = "Altitude", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 17")
+# Altitude and Location
+boxplot(dataAnts$Elevation~dataAnts$Location, varwidth = TRUE, ylab = "Elevation", xlab = "Location",col=c('saddlebrown','palegreen4'), main = "Figure 17")
 
-# Superficie de la tourbière et Localisation
-boxplot(dataAnts$LogArea~dataAnts$Location, varwidth = TRUE, ylab = "Superficie de la tourbière", xlab = "Localisation",col=c('saddlebrown','palegreen4'), main = "Figure 18")
+# Bog Area and Location
+boxplot(dataAnts$LogArea~dataAnts$Location, varwidth = TRUE, ylab = "Bog area", xlab = "Location",col=c('saddlebrown','palegreen4'), main = "Figure 18")
 
 ```
 
-Nous pouvons observer sur le premier graphique (Fig. 14) que les nuages de points ne semblent pas montrer de tendance à la colinéarité. Cette impression est confirmée par les valeurs calculées dans la figure suivante (Fig. 15). Dans cette dernière, les valeurs sont largement inférieures à 0.7, qui est très souvent utilisé comme seuil de colinéarité (au-delà les variables sont considérées corrélées). Le chevauchement presque total des boxplot (Fig. 16, 17, 18) confirme encore une fois la non colinéarité des facteurs.
+In the first graph (Fig. 14), we can see that the point clouds do not appear to show any trend toward collinearity. This impression is confirmed by the calculated values in the following figure (Fig. 15), where the values are well below 0.7, which is commonly used as a threshold for collinearity (above this, variables are considered correlated). The almost complete overlap of the boxplots (Figs. 16, 17, 18) further supports the non-collinearity of these factors.
 
 [**Conclusion**]{.underline} **:**
 
-Il ne semble pas y avoir de colinéarité entre les variables, nous pouvons donc toutes les conserver.
+There does not appear to be any collinearity among the variables, so we can retain them all.
 
 # ANALYSE STATISTIQUE
 
