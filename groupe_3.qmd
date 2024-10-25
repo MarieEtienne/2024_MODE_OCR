@@ -476,8 +476,6 @@ On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig 6A) ou sur l
 
 L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
 
--   
-
     ```         
       **c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
     ```
@@ -498,7 +496,7 @@ L'analyse de valeurs aberrantes et de la distribution de la variable qualitative
 
 # **Analyse des interactions entre les variables Y et Xs**
 
--   **1.Analyser la relation potentielle entre Y et les Xs**
+-   **1.Analyse de la relation potentielle entre Y et les Xs**
 
 Afin de tester la relation éventuelle entre la variable réponse $Y$ et les variables explicatives $Xs$, il sera indispensable de réaliser la modélisation statistique, c'est le seul moyen qui nous permet de tester la significativité des relations. Cependant, nous pouvons commencer par réaliser des analyses graphiques afin de mieux visualiser les données et se faire une idée.
 
@@ -559,7 +557,7 @@ points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Locat
 
 En règle générale, nous pouvons penser qu'il y a une interaction entre les covariables si les pentes formées par les deux nuages de points sont différentes. Ici les nuages ne permettent pas de voir clairement de similitude ou de différence de tendance pour chaque graphique. Il est donc difficile de conclure sur ces interactions.
 
--   **3.Vérifier une éventuelle colinéarité entre les Xs**
+-   **3.Vérification d'une éventuelle colinéarité entre les Xs**
 
 Nous cherchons à éviter la colinéarité des variables explicatives dans notre modélisation, afin de ne pas avoir plusieurs variables qui donnent la même information. Pour ce faire, nous devons vérifier les liens statistiques qu'il peut y avoir entre les variables, \[1\] en calculant la corrélation entre les variables $Xs$ quantitatives, \[2\] puis en étudiant l'influence du $X$ qualitative sur les $Xs$ quantitatives à l'aide de graphiques plot.
 
@@ -904,8 +902,6 @@ L'histogramme des résidus (Fig. 20) et le Q-Q plot (Fig. 21) montrent des rési
 
 Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
--   
-
     ```         
       **c.Vérification des individus influents**
     ```
@@ -922,7 +918,6 @@ abline(h = 1, col = 2,lwd = 3)
 
 Ici (Fig. 26), il n'y a pas d'individus trop influent.
 
--   
 
     ```         
       **d.Analyses des résidus avec DHARMa**
