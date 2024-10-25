@@ -46,9 +46,11 @@ library(kableExtra)
 
 ## Location
 
-Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands.
+Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands.These three blue points show the location of the data collect in Antarctica.
 
 ```{r}
+#| label: fig-map_antartica
+#| fig-cap: "MAps of Antartica with the collect points"
 # Download country data (including Antarctica)
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
@@ -112,7 +114,7 @@ grid.arrange(gg_antartique, gg_zone_interet, ncol = 2)
 
 ```
 
-These three points show the location of the data collect in Antartica.
+
 
 ## Dataset presentation {#column_name}
 
@@ -177,9 +179,11 @@ data = data %>%
 These names are easier to understand.
 
 ## Missing values :
+The @fig-missing-val have a red line that represents the mean of NA values in the dataset and the bars are showing the number of NA's for each variables.
 
 ```{r}
-
+#| label: fig-missing-val
+#| fig-cap: "Number of missing value as a function of each variables"
 # Verification of missing values
 colSums(is.na(data)) 
 
@@ -192,8 +196,7 @@ color_pal <- colorRampPalette(c("limegreen", "yellow", "firebrick"), bias = 20)(
 NA_col <- color_pal[as.integer(NA_df/length(NA_df)*9)+1]
 
 # Graphique
-barplot(NA_df, main = "NA quantity per column",
-        ylab = "NA", col = NA_col, las=2, cex.names=0.6)
+barplot(NA_df,ylab = "NA", col = NA_col, las=2, cex.names=0.6)
 
 NA_mean<-mean(NA_df)
 # 0.78% 
@@ -203,7 +206,6 @@ abline(h=NA_mean, col = "red", lwd = 2)
 
 ```
 
-The red line represents the mean of NA values in the dataset and the bars are showing the number of NA's for each variables.
 
 # Exploratory analysis
 
@@ -227,7 +229,7 @@ matcor
 
 We can use the library *corrplot* to make some visual correlation matrix.
 
-There is a correlation that we have to remove in a multivariate analysis between the Body Mass and the flipper length as we can see in @fig-cor_mat2 and @fig-cor_mat3
+There is a correlation that we have to remove in a multivariate analysis between the Body Mass and the flipper length as we can see in @fig-cor_mat2 and @fig-cor_mat3.
 
 ```{r}
 #| label: fig-cor_mat2
@@ -269,7 +271,7 @@ global_box <- grid.arrange(box1,box2,box3)
 
 
 We run anovas to confirm these differences.\
-There is a significant *difference between the body mass of these 3 species*, almost 2 of them, with a p-value of 2e-16.
+There is a significant **difference between the body mass of these 3 species**, almost 2 of them, with a p-value of *2e-16*.
 
 ```{r}
 anova1 = aov(data$body_mass~data$species)
@@ -277,7 +279,7 @@ anova1 = aov(data$body_mass~data$species)
 summary(anova1)
 ```
 
-There is a significant *difference between the body mass of these 3 islands*, almost 2 of them with a p-value of 2e-16.
+There is a significant **difference between the body mass of these 3 islands**, almost 2 of them with a p-value of *2e-16*.
 
 ```{r}
 anova2 = aov(body_mass~island, data = data)
@@ -285,7 +287,7 @@ anova2 = aov(body_mass~island, data = data)
 summary(anova2)
 ```
 
-There is a significant *difference between the body mass and the sex.* with a p-value of 4.9e-16.
+There is a significant **difference between the body mass and the sex** with a p-value of *4.9e-16*.
 
 ```{r}
 anova3 = aov(body_mass~sex, data = data)
@@ -426,10 +428,10 @@ acp_data= PCA(data_scales, graph = F)
 summary(acp_data)
 ```
 
-@eig_value_plot is an histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, keep 2 dimensions and 78.4% inertia.
+@fig-eig_value_plot is an histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, keep 2 dimensions and 78.4% inertia.
 
 ```{r}
-#| label: eig_value_plot
+#| label: fig-eig_value_plot
 #Variance for each component
 va_propre = fviz_eig(acp_data, main ="", choice = "variance",
          label_size =50, addlabels = T,
@@ -441,7 +443,8 @@ va_propre
 @contribution_plot Determind the absolut contribution of variables to each axis. We can see that 3 variables make a strong contribution to axis 1 (delta_15_N, body_mass and culmen_depth) and 2 to axis 2 (culmen_depth and delta_13_C) (Figure 2).
 
 ```{r,warning=FALSE,message=FALSE, fig.height=2, fig.width=5, fig.align = "center"}
-#| label: contribution_plot
+#| label: fig-contribution_plot
+#| fig-cap: 
 
 #Contribution of axis variables axis 1 and 2
 c1 = fviz_contrib(acp_data,choice = "var",axes =1,
