@@ -88,7 +88,7 @@ Les modèles linéaires généralisés de type Poisson ont une structure d'erreu
 
 Pour analyser nos données nous configurons la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion* et *lattice*.
 
-```{r init, include=FALSE, message=FALSE, warning=FALSE,}
+```{r init, include=FALSE, message=FALSE, warning=FALSE}
 
 opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")#(TROUVER L'UTILITE ET PEUT-ÊTRE RETIRER -> permet de ne pas afficher le code mais seulement les graphiques : permet d'avoir un document plus propre -> à voir si on met partout du coup, où à quelques endroits)
 
@@ -103,6 +103,7 @@ library(rcompanion) # Modèle pseudo R²
 library(lattice) # Graphiques multipanneaux (A CHANGER?)
 library(patchwork) # Afficher plusieurs ggplot sur une page
 library(MASS) # Fonctions et datasets pour les analyses
+library(rcompanion) #Fonction pour supporter les extensions 
 
 ```
 
@@ -788,7 +789,6 @@ Nous allons donc calculer la qualité du modèle avec les commandes suivantes :
 (mod1$null.deviance-mod1$deviance)/mod1$null.deviance
 
 # Some others estimates of deviance explained - package 'rcompanion'
-library(rcompanion)
 nagelkerke(mod1)
 
 ```
