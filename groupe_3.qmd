@@ -486,9 +486,9 @@ Ici les données sont bien réparties entre les deux modalités (Bog = tourbièr
 
 L'analyse de valeurs aberrantes et de la distribution de la variable qualitative suggèrent qu'elle peut être utilisée dans la construction du modèle.
 
--       **2.Analysis of interactions between variables Y and Xs**
-
--         **a.Analyze the potential relationship between Y and Xs**
+-      **2.Analysis of interactions between variables Y and Xs**
+       
+-        **a.Analyze the potential relationship between Y and Xs**
 
 In order to test the possible relationship between the response variable $Y$ and the explanatory variables $Xs$, it will be essential to carry out statistical modelling, as this is the only way to test the significance of the relationships. However, we can start by performing graphical analyses to better visualize the data and get an idea.
 
@@ -512,7 +512,7 @@ boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Ant species ric
 
 Relationship between $X$ and latitude (Fig. 7): We can see that the higher the latitude, the lower the species richness. We can say that the further north we are, the fewer ant species there are.
 
-Relationship between $X$ and altitude (Fig. 8): In this graph, we can again see that the higher the altitude, the lower the species richness. 
+Relationship between $X$ and altitude (Fig. 8): In this graph, we can again see that the higher the altitude, the lower the species richness.
 
 Relationship between $X$ and bog area (Fig. 9): Here, there appears to be no relationship between ant species richness and bog area.
 
