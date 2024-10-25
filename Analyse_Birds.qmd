@@ -486,7 +486,7 @@ where $y$ represent the value of the count (here $y$ ∈ [0-6]) and $\lambda$ is
 
 ## A. Data exploration
 
-Before any analysis, it is important to have a look about the data.
+Before any analysis, it is important to have a look at the data.
 
 ### Outlayer values in the response variable $Y$ (the number of young in the nest, Number_Fledged) and values distribution:
 
@@ -503,7 +503,7 @@ qqnorm(data$Number_Fledged,pch=16,col='dodgerblue3',xlab='')
 qqline(data$Number_Fledged,col='red',lwd=2)
 ```
 
-There isn't any outlayer values. There are a lot of value at 0. Maybe we can study only the number of young when there are some. There could be a normal distribution.
+There aren't any outlayer values. There are a lot of value at 0. Maybe we can study only the number of young when there are some. It could be a normal distribution.
 
 ```{r poisson_data_filtered, include=TRUE}
 # Get rid of the lines where the Number of young individuals in the nest is equal to 0
@@ -582,7 +582,7 @@ Here the example between county and habitat doesn't show a clear pattern. It's h
 
 ### Checking collinearity between categorical independent variables Xs:
 
-The following code only present it the contingency table between the variables Habitat and Species for convenience, but the same table has to be done with every couple of 4 variables.
+The following code only presents the contingency table between the variables Habitat and Species for convenience, but the same table has to be done with every couple of 4 variables.
 ```{r poisson_datacolin, include=TRUE, fig.height=4, fig.width=8}
 
 contingency_table<-table(data_filtered$Habitat,data_filtered$Species)
@@ -671,7 +671,8 @@ The equation of the model is the following:
 
 $$ Number_Fledged = 1.29^{***} + (Species{Bobolink} = 0 ;\:Species{Dickcissel} = -0.18^{**} ; \:Species{Eastern Meadowlark} = -0.14^{**} ; \:Species{Grasshopper Sparrow} = -0.05 ; \:Species{Henslow's Sparrow} = -0.18 ; \:Species{Savannah Sparrow = -0.19^{***} ; \:Species{Vesper Sparrow = -0.32^{***} ; \:Species{Western Meadowlark} = -0.04) $$
 
-According to the model's summary, the null deviance is of 599.76 and residual deviance is of 572.82 in order to estimate the explained deviance, one can use the following formula:\
+According to the model's summary, the null deviance is of 599.76 and residual deviance is of 572.82.
+In order to estimate the explained deviance, one can use the following formula:\
 
 $$Pseudo\:R^2=100\:.\:\frac{Null\:Deviance- Residual\:Deviance}{Null\:Deviance}$$
 
@@ -688,7 +689,7 @@ lot of the variation in the number of young individuals in the nest.
 
 The model that we have done is a generalized linear model so there aren't residual normality or homogeneity. However, it is important to check the independence of residuals.
 
-First, when there is counting model like when a Poisson distribution is followed, the overdispersion has to be checked. It can be done with the following code. If the result is over 1, there are overdispersion and the model should be reconsidered.
+First of all, in situations where a counting model is used, such as when following a Poisson distribution, the overdispersion has to be checked. It can be done with the following code. If the result is over 1, there are overdispersion and the model should be reconsidered.
 
 ```{r poisson_overdisp, include=TRUE}
 # Scale parameter calculation
@@ -697,7 +698,7 @@ N  <- nrow(data_filtered)
 p  <- length(coef(mod1))
 sum(E1^2) / (N - p)
 ```
-The value is of 0.44 o it's okay, the residuals aren't overdispersed.
+The value is of 0.44 so it's okay, the residuals aren't overdispersed.
 
 We can also check for the most influential individuals:
 
