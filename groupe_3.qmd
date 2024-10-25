@@ -120,17 +120,21 @@ Il n'y a aucune valeurs manquantes.
 
 A partir de cela, nous allons dans un premier temps examiner le jeu de données (valeurs abérantes, potentielles relations entre Y et Xs, ...) afin d'avoir une première impression. Par la suite, nous réaliserons notre analyse statistique en constuisant et affinant notre modèle. Enfin, nous analyserons ses coefficients et son pouvoir explicatif afin de le valider ou non.
 
-# EXPLORATION DU JEU DE DONNEES
+# DATA EXPLORATION
 
--   **1.Présentation du jeu de données**
+-   <div>
 
-      **a.Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$**
+    1.  **Data overview**
 
-La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
+    </div>
 
-**Valeurs aberrantes :** dans un jeu de données écologiques, il est probable de rencontrer des individus présentant des valeurs extrêmes pour la variable réponse. Ces individus, en raison de leurs valeurs inhabituelles, peuvent avoir un impact disproportionné sur la construction du modèle. Toutefois, ces valeurs extrêmes peuvent résulter soit de la variabilité naturelle des phénomènes écologiques, soit d'erreurs (par exemple, des erreurs de mesure ou de manipulation). Identifier ces individus avant l'analyse statistique permet de prévenir les erreurs et de justifier, si nécessaire, l'exclusion de certaines valeurs aberrantes pour améliorer la robustesse du modèle.
+    **a. Outliers in** $Y$ **and distribution of** $Y$ **values**
 
-Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à un **Cleveland plot** des valeurs de $Y$.
+The first step in exploring the dataset is to check for **potential outliers** in the response variable $Y$ and to examine the **distribution** of its values.
+
+**Outliers:** In ecological datasets, it is common to encounter individuals with extreme values for the response variable. These individuals, due to their unusual values, may disproportionately impact model construction. However, these extreme values may arise from either the natural variability of ecological phenomena or from errors (e.g., measurement or handling errors). Identifying these individuals prior to statistical analysis helps prevent errors and, if necessary, justifies the exclusion of certain outliers to improve the model's robustness.
+
+Outliers can be identified using a **Boxplot** or a **Cleveland plot** of the values of $Y$.
 
 ```{r valeurs aberrantes de Y, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -138,7 +142,7 @@ Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à
 bp <- ggplot(data = dataAnts, aes(y = Nsp))+
   geom_boxplot()+
   labs(subtitle = "A. Boxplot",
-       y = "richesse spécifique")+
+       y = "species richness")+
   theme(
     panel.background = element_rect(fill="white"),
     panel.grid.major = element_blank(),
@@ -157,7 +161,7 @@ bp <- ggplot(data = dataAnts, aes(y = Nsp))+
 cp <- ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
   geom_jitter(width = 0.1, size = 3, color = "black")+
   labs(subtitle = "B. Cleveland plot",
-       x = "richesse spécifique")+
+       x = "species richness")+
   theme_minimal()+
   theme(
     panel.grid.major.x = element_blank(),
@@ -172,28 +176,28 @@ cp <- ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
     plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
   )
 
-## Affichage 
+## Display
 (bp + cp) + 
   plot_layout(widths = c(1, 2)) + 
   plot_annotation(title = "Figure 1 : Analyse des valeurs aberrantes de Y")
 
 ```
 
-D'après la figure 1, $Y$ ne présente pas de valeurs extrêmes ou aberrantes.
+According to Figure 1, $Y$ does not exhibit any extreme or outlier values.
 
-**Distribution des valeurs :** analyser la distribution des valeurs de $Y$ permet d'identifier *a priori* la loi de probabilité qui expliquera au mieux les processus écologiques en cours. Cela est d'autant plus intéressant si les données suggèrent une relation non linéaire ou asymétrique.
+**Distribution of values:** Analyzing the distribution of the values of $Y$ allows us to preliminarily identify the probability distribution that best explains the ongoing ecological processes. This is particularly interesting if the data suggest a non-linear or asymmetric relationship.
 
-La distribution des valeurs de $Y$ peut être visualisée grâce à un **histogramme** ou à un **Normal Q-Q plot**.
+The distribution of $Y$ values can be visualized using a **histogram** or a **Normal Q-Q plot**.
 
 ```{r distribution de Y, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
-# Histogramme 
+# Histogram
 hg <- ggplot(data = dataAnts, aes(x = Nsp))+
   geom_histogram(binwidth = 2, fill = "blue", color = "black")+
   theme_minimal()+
-  labs(subtitle = "A. Histogramme",
-       x = "richesse spécifique",
-       y = "fréquence")+
+  labs(subtitle = "A. Histogram",
+       x = "species richness",
+       y = "frequency")+
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"),
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -207,8 +211,8 @@ qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
   geom_qq()+
   theme_minimal()+
   labs(subtitle = "B. Q-Q plot",
-       x = "quantiles théoriques",
-       y = "quantiles observés")+
+       x = "theorical quantiles",
+       y = "observed quantiles")+
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"),
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -220,17 +224,17 @@ qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
 # Affichage
 (hg + qqp) +
   plot_layout(widths = c(1, 2)) + 
-  plot_annotation(title = "Figure 2 : Analyse de la distribution de Y")
+  plot_annotation(title = "Figure 2 : Analyse of Y distribution")
 
 ```
 
-La distribution de $Y$ (exponentielle négative) et la nature du jeu de données (comptage sans aggrégation) suggèrent que $Y$ suit une loi de Poisson. Cette hypothèse est appuyée par l'écart à la normalité des valeurs de $Y$ observé en figure 2B.
+The distribution of $Y$ (negative exponential, Figure 2A) and the nature of the dataset (count data without aggregation) suggest that $Y$ follows a Poisson distribution. This hypothesis is supported by the deviation from normality of $Y$ observed values shown in Figure 2B.
 
 [**Conclusion**]{.underline} **:**
 
-Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
+After analyzing the outliers and the distribution of the response variable \$Y\$, it appears appropriate to use $Y$ as is while applying a Poisson distribution.
 
-  **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
+**b.** $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$
 
 Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.* De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
 
@@ -470,7 +474,7 @@ On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig 6A) ou sur l
 
 L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
 
-  **c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
+**c.** $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité
 
 Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
 
@@ -796,7 +800,7 @@ Dans un premier temps, vérifier la présence de **surdispersion** est indispens
 
 Pour cela, nous allons calculer un paramètre appelé 'scale parameter'. Si sa valeur est nettement supérieure à 1 (à partir de 1.6 ou 1.7), il y a surdispersion. Le modèle n'est donc pas valable.
 
-  **a.Vérification de la surdispersion**
+**a.Vérification de la surdispersion**
 
 Quand l'indice de dispersion est supérieur à 1.5, il existe différentes explications.
 
@@ -834,7 +838,7 @@ sum(E1^2) / (N - p)
 
 Ici, la dispersion est de 1.02. Il n'y a pas de surdispersion.
 
-  **b.Analyses des résidus**
+**b.Analyses des résidus**
 
 Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $Xs$ significatifs du modèle, nous devons valider l'absence de tendance dans leur distribution. Si nous constatons une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
 
@@ -888,7 +892,7 @@ L'histogramme des résidus (Fig. 20) et le Q-Q plot (Fig. 21) montrent des rési
 
 Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
-  **c.Vérification des individus influents**
+**c.Vérification des individus influents**
 
 ```{r contri, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -902,7 +906,7 @@ abline(h = 1, col = 2,lwd = 3)
 
 Ici (Fig. 26), il n'y a pas d'individus trop influent.
 
-  **d.Analyses des résidus avec DHARMa**
+**d.Analyses des résidus avec DHARMa**
 
 Pour une représentation graphique différente, nous pouvons utiliser le package 'DHARMa'. Ce package permet d'analyser les résidus et plus particulièrement leur surdispersion et les valeurs aberrantes. Ce package met en couleur rouge les résidus ne respectant pas les valeurs attendues.
 
