@@ -3,10 +3,10 @@ title: "Groupe 3"
 autor: "Gabriel-Marie Arnault, Giuliana Brambilla, Apolline Byrdy, Anaelle Hulbert, Manon Le Bihan, Kilian Prevost, Chloé Van der Swaelmen et Léa Vuille"
 source : "Yannick Outreman, selon les données de Gotelli & Ellison (2002) - Biogeography at a regional scale : determinants of antspecies density in New England bogs and forests. Ecology, 83 : 1604-1609."
 editor: visual
-bibliography: references.bib
 ---
 
 # INTRODUCTION
+
 
 
 -   **1.Article presentation**
@@ -22,6 +22,7 @@ Gotelli and Ellison are two ecologists, the first specializing in questions of o
 -   **3.Datas and variables**
 
 
+
 The variables used are :\
 - *Site* : the name of the sampled site\
 - *Latitude* : site latitude (quantitative)\
@@ -32,6 +33,7 @@ The variables used are :\
 
 
 -   **4.Research question**
+
 
 Of the three questions that Gotelli and Ellison address in this study, we focus here on the first two:
 
@@ -69,9 +71,11 @@ Qualitative or quantitative variables are well considered as such.
 
 -   **6.Which model and why?**
 
+
 To model the relationship between a quantitative response variable $Y$ and explanatory variables $X_{1}$,$X_{2}$...$X_{p}$, quantitative and/or qualitative we use general linear models, or *glm*, (linear regression, ANCOVA, ANOVA). To be able to use these *glm*, three conditions of application are necessary: ​​*homogeneity of variances*, *residual independence* and *residual normality*. However, the $Y$ responses analyzed in ecology can sometimes be discrete and deviate from the hypothesis of normality.
 
 For discrete response variables (counts, binary data), the variance of $Y$ generally varies with the mean of $Y$. This relationship then seems to indicate that the variance cannot be homogeneous in a data set, due to its dependence on the mean. However, general linear models have a constant variance as their application hypothesis (i.e. a homogeneity of the variance). Furthermore, when applying a general linear model to count data, the predicted values ​​obtained may be negative (which is impossible given the nature of $Y$) and the residuals may not be normally distributed. Therefore, using a general linear model (*glm*) on discrete responses very generally generates deviations from the application conditions. In conclusion, it becomes necessary to use a method more suited to the analysis of discrete response variables such as generalized linear models (*glim*).
+
 
 
 **Here are the steps to follow to establish a generalized linear model:**\
@@ -84,6 +88,7 @@ For discrete response variables (counts, binary data), the variance of $Y$ gener
 A generalized linear model is written as follows (equation 1): $$g(\mu_{y})= \alpha+ \beta_{1}.X_{i1}+ \beta_{2}.X_{i2}+\beta_{3}.X_{i3}+...\beta_{p}.X_{ip} = \eta $$ {#eq-1} The linear predictor, $\eta$, is derived from the linear model as the sum of the $p$ terms associated with each of the $\beta_{p}$ parameters. Its value is obtained by transforming the value of $Y$ by the link function, and the predicted value of $Y$ is obtained by applying to $\eta$ the inverse function of the link function.
 
 
+
 To illustrate this point, we are interested in counts. A count is a discrete and positive random variable. It is possible that the distribution of its values follows a Poisson distribution, a Negative Binomial distribution or even a Normal distribution when the values are very large.
 
 Our example illustrates a distribution following the Poisson law.
@@ -92,10 +97,12 @@ The Poisson law is useful for describing rare and independent discrete events. T
 
 In a Poisson-type *glim*, the link function is the **log** function. Thus, the model is written (equation 3): $$log(\mu_{y})= \alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip} = \eta $$ {#eq-3} 150 / 5 000 The predicted values ​​of $Y$ are obtained by applying to $\eta$ the inverse function of the link function, here the **log** function (equation 4): $$\mu_{y}= e^{\alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip}} = e^{\eta} $$ {#eq-4}
 
+
 Generalized linear models of the Poisson type have an error structure that follows a Poisson distribution. This structure allows, among other things, to precisely define the relationship between the mean and the variance. This relationship is exploited by the maximum likelihood method to estimate the coefficients and standard errors of the parameters of the GLM model.
 
 
 -   **7.Environment Configuration and Packages**
+
 
 To analyze our data we set up the session by cleaning the workspace. We will also need to load the following packages : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion*, *lattice*, *patchwork*, *MASS* et *rcompanion*
 
@@ -115,7 +122,9 @@ library(MASS) # Functions and datasets for analyses
 
 ```
 
+
 -   **8. Checking for missing data**
+
 
 ```{r datalack, echo=TRUE,include=TRUE}
 
@@ -124,6 +133,7 @@ colSums(is.na(dataAnts))
 summary(dataAnts)
 
 ```
+
 
 There are no missing values.
 
@@ -135,6 +145,7 @@ From this, we will first examine the dataset (outliers, potential relationships 
 # EXPLORATION DU JEU DE DONNEES
 
     1.  **Présentation du jeu de données**
+
 
     **a. Valeurs aberrantes dans** $Y$ et distribution des valeurs de $Y$
 
@@ -243,9 +254,7 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
 
-
 **b.** $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$
-
 
 Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.* De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
 
@@ -483,7 +492,7 @@ Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histog
 
 [**Conclusion**]{.underline} **:**
 
-L'analyse de valeurs aberrantes et de la distribution des variables suggère qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea* peuvent être utilisées dans la construction du modèle.
+L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
 
 
 **c.** $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité
@@ -506,10 +515,9 @@ L'analyse de valeurs aberrantes et de la distribution de la variable qualitative
        
 -        **a.Analyze the potential relationship between Y and Xs**
 
-In order to test the possible relationship between the response variable $Y$ and the explanatory variables $Xs$, it will be essential to carry out statistical modelling, as this is the only way to test the significance of the relationships. However, we can start by performing graphical analyses to better visualize the data and get an idea.
+In order to test the possible relationship between the response variable $Y$ and the explanatory variables $Xs$, it will be essential to carry out statistical modelling, as this is the only way to test the significance of the relationships. However, we can start by performing graphical analyses to better visualize the data and get an idea
 
-```{r relation Y and XS , echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
-
+```{r relation Y et XS , echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 par(mfrow=c(2,2))
 
 # For the latitude variable
@@ -538,6 +546,7 @@ Relationship between $X$ and location (Fig. 10): Here, there appears to be a rel
 
 It seems that the further north and the higher the relief, the lower the ant species richness. What's more, if we're in a forest, the species richness will be greater than in bogs.
 
+
 -   **b.Analysis of Potential Interactions Among the X Variables**
 
 We aim to study interactions between the factor and the three covariates. Thus, we exclude any interaction among the quantitative explanatory variables. We use a graphical approach to estimate the potential interactive effect among these different variables.
@@ -564,6 +573,7 @@ points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Locat
 ```
 
 Generally, we can assume an interaction between covariates if the slopes formed by the two point clouds are different. Here, the clouds do not clearly reveal any similarity or difference in trend for each graph. It is therefore difficult to draw conclusions about these interactions.
+
 
 -   **c.Checking for Potential Collinearity Among the X Variables**
 
@@ -603,21 +613,23 @@ In the first graph (Fig. 14), we can see that the point clouds do not appear to 
 
 There does not appear to be any colinearity among the variables, so we can retain them all.
 
-# ANALYSE STATISTIQUE
+# STATISTICAL ANALYSIS
 
 
-    1.  **Construction du modèle**
+-   **1.Model construction**
 
 
-Nous cherchons à produire le meilleur modèle pour prédire le nombre d'espèces. La variable réponse est un comptage (variable quantitative discrète) de petit effectifs (\<30), la loi appropriée est donc la loi de **Poisson**. Nous allons donc réaliser la modélisation avec un modèle linéaire généralisé de Poisson.
+We aim to produce the best model for predicting the number of species. The response variable is a count (a discrete quantitative variable) with small numbers (<30), so the appropriate distribution is the **Poisson** distribution. We're going to model it using a generalized linear Poisson model.
 
-Pour arriver au modèle, dit "candidat", à tester, nous allons partir du modèle dit "complet", c'est-à-dire avec toutes les variables explicatives et leurs interactions, et utiliser une méthode pas à pas arrière ou **Backward selection** pour sélectionner les variables et les interactions à conserver.
 
-Commençons avec le modèle complet:
+To arrive at the “candidate” model to be tested, we'll start with the “complete” model, i.e. with all the explanatory variables and their interactions, and use **Backward selection** to select the variables and interactions to be retained.
+
+
+Let's start with the complete model:
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
-# Formulation du modèle avec la fonction glm() et family=poisson(link="log")
+# model formulation with the fonction glm() and family=poisson(link="log")
 mod1<-glm(Nsp~ Location
         + Latitude
         + Elevation
@@ -630,22 +642,22 @@ mod1<-glm(Nsp~ Location
 
 ```
 
-A partir de ce modèle complet nous allons éliminer pas à pas les interactions non significatives.
+Based on this complete model, we will eliminate the insignificant interactions step by step.
 
 ```{r colinéarité2, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
-# Etape 1
+# Step 1
 drop1(mod1,test="Chi")
 
 ```
 
-Les trois interactions ne sont pas significatives. Nous enlèvons l'interaction 'Location:Latitude' car c'est la 'moins significative'. Nous pouvons également remarquer que la fonction drop1() nous informe que c'est en enlevant cette interaction que nous obtenons le meilleur AIC.
+All three interactions are insignificant. We remove the 'Location:Latitude' interaction as it is the 'least significant'. We can also see that the drop1() function informs us that it's by removing this interaction that we get the best AIC.
 
-Nous obtenons donc le modèle suivant:
+We obtain the following model:
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
-# Etape 2
+# Step 2
 mod1<-glm(Nsp~ Location
         + Latitude
         + Elevation
@@ -659,11 +671,11 @@ drop1(mod1,test="Chi")
 
 ```
 
-De la même façon, nous enlèvons l'interaction 'Location:LogArea'.
+In the same way, we remove the 'Location:LogArea' interaction.
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
-# Etape 3
+# Step 3
 mod1<-glm(Nsp~ Location
         + Latitude
         + Elevation
@@ -676,11 +688,11 @@ drop1(mod1,test="Chi")
 
 ```
 
-Nous enlèvons également l'interaction 'Location:Elevation'. Nous regardons maintenant la significativité des variables explicatives.
+We also remove the 'Location:Elevation' interaction. We now look at the significance of the explanatory variables.
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
-# Etape 4
+# Step 4
 mod1<-glm(Nsp~ Location
         + Latitude
         + Elevation
@@ -692,11 +704,11 @@ drop1(mod1,test="Chi")
 
 ```
 
-La variable 'LogArea' n'a pas un effet siginificatif, nous l'éliminons du modèle.
+As the 'LogArea' variable does not have a siginificative effect, we eliminate it from the model.
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
-# Etape 5
+# Step 5
 mod1<-glm(Nsp~ Location
         + Latitude
         + Elevation
@@ -707,13 +719,13 @@ drop1(mod1,test="Chi")
 
 ```
 
-Les variables explicatives restantes sont significatives, nous conservons ainsi ce modèle comme modèle candidat.
+The remaining explanatory variables are significant, so we retain this model as a candidate.
 
-Nous allons ensuite identifier le modèle candidat avec une autre approche que la significativité des p-values : l'AIC avec le mode stepwise.
+We will then identify the candidate model using an approach other than the significance of the p-values: the AIC with the stepwise mode.
 
 ```{r model AIC, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
-# Nous construisons le modèle complet
+# complete model construction
 modelcomplet<- glm(Nsp~ Location
         + Latitude
         + Elevation
@@ -724,32 +736,28 @@ modelcomplet<- glm(Nsp~ Location
         ,data=dataAnts
         ,family=poisson(link="log"))
 
-# Sélection du modèle sur la base AIC
+# model selection
 modfinal<-stepAIC(modelcomplet,direction="both")
 
-# Analyse du modèle final
+# final model
 drop1(modfinal,test="Chi")
 summary(modfinal)
 
 ```
 
-Remarque : il est recommandé d'utiliser l'AIC avec plus de 40 individus par paramètre, sinon il existe l'AICc (@YannickOutreman).
+Note: it is recommended to use AIC with more than 40 individuals per parameter, otherwise there is AICc (@YannickOutreman).
 
 [**Conclusion**]{.underline} **:**
 
-Les deux méthodes arrivent au même modèle candidat : *Nsp\~Latitude+Elevation+LogArea*.
+Both methods arrive at the same candidate model: *Nsp\~Latitude+Elevation+LogArea*.
 
--   <div>
+- **2. coefficients analysis**
 
-    2.  **Analyse des coefficients**
-
-    </div>
-
-L'étape suivante est l'analyse des coefficients. Nous allons donc regarder l'effet précis des variables explicatives retenues (Latitude, Elevation, LogArea) sur la richesse spécifique des fourmis.
+The next step is to analyze the coefficients. We'll be looking at the precise effect of the selected explanatory variables (Latitude, Elevation, LogArea) on ant species richness.
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
-# Coefficients du modèle
+# Coefficients 
 summary(mod1)
 #                 Estimate Std. Error z value Pr(>|z|)    
 #(Intercept)    11.9368121  2.6214970   4.553 5.28e-06 ***
@@ -762,37 +770,33 @@ summary(mod1)
 
 ```
 
-Le summary() du modèle nous permet de voir les coefficients correspondant à chaque variable ainsi que l'intercept (basé sur la moyenne de la population). Pour un facteur (variable qualitative) le coefficient correspond à la comparaison entre la modalité donnée et la modalité dite "de référence" dont le coefficient est égal à 0. Les scores de déviance serviront dans la partie suivante. Grâce à ce tableau nous pouvons noter les différents coefficients :
+The model's summary() allows us to see the coefficients corresponding to each variable, as well as the intercept (based on the population mean). For a factor (qualitative variable), the coefficient corresponds to the comparison between the given modality and the so-called “reference” modality, whose coefficient is equal to 0. The deviance scores will be used in the following section. This table shows the different coefficients:
 
 **Location factor**\
-- $Location_{Bog}$ = 0 (modalité de référence du facteur Location)\
+- $Location_{Bog}$ = 0 (reference modality for Location)\
 - $Location_{Forest}$ = $+0.63^{**}$\
 **Latitude covariate**\
 - $\beta_{Latitude}$ = $-0.23^{***}$\
 **Elevation covariate**\
 - $\beta_{Elevation}$ = $-0.001^{***}$
 
-Le modèle candidat avec les coefficients s'écrit (équation 5) : $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$ {#eq-5}
+The candidate model with the coefficients is written (equation 5): $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$ {#eq-5}
 
-Rappel : pour modéliser une variable quantitative discrète avec un modèle linéaire généralisé nous passons par une fonction de lien, ici avec la loi de Poisson nous utilisons la fonction log().
+Reminder: to model a discrete quantitative variable with a generalized linear model, we use a link function. Here, with Poisson distribution, we use the log() function.
 
--   <div>
+- **3. explanatory power of the model **
 
-    3.  **Pouvoir explicatif du modèle**
+To determine the quality of our model, we'll calculate the distance between the candidate model and the null model. The null model is a model that summarizes the data with a single parameter: the mean of $Y$. This model does not explain the data.
 
-    </div>
+One way of determining model quality is to calculate a pseudo R²*. To do this, we determine the distance between the deviance of the null model and the residual deviance of the candidate model (equation 6).
 
-Afin de connaître la qualité de notre modèle, nous allons calculer la distance entre le modèle candidat et le modèle nul. Le modèle nul est un modèle qui résume les données avec un unique paramètre : la moyenne de $Y$. Ce modèle n'explique pas les données.
+$$Pseudo\:R^2=100\:.\:\frac{Null\:Deviance- Residual\:Deviance}{Null\:Deviance}$$ {#eq-6}
 
-Un moyen de connaître la qualité du modèle est de calculer un *pseudo R²*. Pour cela, nous déterminons la distance entre la déviance du modèle nul et la déviance résiduelle du modèle candidat (équation 6).
+We can calculate the *pseudo R²* in three different ways: with the McFadden method, the Cox and Snell method or the Nagelkerke method. The last two methods require the 'rcompagnon' package.
 
-$$Pseudo\:R^2=100\:.\:\frac{Déviance\:nulle- Déviance\:résiduelle}{Déviance\:nulle}$$ {#eq-6}
+In our example, as seen in the previous section, the null model has a deviance of 102.76 and the residual deviance is 40.69.
 
-Nous pouvons calculer le *pseudo R²* de trois manières différentes : avec la méthode de McFadden, celle de Cox et Snell ou celle de Nagelkerke. Les deux dernières méthodes nécessitent le package 'rcompagnon'.
-
-Dans notre exemple, comme vu dans la partie précédente, le modèle nul a une déviance de 102,76 et la déviance résiduelle est de 40,69.
-
-Nous allons donc calculer la qualité du modèle avec les commandes suivantes :
+We will therefore calculate the quality of the model with the following lines:
 
 ```{r deviance, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -805,50 +809,46 @@ nagelkerke(mod1)
 
 ```
 
-Ici, l'estimation de la déviance expliquée est de 60% ou 75%, en fonction de la méthode utilisée.
+Here, the estimate of deviance explained is 60% or 75%, depending on the method used.
 
-```{r prediction, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r Prediction,include=TRUE, fig.height=6, fig.width=6}
 
-plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Valeurs estimées par le modèle",xlab="Valeurs observées", main="figure 19")
+plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Estimated values",xlab="Observed values", main="Figure 19")
 abline(0,1)
 
 ```
 
--   <div>
+-   **4.Model validation**
 
-    4.  **Validation du modèle**
+The *independence of residuals* is the only limitation of the generalized linear model. Analysis of the residuals therefore enables us to identify possible trends and check for the presence of influential statistical units.
 
-    </div>
+To begin with, checking for **overdispersion** is essential when running a Poisson generalized linear model. For all generalized linear models using count data, we need to check for the absence of overdispersion.
 
-L'*indépendance des résidus* est la seule chose qui limite le modèle linéaire généralisé. L'analyse des résidus permet donc d'identifier d'éventuelles tendances et de vérifier la présence d'unités statistiques influentes.
+To do this, we calculate a parameter called the 'scale parameter'. If its value is significantly greater than 1 (from 1.6 or 1.7), there is overdispersion. The model is therefore invalid.
 
-Dans un premier temps, vérifier la présence de **surdispersion** est indispensable lorsque l'on fait un modèle linéaire généralisé suivant une loi de Poisson. Pour tous les modèles linéaires généralisés utilisant des données de comptage, il faut vérifier l'absence de surdispersion.
+**a.Checking for overdispersion**
 
-Pour cela, nous allons calculer un paramètre appelé 'scale parameter'. Si sa valeur est nettement supérieure à 1 (à partir de 1.6 ou 1.7), il y a surdispersion. Le modèle n'est donc pas valable.
+When the dispersion index is greater than 1.5, there are various explanations.
 
-**a.Vérification de la surdispersion**
+It may be due to :
 
-Quand l'indice de dispersion est supérieur à 1.5, il existe différentes explications.
+- Outliers are present in the data set. They need to be eliminated.
 
-Cela peut être dû à :
+- Missing covariates. They need to be added to the model.
 
--   Des valeurs abérrantes sont présentes dans le jeu de données. Il faut donc les éliminer.
+- Missing interactions. Add them to the model.
 
--   Des covariables sont manquantes. Il faut les ajouter au modèle.
+- Zero inflation occurs. Use negative Binomial regression with zero inflation (@Long_J.S._1997)
 
--   Des interactions sont manquantes. Il faut les ajouter au modèle.
+- A dependency between the data and a factor or variable is present. A general linear mixed model should be used. (@Johnson_et_al._2015)
 
--   Une inflation des zéros se produit. Il faut utiliser une regression Binomiale négative à inflation des zéros. (@Long_J.S._1997)
+- Relationship between data and variables or factors is not linear. A generalized additive model must be used. (@Irz_et_Levi-Valensin_2016)
 
--   Une dépendance entre les données et un facteur ou une variable est présente. Il faut utiliser un modèle linéaire général mixte. (@Johnson_et_al._2015)
+- The link function is bad. The link function must be changed.
 
--   Relation entre les données et les variables ou facteurs n'est pas linéaire. Il faut utiliser un modèle additif généralisé. (@Irz_et_Levi-Valensin_2016)
+- The variation of $Y$ is large. We must use a generalized linear model following a negative binomial distribution. (@Chahine_1965)
 
--   La fonction de lien est mauvaise. Il faut changer la fonction de lien.
-
--   La variation de $Y$ est grande. Il faut utiliser un modèle linéaire généralisé suivant une loi binomiale négative. (@Chahine_1965)
-
-Dans notre exemple, nous allons calculer le 'scale parameter'. Pour cela nous allons utiliser la commande :
+In our example, we will calculate the scale parameter. To do this, we will use the command :
 
 ```{r surdispersion, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -862,11 +862,11 @@ sum(E1^2) / (N - p)
 
 [**Conclusion**]{.underline} **:**
 
-Ici, la dispersion est de 1.02. Il n'y a pas de surdispersion.
+Here, dispersion is 1.02, there is no overdispersion.
 
-**b.Analyses des résidus**
+**b.Residual analysis**
 
-Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $Xs$ significatifs du modèle, nous devons valider l'absence de tendance dans leur distribution. Si nous constatons une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
+Although the assumptions of normality and homogeneity of residuals are not expected in generalized linear models, we can analyze them graphically. By plotting the residuals against the model's significant $Xs$, we need to validate the absence of a trend in their distribution. If we find a trend, the modeling may be problematic: it may be due to a lack of fit, data dependency or influential observations. Remember that in generalized linear models, we use **Pearson residuals** because they include heterogeneity of variance and are easy to calculate and understand.
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -874,15 +874,15 @@ resid<-residuals(mod1, type="pearson")
 
 par(mfrow=c(3,2))
 # Histogram
-hist(resid,col='dodgerblue3',xlab="residuals",main="figure 20")
+hist(resid,col='dodgerblue3',xlab="residuals",main="Figure 20")
 # Quantile-Quantile plot
-qqnorm(resid,pch=16,col='dodgerblue3',xlab='', main="figure 21")
+qqnorm(resid,pch=16,col='dodgerblue3',xlab='', main="Figure 21")
 qqline(resid,col='red',lwd=2)
 
 # Residuals vs fitted
 plot(resid~fitted(mod1)
       , col='dodgerblue3'
-      , pch=16, main="figure 22")
+      , pch=16, main="Figure 22")
 abline(h = 0)
 
 # Residuals against Location factor
@@ -890,7 +890,7 @@ boxplot(resid~ dataAnts$Location,
          varwidth = TRUE,
          ylab = "Residuals",
          xlab = "Location",
-         main = "figure 23")
+         main = "Figure 23")
 
 # Residuals against Latitude
 plot(resid~ dataAnts$Latitude, 
@@ -898,7 +898,7 @@ plot(resid~ dataAnts$Latitude,
          col="dodgerblue3",
          ylab = "Residuals",
          xlab = "Latitude",
-         main = "figure 24")
+         main = "Figure 24")
 abline(h = 0)
 
 # Residuals against Elevation
@@ -907,34 +907,34 @@ plot(resid~ dataAnts$Elevation,
          col="dodgerblue3",
          ylab = "Residuals",
          xlab = "Elevation",
-         main = "figure 25")
+         main = "Figure 25")
 abline(h = 0)
 
 ```
 
-L'histogramme des résidus (Fig. 20) et le Q-Q plot (Fig. 21) montrent des résidus relativement normaux. Les quatres graphiques suivant (Fig. 22, 23, 24, 25) montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. Nous pouvons voir que les résidus restent homogènes peu importe les valeurs des variables explicatives.
+The histogram of residuals (Fig. 20) and the Q-Q plot (Fig. 21) show relatively normal residuals. The following four graphs (Fig. 22, 23, 24, 25) show the distribution of residuals according to model estimates and the three explanatory variables. We can see that the residuals remain homogeneous whatever the values of the explanatory variables.
 
 [**Conclusion**]{.underline} **:**
 
-Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
+We can conclude there is no tendency in the residuals.
 
-**c.Vérification des individus influents**
+**c.Checking for influent individuals**
 
 ```{r contri, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 par(mfrow = c(1, 1))
-plot(cooks.distance(mod1), type = "h", ylim = c(0, 1), main="figure 26")
+plot(cooks.distance(mod1), type = "h", ylim = c(0, 1), main="Figure 26")
 abline(h = 1, col = 2,lwd = 3)
 
 ```
 
 [**Conclusion**]{.underline} **:**
 
-Ici (Fig. 26), il n'y a pas d'individus trop influent.
+Here (Fig. 26), there are no overly influential individuals.
 
-**d.Analyses des résidus avec DHARMa**
+**d.Residual analysis with DHARMa**
 
-Pour une représentation graphique différente, nous pouvons utiliser le package 'DHARMa'. Ce package permet d'analyser les résidus et plus particulièrement leur surdispersion et les valeurs aberrantes. Ce package met en couleur rouge les résidus ne respectant pas les valeurs attendues.
+For a different graphical representation, we can use the 'DHARMa' package. This package can be used to analyze residuals, in particular overdispersion and outliers. Residuals that do not comply with expected values are highlighted in red.
 
 ```{r Dharma, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -945,14 +945,14 @@ residuals(simulationOutput)
 plot(simulationOutput)
 residuals(simulationOutput, quantileFunction = qnorm, outlierValues = c(-7,7))
 
-# Représentation des résidus selon la covariable
+# Residuals with covariate
 plotResiduals(simulationOutput, form = dataAnts$Latitude)
 
 ```
 
 [**Conclusion**]{.underline} **:**
 
-Dans notre exemple, les résidus ne sont pas surdispersés et ne montrent pas de valeurs aberrantes.
+In our example, the residuals are not overdispersed and show no outliers.
 
 # CONCLUSION
 
