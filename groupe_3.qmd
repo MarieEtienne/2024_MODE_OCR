@@ -7,15 +7,15 @@ editor: visual
 
 # INTRODUCTION
 
--   **1.Article presentation**
+  **1.Article presentation**
 
 Our data come from the article "Biogeography at a Regional Scale: Determinants of Ant Spec Density in New England Bogs and Forests" by Gotelli & Ellison published in *Ecology* in 2002 (83(6), 2002, pp. 1604--1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
 
--   **2.Biological context**
+  **2.Biological context**
 
 Gotelli and Ellison are two ecologists, the first specializing in questions of organization of animal and plant communities, the second in the disintegration and reassembly of ecosystems following natural and anthropogenic disturbances. Here, they were interested in the influence of the latitudinal gradient on the species richness of ants in the state of New England in the northeastern United States. Their study was carried out on 22 sites where, for each, 25 traps were placed in an ombrotrophic peat bog and 25 in the surrounding forest. The species of ants contained in the traps are subsequently identified in the laboratory and, for a given site and habitat, they calculated the species richness (total number of species present).
 
--   **3.Datas and variables**
+  **3.Datas and variables**
 
 The variables used are :\
 - *Site* : the name of the sampled site\
@@ -25,7 +25,7 @@ The variables used are :\
 - *Location* : the location of the traps ("Bog" or "Forest") (qualitative)\
 - *Nsp* : the specific richness of ants, corresponding to the response variable
 
--   **4.Research question**
+  **4.Research question**
 
 Of the three questions that Gotelli and Ellison address in this study, we focus here on the first two:
 
@@ -35,7 +35,7 @@ Of the three questions that Gotelli and Ellison address in this study, we focus 
 
 In other words: what are the quantitative (latitude, altitude, area) and qualitative (location) variables that determine ant species richness in New England peatlands?
 
--   **5.Importing the dataset**
+  **5.Importing the dataset**
 
 From then on, we can import the dataset located in file "BogAnts.txt"
 
@@ -59,7 +59,7 @@ str(dataAnts)
 
 Qualitative or quantitative variables are well considered as such.
 
--   **6.Which model and why?**
+  **6.Which model and why?**
 
 To model the relationship between a quantitative response variable $Y$ and explanatory variables $X_{1}$,$X_{2}$...$X_{p}$, quantitative and/or qualitative we use general linear models, or *glm*, (linear regression, ANCOVA, ANOVA). To be able to use these *glm*, three conditions of application are necessary: ​​*homogeneity of variances*, *residual independence* and *residual normality*. However, the $Y$ responses analyzed in ecology can sometimes be discrete and deviate from the hypothesis of normality.
 
@@ -84,7 +84,7 @@ In a Poisson-type *glim*, the link function is the **log** function. Thus, the m
 
 Generalized linear models of the Poisson type have an error structure that follows a Poisson distribution. This structure allows, among other things, to precisely define the relationship between the mean and the variance. This relationship is exploited by the maximum likelihood method to estimate the coefficients and standard errors of the parameters of the GLM model.
 
--   **7.Environment Configuration and Packages**
+  **7.Environment Configuration and Packages**
 
 To analyze our data we set up the session by cleaning the workspace. We will also need to load the following packages : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion*, *lattice*, *patchwork*, *MASS* et *rcompanion*
 
@@ -104,7 +104,7 @@ library(MASS) # Functions and datasets for analyses
 
 ```
 
--   **8. Checking for missing data**
+  **8. Checking for missing data**
 
 ```{r datalack, echo=TRUE,include=TRUE}
 
@@ -116,18 +116,15 @@ summary(dataAnts)
 
 There are no missing values.
 
--   **9. Analysis process**
+  **9. Analysis process**
 
 From this, we will first examine the dataset (outliers, potential relationships between Y and Xs, ...) in order to have a first impression. Subsequently, we will carry out our statistical analysis by building and refining our model. Finally, we will analyze its coefficients and its explanatory power in order to validate it or not.
 
 # EXPLORATION DU JEU DE DONNEES
 
-```         
-1.  **Présentation du jeu de données**
+  **1.Présentation du jeu de données**
 
-
-**a. Valeurs aberrantes dans** $Y$ et distribution des valeurs de $Y$
-```
+    **a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$**
 
 La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
 
@@ -233,7 +230,7 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
 
-**b.** $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$
+    **b.$X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
 
 Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.* De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
 
@@ -473,7 +470,7 @@ Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histog
 
 L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
 
-**c.** $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité
+    **c.$X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
 
 Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
 
@@ -489,17 +486,9 @@ Ici les données sont bien réparties entre les deux modalités (Bog = tourbièr
 
 L'analyse de valeurs aberrantes et de la distribution de la variable qualitative suggèrent qu'elle peut être utilisée dans la construction du modèle.
 
--   
+  **2.Analysis of interactions between variables Y and Xs**
 
-    ```         
-     **2.Analysis of interactions between variables Y and Xs**
-    ```
-
--   
-
-    ```         
-       **a.Analyze the potential relationship between Y and Xs**
-    ```
+    **a.Analyze the potential relationship between Y and Xs**
 
 In order to test the possible relationship between the response variable $Y$ and the explanatory variables $Xs$, it will be essential to carry out statistical modelling, as this is the only way to test the significance of the relationships. However, we can start by performing graphical analyses to better visualize the data and get an idea
 
@@ -532,7 +521,7 @@ Relationship between $X$ and location (Fig. 10): Here, there appears to be a rel
 
 It seems that the further north and the higher the relief, the lower the ant species richness. What's more, if we're in a forest, the species richness will be greater than in bogs.
 
--   **b.Analysis of Potential Interactions Among the X Variables**
+    **b.Analysis of Potential Interactions Among the X Variables**
 
 We aim to study interactions between the factor and the three covariates. Thus, we exclude any interaction among the quantitative explanatory variables. We use a graphical approach to estimate the potential interactive effect among these different variables.
 
@@ -559,7 +548,7 @@ points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Locat
 
 Generally, we can assume an interaction between covariates if the slopes formed by the two point clouds are different. Here, the clouds do not clearly reveal any similarity or difference in trend for each graph. It is therefore difficult to draw conclusions about these interactions.
 
--   **c.Checking for Potential Collinearity Among the X Variables**
+    **c.Checking for Potential Collinearity Among the X Variables**
 
 We aim to avoid collinearity among the explanatory variables in our modeling to prevent multiple variables from providing the same information. To do this, we must examine the statistical relationships that may exist among the variables by calculating the correlation between quantitative $X$ variables, and analyzing the influence of the qualitative $X$ on the quantitative $X$ variables using plot graphics.
 
@@ -599,7 +588,7 @@ There does not appear to be any colinearity among the variables, so we can retai
 
 # STATISTICAL ANALYSIS
 
--   **1.Model construction**
+  **1.Model construction**
 
 We aim to produce the best model for predicting the number of species. The response variable is a count (a discrete quantitative variable) with small numbers (\<30), so the appropriate distribution is the **Poisson** distribution. We're going to model it using a generalized linear Poisson model.
 
@@ -731,7 +720,7 @@ Note: it is recommended to use AIC with more than 40 individuals per parameter, 
 
 Both methods arrive at the same candidate model: *Nsp\~Latitude+Elevation+LogArea*.
 
--   **2. coefficients analysis**
+  **2. coefficients analysis**
 
 The next step is to analyze the coefficients. We'll be looking at the precise effect of the selected explanatory variables (Latitude, Elevation, LogArea) on ant species richness.
 
@@ -764,7 +753,7 @@ The candidate model with the coefficients is written (equation 5): $$ log(Specie
 
 Reminder: to model a discrete quantitative variable with a generalized linear model, we use a link function. Here, with Poisson distribution, we use the log() function.
 
--   **3. explanatory power of the model**
+  **3. explanatory power of the model**
 
 To determine the quality of our model, we'll calculate the distance between the candidate model and the null model. The null model is a model that summarizes the data with a single parameter: the mean of $Y$. This model does not explain the data.
 
@@ -798,7 +787,7 @@ abline(0,1)
 
 ```
 
--   **4.Model validation**
+  **4.Model validation**
 
 The *independence of residuals* is the only limitation of the generalized linear model. Analysis of the residuals therefore enables us to identify possible trends and check for the presence of influential statistical units.
 
@@ -806,7 +795,7 @@ To begin with, checking for **overdispersion** is essential when running a Poiss
 
 To do this, we calculate a parameter called the 'scale parameter'. If its value is significantly greater than 1 (from 1.6 or 1.7), there is overdispersion. The model is therefore invalid.
 
-**a.Checking for overdispersion**
+    **a.Checking for overdispersion**
 
 When the dispersion index is greater than 1.5, there are various explanations.
 
@@ -844,7 +833,7 @@ sum(E1^2) / (N - p)
 
 Here, dispersion is 1.02, there is no overdispersion.
 
-**b.Residual analysis**
+    **b.Residual analysis**
 
 Although the assumptions of normality and homogeneity of residuals are not expected in generalized linear models, we can analyze them graphically. By plotting the residuals against the model's significant $Xs$, we need to validate the absence of a trend in their distribution. If we find a trend, the modeling may be problematic: it may be due to a lack of fit, data dependency or influential observations. Remember that in generalized linear models, we use **Pearson residuals** because they include heterogeneity of variance and are easy to calculate and understand.
 
@@ -898,7 +887,7 @@ The histogram of residuals (Fig. 20) and the Q-Q plot (Fig. 21) show relatively 
 
 We can conclude there is no tendency in the residuals.
 
-**c.Checking for influent individuals**
+    **c.Checking for influent individuals**
 
 ```{r contri, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -912,7 +901,7 @@ abline(h = 1, col = 2,lwd = 3)
 
 Here (Fig. 26), there are no overly influential individuals.
 
-**d.Residual analysis with DHARMa**
+    **d.Residual analysis with DHARMa**
 
 For a different graphical representation, we can use the 'DHARMa' package. This package can be used to analyze residuals, in particular overdispersion and outliers. Residuals that do not comply with expected values are highlighted in red.
 
