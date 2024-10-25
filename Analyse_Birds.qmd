@@ -49,7 +49,7 @@ All theses observations are presented in a table with the following collums :
 ```{r,include=FALSE}
 # Datatset import under the name of "data"
 
-data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE)
+data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE, fileEncoding = "UTF-8")
 
 ```
 
@@ -453,171 +453,6 @@ mean(diagZ[2,])
 Here we have **58%** of good predictions, which is somewhat below the common threshold of 70% for a model to be considered good. This suggests that the model may need improvement.
 
 This result is not surprising given our initial data. Because they are from different studies some variables barely contains some species or years, etc... This could explain why our model is not suitable. 
-
-## D. FAMD
-
-### Generical exploration
-
-Here, we perform an FAMD on the initial dataframe. The FAMD is used for
-table with qualitative and quanitative variables. The ID are removed
-because of their uselessness.
-
-```{r famd.format}
-data_famd <- data
-### Conversion of the Year into factor
-data_famd$Year <- as.factor(data_famd$Year)
-
-### Removing of ID
-data_famd <- data_famd |>
-  dplyr::select(-Nest_ID)
-```
-
-We can perform the famd ; it takes some times.
-
-```{r famd.real}
-famd <- FAMD(base = data_famd)
-```
-
-First, let's see the summary :
-
-```{r famd.summary}
-summary(famd)
-```
-
-### Realisation of the FAMD
-
-We can couple the summary with a plot of the inertia per axes :
-
-```{r famd.eig}
-fviz_eig(X = famd,
-         addlabels = TRUE)
-```
-
-*Conclusion :* We can see that keeping three axes is necessary to cover
-as much inertia as possible while being parcimonious. However, we will
-simplify the analysis by keeping only two axes in the interpretation
-parts. Now, we can see the contribution of the variables to the
-factorial axes :
-
-```{r fam.contrib}
-fviz_contrib(X = famd,
-             choice = "var",
-             axes = 1
-             )
-### County / State / Year / Species
-fviz_contrib(X = famd,
-             choice = "var",
-             axes = 2
-             )
-### Year / Habitat / County / Species
-
-fviz_contrib(X = famd,
-             choice = "var",
-             axes = 3
-             )
-famd$var$contrib[,1:3] > 1/9*100
-### County / Habitat / Year / Species
-```
-
-We can see that the only variables that contributed to the axes are the
-qualitative variables such as County, State, Year, Habitat and Species.
-The quantitative variables have low contributions.
-
-And now, let's observe the projections of the variables and of the
-observations :
-
-```{r famd_axes_12}
-### Axes 1 and 2
-fviz_famd_var(X = famd, 
-              repel = TRUE,
-              axes = c(1,2),
-              col.var = "red",
-              alpha.var = 2,
-              "quali.var"
-              )
-fviz_famd_var(X = famd, 
-              repel = TRUE,
-              axes = c(1,2),
-              col.var = "red",
-              "quanti.var"
-              )
-fviz_famd_ind(X = famd, 
-              repel = FALSE,
-              axes = c(1,2),
-              col.ind = "orange",
-              col.quali.var = "red"
-              )
-
-```
-
-
-### Realisation of a Hierarchical clustering 
-
-We can use the function fviz_cluster to visualise the optimal number of
-clusters to make. It uses the k-means method.
-
-```{r cluster}
-famd_g <- as.data.frame(famd$ind$coord[,1:2])
-class <- HCPC(famd_g,
-              nb.clust = 3
-              )
-
-fviz_nbclust(x = famd_g,
-             method = "silhouette",
-             FUNcluster = kmeans,
-             linecolor = "green3"
-             )
-```
-
-Three clusters is the best choice according to the k-means method.
-
-We can define classes for a CAH thanks to the function fviz_cluster.
-
-```{r cluster_graph}
-fviz_cluster(class, axes = c(1,2), ellipse.type = "convex")
-```
-
-The fviz_cluster function shows three clusters. The projection of the
-variables shows an homogeneous scatterplots. The projection of the
-observations suggests two groups of individuals, separated merely by the
-axe of the ordinates. To determine the kinds of the groups, we have to
-gather variables.
-
-The blue cluster is characterised by :
-
--   Year = 1991, 1992, 1993, 1995, 1996 et 1997, 1998
-
--   County = Jo_Daviess, Lee, Lee/Ogle, Grundy, Rock, Will (Illinois)
-
--   State : Illinois
-
--   Species : Dickcissel, Western_Meadowlark,
-
--   Habitat : Prairie, Warm-season Grassland
-
-The red cluster is characterised by :
-
--   Year : 1994, 1999, 2000, 2001, 2002
--   County : Green, Grant , Monroe, Lafayette
--   State : Wisconsin
--   Species : Savanah Sparrow
--   Habitat : Pasture
-
-The green side is characterised by :
-
--   Year : 2003, 2004, 2005, 2006
--   County : Dane
--   State : Wisconsin
--   Species : Bobolink, Henslow's Sparrow, Eastern Meadowlark
--   Habitat : Cool-season Grassland
-
-It is necessary to note that several species are located on the counties
-near the border between the Illinois and the Wisconsin. Thus they can be
-seen in both states, which can be counter-intuitive by seeing the FAMD.
-However, one factor that can explain this distribution could be years of
-sampling. There is a clear separation of the years depending on the part
-of the graphics.
-
 
 
 
@@ -1277,6 +1112,171 @@ In this equation each variable takes the value 1 if the corresponding condition 
 
 But despite all the conditions of the model being validated, this model only explains 
 22% (R² = 0.22) of our variable Y (Initiation_Date).
+
+
+# IV. FAMD
+
+### Generical exploration
+
+Here, we perform an FAMD on the initial dataframe. The FAMD is used for
+tables with qualitative and quantitative variables. The ID are removed
+because of their uselessness.
+
+```{r famd.format}
+data_famd <- data
+### Conversion of the Year into factor
+data_famd$Year <- as.factor(data_famd$Year)
+
+### Removing of ID
+data_famd <- data_famd |>
+  dplyr::select(-Nest_ID)
+```
+
+We can perform the famd. 
+
+```{r famd.real}
+famd <- FAMD(base = data_famd)
+```
+
+First, let's see the summary :
+
+```{r famd.summary}
+summary(famd)
+```
+
+### Realisation of the FAMD
+
+We can couple the summary with a plot of the inertia per axes :
+
+```{r famd.eig}
+fviz_eig(X = famd,
+         addlabels = TRUE)
+```
+
+*Conclusion :* We can see that keeping three axes is necessary to cover
+as much inertia as possible while being parcimonious. However, we will
+simplify the analysis by keeping only two axes in the interpretation
+parts. Now, we can see the contribution of the variables to the
+factorial axes :
+
+```{r fam.contrib}
+fviz_contrib(X = famd,
+             choice = "var",
+             axes = 1
+             )
+### County / State / Year / Species
+fviz_contrib(X = famd,
+             choice = "var",
+             axes = 2
+             )
+### Year / Habitat / County / Species
+
+fviz_contrib(X = famd,
+             choice = "var",
+             axes = 3
+             )
+famd$var$contrib[,1:3] > 1/9*100
+### County / Habitat / Year / Species
+```
+
+We can see that the only variables that contributed to the axes are the
+qualitative variables such as County, State, Year, Habitat and Species.
+The quantitative variables have low contributions.
+
+And now, let's observe the projections of the variables and of the
+observations :
+
+```{r famd_axes_12}
+### Axes 1 and 2
+fviz_famd_var(X = famd, 
+              repel = TRUE,
+              axes = c(1,2),
+              col.var = "red",
+              alpha.var = 2,
+              "quali.var"
+              )
+fviz_famd_var(X = famd, 
+              repel = TRUE,
+              axes = c(1,2),
+              col.var = "red",
+              "quanti.var"
+              )
+fviz_famd_ind(X = famd, 
+              repel = FALSE,
+              axes = c(1,2),
+              col.ind = "orange",
+              col.quali.var = "red"
+              )
+
+```
+
+
+### Realisation of a Hierarchical clustering 
+
+We can use the function fviz_cluster to visualise the optimal number of
+clusters to make. The k-means method is used.
+
+```{r cluster}
+famd_g <- as.data.frame(famd$ind$coord[,1:2])
+class <- HCPC(famd_g,
+              nb.clust = 3
+              )
+
+fviz_nbclust(x = famd_g,
+             method = "silhouette",
+             FUNcluster = kmeans,
+             linecolor = "green3"
+             )
+```
+
+Three clusters is the best choice according to the k-means method.
+
+We can define classes for a Hierarchical Clustering thanks to the function fviz_cluster.
+
+```{r cluster_graph}
+fviz_cluster(class, axes = c(1,2), ellipse.type = "convex")
+```
+
+The fviz_cluster function shows three clusters. The projection of the
+variables shows an homogeneous scatterplots. The projection of the
+observations suggests two groups of individuals, separated merely by the
+axe of the ordinates. To determine the kinds of the groups, we have to
+gather variables.
+
+The blue cluster is characterised by :
+
+-   Year = 1991, 1992, 1993, 1995, 1996 et 1997, 1998
+-   County = Jo_Daviess, Lee, Lee/Ogle, Grundy, Rock, Will (Illinois)
+-   State : Illinois
+-   Species : Dickcissel, Western_Meadowlark,
+-   Habitat : Prairie, Warm-season Grassland
+
+The red cluster is characterised by :
+
+-   Year : 1994, 1999, 2000, 2001, 2002
+-   County : Green, Grant , Monroe, Lafayette
+-   State : Wisconsin
+-   Species : Savanah Sparrow
+-   Habitat : Pasture
+
+The green side is characterised by :
+
+-   Year : 2003, 2004, 2005, 2006
+-   County : Dane
+-   State : Wisconsin
+-   Species : Bobolink, Henslow's Sparrow, Eastern Meadowlark
+-   Habitat : Cool-season Grassland
+
+It is necessary to note that several species are near the border 
+between the Illinois and the Wisconsin. Thus they can be
+seen in both states, which can be counter-intuitive by seeing the FAMD.
+However, the only factor that can explain this distribution could be years of
+sampling. There is a clear separation of the years depending on the part
+of the graphics.
+
+
+
+
 
 
 
