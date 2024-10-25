@@ -124,7 +124,7 @@ A partir de cela, nous allons dans un premier temps examiner le jeu de données 
 
 -   **1.Présentation du jeu de données**
 
-      **a.Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$**
+    **a.Valeurs aberrantes dans** $Y$ et distribution des valeurs de $Y$
 
 La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
 
@@ -230,7 +230,7 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
 
-  **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
+**b.** $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$
 
 Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.* De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
 
@@ -470,7 +470,7 @@ On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig 6A) ou sur l
 
 L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
 
-  **c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
+**c.** $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité
 
 Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
 
@@ -486,43 +486,43 @@ Ici les données sont bien réparties entre les deux modalités (Bog = tourbièr
 
 L'analyse de valeurs aberrantes et de la distribution de la variable qualitative suggèrent qu'elle peut être utilisée dans la construction du modèle.
 
-# ANALYSE DES INTERACTIONS ENTRE LES VARIABLES Y ET XS
+-       **2.Analysis of interactions between variables Y and Xs**
 
--   **1.Analyser la relation potentielle entre Y et les Xs**
+-         **a.Analyze the potential relationship between Y and Xs**
 
-Afin de tester la relation éventuelle entre la variable réponse $Y$ et les variables explicatives $Xs$, il sera indispensable de réaliser la modélisation statistique, c'est le seul moyen qui nous permet de tester la significativité des relations. Cependant, nous pouvons commencer par réaliser des analyses graphiques afin de mieux visualiser les données et se faire une idée.
+In order to test the possible relationship between the response variable $Y$ and the explanatory variables $Xs$, it will be essential to carry out statistical modelling, as this is the only way to test the significance of the relationships. However, we can start by performing graphical analyses to better visualize the data and get an idea.
 
-```{r relation Y et XS , echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r relation Y and XS , echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 par(mfrow=c(2,2))
 
-# Pour la variable Latitude
-plot(dataAnts$Nsp~dataAnts$Latitude,pch=16,col='deepskyblue4',xlab='Latitude',ylab='Richesse spécifique des fourmis', main = "Figure 7")
+# For the latitude variable
+plot(dataAnts$Nsp~dataAnts$Latitude,pch=16,col='deepskyblue4',xlab='Latitude',ylab='Ant species richness', main = "Figure 7")
 
-# Pour la variable Altitude
-plot(dataAnts$Nsp~dataAnts$Elevation,pch=16,col='deepskyblue4',xlab='Altitude',ylab='Richesse spécifique des fourmis', main = "Figure 8")
+# For the altitude variable
+plot(dataAnts$Nsp~dataAnts$Elevation,pch=16,col='deepskyblue4',xlab='Altitude',ylab='Ant species richness', main = "Figure 8")
 
-# Pour la variable Superficie de la tourbière
-plot(dataAnts$Nsp~dataAnts$LogArea,pch=16,col='deepskyblue4',xlab='Superficie de la tourbière',ylab='Richesse spécifique des fourmis', main = "Figure 9")
+# For the variable peatland area
+plot(dataAnts$Nsp~dataAnts$LogArea,pch=16,col='deepskyblue4',xlab='Peatland area',ylab='Ant species richness', main = "Figure 9")
 
-# Pour la variable Localisation
-boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Richesse spécifique des fourmis", xlab = "Localisation", col=c('saddlebrown','palegreen4'), main = "Figure 10")
+# For the location variable
+boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Ant species richness", xlab = "Location", col=c('saddlebrown','palegreen4'), main = "Figure 10")
 
 ```
 
-Relation entre $X$ et la latitude (Fig. 7) : Nous pouvons voir que plus la latitude est importante moins la richesse spécifique est élevée. Nous pouvons dire que plus nous nous trouvons au Nord, moins il y a d'espèces de fourmis.
+Relationship between $X$ and latitude (Fig. 7): We can see that the higher the latitude, the lower the species richness. We can say that the further north we are, the fewer ant species there are.
 
-Relation entre $X$ et l'altitude (Fig. 8) : Dans ce graphique-ci, nous pouvons voir à nouveau que plus l'altitude est importante, moins la richesse spécifique est élevée. Il semble que plus le relief est élévé moins il y a d'espèces de fourmis.
+Relationship between $X$ and altitude (Fig. 8): In this graph, we can again see that the higher the altitude, the lower the species richness. 
 
-Relation entre $X$ et la surperficie de la tourbière (Fig. 9) : Ici, il ne semble pas y avoir de relation entre la richesse spécifique des fourmis et la surperficie des tourbières.
+Relationship between $X$ and bog area (Fig. 9): Here, there appears to be no relationship between ant species richness and bog area.
 
-Relation entre $X$ et localisation (Fig. 10) : Il semble ici y avoir une relation entre le lieu et la richesse spécifique des fourmis, avec une richesse spécifique plus importante en forêt que dans les tourbières.
+Relationship between $X$ and location (Fig. 10): Here, there appears to be a relationship between location and ant species richness, with higher species richness in forests than in bogs.
 
 [**Conclusion**]{.underline} **:**
 
-Il semble que plus les espèces se situent au nord et dans un haut relief, moins la richesse spécifique de fourmis est grande. De plus, si nous nous trouvons en forêt, il y aura une richesse spécifique plus importante que dans les tourbières.
+It seems that the further north and the higher the relief, the lower the ant species richness. What's more, if we're in a forest, the species richness will be greater than in bogs.
 
--   **2.Analyse des éventuelles interactions entre les Xs**
+-   **b.Analyse des éventuelles interactions entre les Xs**
 
 Nous cherchons à étudier les interactions entre le facteur et les 3 covariables. Nous excluons alors l'interaction entre les variables explicatives quantitatives. Nous passons par une approche graphique afin d'estimer le possible effet interactif entre ces différentes variables.
 
@@ -549,7 +549,7 @@ points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Locat
 
 En règle générale, nous pouvons penser qu'il y a une interaction entre les covariables si les pentes formées par les deux nuages de points sont différentes. Ici les nuages ne permettent pas de voir clairement de similitude ou de différence de tendance pour chaque graphique. Il est donc difficile de conclure sur ces interactions.
 
--   **3.Vérifier une éventuelle colinéarité entre les Xs**
+-   **c.Vérifier une éventuelle colinéarité entre les Xs**
 
 Nous cherchons à éviter la colinéarité des variables explicatives dans notre modélisation, afin de ne pas avoir plusieurs variables qui donnent la même information. Pour ce faire, nous devons vérifier les liens statistiques qu'il peut y avoir entre les variables, \[1\] en calculant la corrélation entre les variables $Xs$ quantitatives, \[2\] puis en étudiant l'influence du $X$ qualitative sur les $Xs$ quantitatives à l'aide de graphiques plot.
 
@@ -796,7 +796,7 @@ Dans un premier temps, vérifier la présence de **surdispersion** est indispens
 
 Pour cela, nous allons calculer un paramètre appelé 'scale parameter'. Si sa valeur est nettement supérieure à 1 (à partir de 1.6 ou 1.7), il y a surdispersion. Le modèle n'est donc pas valable.
 
-  **a.Vérification de la surdispersion**
+**a.Vérification de la surdispersion**
 
 Quand l'indice de dispersion est supérieur à 1.5, il existe différentes explications.
 
@@ -834,7 +834,7 @@ sum(E1^2) / (N - p)
 
 Ici, la dispersion est de 1.02. Il n'y a pas de surdispersion.
 
-  **b.Analyses des résidus**
+**b.Analyses des résidus**
 
 Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $Xs$ significatifs du modèle, nous devons valider l'absence de tendance dans leur distribution. Si nous constatons une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
 
@@ -888,7 +888,7 @@ L'histogramme des résidus (Fig. 20) et le Q-Q plot (Fig. 21) montrent des rési
 
 Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
-  **c.Vérification des individus influents**
+**c.Vérification des individus influents**
 
 ```{r contri, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -902,7 +902,7 @@ abline(h = 1, col = 2,lwd = 3)
 
 Ici (Fig. 26), il n'y a pas d'individus trop influent.
 
-  **d.Analyses des résidus avec DHARMa**
+**d.Analyses des résidus avec DHARMa**
 
 Pour une représentation graphique différente, nous pouvons utiliser le package 'DHARMa'. Ce package permet d'analyser les résidus et plus particulièrement leur surdispersion et les valeurs aberrantes. Ce package met en couleur rouge les résidus ne respectant pas les valeurs attendues.
 
