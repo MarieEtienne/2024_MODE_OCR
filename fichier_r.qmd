@@ -351,4 +351,31 @@ data_clean <- data_merged[,-c(12,13,14,15)]
 # Créer une nouvelle colonne pour indiquer si l'indice de reproduction est différent de 0 (1 si Repro != 0, 0 sinon)
 data_clean <- data_clean %>%
   mutate(Repro_binary = ifelse(Repro != 0, 1, 0)) #on transforme l'indice repro en binaire pour avoir 0 si pas de repro 1 si repro
+
+# Calculer la proportion d'individus ayant un indice de reproduction différent de 0
+data_bin <- data_clean %>%
+  group_by(Date) %>% #on groupe par date
+  summarise(
+    total_individuals = n(),  # Nombre total d'individus pour chaque combinaison
+    repro_positive = sum(Repro_binary),  # Nombre d'individus avec Repro != 0
+    proportion_repro = repro_positive / total_individuals  # Proportion
+  )
+
+
+
+#####
+data_bin <- data_bin %>%
+  mutate(Date = as.Date(Date, format = "%d-%m-%Y"))
+
+data_clean <- data_clean %>%
+  mutate(Date = as.Date(Date, format = "%d-%m-%Y"))
+
+data_final <- data_bin %>%
+  left_join(data_clean %>%
+              select(julian_day, Year, LAT, LON, Lune, Pluie, Température, Vent, Amplitude, Date) %>%
+              distinct(),
+            by = "Date")
+
+
+
 ```
