@@ -274,11 +274,9 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
 
-````         
-```         
+      
   **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
-```
-````
+
 
 Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.* De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
 
