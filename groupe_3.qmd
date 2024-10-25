@@ -88,7 +88,7 @@ Les modèles linéaires généralisés de type Poisson ont une structure d'erreu
 
 Pour analyser nos données nous configurons la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion*, *lattice*, *patchwork*, *MASS* et *rcompanion*
 
-```{r init, include=FALSE, message=FALSE, warning=FALSE,}
+```{r init, include=FALSE, message=FALSE, warning=FALSE}
 
 # Chargement des packages R :
 library(knitr)
@@ -124,9 +124,7 @@ A partir de cela, nous allons dans un premier temps examiner le jeu de données 
 
 -   **1.Présentation du jeu de données**
 
-    ```         
       **a.Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$**
-    ```
 
 La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
 
@@ -134,7 +132,7 @@ La première étape de l'exploration du jeu de données consiste à vérifier la
 
 Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à un **Cleveland plot** des valeurs de $Y$.
 
-```{r valeurs aberrantes de Y, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r valeurs aberrantes de Y, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Boxplot 
 bp <- ggplot(data = dataAnts, aes(y = Nsp))+
@@ -187,7 +185,7 @@ D'après la figure 1, $Y$ ne présente pas de valeurs extrêmes ou aberrantes.
 
 La distribution des valeurs de $Y$ peut être visualisée grâce à un **histogramme** ou à un **Normal Q-Q plot**.
 
-```{r distribution de Y, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r distribution de Y, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Histogramme 
 hg <- ggplot(data = dataAnts, aes(x = Nsp))+
@@ -232,16 +230,13 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
 
-
-    ```         
-      **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
-    ```
+  **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
 
 Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.* De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
 
 [**La latitude**]{.underline} **:**
 
-```{r Latitude, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r Latitude, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 p1 <- ggplot(dataAnts) +
   aes(x=Latitude, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
@@ -300,7 +295,7 @@ On remarque grâce au Quantile plot (Fig. 3C) un écart à la normalité. Ceci s
 
 [**L'élévation**]{.underline} **:**
 
-```{r Elevation, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r Elevation, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 p4 <- ggplot(dataAnts) +
   aes(x=Elevation, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
@@ -359,7 +354,7 @@ On remarque grâce au Quantile plot (Fig. 4C) un écart à la normalité. Ceci s
 
 [**L'aire**]{.underline} **:**
 
-```{r Area, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r Area, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 p4 <- ggplot(dataAnts) +
   aes(x=Area, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
@@ -414,7 +409,7 @@ p6 <- ggplot(dataAnts, aes(sample = Area)) +
 
 Nous constatons des valeurs aberrantes sur le Cleveland plot (Fig. 5A) et sur l'histogramme (Fig. 5B) en raison de la présence de tourbières très étendues. Nous pouvons effectuer une transformation de cette variable et envisager une transformation logarithmique.
 
-```{r LogArea, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r LogArea, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 dataAnts$LogArea<-log(dataAnts$Area)
 
@@ -475,13 +470,11 @@ On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig 6A) ou sur l
 
 L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
 
-    ```         
-      **c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
-    ```
+  **c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
 
 Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
 
-```{r equilibre des modalites, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r equilibre des modalites, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 summary(dataAnts$Location)
 
@@ -499,7 +492,7 @@ L'analyse de valeurs aberrantes et de la distribution de la variable qualitative
 
 Afin de tester la relation éventuelle entre la variable réponse $Y$ et les variables explicatives $Xs$, il sera indispensable de réaliser la modélisation statistique, c'est le seul moyen qui nous permet de tester la significativité des relations. Cependant, nous pouvons commencer par réaliser des analyses graphiques afin de mieux visualiser les données et se faire une idée.
 
-```{r datagraph, include=TRUE, fig.height=7, fig.width=7}
+```{r relation Y et XS , echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 par(mfrow=c(2,2))
 
@@ -533,7 +526,7 @@ Il semble que plus les espèces se situent au nord et dans un haut relief, moins
 
 Nous cherchons à étudier les interactions entre le facteur et les 3 covariables. Nous excluons alors l'interaction entre les variables explicatives quantitatives. Nous passons par une approche graphique afin d'estimer le possible effet interactif entre ces différentes variables.
 
-```{r dataInter, include=TRUE, fig.height=3, fig.width=8}
+```{r interactions Xs, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 par(mfrow=c(1,3))
 
@@ -560,7 +553,7 @@ En règle générale, nous pouvons penser qu'il y a une interaction entre les co
 
 Nous cherchons à éviter la colinéarité des variables explicatives dans notre modélisation, afin de ne pas avoir plusieurs variables qui donnent la même information. Pour ce faire, nous devons vérifier les liens statistiques qu'il peut y avoir entre les variables, \[1\] en calculant la corrélation entre les variables $Xs$ quantitatives, \[2\] puis en étudiant l'influence du $X$ qualitative sur les $Xs$ quantitatives à l'aide de graphiques plot.
 
-```{r datacolin, include=TRUE, fig.height=4, fig.width=8}
+```{r colinéarité1, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Nous vérifions la colinéarité entre les variables continues indépendantes
 # Nous faisons un graphique pour chaque paire de covariables
@@ -604,7 +597,7 @@ Pour arriver au modèle, dit "candidat", à tester, nous allons partir du modèl
 
 Commençons avec le modèle complet:
 
-```{r}
+```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Formulation du modèle avec la fonction glm() et family=poisson(link="log")
 mod1<-glm(Nsp~ Location
@@ -621,7 +614,7 @@ mod1<-glm(Nsp~ Location
 
 A partir de ce modèle complet nous allons éliminer pas à pas les interactions non significatives.
 
-```{r}
+```{r colinéarité2, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Etape 1
 drop1(mod1,test="Chi")
@@ -632,7 +625,7 @@ Les trois interactions ne sont pas significatives. Nous enlèvons l'interaction 
 
 Nous obtenons donc le modèle suivant:
 
-```{r}
+```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Etape 2
 mod1<-glm(Nsp~ Location
@@ -650,7 +643,7 @@ drop1(mod1,test="Chi")
 
 De la même façon, nous enlèvons l'interaction 'Location:LogArea'.
 
-```{r}
+```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Etape 3
 mod1<-glm(Nsp~ Location
@@ -667,7 +660,7 @@ drop1(mod1,test="Chi")
 
 Nous enlèvons également l'interaction 'Location:Elevation'. Nous regardons maintenant la significativité des variables explicatives.
 
-```{r}
+```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Etape 4
 mod1<-glm(Nsp~ Location
@@ -683,7 +676,7 @@ drop1(mod1,test="Chi")
 
 La variable 'LogArea' n'a pas un effet siginificatif, nous l'éliminons du modèle.
 
-```{r}
+```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Etape 5
 mod1<-glm(Nsp~ Location
@@ -700,7 +693,7 @@ Les variables explicatives restantes sont significatives, nous conservons ainsi 
 
 Nous allons ensuite identifier le modèle candidat avec une autre approche que la significativité des p-values : l'AIC avec le mode stepwise.
 
-```{r modelAIC, include=TRUE}
+```{r model AIC, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Nous construisons le modèle complet
 modelcomplet<- glm(Nsp~ Location
@@ -732,7 +725,7 @@ Les deux méthodes arrivent au même modèle candidat : *Nsp\~Latitude+Elevation
 
 L'étape suivante est l'analyse des coefficients. Nous allons donc regarder l'effet précis des variables explicatives retenues (Latitude, Elevation, LogArea) sur la richesse spécifique des fourmis.
 
-```{r}
+```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Coefficients du modèle
 summary(mod1)
@@ -775,7 +768,7 @@ Dans notre exemple, comme vu dans la partie précédente, le modèle nul a une d
 
 Nous allons donc calculer la qualité du modèle avec les commandes suivantes :
 
-```{r deviance, include=TRUE}
+```{r deviance, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Estimate of deviance explained
 (mod1$null.deviance-mod1$deviance)/mod1$null.deviance
@@ -788,7 +781,7 @@ nagelkerke(mod1)
 
 Ici, l'estimation de la déviance expliquée est de 60% ou 75%, en fonction de la méthode utilisée.
 
-```{r Prediction,include=TRUE, fig.height=6, fig.width=6}
+```{r prediction, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Valeurs estimées par le modèle",xlab="Valeurs observées", main="figure 19")
 abline(0,1)
@@ -803,9 +796,7 @@ Dans un premier temps, vérifier la présence de **surdispersion** est indispens
 
 Pour cela, nous allons calculer un paramètre appelé 'scale parameter'. Si sa valeur est nettement supérieure à 1 (à partir de 1.6 ou 1.7), il y a surdispersion. Le modèle n'est donc pas valable.
 
-    ```         
-      **a.Vérification de la surdispersion**
-    ```
+  **a.Vérification de la surdispersion**
 
 Quand l'indice de dispersion est supérieur à 1.5, il existe différentes explications.
 
@@ -829,7 +820,7 @@ Cela peut être dû à :
 
 Dans notre exemple, nous allons calculer le 'scale parameter'. Pour cela nous allons utiliser la commande :
 
-```{r overdisp, include=TRUE}
+```{r surdispersion, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Scale parameter calculation
 E1 <- resid(mod1, type = "pearson") # (Y - mu) / sqrt(mu)
@@ -843,14 +834,11 @@ sum(E1^2) / (N - p)
 
 Ici, la dispersion est de 1.02. Il n'y a pas de surdispersion.
 
-    ```         
-      **b.Analyses des résidus**
-    ```
+  **b.Analyses des résidus**
 
 Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $Xs$ significatifs du modèle, nous devons valider l'absence de tendance dans leur distribution. Si nous constatons une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
 
-
-```{r}
+```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 resid<-residuals(mod1, type="pearson")
 
@@ -900,11 +888,9 @@ L'histogramme des résidus (Fig. 20) et le Q-Q plot (Fig. 21) montrent des rési
 
 Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
-    ```         
-      **c.Vérification des individus influents**
-    ```
+  **c.Vérification des individus influents**
 
-```{r Contri, include=TRUE, fig.height=4, fig.width=4}
+```{r contri, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 par(mfrow = c(1, 1))
 plot(cooks.distance(mod1), type = "h", ylim = c(0, 1), main="figure 26")
@@ -916,13 +902,11 @@ abline(h = 1, col = 2,lwd = 3)
 
 Ici (Fig. 26), il n'y a pas d'individus trop influent.
 
-    ```         
-      **d.Analyses des résidus avec DHARMa**
-    ```
+  **d.Analyses des résidus avec DHARMa**
 
 Pour une représentation graphique différente, nous pouvons utiliser le package 'DHARMa'. Ce package permet d'analyser les résidus et plus particulièrement leur surdispersion et les valeurs aberrantes. Ce package met en couleur rouge les résidus ne respectant pas les valeurs attendues.
 
-```{r Dharma, include=TRUE}
+```{r Dharma, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # TestDispersion(mod1)
 library(DHARMa)
