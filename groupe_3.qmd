@@ -634,7 +634,7 @@ In the first graph (Fig. 14), we can see that the point clouds do not appear to 
 
 [**Conclusion**]{.underline} **:**
 
-There does not appear to be any collinearity among the variables, so we can retain them all.
+There does not appear to be any colinearity among the variables, so we can retain them all.
 
 # ANALYSE STATISTIQUE
 
