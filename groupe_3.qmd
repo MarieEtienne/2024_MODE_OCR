@@ -126,8 +126,6 @@ A partir de cela, nous allons dans un premier temps examiner le jeu de données 
 
 -   **1.Présentation du jeu de données**
 
--   
-
     ```         
       **a.Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$**
     ```
@@ -235,8 +233,6 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 [**Conclusion**]{.underline} **:**
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
-
--   
 
     ```         
       **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
@@ -479,8 +475,6 @@ On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig 6A) ou sur l
 [**Conclusion**]{.underline} **:**
 
 L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
-
--   
 
     ```         
       **c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
@@ -810,8 +804,6 @@ Dans un premier temps, vérifier la présence de **surdispersion** est indispens
 
 Pour cela, nous allons calculer un paramètre appelé 'scale parameter'. Si sa valeur est nettement supérieure à 1 (à partir de 1.6 ou 1.7), il y a surdispersion. Le modèle n'est donc pas valable.
 
--   
-
     ```         
       **a.Vérification de la surdispersion**
     ```
@@ -851,8 +843,6 @@ sum(E1^2) / (N - p)
 [**Conclusion**]{.underline} **:**
 
 Ici, la dispersion est de 1.02. Il n'y a pas de surdispersion.
-
--   
 
     ```         
       **b.Analyses des résidus**
@@ -910,8 +900,6 @@ L'histogramme des résidus (Fig. 20) et le Q-Q plot (Fig. 21) montrent des rési
 
 Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
--   
-
     ```         
       **c.Vérification des individus influents**
     ```
@@ -927,8 +915,6 @@ abline(h = 1, col = 2,lwd = 3)
 [**Conclusion**]{.underline} **:**
 
 Ici (Fig. 26), il n'y a pas d'individus trop influent.
-
--   
 
     ```         
       **d.Analyses des résidus avec DHARMa**
