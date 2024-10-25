@@ -49,7 +49,7 @@ All theses observations are presented in a table with the following collums :
 ```{r,include=FALSE}
 # Datatset import under the name of "data"
 
-data <- read.csv("Bird_dataset.csv", sep=";", header = TRUE, fileEncoding = "UTF-8")
+data <- read.table("Bird_dataset.txt", header = TRUE, stringsAsFactors = TRUE)
 
 ```
 
