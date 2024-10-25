@@ -141,3 +141,104 @@ La normalite des residus est respectee car notre p-value est superieure a 0,05 :
 # Conclusion partie 1 sur la richesse spécifique
 La richesse spécifique depend donc du paturage, de la saison et de l’annee, ainsi que de l’interaction
 paturage:annee
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                          PARTIE 3: GRAZING EFFECT ON POLLINISATION STRATEGIES 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Data importation
+```{r pollen_read_data}
+df <- read_delim("pollen.csv", delim = ";", 
+    escape_double = FALSE, trim_ws = TRUE)
+
+```
+
+```{r boxplot}
+# Boxplot 
+par(mfrow=c(1,2))
+
+boxplot(df$RatioPoll~df$treatment, varwidth = TRUE, ylab = "Ratio Pollinisation", xlab = "treatment", col='blue', main = "")
+
+```
+
+The boxplot shows no significant differences between plots grazed and those not grazed.
+
+```{r anova}
+# Anova
+poll1<-lm(RatioPoll~1,data=df)
+poll2<-lm(RatioPoll~treatment,data=df)
+anova(poll1,poll2)
+```
+
+The P-value is not significant at the 5% threshold, so we reject the hypothesis that grazing has an effect on the RatioPoll. The Anova test confirms our graphical observation: there is no difference between the grazed and natural plots.
+
+```{r fullmodel}
+poll3<-LinearModel(RatioPoll~(treatment+season+year+observer+R.score+S.score+C.score)*
+                     (treatment+season+year+observer+R.score+S.score+C.score),data=df,selection = "aic")
+poll3
+```
+
+The model proposed by R does have a lower BIC than our initial model. However, some of the interactions retained by R have no significant effect. We decided to test a model without these interactions. 
+
+```{r coeff1}
+poll4<-LinearModel(RatioPoll~( treatment + season + year + 
+    observer + R.score + S.score + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score + 
+    observer:R.score + R.score:C.score),data=df)
+poll4
+```
+
+We have observed that the R.score:C.score interaction is not significant, we test a new model without it.
+```{r coeff2}
+poll5<-LinearModel(RatioPoll~( treatment + season + year + 
+    observer + R.score + S.score + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score + 
+    observer:R.score ),data=df)
+poll5
+```
+The p-value of S.score is not significant and does not appear in any significant interactions. We therefore decide to remove it
+
+```{r coeff3}
+poll6<-LinearModel(RatioPoll~( treatment + season + year + 
+    observer + R.score + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score + 
+    observer:R.score ),data=df)
+poll6
+```
+Now,we want to check the normality of residuals 
+```{r ResidNorm}
+pollfinal<-lm(RatioPoll~(treatment + season + year + 
+    observer + R.score + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score + 
+    observer:R.score ),data=df)
+res<-residuals(pollfinal)
+hist(res,main="Histogram residuals",xlab="Residus")
+shapiro.test(res)
+```
+
+The residuals are not normally distributed. We're going to try and do some transformations using log and sqrt.
+```{r TransfoLog}
+poll7<-LinearModel(log(RatioPoll+1)~(treatment + season + year + 
+    observer + R.score + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score + 
+    observer:R.score ),data=df )
+poll7
+
+```
+
+The p-value of the shapiro test is still less than 0.05, so the residuals are still not normally distributed. 
+
+```{r TransfoSqrt}
+poll7<-LinearModel(sqrt(RatioPoll)~( season + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score ),data=df)
+poll7
+
+pollfinal<-lm(sqrt(RatioPoll)~( season + C.score + treatment:R.score + 
+    treatment:C.score + year:C.score ),data=df)
+res<-residuals(pollfinal)
+hist(res,main="Histogram residuals",xlab="Residus")
+shapiro.test(res)
+
+```
+ **Conclusion: ** We cannot evaluate the impact of grazing on the pollination strategy of plants because the constraints of the general linear model are not respected. In addition, we cannot apply a generalised linear model given the type and values of our data. 
