@@ -5,7 +5,7 @@ source : "Yannick Outreman, selon les données de Gotelli & Ellison (2002) - Bio
 editor: visual
 ---
 
-# **INTRODUCTION**
+# INTRODUCTION
 
 -   **1.Présentation de l'article**
 
@@ -86,11 +86,9 @@ Les modèles linéaires généralisés de type Poisson ont une structure d'erreu
 
 -   **7.Configuration de l'environnement et packages**
 
-Pour analyser nos données nous configurons la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion* et *lattice*.
+Pour analyser nos données nous configurons la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion*, *lattice*, *patchwork*, *MASS* et *rcompanion*
 
-```{r init, include=FALSE, message=FALSE, warning=FALSE}
-
-opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")#(TROUVER L'UTILITE ET PEUT-ÊTRE RETIRER -> permet de ne pas afficher le code mais seulement les graphiques : permet d'avoir un document plus propre -> à voir si on met partout du coup, où à quelques endroits)
+```{r init, include=FALSE, message=FALSE, warning=FALSE,}
 
 # Chargement des packages R :
 library(knitr)
@@ -103,7 +101,6 @@ library(rcompanion) # Modèle pseudo R²
 library(lattice) # Graphiques multipanneaux (A CHANGER?)
 library(patchwork) # Afficher plusieurs ggplot sur une page
 library(MASS) # Fonctions et datasets pour les analyses
-library(rcompanion) #Fonction pour supporter les extensions 
 
 ```
 
@@ -123,7 +120,7 @@ Il n'y a aucune valeurs manquantes.
 
 A partir de cela, nous allons dans un premier temps examiner le jeu de données (valeurs abérantes, potentielles relations entre Y et Xs, ...) afin d'avoir une première impression. Par la suite, nous réaliserons notre analyse statistique en constuisant et affinant notre modèle. Enfin, nous analyserons ses coefficients et son pouvoir explicatif afin de le valider ou non.
 
-# **EXPLORATION DU JEU DE DONNEES**
+# EXPLORATION DU JEU DE DONNEES
 
 -   **1.Présentation du jeu de données**
 
@@ -234,6 +231,7 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 [**Conclusion**]{.underline} **:**
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
+
 
     ```         
       **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
@@ -495,9 +493,9 @@ Ici les données sont bien réparties entre les deux modalités (Bog = tourbièr
 
 L'analyse de valeurs aberrantes et de la distribution de la variable qualitative suggèrent qu'elle peut être utilisée dans la construction du modèle.
 
-# **Analyse des interactions entre les variables Y et Xs**
+# ANALYSE DES INTERACTIONS ENTRE LES VARIABLES Y ET XS
 
--   **1.Analyse de la relation potentielle entre Y et les Xs**
+-   **1.Analyser la relation potentielle entre Y et les Xs**
 
 Afin de tester la relation éventuelle entre la variable réponse $Y$ et les variables explicatives $Xs$, il sera indispensable de réaliser la modélisation statistique, c'est le seul moyen qui nous permet de tester la significativité des relations. Cependant, nous pouvons commencer par réaliser des analyses graphiques afin de mieux visualiser les données et se faire une idée.
 
@@ -558,7 +556,7 @@ points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Locat
 
 En règle générale, nous pouvons penser qu'il y a une interaction entre les covariables si les pentes formées par les deux nuages de points sont différentes. Ici les nuages ne permettent pas de voir clairement de similitude ou de différence de tendance pour chaque graphique. Il est donc difficile de conclure sur ces interactions.
 
--   **3.Vérification d'une éventuelle colinéarité entre les Xs**
+-   **3.Vérifier une éventuelle colinéarité entre les Xs**
 
 Nous cherchons à éviter la colinéarité des variables explicatives dans notre modélisation, afin de ne pas avoir plusieurs variables qui donnent la même information. Pour ce faire, nous devons vérifier les liens statistiques qu'il peut y avoir entre les variables, \[1\] en calculant la corrélation entre les variables $Xs$ quantitatives, \[2\] puis en étudiant l'influence du $X$ qualitative sur les $Xs$ quantitatives à l'aide de graphiques plot.
 
@@ -596,7 +594,7 @@ Nous pouvons observer sur le premier graphique (Fig. 14) que les nuages de point
 
 Il ne semble pas y avoir de colinéarité entre les variables, nous pouvons donc toutes les conserver.
 
-# **ANALYSE STATISTIQUE**
+# ANALYSE STATISTIQUE
 
 -   **1.Construction du modèle**
 
@@ -783,6 +781,7 @@ Nous allons donc calculer la qualité du modèle avec les commandes suivantes :
 (mod1$null.deviance-mod1$deviance)/mod1$null.deviance
 
 # Some others estimates of deviance explained - package 'rcompanion'
+library(rcompanion)
 nagelkerke(mod1)
 
 ```
@@ -803,8 +802,6 @@ L'*indépendance des résidus* est la seule chose qui limite le modèle linéair
 Dans un premier temps, vérifier la présence de **surdispersion** est indispensable lorsque l'on fait un modèle linéaire généralisé suivant une loi de Poisson. Pour tous les modèles linéaires généralisés utilisant des données de comptage, il faut vérifier l'absence de surdispersion.
 
 Pour cela, nous allons calculer un paramètre appelé 'scale parameter'. Si sa valeur est nettement supérieure à 1 (à partir de 1.6 ou 1.7), il y a surdispersion. Le modèle n'est donc pas valable.
-
--   
 
     ```         
       **a.Vérification de la surdispersion**
@@ -846,13 +843,12 @@ sum(E1^2) / (N - p)
 
 Ici, la dispersion est de 1.02. Il n'y a pas de surdispersion.
 
--   
-
     ```         
       **b.Analyses des résidus**
     ```
 
 Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $Xs$ significatifs du modèle, nous devons valider l'absence de tendance dans leur distribution. Si nous constatons une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
+
 
 ```{r}
 
@@ -920,7 +916,6 @@ abline(h = 1, col = 2,lwd = 3)
 
 Ici (Fig. 26), il n'y a pas d'individus trop influent.
 
-
     ```         
       **d.Analyses des résidus avec DHARMa**
     ```
@@ -945,7 +940,7 @@ plotResiduals(simulationOutput, form = dataAnts$Latitude)
 
 Dans notre exemple, les résidus ne sont pas surdispersés et ne montrent pas de valeurs aberrantes.
 
-# **CONCLUSION**
+# CONCLUSION
 
 Le modèle que nous retenons est le suivant (équation 5) :
 
