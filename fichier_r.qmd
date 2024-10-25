@@ -186,18 +186,8 @@ for(d in dd){
   }
   print(d)
   flush.console()
-  
-  
->>>>>>> 82370b2 (Adding new chunks about temperature and range factors. Modification of other chunks about rain (delete repeat command))
 }
 
-@article{wickham2014dplyr,
-  title={dplyr},
-  author={Wickham, Hadley and Francois, R and Henry, L and M{\"u}ller, K},
-  journal={A Grammar of Data Manipulation 2020 [Last accessed on 2020 Aug 12] Available from},
-  pages={Rproject},
-  year={2014}
-}
 ```
 
 
