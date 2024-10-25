@@ -351,9 +351,10 @@ abline(h=NA_mean, col = "red", lwd = 2)
 
 # Violin plot for Culmen Length (beak length)
 ggplot(data, aes(x = species, y = culmen_length, fill = species)) +
-  geom_violin(trim = FALSE) +
+  geom_violin(trim = FALSE, alpha = 0.7) +
   geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
     stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
+  scale_fill_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
   labs(title = "Distribution of Culmen Length by Species",
        x = "Species",
        y = "Culmen Length (mm)") +
@@ -362,23 +363,25 @@ ggplot(data, aes(x = species, y = culmen_length, fill = species)) +
 
 # Violin plot for Flipper Length
 ggplot(data, aes(x = species, y = flipper_length, fill = species)) +
-  geom_violin(trim = FALSE) +
+  geom_violin(trim = FALSE, alpha = 0.7) +
   geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
     stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
   labs(title = "Distribution of Flipper Length by Species",
        x = "Species",
        y = "Flipper Length (mm)") +
+  scale_fill_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
   theme_minimal() +
   theme(legend.position = "none")
 
 # Violin plot for Body Mass
 ggplot(data, aes(x = species, y = body_mass, fill = species)) +
-  geom_violin(trim = FALSE) +
+  geom_violin(trim = FALSE, alpha = 0.7) +
   geom_jitter(shape = 16, position = position_jitter(0.2), color = "black", alpha = 0.3) +
     stat_summary(fun = mean, geom = "point", shape = 20, size = 3, fill = "red", color = "red") +
   labs(title = "Distribution of Body Mass by Species",
        x = "Species",
        y = "Body Mass (g)") +
+  scale_fill_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
   theme_minimal() +
   theme(legend.position = "none")
 
