@@ -274,9 +274,7 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
 
-      
-  **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
-
+**b.** $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$
 
 Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.* De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
 
@@ -335,11 +333,9 @@ p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
 
 ```
 
-
 Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
 
 Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
-
 
 [**L'élévation**]{.underline} **:**
 
@@ -396,11 +392,9 @@ p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
 
 ```
 
-
 Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
 
 Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé et non un modèle linéaire classique.
-
 
 [**L'aire**]{.underline} **:**
 
@@ -514,15 +508,13 @@ p6 <- ggplot(dataAnts, aes(sample = LogArea)) +
 
 ```
 
-
 Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
 
 [**Conclusion**]{.underline} **:**
 
 L'analyse de valeurs aberrantes et de la distribution des variables suggère qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea* peuvent être utilisées dans la construction du modèle.
 
-
-  **c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
+**c.** $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité
 
 Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
 
@@ -968,9 +960,7 @@ L'histogramme des résidus (Fig. 20) et le Q-Q plot (Fig. 21) montrent des rési
 
 Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
-
 **c.Vérification des individus influents**
-
 
 ```{r contri, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -1008,24 +998,24 @@ Dans notre exemple, les résidus ne sont pas surdispersés et ne montrent pas de
 
 # CONCLUSION
 
-Le modèle que nous retenons est le suivant (équation 5) :
+The selected model is as follows (equation 5):
 
 $$ log(Species\:Richness) = 11.93^{***} + (Location_{Bog} = 0 ;\:Location_{Forest} = +0.63^{***})\:- 0.23^{***}.Latitude\: -0.001^{***}. Elevation  $$
 
-Son index de dispersion est estimé à 1.02 ce qui montre une absence de surdispersion permettant de valider notre modèle.
+Its dispersion index is estimated at 1.02, indicating the absence of overdispersion, which validates our model.
 
-De même, nous ne détectons pas la présence d'individus influents pouvant biaiser le modèle.
+Furthermore, we detect no influential data points that could bias the model.
 
-Le calcul du pseudo R² estimé à 0.60 nous permet de considérer que ce modèle explique bien nos données (la déviance du modèle nul étant de 102.76 et la déviance résiduelle de 40.69).
+The estimated pseudo R² of 0.60 suggests that this model effectively explains our data (the null model deviance is 102.76, while the residual deviance is 40.69).
 
-Nous en concluons donc que la richesse spécifique des fourmis dans les tourbières du New-England dépend :
+We conclude that ant species richness in the New England bogs depends on:
 
--   de la localisation : la richesse spécifique est plus forte en forêt qu'en tourbière en lien avec le couvert végétal et la lumière disponible ;
+-   **Location**: Species richness is higher in forests than in bogs, linked to vegetation cover and available light;
 
--   de la latitude : la richesse spécifique diminue avec la latitude ;
+-   **Latitude**: Species richness decreases with increasing latitude;
 
--   et de l'altitude, bien que l'effet de celle-ci soit moindre.
+-   **Elevation**: Although its effect is smaller, elevation also influences species richness.
 
-Dans les forêts comme dans les tourbières, la latitude est le prédicteur le plus significatif de la densité des espèces.
+In both forests and bogs, latitude is the most significant predictor of species density.
 
-Cependant, d'autres recherches à plus grandes échelles sont nécessaires pour généraliser ces résultats, l'étude ne couvrant qu'une zone géographique restreinte avec deux types d'habitats seulement.
+However, further research on a larger scale is necessary to generalize these findings, as this study covers only a limited geographical area with two habitat types.
