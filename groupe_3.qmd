@@ -3,19 +3,32 @@ title: "Groupe 3"
 autor: "Gabriel-Marie Arnault, Giuliana Brambilla, Apolline Byrdy, Anaelle Hulbert, Manon Le Bihan, Kilian Prevost, Chloé Van der Swaelmen et Léa Vuille"
 source : "Yannick Outreman, selon les données de Gotelli & Ellison (2002) - Biogeography at a regional scale : determinants of antspecies density in New England bogs and forests. Ecology, 83 : 1604-1609."
 editor: visual
+bibliography: references.bib
 ---
 
 # INTRODUCTION
 
--   **1.Présentation de l'article**
+-   <div>
 
-Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604--1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
+    1.  **Présentation de l'article**
 
--   **2.Contexte Biologique**
+    </div>
+
+Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de @Gotelli_2002
+
+-   <div>
+
+    2.  **Contexte Biologique**
+
+    </div>
 
 Gotelli et Ellison sont deux écologues, le premier étant spécialisé sur des questions d'organisation des communautés animales et végétales, le second sur la désintégration et le réassemblage des écosystèmes suite à des perturbations naturelles et anthropiques. Ils se sont ici intéressés à l'influence du gradient latitudinal sur la richesse spécifique chez les fourmis de l'Etat de la Nouvelle-Angleterre au Nord-Est des Etats-Unis. Leur étude a été réalisée sur 22 sites où, pour chacun, 25 pièges ont été placés dans une tourbière ombrotrophe et 25 dans la forêt environnante. Les espèces de fourmis contenues dans les pièges sont par la suite identifiées en laboratoire et, pour un site et un habitat donnés, ils ont calculé la richesse spécifique (nombre total d'espèces présentes).
 
--   **3.Données et variables**
+-   <div>
+
+    3.  **Données et variables**
+
+    </div>
 
 Les variables utilisées sont :\
 - *Site* : le nom du site échantillonné\
@@ -25,7 +38,11 @@ Les variables utilisées sont :\
 - *Location* : la localisation des pièges ("Bog" ou "Forest") (qualitative)\
 - *Nsp* : la richesse spécifique des fourmis, correspondant à la variable réponse
 
--   **4.Question de recherche**
+-   <div>
+
+    4.  **Question de recherche**
+
+    </div>
 
 Parmi les trois questions que se posent Gotelli et Ellison dans cette étude, nous nous intéressons ici aux deux premières :
 
@@ -35,7 +52,11 @@ Parmi les trois questions que se posent Gotelli et Ellison dans cette étude, no
 
 En d'autres termes : quelles sont les variables quantitatives (latitude, altitude, aire) et qualitatives (localisation) qui déterminent la richesse spécifique des fourmis dans les tourbières du New-England ?
 
--   **5.Importation du jeu de données**
+-   <div>
+
+    5.  **Importation du jeu de données**
+
+    </div>
 
 Dès lors, on peut importer le jeu de données situé dans fichier "BogAnts.txt"
 
@@ -59,7 +80,11 @@ str(dataAnts)
 
 Les variables qualitatives ou quantitatives sont bien considérées comme telles.
 
--   **6.Quel modèle et pourquoi ?**
+-   <div>
+
+    6.  **Quel modèle et pourquoi ?**
+
+    </div>
 
 Pour modéliser la relation entre une variable réponse quantitative $Y$ et des variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives nous utilisons des modèles linéaires généraux, ou *glm*, (régression linéaire, ANCOVA, ANOVA). Pour pouvoir utiliser ces *glm*, trois conditions d'application sont nécessaires : *l'homogénéité des variances*, *l'indépendance des résidus* et *la normalité des résidus*. Cependant, les réponses $Y$ analysées en écologie, peuvent parfois être discrètes et s'écarter de l'hypothèse de normalité.
 
@@ -67,12 +92,15 @@ Pour les variables réponses discrètes (comptages, données binaires), la varia
 
 **Voici les étapes à suivre pour établir un modèle linéaire généralisé :**\
 1. Formuler l'hypothèse de la loi de distribution de la variable réponse $Y_{i}$\
-2. Explorer les données (valeurs aberrantes, distribution des valeurs,)\
+2. Explorer les données (valeurs aberrantes, distribution des valeurs,) d'après le protocole décrit dans l'article de @Zuur_2010\
 3. Analyser les interactions entre les variables Y et Xs (analyse des relations entre X et Y, entre Xs, et recherche de colinéarité entre Xs)\
 4. Procéder aux analyses statistiques (construction du modèle, analyse des coefficients, pouvoir explicatif du modèle)\
 5. Conclure quant aux résultats
 
-Une modélisation linéaire généralisée s'écrit comme suit (équation 1) : $$g(\mu_{y})= \alpha+ \beta_{1}.X_{i1}+ \beta_{2}.X_{i2}+\beta_{3}.X_{i3}+...\beta_{p}.X_{ip} = \eta $$ {#eq-1} Le prédicteur linéaire, $\eta$, est issu du modèle linéaire comme la somme des $p$ termes associés à chacun des paramètres $\beta_{p}$. Sa valeur est obtenue en transformant la valeur de $Y$ par la fonction de lien, et la valeur prédite de $Y$ est obtenue en appliquant à $\eta$ la fonction inverse de la fonction de lien.
+Une modélisation linéaire généralisée s'écrit comme suit (equation 1) : $$g(\mu_{y})= \alpha+ \beta_{1}.X_{i1}+ \beta_{2}.X_{i2}+\beta_{3}.X_{i3}+...\beta_{p}.X_{ip} = \eta 
+$$ {#eq-1}
+
+Le prédicteur linéaire, $\eta$, est issu du modèle linéaire comme la somme des $p$ termes associés à chacun des paramètres $\beta_{p}$. Sa valeur est obtenue en transformant la valeur de $Y$ par la fonction de lien, et la valeur prédite de $Y$ est obtenue en appliquant à $\eta$ la fonction inverse de la fonction de lien.
 
 Pour illustrer ce propos nous nous intéressons à des comptages. Un comptage est une variable aléatoire discrète et positive. Il est possible que la distribution de ses valeurs suive une loi de Poisson, Binomiale Négative voire une loi Normale lorsque les valeurs sont très importantes.
 
@@ -84,7 +112,11 @@ Dans un *glim* type Poisson, la fonction de lien est la fonction **log**. Ainsi,
 
 Les modèles linéaires généralisés de type Poisson ont une structure d'erreur qui suivent une loi de Poisson. Cette structure permet, entre autres, de définir avec précision la relation entre la moyenne et la variance. Cette relation est exploitée par la méthode du maximum de vraisemblance pour estimer les coefficients et les erreurs standard des paramètres du modèle GLM.
 
--   **7.Configuration de l'environnement et packages**
+-   <div>
+
+    7.  **Configuration de l'environnement et packages**
+
+    </div>
 
 Pour analyser nos données nous configurons la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion*, *lattice*, *patchwork*, *MASS* et *rcompanion*
 
@@ -104,7 +136,11 @@ library(MASS) # Fonctions et datasets pour les analyses
 
 ```
 
--   **8.Vérification si des données sont manquantes**
+-   <div>
+
+    8.  **Vérification si des données sont manquantes**
+
+    </div>
 
 ```{r datalack, echo=TRUE,include=TRUE}
 
@@ -116,15 +152,21 @@ summary(dataAnts)
 
 Il n'y a aucune valeurs manquantes.
 
--   **9.Déroulé de l'analyse**
+-   <div>
+
+    9.  **Déroulé de l'analyse**
+
+    </div>
 
 A partir de cela, nous allons dans un premier temps examiner le jeu de données (valeurs abérantes, potentielles relations entre Y et Xs, ...) afin d'avoir une première impression. Par la suite, nous réaliserons notre analyse statistique en constuisant et affinant notre modèle. Enfin, nous analyserons ses coefficients et son pouvoir explicatif afin de le valider ou non.
 
 # EXPLORATION DU JEU DE DONNEES
 
--   **1.Présentation du jeu de données**
+-   <div>
 
-    **a.Valeurs aberrantes dans** $Y$ et distribution des valeurs de $Y$
+    1.  **Présentation du jeu de données**
+
+    **a. Valeurs aberrantes dans** $Y$ et distribution des valeurs de $Y$
 
 La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
 
@@ -230,7 +272,8 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
 
-**b.** $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$
+  **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
+
 
 Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.* De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
 
@@ -289,9 +332,11 @@ p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
 
 ```
 
-On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig. 3A) ou sur l'histogramme (Fig. 3B).
 
-On remarque grâce au Quantile plot (Fig. 3C) un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
+Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
+
+Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
+
 
 [**L'élévation**]{.underline} **:**
 
@@ -348,9 +393,11 @@ p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
 
 ```
 
-On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig. 4A) ou sur l'histogramme (Fig. 4B).
 
-On remarque grâce au Quantile plot (Fig. 4C) un écart à la normalité. Ceci suggère qu'il est ici interressant d'utilisé un modèle linéaire généralisé et non un modèle linéaire classique.
+Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
+
+Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé et non un modèle linéaire classique.
+
 
 [**L'aire**]{.underline} **:**
 
@@ -464,11 +511,13 @@ p6 <- ggplot(dataAnts, aes(sample = LogArea)) +
 
 ```
 
-On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig 6A) ou sur l'histogramme (Fig. 6B).
+
+Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
 
 [**Conclusion**]{.underline} **:**
 
-L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
+L'analyse de valeurs aberrantes et de la distribution des variables suggère qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea* peuvent être utilisées dans la construction du modèle.
+
 
 **c.** $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité
 
@@ -553,7 +602,7 @@ Generally, we can assume an interaction between covariates if the slopes formed 
 
 We aim to avoid collinearity among the explanatory variables in our modeling to prevent multiple variables from providing the same information. To do this, we must examine the statistical relationships that may exist among the variables by calculating the correlation between quantitative $X$ variables, and analyzing the influence of the qualitative $X$ on the quantitative $X$ variables using plot graphics.
 
-```{r colinéarity1, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r colinearity1, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Checking for collinearity between independent continuous variables
 # Creating a scatterplot for each pair of covariates
@@ -589,7 +638,11 @@ There does not appear to be any collinearity among the variables, so we can reta
 
 # ANALYSE STATISTIQUE
 
--   **1.Construction du modèle**
+-   <div>
+
+    1.  **Construction du modèle**
+
+    </div>
 
 Nous cherchons à produire le meilleur modèle pour prédire le nombre d'espèces. La variable réponse est un comptage (variable quantitative discrète) de petit effectifs (\<30), la loi appropriée est donc la loi de **Poisson**. Nous allons donc réaliser la modélisation avec un modèle linéaire généralisé de Poisson.
 
@@ -721,7 +774,11 @@ Remarque : il est recommandé d'utiliser l'AIC avec plus de 40 individus par par
 
 Les deux méthodes arrivent au même modèle candidat : *Nsp\~Latitude+Elevation+LogArea*.
 
--   **2.Analyse des coefficients**
+-   <div>
+
+    2.  **Analyse des coefficients**
+
+    </div>
 
 L'étape suivante est l'analyse des coefficients. Nous allons donc regarder l'effet précis des variables explicatives retenues (Latitude, Elevation, LogArea) sur la richesse spécifique des fourmis.
 
@@ -754,7 +811,11 @@ Le modèle candidat avec les coefficients s'écrit (équation 5) : $$ log(Specie
 
 Rappel : pour modéliser une variable quantitative discrète avec un modèle linéaire généralisé nous passons par une fonction de lien, ici avec la loi de Poisson nous utilisons la fonction log().
 
--   **3.Pouvoir explicatif du modèle**
+-   <div>
+
+    3.  **Pouvoir explicatif du modèle**
+
+    </div>
 
 Afin de connaître la qualité de notre modèle, nous allons calculer la distance entre le modèle candidat et le modèle nul. Le modèle nul est un modèle qui résume les données avec un unique paramètre : la moyenne de $Y$. Ce modèle n'explique pas les données.
 
@@ -788,7 +849,11 @@ abline(0,1)
 
 ```
 
--   **4.Validation du modèle**
+-   <div>
+
+    4.  **Validation du modèle**
+
+    </div>
 
 L'*indépendance des résidus* est la seule chose qui limite le modèle linéaire généralisé. L'analyse des résidus permet donc d'identifier d'éventuelles tendances et de vérifier la présence d'unités statistiques influentes.
 
@@ -889,6 +954,7 @@ L'histogramme des résidus (Fig. 20) et le Q-Q plot (Fig. 21) montrent des rési
 Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
 **c.Vérification des individus influents**
+      
 
 ```{r contri, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
