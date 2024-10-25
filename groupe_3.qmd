@@ -88,7 +88,7 @@ Les modèles linéaires généralisés de type Poisson ont une structure d'erreu
 
 Pour analyser nos données nous configurons la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion* et *lattice*.
 
-```{r init, include=FALSE, message=FALSE, warning=FALSE,}
+```{r init, include=FALSE, message=FALSE, warning=FALSE}
 
 opts_chunk$set(echo = FALSE, comment = "", cache = TRUE, fig.align = "center")#(TROUVER L'UTILITE ET PEUT-ÊTRE RETIRER -> permet de ne pas afficher le code mais seulement les graphiques : permet d'avoir un document plus propre -> à voir si on met partout du coup, où à quelques endroits)
 
@@ -103,6 +103,7 @@ library(rcompanion) # Modèle pseudo R²
 library(lattice) # Graphiques multipanneaux (A CHANGER?)
 library(patchwork) # Afficher plusieurs ggplot sur une page
 library(MASS) # Fonctions et datasets pour les analyses
+library(rcompanion) #Fonction pour supporter les extensions 
 
 ```
 
@@ -120,14 +121,17 @@ Il n'y a aucune valeurs manquantes.
 
 -   **9.Déroulé de l'analyse**
 
-A partir de cela, nous allons dans un premier temps examiner le jeu de données (valeurs abérantes, potentielles relations entre Y et Xs, ...) afin d'avoir une première impression. 
-Par la suite, nous réaliserons notre analyse statistique en constuisant et affinant notre modèle. Enfin, nous analyserons ses coefficients et son pouvoir explicatif afin de le valider ou non. 
+A partir de cela, nous allons dans un premier temps examiner le jeu de données (valeurs abérantes, potentielles relations entre Y et Xs, ...) afin d'avoir une première impression. Par la suite, nous réaliserons notre analyse statistique en constuisant et affinant notre modèle. Enfin, nous analyserons ses coefficients et son pouvoir explicatif afin de le valider ou non.
 
 # **EXPLORATION DU JEU DE DONNEES**
 
 -   **1.Présentation du jeu de données**
 
--       **a.Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$**
+-   
+
+    ```         
+      **a.Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$**
+    ```
 
 La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
 
@@ -233,10 +237,13 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
 
--       **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
+-   
 
-Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.*
-De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
+    ```         
+      **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
+    ```
+
+Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.* De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
 
 [**La latitude**]{.underline} **:**
 
@@ -474,7 +481,11 @@ On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig 6A) ou sur l
 
 L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
 
--       **c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
+-   
+
+    ```         
+      **c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
+    ```
 
 Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
 
@@ -778,7 +789,6 @@ Nous allons donc calculer la qualité du modèle avec les commandes suivantes :
 (mod1$null.deviance-mod1$deviance)/mod1$null.deviance
 
 # Some others estimates of deviance explained - package 'rcompanion'
-library(rcompanion)
 nagelkerke(mod1)
 
 ```
@@ -800,7 +810,11 @@ Dans un premier temps, vérifier la présence de **surdispersion** est indispens
 
 Pour cela, nous allons calculer un paramètre appelé 'scale parameter'. Si sa valeur est nettement supérieure à 1 (à partir de 1.6 ou 1.7), il y a surdispersion. Le modèle n'est donc pas valable.
 
--       **a.Vérification de la surdispersion**
+-   
+
+    ```         
+      **a.Vérification de la surdispersion**
+    ```
 
 Quand l'indice de dispersion est supérieur à 1.5, il existe différentes explications.
 
@@ -838,7 +852,11 @@ sum(E1^2) / (N - p)
 
 Ici, la dispersion est de 1.02. Il n'y a pas de surdispersion.
 
--       **b.Analyses des résidus**
+-   
+
+    ```         
+      **b.Analyses des résidus**
+    ```
 
 Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $Xs$ significatifs du modèle, nous devons valider l'absence de tendance dans leur distribution. Si nous constatons une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
 
@@ -886,13 +904,17 @@ abline(h = 0)
 
 ```
 
-L'histogramme des résidus (Fig. 20) et le Q-Q plot (Fig. 21) montrent des résidus relativement normaux. Les quatres graphiques suivant (Fig. 22, 23, 24, 25) montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. Nous pouvons voir que les résidus restent homogènes peu importe les valeurs des variables explicatives. 
+L'histogramme des résidus (Fig. 20) et le Q-Q plot (Fig. 21) montrent des résidus relativement normaux. Les quatres graphiques suivant (Fig. 22, 23, 24, 25) montrent la distribution les résidus selon les estimations du modèle et les trois variables explicatives. Nous pouvons voir que les résidus restent homogènes peu importe les valeurs des variables explicatives.
 
 [**Conclusion**]{.underline} **:**
 
 Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
--       **c.Vérification des individus influents**
+-   
+
+    ```         
+      **c.Vérification des individus influents**
+    ```
 
 ```{r Contri, include=TRUE, fig.height=4, fig.width=4}
 
@@ -906,7 +928,11 @@ abline(h = 1, col = 2,lwd = 3)
 
 Ici (Fig. 26), il n'y a pas d'individus trop influent.
 
--       **d.Analyses des résidus avec DHARMa**
+-   
+
+    ```         
+      **d.Analyses des résidus avec DHARMa**
+    ```
 
 Pour une représentation graphique différente, nous pouvons utiliser le package 'DHARMa'. Ce package permet d'analyser les résidus et plus particulièrement leur surdispersion et les valeurs aberrantes. Ce package met en couleur rouge les résidus ne respectant pas les valeurs attendues.
 
