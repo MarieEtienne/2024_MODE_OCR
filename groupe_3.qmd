@@ -784,7 +784,7 @@ nagelkerke(mod1)
 Ici, l'estimation de la déviance expliquée est de 60% ou 75%, en fonction de la méthode utilisée.
 
 ```{r Prediction,include=TRUE, fig.height=6, fig.width=6}
-plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Valeurs estimées par le modèle",xlab="Valeurs observées", main="figure 13")
+plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Valeurs estimées par le modèle",xlab="Valeurs observées", main="Figure 13")
 abline(0,1)
 ```
 
@@ -839,15 +839,15 @@ resid<-residuals(mod1, type="pearson")
 
 par(mfrow=c(3,2))
 # Histogram
-hist(resid,col='dodgerblue3',xlab="residuals",main="figure 14")
+hist(resid,col='dodgerblue3',xlab="residuals",main="Figure 14")
 # Quantile-Quantile plot
-qqnorm(resid,pch=16,col='dodgerblue3',xlab='', main="figure 15")
+qqnorm(resid,pch=16,col='dodgerblue3',xlab='', main="Figure 15")
 qqline(resid,col='red',lwd=2)
 
 # residuals vs fitted
 plot(resid~fitted(mod1)
       , col='dodgerblue3'
-      , pch=16, main="figure 16")
+      , pch=16, main="Figure 16")
 abline(h = 0)
 
 # residuals against Location factor
@@ -855,7 +855,7 @@ boxplot(resid~ dataAnts$Location,
          varwidth = TRUE,
          ylab = "Residuals",
          xlab = "Location",
-         main = "figure 17")
+         main = "Figure 17")
 
 # residuals against Latitude
 plot(resid~ dataAnts$Latitude, 
@@ -863,7 +863,7 @@ plot(resid~ dataAnts$Latitude,
          col="dodgerblue3",
          ylab = "Residuals",
          xlab = "Latitude",
-         main = "figure 18")
+         main = "Figure 18")
 abline(h = 0)
 
 # residuals against Elevation
@@ -872,7 +872,7 @@ plot(resid~ dataAnts$Elevation,
          col="dodgerblue3",
          ylab = "Residuals",
          xlab = "Elevation",
-         main = "figure 19")
+         main = "Figure 19")
 abline(h = 0)
 
 ```
@@ -886,7 +886,7 @@ L'histogramme des résidus et le Q-Q plot montrent des résidus relativement nor
 ```{r Contri, include=TRUE, fig.height=4, fig.width=4}
 
 par(mfrow = c(1, 1))
-plot(cooks.distance(mod1), type = "h", ylim = c(0, 1), main="figure 20")
+plot(cooks.distance(mod1), type = "h", ylim = c(0, 1), main="Figure 20")
 abline(h = 1, col = 2,lwd = 3)
 
 ```
