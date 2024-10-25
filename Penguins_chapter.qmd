@@ -46,11 +46,13 @@ library(kableExtra)
 
 ## Location
 
-Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands.These three blue points show the location of the data collect in Antarctica.
+Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands.These three blue points show the location of the data collect in @fig-map_antarctica.
 
 ```{r}
-#| label: fig-map_antartica
-#| fig-cap: "MAps of Antartica with the collect points"
+#| label: fig-map_antarctica
+#| fig-cap: "Maps of Antarctica with the collect points"
+#| code-fold: true
+#| code-summary: "Show the code"
 # Download country data (including Antarctica)
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
@@ -184,6 +186,9 @@ The @fig-missing-val have a red line that represents the mean of NA values in th
 ```{r}
 #| label: fig-missing-val
 #| fig-cap: "Number of missing value as a function of each variables"
+#| code-fold: true
+#| code-summary: "Show the code"
+
 # Verification of missing values
 colSums(is.na(data)) 
 
@@ -234,6 +239,8 @@ There is a correlation that we have to remove in a multivariate analysis between
 ```{r}
 #| label: fig-cor_mat2
 #| fig-cap: "Correlation matrix with numbers"
+#| code-fold: true
+#| code-summary: "Show the code"
 
 corrplot(matcor, method = "number", type = "upper",order = "hclust", tl.col="black", tl.srt=45)
 ```
@@ -241,6 +248,8 @@ corrplot(matcor, method = "number", type = "upper",order = "hclust", tl.col="bla
 ```{r}
 #| label: fig-cor_mat3
 #| fig-cap: "Correlation matrix with forms"
+#| code-fold: true
+#| code-summary: "Show the code"
 corrplot(matcor, type = "upper",order = "hclust", tl.col="black", tl.srt=45)
 ```
 
@@ -257,6 +266,8 @@ Box3: Male penguins appear to be heavier than the other two categories.
 ```{r}
 #| label: fig-boxplot_trends
 #| fig-cap: "Boxplots between body mass and other variables"
+#| code-fold: true
+#| code-summary: "Show the code"
 
 box1 <- ggplot(data = data)+
   geom_boxplot(aes(x=species,y=body_mass, fill = species))
