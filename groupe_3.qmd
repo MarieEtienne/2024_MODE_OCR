@@ -234,38 +234,38 @@ The distribution of $Y$ (negative exponential, Figure 2A) and the nature of the 
 
 After analyzing the outliers and the distribution of the response variable \$Y\$, it appears appropriate to use $Y$ as is while applying a Poisson distribution.
 
-**b.** $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$
+**b.** $X$ **quantitative: presence of outliers and distribution of** $X$ **values**
 
-Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.* De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
+The dataset has three quantitative explanatory variables: **Latitude, Elevation,** and **Area**. Just like for the response variable $Y$, it is necessary to examine the presence of **outliers** as well as the **distribution** of each of these explanatory variables.
 
-[**La latitude**]{.underline} **:**
+[**Latitude**]{.underline} **:**
 
 ```{r Latitude, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 p1 <- ggplot(dataAnts) +
-  aes(x=Latitude, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  aes(x=Latitude, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # display in the order of appearance
   geom_jitter(width=0, height=0.1) +
-  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) + # Valeurs de l'axe X
-  labs(title = "Figure 3 : Variable explicative Latitude",
+  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) + # values of the X axis
+  labs(title = "Figure 3 : Xplanatory variable Latitude",
        subtitle = "A. Cleveland Plot",
        x= "Latitude") +  # Titres
   theme_minimal() +
-  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
-        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
-        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+  theme(axis.text.y = element_blank(),   # remove the labels from the Y axis
+        axis.ticks.y = element_blank(),  # remove the ticks from the Y axis
+        axis.title.y = element_blank(),  # remove the title from the X axis
         axis.title.x = element_text(size = 8, color = "darkblue"),
         plot.title = element_text(size = 14, face = "bold", color = "black"),
         plot.subtitle = element_text(size = 10, color = "black")
         )   
 
 p2 <- ggplot(dataAnts) +
-  aes(x = Latitude) +  # Utiliser Latitude sur l'axe X
-  geom_histogram(binwidth = 0.25, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
-  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) +  # Valeurs de l'axe X
-  scale_y_continuous(breaks = seq(0, 10, by = 2)) +  # Valeurs de l'axe X
-  labs(subtitle = "B. Histogramme",
-       x = "Latitude") +  # Titres
-  theme_minimal() +  # Appliquer un thème minimal
+  aes(x = Latitude) +  
+  geom_histogram(binwidth = 0.25, fill = "blue", color = "black", alpha = 0.7) +  # histogram
+  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) +  # values of the X axis
+  scale_y_continuous(breaks = seq(0, 10, by = 2)) +  # values of the Y axis 
+  labs(subtitle = "B. Histogram",
+       x = "Latitude") +  # title
+  theme_minimal() +  # theme of the graph: minimal
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"), 
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -274,12 +274,12 @@ p2 <- ggplot(dataAnts) +
 
 p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
   labs(subtitle = "C. Quantile-Quantile Plot",
-       caption = "D'après le jeu de données dataAnts",
-       x = "Quantiles Théorique",
-       y = "Quantiles Observés") +
-  stat_qq() +  # Ajoute les points du Q-Q plot
-  stat_qq_line(col = "red", size = 1) +  # Ajoute la ligne théorique
-  theme_minimal() + # Applique un thème minimal
+       caption = "From the dataset dataAnts",
+       x = "theorical quantiles",
+       y = "observed quantiles") +
+  stat_qq() +  # observed quantiles
+  stat_qq_line(col = "red", size = 1) +  # theorical quantiles
+  theme_minimal() + 
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"),
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -293,38 +293,38 @@ p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
 
 ```
 
-On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig. 3A) ou sur l'histogramme (Fig. 3B).
+There are no outliers observed in the Cleveland plot (Fig. 3A) or in the histogram (Fig. 3B).
 
-On remarque grâce au Quantile plot (Fig. 3C) un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
+The Quantile plot (Fig. 3C) shows a deviation from normality. This suggests that it is more appropriate to use a generalized linear model (glm) rather than a classical linear model (lm).
 
-[**L'élévation**]{.underline} **:**
+[**Elevation**]{.underline} **:**
 
 ```{r Elevation, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 p4 <- ggplot(dataAnts) +
-  aes(x=Elevation, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  aes(x=Elevation, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) 
   geom_jitter(width=0, height=0.1) +
-  scale_x_continuous(breaks = seq(0, 545, by = 100)) + # Valeurs de l'axe X
-  labs(title = "Figure 4 : Variable explicative Elevation",
+  scale_x_continuous(breaks = seq(0, 545, by = 100)) + 
+  labs(title = "Figure 4 : Explanatory variable Elevation",
        subtitle = "A. Cleveland Plot",
-       x= "Elevation") +  # Titres
+       x= "Elevation") +  
   theme_minimal() +
-  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
-        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
-        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+  theme(axis.text.y = element_blank(),   
+        axis.ticks.y = element_blank(),  
+        axis.title.y = element_blank(), 
         axis.title.x = element_text(size = 8, color = "darkblue"),
         plot.title = element_text(size = 14, face = "bold", color = "black"),
         plot.subtitle = element_text(size = 10, color = "black")
         )   
 
 p5 <- ggplot(dataAnts) +
-  aes(x = Elevation) +  # Utiliser Elevation sur l'axe X
+  aes(x = Elevation) + 
   geom_histogram(binwidth = 75, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
-  scale_x_continuous(breaks = seq(0, 545, by = 100)) +  # Valeurs de l'axe X
-  scale_y_continuous(breaks = seq(0, 10, by = 2)) +  # Valeurs de l'axe X
-  labs(subtitle = "B. Histogramme",
-       x = "Elevation") +  # Titres
-  theme_minimal() +  # Appliquer un thème minimal
+  scale_x_continuous(breaks = seq(0, 545, by = 100)) +  
+  scale_y_continuous(breaks = seq(0, 10, by = 2)) +  
+  labs(subtitle = "B. Histogram",
+       x = "Elevation") +  
+  theme_minimal() +  
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"), 
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -333,12 +333,12 @@ p5 <- ggplot(dataAnts) +
 
 p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
   labs(subtitle = "C. Quantile-Quantile Plot",
-       caption = "D'après le jeu de données dataAnts",
-       x = "Théorique Quantiles",
-       y = "Quantiles Observés") +
-  stat_qq() +  # Ajoute les points du Q-Q plot
-  stat_qq_line(col = "red", size = 1) +  # Ajoute la ligne théorique
-  theme_minimal() + # Applique un thème minimal
+       caption = "From the dataset dataAnts",
+       x = "theorical quantiles",
+       y = "observed quantiles") +
+  stat_qq() + 
+  stat_qq_line(col = "red", size = 1) +  
+  theme_minimal() + 
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"),
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -352,38 +352,38 @@ p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
 
 ```
 
-On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig. 4A) ou sur l'histogramme (Fig. 4B).
+No outliers are observed in the Cleveland plot (Fig. 4A) or in the histogram (Fig. 4B).
 
-On remarque grâce au Quantile plot (Fig. 4C) un écart à la normalité. Ceci suggère qu'il est ici interressant d'utilisé un modèle linéaire généralisé et non un modèle linéaire classique.
+The Quantile plot (Fig. 4C) shows a deviation from normality. This suggests that it is advisable to use a generalized linear model rather than a classical linear model.
 
-[**L'aire**]{.underline} **:**
+Area **:**
 
 ```{r Area, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 p4 <- ggplot(dataAnts) +
-  aes(x=Area, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  aes(x=Area, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + 
   geom_jitter(width=0, height=0.1) +
-  scale_x_continuous(breaks = seq(0, 865000, by = 200000)) + # Valeurs de l'axe X
-  labs(title = "Figure 5 : Variable explicative Area",
+  scale_x_continuous(breaks = seq(0, 865000, by = 200000)) + 
+  labs(title = "Figure 5 : Explanatory variable Area",
        subtitle = "A. Cleveland Plot",
        x= "Area") +  # Titres
   theme_minimal() +
-  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
-        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
-        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+  theme(axis.text.y = element_blank(),   
+        axis.ticks.y = element_blank(),  
+        axis.title.y = element_blank(),  
         axis.title.x = element_text(size = 8, color = "darkblue"),
         plot.title = element_text(size = 14, face = "bold", color = "black"),
         plot.subtitle = element_text(size = 10, color = "black")
         )   
 
 p5 <- ggplot(dataAnts) +
-  aes(x = Area) +  # Utiliser Aera sur l'axe X
+  aes(x = Area) +  
   geom_histogram(binwidth = 50000, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
-  scale_x_continuous(breaks = seq(0, 865000, by = 200000)) +  # Valeurs de l'axe X
-  scale_y_continuous(breaks = seq(0, 20, by = 5)) +  # Valeurs de l'axe X
-  labs(subtitle = "B. Histogramme",
-       x = "Area") +  # Titres
-  theme_minimal() +  # Appliquer un thème minimal
+  scale_x_continuous(breaks = seq(0, 865000, by = 200000)) +  
+  scale_y_continuous(breaks = seq(0, 20, by = 5)) + 
+  labs(subtitle = "B. Histogram",
+       x = "Area") +  
+  theme_minimal() +  
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"), 
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -392,12 +392,12 @@ p5 <- ggplot(dataAnts) +
 
 p6 <- ggplot(dataAnts, aes(sample = Area)) +
   labs(subtitle = "C. Quantile-Quantile Plot",
-       caption = "D'après le jeu de données dataAnts",
-       x = "Quantiles Théorique",
-       y = "Quantiles Observés") +
-  stat_qq() +  # Ajoute les points du Q-Q plot
-  stat_qq_line(col = "red", size = 1) +  # Ajoute la ligne théorique
-  theme_minimal() + # Applique un thème minimal
+       caption = "From the dataset dataAnts",
+       x = "theorical quantiles",
+       y = "observed quantiles") +
+  stat_qq() +  
+  stat_qq_line(col = "red", size = 1) +  
+  theme_minimal() + 
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"),
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -411,36 +411,36 @@ p6 <- ggplot(dataAnts, aes(sample = Area)) +
 
 ```
 
-Nous constatons des valeurs aberrantes sur le Cleveland plot (Fig. 5A) et sur l'histogramme (Fig. 5B) en raison de la présence de tourbières très étendues. Nous pouvons effectuer une transformation de cette variable et envisager une transformation logarithmique.
+We observe outliers in the Cleveland plot (Fig. 5A) and in the histogram (Fig. 5B) due to the presence of very extensive peatlands. We can apply a transformation to this variable and consider a **logarithmic transformation**.
 
 ```{r LogArea, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 dataAnts$LogArea<-log(dataAnts$Area)
 
 p4 <- ggplot(dataAnts) +
-  aes(x=LogArea, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  aes(x=LogArea, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # logarithmic transformation of Area
   geom_jitter(width=0, height=0.1) +
-  scale_x_continuous(breaks = seq(2, 15, by = 2)) + # Valeurs de l'axe X
-  labs(title = "Figure 6 : Variable explicative LogArea",
+  scale_x_continuous(breaks = seq(2, 15, by = 2)) + 
+  labs(title = "Figure 6 : Explanatory variable LogArea",
        subtitle = "A. Cleveland Plot",
-       x= "LogArea") +  # Titres
+       x= "LogArea") +  
   theme_minimal() +
-  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
-        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
-        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+  theme(axis.text.y = element_blank(),   
+        axis.ticks.y = element_blank(),  
+        axis.title.y = element_blank(),  
         axis.title.x = element_text(size = 8, color = "darkblue"),
         plot.title = element_text(size = 14, face = "bold", color = "black"),
         plot.subtitle = element_text(size = 10, color = "black")
         )   
 
 p5 <- ggplot(dataAnts) +
-  aes(x = LogArea) +  # Utiliser Aera sur l'axe X
-  geom_histogram(binwidth = 2, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
-  scale_x_continuous(breaks = seq(2, 15, by = 2)) +  # Valeurs de l'axe X
-  scale_y_continuous(breaks = seq(0, 30, by = 5)) +  # Valeurs de l'axe X
-  labs(subtitle = "B. Histogramme",
-       x = "LogArea") +  # Titres
-  theme_minimal() +  # Appliquer un thème minimal
+  aes(x = LogArea) +  # logarithmic transformation of Area
+  geom_histogram(binwidth = 2, fill = "blue", color = "black", alpha = 0.7) +  
+  scale_x_continuous(breaks = seq(2, 15, by = 2)) +  
+  scale_y_continuous(breaks = seq(0, 30, by = 5)) +  
+  labs(subtitle = "B. Histogram",
+       x = "LogArea") +  
+  theme_minimal() +  
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"), 
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -449,12 +449,12 @@ p5 <- ggplot(dataAnts) +
 
 p6 <- ggplot(dataAnts, aes(sample = LogArea)) +
   labs(subtitle = "C. Quantile-Quantile Plot",
-       caption = "D'après le jeu de données dataAnts",
-       x = "Quantiles Théorique",
-       y = "Quantiles Observés") +
-  stat_qq() +  # Ajoute les points du Q-Q plot
-  stat_qq_line(col = "red", size = 1) +  # Ajoute la ligne théorique
-  theme_minimal() + # Applique un thème minimal
+       caption = "From the dataset dataAnts",
+       x = "theorical quantiles",
+       y = "observed quantiles") +
+  stat_qq() +  
+  stat_qq_line(col = "red", size = 1) +  
+  theme_minimal() + 
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"),
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -468,15 +468,15 @@ p6 <- ggplot(dataAnts, aes(sample = LogArea)) +
 
 ```
 
-On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig 6A) ou sur l'histogramme (Fig. 6B).
+No outliers are observed in the Cleveland plot (Fig. 6A) or in the histogram (Fig. 6B).
 
 [**Conclusion**]{.underline} **:**
 
-L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
+The analysis of outliers and the distribution of the variables suggest that, after modification, the three quantitative variables (covariates) **Latitude, Elevation,** and **LogArea** can be used in the construction of the model.
 
-**c.** $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité
+**c.** $X$ **qualitative : number of modalities and number of individuals per modalities**
 
-Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
+When the dataset includes qualitative variables (factors), it is essential to analyze the balance of modalities: if there are more individuals in one modality compared to another, their weight in the model may lead to a biased final interpretation.
 
 ```{r equilibre des modalites, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -484,11 +484,11 @@ summary(dataAnts$Location)
 
 ```
 
-Ici les données sont bien réparties entre les deux modalités (Bog = tourbières et Forest = forêts).
+Here, the data are well distributed between the two modalities (Bog = peatlands and Forest = forests).
 
 [**Conclusion**]{.underline} **:**
 
-L'analyse de valeurs aberrantes et de la distribution de la variable qualitative suggèrent qu'elle peut être utilisée dans la construction du modèle.
+The analysis of outliers and the distribution of the qualitative variable suggest that it can be used in the construction of the model.
 
 # ANALYSE DES INTERACTIONS ENTRE LES VARIABLES Y ET XS
 
