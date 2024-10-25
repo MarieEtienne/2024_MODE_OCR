@@ -1,5 +1,5 @@
 ---
-title: "Effets du pâturage sur les prairies suédoises"
+title: "Effects of grazing on Swedish meadows"
 author: "Bastien, Elia, Caroline, Alexia, Marine, Lily, Julie" 
 bibliography: references.bib
 execute: 
