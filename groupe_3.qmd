@@ -781,7 +781,6 @@ nagelkerke(mod1)
 
 Ici, l'estimation de la déviance expliquée est de 60% ou 75%, en fonction de la méthode utilisée.
 
-
 ```{r Prediction,include=TRUE, fig.height=6, fig.width=6}
 
 plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Valeurs estimées par le modèle",xlab="Valeurs observées", main="Figure 19")
