@@ -7,6 +7,8 @@ bib execute:
 freeze: auto
 output:
   html_document:
+    code-fold: true
+    code-summary: "Show the code"
     toc: true
     toc_float: true
     toc_depth: 3
@@ -29,7 +31,10 @@ This document is a report on the analysis of a dataset on penguins. This dataset
 #| message: false
 #| warning: false
 #| echo: true
+#| code-fold: true
+#| code-summary: "test 1"
 #| results: hide
+
 
 library(factoextra) # for data visualization
 library(FactoMineR) # for PCA
@@ -52,7 +57,7 @@ library(kableExtra)
 
 Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands. 
 
-```{r}
+```{r,echo=TRUE,code.fold=TRUE,code.summary="Show the code"}
 # Download country data (including Antarctica)
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
@@ -194,7 +199,6 @@ NA_mean<-mean(NA_df)
 # 0.78% 
 
 abline(h=NA_mean, col = "red", lwd = 2)
-
 ```
 
 Change species names :
