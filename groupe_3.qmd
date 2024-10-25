@@ -553,7 +553,7 @@ En règle générale, nous pouvons penser qu'il y a une interaction entre les co
 
 Nous cherchons à éviter la colinéarité des variables explicatives dans notre modélisation, afin de ne pas avoir plusieurs variables qui donnent la même information. Pour ce faire, nous devons vérifier les liens statistiques qu'il peut y avoir entre les variables, \[1\] en calculant la corrélation entre les variables $Xs$ quantitatives, \[2\] puis en étudiant l'influence du $X$ qualitative sur les $Xs$ quantitatives à l'aide de graphiques plot.
 
-```{r colinéarité, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r colinéarité1, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Nous vérifions la colinéarité entre les variables continues indépendantes
 # Nous faisons un graphique pour chaque paire de covariables
@@ -614,7 +614,7 @@ mod1<-glm(Nsp~ Location
 
 A partir de ce modèle complet nous allons éliminer pas à pas les interactions non significatives.
 
-```{r colinéarité, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r colinéarité2, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Etape 1
 drop1(mod1,test="Chi")
