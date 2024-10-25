@@ -282,7 +282,7 @@ data_summariser$County <- data_county
 data_summariser
 ```
 
--   Essayer de faire une ACM en changeant les dates en mois.
+Convert dates to months to make a MCA:
 
 ```{r datesinmonth}
 ### Creation of a function to replace the number by a month 
@@ -326,10 +326,10 @@ data_ACM <- data_ACM |>
                 )
 ```
 
-
 ##### Manon part : MCA analysis (data exploring)
 
-Before doing the MCA analysis, we must verify that all the modalities represent at least 3% of the data
+Before doing the MCA analysis, we must verify that all the modalities
+represent at least 3% of the data
 
 ```{r proptable}
 # Proportions de chaques modalités dans chaques variables:
@@ -343,7 +343,9 @@ prop.table(table(data_ACM$Number_Fledged))*100
 prop.table(table(data_ACM$Initiation_Date))*100
 prop.table(table(data_ACM$Nest_End_Date))*100
 ```
-Some of the modalities are under-represented. We must delete them. 
+
+Some of the modalities are under-represented. We must delete them.
+
 ```{r sortingcounty}
 prop.table(table(data_ACM$County))*100 < 3
 # We must delete the data of counties Carroll, Carroll/Whiteside, Grundy, Lee and Rock
@@ -407,7 +409,8 @@ data_ACM <- data_ACM[-which(data_ACM$Nest_End_Date == "august" |
 data_ACM$Nest_End_Date <- droplevels(data_ACM$Nest_End_Date)
 ```
 
-Now, we can check again that no modalities are under-represented (thresold 3%).
+Now, we can check again that no modalities are under-represented
+(thresold 3%).
 
 ```{r proptableagain}
 # Proportions de chaques modalités dans chaques variables:
@@ -422,7 +425,8 @@ prop.table(table(data_ACM$Initiation_Date))*100
 prop.table(table(data_ACM$Nest_End_Date))*100
 ```
 
-All the modalities are enough represented. We can now start the MCA analysis.
+All the modalities are enough represented. We can now start the MCA
+analysis.
 
 ```{r mca}
 # MCA without the Nest IDs.
@@ -432,15 +436,20 @@ ACM_bird <- MCA(data_ACM[,-1])
 ```{r inertiaofaxis}
 fviz_eig(ACM_bird, main="histogram of % inertia", addlabels = T)
 ```
+
 The inertia holded by the first axis is very low (9.3%)
 
-Let's see wich modalities are significantly contributing to the analysis, for the axis 1 and 2
+Let's see wich modalities are significantly contributing to the
+analysis, for the axis 1 and 2
 
 ```{r contributionsofmodalities}
 fviz_contrib(ACM_bird, choice='var', axes=1)
 fviz_contrib(ACM_bird, choice='var', axes=2)
 ```
-Let's print only the modalities above the thresold of 1/n, n is the number of modalities, and the modalities above this thresold are significantly contributing to the MCA. 
+
+Let's print only the modalities above the thresold of 1/n, n is the
+number of modalities, and the modalities above this thresold are
+significantly contributing to the MCA.
 
 ```{r printcontributingmodalities}
 # We set the thresold for significant modalities
@@ -468,13 +477,26 @@ fviz_mca_var(ACM_bird, col.var='blue', repel = T, select.var = list(contrib = 24
 plotellipses(ACM_bird, means = F)
 ```
 
-We can see that the nests are clearly separated by the state they come from. 
-We can see a light shift on axis 2 with the nest fate values. The other variables
-are forming less distinct groups. 
+We can see that the nests are clearly separated by the state they come
+from. We can see a light shift on axis 2 with the nest fate values. The
+other variables are forming less distinct groups.
 
-On axis 1, the most contributing variable is the state Illinois. It is associated with the specie Dickcissel, with the county Will and Lee/Ogle, years 1994-1996, and the warm season on Grassland. On the other side of the axis, the specie Savannah Sparrow is higly associated with years 2000-2002, and also with the county Lafayette and Iowa and the state Wisconsin.
+On axis 1, the most contributing variable is the state Illinois. It is
+associated with the specie Dickcissel, with the county Will and
+Lee/Ogle, years 1994-1996, and the warm season on Grassland. On the
+other side of the axis, the specie Savannah Sparrow is higly associated
+with years 2000-2002, and also with the county Lafayette and Iowa and
+the state Wisconsin.
 
-On axis 2, the most contributing variable is the county Dane, and associated with years 2006-2008 and cool season Grassland. It is also associated with the specie Bobolink, the nest fate equal 1, and the number fledged superior or equal to 5. To say otherwise, the nesting birds have a better success in the county Dane, especially between 2006 and 2008 and during the cool season in grasslands. The specie Bobolink is also highly successive in nesting a lot of chicks. 
-On the other side of the axis, the variable contributing are years 1997-1999, state Illinois, nest end in July, habitat pasture and county Jo Daviess, with nest fate 0 and number fledged 0. Therefore, it is most likely that these conditions are decreasing the probabilities of success in nesting chicks.
-
-
+On axis 2, the most contributing variable is the county Dane, and
+associated with years 2006-2008 and cool season Grassland. It is also
+associated with the specie Bobolink, the nest fate equal 1, and the
+number fledged superior or equal to 5. To say otherwise, the nesting
+birds have a better success in the county Dane, especially between 2006
+and 2008 and during the cool season in grasslands. The specie Bobolink
+is also highly successive in nesting a lot of chicks. On the other side
+of the axis, the variable significantly contributing are years
+1997-1999, state Illinois, nest end in July, habitat pasture and county
+Jo Daviess, with nest fate 0 and number fledged 0. Therefore, it is most
+likely that these conditions are decreasing the probabilities of success
+in nesting chicks.
