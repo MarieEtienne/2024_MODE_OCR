@@ -46,9 +46,12 @@ library(kableExtra)
 
 ## Location
 
-Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands.
+Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands (\@map_antarctica).
 
 ```{r}
+#| label : map_antarctica
+#| fig-cap : "Map of Antarctica and the three islands."
+
 # Download country data (including Antarctica)
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
@@ -100,8 +103,7 @@ antarctica_cropped <- st_crop(antarctica, bbox_sf)
 # Create the map
 gg_zone_interet = ggplot() +
   geom_sf(data = antarctica_cropped) +
-  geom_sf(data = point_proj, color = "blue", size = 3, alpha = 0.8, shape = 19) +
-
+  geom_sf(data = point_proj, color = c("#a6bddb","#3690c0","#034e7b"), size = 3, shape = 19) +
   coord_sf(crs = "+proj=laea +lat_0=-90 +datum=WGS84") +
   theme_minimal() +
   labs(title = "Area of Interest",
@@ -251,10 +253,14 @@ Box3: Male penguins appear to be heavier than the other two categories.
 #| fig-cap : "Boxplots between body mass and other variables"
 
 box1 <- ggplot(data = data)+
-  geom_boxplot(aes(x=species,y=body_mass, fill = species))
+  geom_boxplot(aes(x=species,y=body_mass, fill = species))+
+    scale_fill_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))
+
 
 box2 <- ggplot(data = data)+
-  geom_boxplot(aes(x=island,y=body_mass, fill = island))
+  geom_boxplot(aes(x=island,y=body_mass, fill = island))+
+  scale_fill_manual(values = c("#a6bddb","#3690c0","#034e7b"))
+
 
 box3 <- ggplot(data = data)+
   geom_boxplot(aes(x=sex,y=body_mass, fill = sex))
@@ -481,7 +487,7 @@ bi_plot = fviz_pca_biplot(acp_data, label="var",
                           ellipse.alpha = F,
                           title = "Projection of variables and individuals and dfferentiation according to the islands", 
                           ylim=c(-3,3.5),xlim = c(-3.5,3.5))+
-  scale_color_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))+
+  scale_color_manual(values = c("#a6bddb","#3690c0","#034e7b"))
   theme_minimal()+
   theme(legend.position = "bottom")
 grid.arrange(bi_plot, va_propre, c1, c2,  #names of graphs
@@ -536,14 +542,17 @@ ggplot(data, aes(x = species, y = body_mass, fill = species)) +
 ```{r,include=TRUE, fig.height=6, fig.width=6}
 par(mfrow=c(3,3))
 box1 <- ggplot(data = data)+
-  geom_boxplot(aes(x=species,y=body_mass, fill = species))
+  geom_boxplot(aes(x=species,y=body_mass, fill = species))+
+    scale_fill_manual(values = c("#B2DF8A","#FDBF6F","#CAB2D6"))
 
 box2 <- ggplot(data = data)+
-  geom_boxplot(aes(x=island,y=body_mass, fill = island))
+  geom_boxplot(aes(x=island,y=body_mass, fill = island))+
+    scale_fill_manual(values = c("#a6bddb","#3690c0","#034e7b"))
+
 
 box3 <- ggplot(data = data)+
   geom_boxplot(aes(x=sex,y=body_mass, fill = sex))
-box1;box2;box3
+grid.arrange(box1,box2,box3)
 ```
 
 We have noticed some trends that we will have to confirm with statistical tests.\
