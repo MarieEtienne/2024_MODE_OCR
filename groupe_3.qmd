@@ -7,124 +7,124 @@ editor: visual
 
 # INTRODUCTION
 
--   **1.Présentation de l'article**
+-   **1.Article presentation**
 
-Nos données sont issues de l'article "Biogeography at a regional scale : determinants of ant species density in New England bogs and forests" de Gotelli & Ellison publié dans *Ecology* en 2002 (83(6), 2002, pp. 1604--1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
+Our data come from the article "Biogeography at a Regional Scale: Determinants of Ant Spec Density in New England Bogs and Forests" by Gotelli & Ellison published in *Ecology* in 2002 (83(6), 2002, pp. 1604--1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
 
--   **2.Contexte Biologique**
+-   **2.Biological context**
 
-Gotelli et Ellison sont deux écologues, le premier étant spécialisé sur des questions d'organisation des communautés animales et végétales, le second sur la désintégration et le réassemblage des écosystèmes suite à des perturbations naturelles et anthropiques. Ils se sont ici intéressés à l'influence du gradient latitudinal sur la richesse spécifique chez les fourmis de l'Etat de la Nouvelle-Angleterre au Nord-Est des Etats-Unis. Leur étude a été réalisée sur 22 sites où, pour chacun, 25 pièges ont été placés dans une tourbière ombrotrophe et 25 dans la forêt environnante. Les espèces de fourmis contenues dans les pièges sont par la suite identifiées en laboratoire et, pour un site et un habitat donnés, ils ont calculé la richesse spécifique (nombre total d'espèces présentes).
+Gotelli and Ellison are two ecologists, the first specializing in questions of organization of animal and plant communities, the second in the disintegration and reassembly of ecosystems following natural and anthropogenic disturbances. Here, they were interested in the influence of the latitudinal gradient on the species richness of ants in the state of New England in the northeastern United States. Their study was carried out on 22 sites where, for each, 25 traps were placed in an ombrotrophic peat bog and 25 in the surrounding forest. The species of ants contained in the traps are subsequently identified in the laboratory and, for a given site and habitat, they calculated the species richness (total number of species present).
 
--   **3.Données et variables**
+-   **3.Datas and variables**
 
-Les variables utilisées sont :\
-- *Site* : le nom du site échantillonné\
-- *Latitude* : la latitude du site (quantitative)\
-- *Altitude* : l'altitude du site (quantitative)\
-- *Area* : la superficie de la tourbière du site (quantitative)\
-- *Location* : la localisation des pièges ("Bog" ou "Forest") (qualitative)\
-- *Nsp* : la richesse spécifique des fourmis, correspondant à la variable réponse
+The variables used are :\
+- *Site* : the name of the sampled site\
+- *Latitude* : site latitude (quantitative)\
+- *Altitude* : site altitude (quantitative)\
+- *Area* : the area of the peat bog of the site (quantitative)\
+- *Location* : the location of the traps ("Bog" or "Forest") (qualitative)\
+- *Nsp* : the specific richness of ants, corresponding to the response variable
 
--   **4.Question de recherche**
+-   **4.Research question**
 
-Parmi les trois questions que se posent Gotelli et Ellison dans cette étude, nous nous intéressons ici aux deux premières :
+Of the three questions that Gotelli and Ellison address in this study, we focus here on the first two:
 
-1\) La densité des espèces est-elle en corrélation avec la latitude sur une étendue latitudinale aussi étroite ?
+1\) Is species density correlated with latitude over such a narrow latitudinal range?
 
-2\) Le gradient latitudinal persiste-t-il après un contrôle statistique des différences entre les sites dans la composition de la végétation ?
+2\) Does the latitudinal gradient persist after statistically controlling for site differences in vegetation composition?
 
-En d'autres termes : quelles sont les variables quantitatives (latitude, altitude, aire) et qualitatives (localisation) qui déterminent la richesse spécifique des fourmis dans les tourbières du New-England ?
+In other words: what are the quantitative (latitude, altitude, area) and qualitative (location) variables that determine ant species richness in New England peatlands?
 
--   **5.Importation du jeu de données**
+-   **5.Importing the dataset**
 
-Dès lors, on peut importer le jeu de données situé dans fichier "BogAnts.txt"
+From then on, we can import the dataset located in file "BogAnts.txt"
 
-```{r Importation du jeu de donnees, echo=TRUE, message=FALSE, include=TRUE}
+```{r Importing dataset, echo=TRUE, message=FALSE, include=TRUE}
 
-# Configuration de la session :
-rm(list=ls()) # Nettoyage de l'environnement de travail
+# Session Configuration :
+rm(list=ls()) # Cleaning the work environment
 
 # Importation
 dataAnts <- read.table("BogAnts.txt", dec=".", header = TRUE)
 
-# Passer la localisation en facteur 
+# Transforming location into a factor
 dataAnts$Location<-as.factor(dataAnts$Location)
 
-# Vérification du type des variables 
+# Checking the type of variables
 str(dataAnts)
 
 ```
 
 [**Conclusion**]{.underline} **:**
 
-Les variables qualitatives ou quantitatives sont bien considérées comme telles.
+Qualitative or quantitative variables are well considered as such.
 
--   **6.Quel modèle et pourquoi ?**
+-   **6.Which model and why?**
 
-Pour modéliser la relation entre une variable réponse quantitative $Y$ et des variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives nous utilisons des modèles linéaires généraux, ou *glm*, (régression linéaire, ANCOVA, ANOVA). Pour pouvoir utiliser ces *glm*, trois conditions d'application sont nécessaires : *l'homogénéité des variances*, *l'indépendance des résidus* et *la normalité des résidus*. Cependant, les réponses $Y$ analysées en écologie, peuvent parfois être discrètes et s'écarter de l'hypothèse de normalité.
+To model the relationship between a quantitative response variable $Y$ and explanatory variables $X_{1}$,$X_{2}$...$X_{p}$, quantitative and/or qualitative we use general linear models, or *glm*, (linear regression, ANCOVA, ANOVA). To be able to use these *glm*, three conditions of application are necessary: ​​*homogeneity of variances*, *residual independence* and *residual normality*. However, the $Y$ responses analyzed in ecology can sometimes be discrete and deviate from the hypothesis of normality.
 
-Pour les variables réponses discrètes (comptages, données binaires), la variance de $Y$ varie généralement avec la moyenne de $Y$. Cette relation semble alors indiquer que la variance ne peut être homogène dans un jeu de données, du fait de sa dépendance à la moyenne. Or, les modèles linéaires généraux ont pour hypothèse d'application une variance constante (c'est-à-dire une homogénéité de la variance). Par ailleurs, lorsque l'on applique un modèle linéaire général à des données de comptage, les valeurs prédites obtenues peuvent être négatives (ce qui est impossible au regard de la nature de $Y$) et les résidus non distribués normalement. Donc, l'utilisation d'un modèle linéaire général (*glm*) sur des réponses discrètes génère très généralement des écarts par rapport aux conditions d'application. En conclusion, il devient necessaire d'utiliser une méthode plus adaptée à l'analyse de variables réponses discrètes telle que les modèles linéaires généralisés (*glim*).
+For discrete response variables (counts, binary data), the variance of $Y$ generally varies with the mean of $Y$. This relationship then seems to indicate that the variance cannot be homogeneous in a data set, due to its dependence on the mean. However, general linear models have a constant variance as their application hypothesis (i.e. a homogeneity of the variance). Furthermore, when applying a general linear model to count data, the predicted values ​​obtained may be negative (which is impossible given the nature of $Y$) and the residuals may not be normally distributed. Therefore, using a general linear model (*glm*) on discrete responses very generally generates deviations from the application conditions. In conclusion, it becomes necessary to use a method more suited to the analysis of discrete response variables such as generalized linear models (*glim*).
 
-**Voici les étapes à suivre pour établir un modèle linéaire généralisé :**\
-1. Formuler l'hypothèse de la loi de distribution de la variable réponse $Y_{i}$\
-2. Explorer les données (valeurs aberrantes, distribution des valeurs,)\
-3. Analyser les interactions entre les variables Y et Xs (analyse des relations entre X et Y, entre Xs, et recherche de colinéarité entre Xs)\
-4. Procéder aux analyses statistiques (construction du modèle, analyse des coefficients, pouvoir explicatif du modèle)\
-5. Conclure quant aux résultats
+**Here are the steps to follow to establish a generalized linear model:**\
+1. Formulate the hypothesis of the distribution law of the response variable $Y_{i}$\
+2. Explore the data (outliers, distribution of values,)\
+3. Analyze the interactions between the variables Y and Xs (analysis of the relationships between X and Y, between Xs, and search for collinearity between Xs)\
+4. Proceed with statistical analyses (construction of the model, analysis of the coefficients, explanatory power of the model)\
+5. Conclude on the results
 
-Une modélisation linéaire généralisée s'écrit comme suit (équation 1) : $$g(\mu_{y})= \alpha+ \beta_{1}.X_{i1}+ \beta_{2}.X_{i2}+\beta_{3}.X_{i3}+...\beta_{p}.X_{ip} = \eta $$ {#eq-1} Le prédicteur linéaire, $\eta$, est issu du modèle linéaire comme la somme des $p$ termes associés à chacun des paramètres $\beta_{p}$. Sa valeur est obtenue en transformant la valeur de $Y$ par la fonction de lien, et la valeur prédite de $Y$ est obtenue en appliquant à $\eta$ la fonction inverse de la fonction de lien.
+A generalized linear model is written as follows (equation 1): $$g(\mu_{y})= \alpha+ \beta_{1}.X_{i1}+ \beta_{2}.X_{i2}+\beta_{3}.X_{i3}+...\beta_{p}.X_{ip} = \eta $$ {#eq-1} The linear predictor, $\eta$, is derived from the linear model as the sum of the $p$ terms associated with each of the $\beta_{p}$ parameters. Its value is obtained by transforming the value of $Y$ by the link function, and the predicted value of $Y$ is obtained by applying to $\eta$ the inverse function of the link function.
 
-Pour illustrer ce propos nous nous intéressons à des comptages. Un comptage est une variable aléatoire discrète et positive. Il est possible que la distribution de ses valeurs suive une loi de Poisson, Binomiale Négative voire une loi Normale lorsque les valeurs sont très importantes.
+To illustrate this point, we are interested in counts. A count is a discrete and positive random variable. It is possible that the distribution of its values follows a Poisson distribution, a Negative Binomial distribution or even a Normal distribution when the values are very large.
 
-Notre exemple illustre une distribution suivant la loi de Poisson.
+Our example illustrates a distribution following the Poisson law.
 
-La loi de Poisson est utile pour décrire des évènements discrets rares et indépendants. Ainsi, une variable $Y$ qui suit une loi de Poisson de paramètre $\lambda$ s'écrit comme suit (équation 2) : $$Pr(Y=y)=\frac{e^{-\lambda}.\lambda^y}{y!}$$ {#eq-2} où $y$ représente le nombre observé d'occurences (i.e., $y$=0, 1, 2...} et $\lambda$ la moyenne et la variance de la distribution de Poisson (i.e. dans la loi de Poisson : E($y$)= Var($y$)=$\lambda$).
+The Poisson law is useful for describing rare and independent discrete events. Thus, a variable $Y$ that follows a Poisson law with parameter $\lambda$ is written as follows (equation 2): $$Pr(Y=y)=\frac{e^{-\lambda}.\ lambda^y}{y!}$$ {#eq-2} where $y$ represents the observed number of occurrences (i.e., $y$=0, 1, 2...} and $\lambda$ the mean and variance of the Poisson law (i.e. in the Poisson law: E($y$)= Var($y$)=$\lambda$).
 
-Dans un *glim* type Poisson, la fonction de lien est la fonction **log**. Ainsi, le modèle s'écrit (équation 3): $$log(\mu_{y})= \alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip} = \eta $$ {#eq-3} Les valeurs prédites de $Y$ sont obtenues en appliquant sur $\eta$ la fonction inverse de la fonction de lien, ici la fonction **log** (équation 4) : $$\mu_{y}= e^{\alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip}} = e^{\eta} $$ {#eq-4}
+In a Poisson-type *glim*, the link function is the **log** function. Thus, the model is written (equation 3): $$log(\mu_{y})= \alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip} = \eta $$ {#eq-3} 150 / 5 000 The predicted values ​​of $Y$ are obtained by applying to $\eta$ the inverse function of the link function, here the **log** function (equation 4): $$\mu_{y}= e^{\alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip}} = e^{\eta} $$ {#eq-4}
 
-Les modèles linéaires généralisés de type Poisson ont une structure d'erreur qui suivent une loi de Poisson. Cette structure permet, entre autres, de définir avec précision la relation entre la moyenne et la variance. Cette relation est exploitée par la méthode du maximum de vraisemblance pour estimer les coefficients et les erreurs standard des paramètres du modèle GLM.
+Generalized linear models of the Poisson type have an error structure that follows a Poisson distribution. This structure allows, among other things, to precisely define the relationship between the mean and the variance. This relationship is exploited by the maximum likelihood method to estimate the coefficients and standard errors of the parameters of the GLM model.
 
--   **7.Configuration de l'environnement et packages**
+-   **7.Environment Configuration and Packages**
 
-Pour analyser nos données nous configurons la session en nettoyant l'espace de travail. Nous aurons aussi besoin de charger les packages suivants : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion*, *lattice*, *patchwork*, *MASS* et *rcompanion*
+To analyze our data we set up the session by cleaning the workspace. We will also need to load the following packages : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion*, *lattice*, *patchwork*, *MASS* et *rcompanion*
 
 ```{r init, include=FALSE, message=FALSE, warning=FALSE}
 
-# Chargement des packages R :
+# Loading of R packages:
 library(knitr)
-library(ggplot2) # Package pour de meilleurs visuels graphiques
-library(tinytex) # Pour la sortie pdf
-library(corrplot) # Calcul de matrice de corrélation
-library(plot3D) # Pour les graphiques 3D
-library(DHARMa) # Diagnostic du modèle
-library(rcompanion) # Modèle pseudo R²
-library(lattice) # Graphiques multipanneaux (A CHANGER?)
-library(patchwork) # Afficher plusieurs ggplot sur une page
-library(MASS) # Fonctions et datasets pour les analyses
+library(ggplot2) # Package for better plot visuals
+library(tinytex) # For pdf output
+library(corrplot) # Correlation matrix calculation
+library(plot3D) # For 3D plots
+library(DHARMa) # Model diagnosis
+library(rcompanion) # Pseudo R² model
+library(lattice) # Multipannel plots
+library(patchwork) # Display multiple ggplots on one page
+library(MASS) # Functions and datasets for analyses
 
 ```
 
--   **8.Vérification si des données sont manquantes**
+-   **8. Checking for missing data**
 
 ```{r datalack, echo=TRUE,include=TRUE}
 
-# Vérification de la présence de valeurs manquantes
+# Checking for missing data
 colSums(is.na(dataAnts))
 summary(dataAnts)
 
 ```
 
-Il n'y a aucune valeurs manquantes.
+There are no missing values.
 
--   **9.Déroulé de l'analyse**
+-   **9. Analysis process**
 
-A partir de cela, nous allons dans un premier temps examiner le jeu de données (valeurs abérantes, potentielles relations entre Y et Xs, ...) afin d'avoir une première impression. Par la suite, nous réaliserons notre analyse statistique en constuisant et affinant notre modèle. Enfin, nous analyserons ses coefficients et son pouvoir explicatif afin de le valider ou non.
+From this, we will first examine the dataset (outliers, potential relationships between Y and Xs, ...) in order to have a first impression. Subsequently, we will carry out our statistical analysis by building and refining our model. Finally, we will analyze its coefficients and its explanatory power in order to validate it or not.
 
 # EXPLORATION DU JEU DE DONNEES
 
 -   **1.Présentation du jeu de données**
 
-      **a.Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$**
+    **a.Valeurs aberrantes dans** $Y$ et distribution des valeurs de $Y$
 
 La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
 
@@ -230,7 +230,7 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
 
-  **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
+**b.** $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$
 
 Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.* De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
 
@@ -470,7 +470,7 @@ On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig 6A) ou sur l
 
 L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
 
-  **c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
+**c.** $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité
 
 Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
 
@@ -796,7 +796,7 @@ Dans un premier temps, vérifier la présence de **surdispersion** est indispens
 
 Pour cela, nous allons calculer un paramètre appelé 'scale parameter'. Si sa valeur est nettement supérieure à 1 (à partir de 1.6 ou 1.7), il y a surdispersion. Le modèle n'est donc pas valable.
 
-  **a.Vérification de la surdispersion**
+**a.Vérification de la surdispersion**
 
 Quand l'indice de dispersion est supérieur à 1.5, il existe différentes explications.
 
@@ -834,7 +834,7 @@ sum(E1^2) / (N - p)
 
 Ici, la dispersion est de 1.02. Il n'y a pas de surdispersion.
 
-  **b.Analyses des résidus**
+**b.Analyses des résidus**
 
 Si les hypothèses de normalité et d'homogénéité des résidus ne sont pas attendues dans les modèles linéaires généralisés, nous pouvons cependant les analyser graphiquement. En traçant les résidus en fonction des $Xs$ significatifs du modèle, nous devons valider l'absence de tendance dans leur distribution. Si nous constatons une tendance, la modélisation peut être problématique : cela peut être dû à un manque d'ajustement, à une dépendance dans les données ou à des observations influentes. Rappelons que dans les modèles linéaires généralisés, nous utilisons **les résidus de Pearson** car ils incluent l'hétérogénéité de la variance et sont faciles à calculer et à comprendre.
 
@@ -888,7 +888,7 @@ L'histogramme des résidus (Fig. 20) et le Q-Q plot (Fig. 21) montrent des rési
 
 Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
-  **c.Vérification des individus influents**
+**c.Vérification des individus influents**
 
 ```{r contri, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -902,7 +902,7 @@ abline(h = 1, col = 2,lwd = 3)
 
 Ici (Fig. 26), il n'y a pas d'individus trop influent.
 
-  **d.Analyses des résidus avec DHARMa**
+**d.Analyses des résidus avec DHARMa**
 
 Pour une représentation graphique différente, nous pouvons utiliser le package 'DHARMa'. Ce package permet d'analyser les résidus et plus particulièrement leur surdispersion et les valeurs aberrantes. Ce package met en couleur rouge les résidus ne respectant pas les valeurs attendues.
 
