@@ -2,6 +2,7 @@
 editor: 
   markdown: 
     wrap: 72
+bibliography: references.bib
 ---
 
 ------------------------------------------------------------------------
@@ -10,8 +11,7 @@ title: "Modèles matriciels et applications" group: "Rudy, Tanguy, Manon,
 Garan, Anaëlle, Oceane, Victor"
 
 bibliography: references.bib execute: freeze: auto output:
-html_document: toc: true toc_float: true --- 
-
+html_document: toc: true toc_float: true ---
 
 # Data presentation
 
@@ -913,3 +913,6 @@ condition is true and 0 otherwise.
 
 But despite all the conditions of the model being validated, this model
 only explains 22% (R² = 0.22) of our variable Y (Initiation_Date).
+
+[@byers2017b; @ellison2013b; @herkert2003b; @renfrew2005b; @ribicb;
+@ribic2012b; @vos2013b]
