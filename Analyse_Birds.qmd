@@ -48,7 +48,7 @@ refaire analyse de bases cf ASA
 **Menu : Session/Set Working Directory/Choose directory** *And indicate
 Git/2024_MODE_OCR*
 
-```{r}
+```{r importation}
 # Datatset import under the name of "data"
 # data <- read.table("Bird_dataset.csv", sep="\t", header = TRUE)
 bird <- read.table("Bird_dataset.txt", header = TRUE, stringsAsFactors = TRUE)
@@ -56,18 +56,15 @@ bird <- read.table("Bird_dataset.txt", header = TRUE, stringsAsFactors = TRUE)
 data <- bird
 ```
 
-```{r}
+```{r library}
 # Charge the librairies
 library(ggplot2)
 library(tidyverse)
 library(ggcorrplot)
 library(FactoMineR)
 library(factoextra)
-```
-
-```{r}
-# View the firsts lignes of the dataset
-head(data)
+library(ade4)
+library(vegan)
 ```
 
 # [1. Data exploration]{.underline}
@@ -87,7 +84,7 @@ H0 : there is no differences between species
 First, we observe the data with a boxplot. There is no significant
 differences through the boxplots.
 
-```{r}
+```{r viz1}
 ggplot(data = data, 
        aes(x = Habitat, 
            y = Nest_End_Date)
@@ -103,7 +100,7 @@ ggplot(data = data,
 Then, we test the normality of the data. All the p-values are ranged in
 a dataframe.
 
-```{r}
+```{r normality}
 data |>
   # Selection of only two columns of interest
   dplyr::select(  
@@ -120,7 +117,7 @@ data |>
 Conclusion : each subset does not follow the normality. We can perform a
 U test (non parametric test) :
 
-```{r}
+```{r utest}
 # Construction of an empty 8x8 dataframe. It will contains each p-value of the U test
 cor_df <- as.data.frame(
   matrix(nrow = 8, ncol = 8, NA)
@@ -166,7 +163,7 @@ for (sp1 in (1:(length(species)))){
 
 Now, we can observe the p-values in the following matrix :
 
-```{r}
+```{r corrplot}
 ggcorrplot(
   corr = cor_df,
   lab = TRUE,
@@ -203,7 +200,7 @@ function of a factor AND to see the means.
 
 Here, we summarise with the factor : Species.
 
-```{r}
+```{r summarise}
 ## Calculation of the mean of each variables depending on the Species
 data_sp <- data |>
   dplyr::select(
@@ -273,7 +270,7 @@ data_sp
 We create a list called data_summariser that will contains each
 previously created tables.
 
-```{r}
+```{r data_summariser}
 data_summariser <-list()  # Creation of the due list data_summariser
 data_summariser$Species <- data_sp # Add the Species table
 data_summariser$Habitat <- data_hab 
@@ -420,7 +417,7 @@ mca <- MCA(X = data_ACM)
 
 We can see the inertia :
 
-```{r}
+```{r fviz_eig}
 fviz_eig(X = mca,
          addlabels = TRUE,
          barfill = "tomato")
@@ -429,7 +426,7 @@ fviz_eig(X = mca,
 For now, we decide to keep three axes to cover 18.8% of the total
 inertia
 
-```{r}
+```{r projection}
 fviz_mca_var(X = mca, 
              repel = TRUE,
              title = "Projection of the variables by axes 1 and 2"
@@ -440,26 +437,12 @@ fviz_mca_ind(X = mca,
              repel = FALSE,
              title = "Projection of the observations by axes 1 and 2"
              )
-
-fviz_mca_var(X = mca,
-             axex = c(1,3),
-             ylim = c(-1, 2.2),
-             repel = TRUE,
-             title = "Projection of the variables by axes 1 and 3"
-             )
-
-fviz_mca_ind(X = mca, 
-             col.ind = "blue",
-             repel = FALSE,
-             axes = c(1,3),
-             title = "Projection of the observations by axes 1 and 3"
-             )
 ```
 
 Here, we identify the variables that contribute to each part of the
 axes.
 
-```{r}
+```{r fviz_contrib}
 fviz_contrib(mca, 
              choice = "var", 
              axes = 1
@@ -484,7 +467,7 @@ fviz_contrib(mca,
 
 Now, we can use a CAH :
 
-```{r}
+```{r clust}
 mca_g <- as.data.frame(mca$ind$coord[,1:2])
 class <- HCPC(mca_g,
               nb.clust = 3
@@ -493,7 +476,7 @@ plot(class$call$t$inert.gain,
      type = "s")
 ```
 
-```{r}
+```{r nbclust}
 fviz_nbclust(x = mca_g,
              method = "silhouette",
              FUNcluster = kmeans,
@@ -541,8 +524,10 @@ fviz_eig(X = famd,
 ```
 
 *Conclusion :* We can see that keeping three axes is necessary to cover
-as much inertia as possible while being parcimonious. Now, we can see
-the contribution of the variables to the factorial axes :
+as much inertia as possible while being parcimonious. However, we will
+simplify the analysis by keeping only two axes in the interpretation
+parts. Now, we can see the contribution of the variables to the
+factorial axes :
 
 ```{r fam.contrib}
 fviz_contrib(X = famd,
@@ -563,6 +548,10 @@ fviz_contrib(X = famd,
 famd$var$contrib[,1:3] > 1/9*100
 ### County / Habitat / Year / Species
 ```
+
+We can see that the only variables that contributed to the axes are the
+qualitative variables such as County, State, Year, Habitat and Species.
+The quantitative variables have low contributions.
 
 And now, let's observe the projections of the variables and of the
 observations :
@@ -591,97 +580,15 @@ fviz_famd_ind(X = famd,
 
 ```
 
-The projection of the variables shows an homogeneous scatterplots. The
-projection of the observations suggests two groups of individuals,
-separated merely by the axe of the ordinates. To determine the kinds of
-the groups, we have to gather variables. The right side is characterised
-by :
+We can use the function fviz_cluster to visualise the optimal number of
+clusters to make. It uses the k-means method.
 
--   Year = 1991, 1992, 1993, 1995, 1996 et 1997, 1998
-
--   County = Lee, Lee/Ogle, Grundy, Rock, Will (Illinois)
-
--   State : Illinois
-
--   Species : Jo_Daviess, Dickcissel, Western_Meadowlark,
-
--   Habitat : Prairie, Warm-season Grassland
-
-The left side is characterised by :
-
--   Year : 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006
--   County : Iowa, Dane, Green , Monroe, Lafayette
--   State : Wisconsin
--   Species : Bobolink, Savanah Sparrow, Henslow's Sparrow, Eastern
-    Meadowlark
--   Habitat : Pasture, Cool-season Grassland
-
-With this projetion, we can see a separation
-
-```{r famd_axes_13}
-### Axes 1 and 3
-fviz_famd_var(X = famd, 
-              repel = TRUE,
-              axes = c(1,3),
-              col.var = "blue",
-              "quali.var"
-              )
-fviz_famd_var(X = famd, 
-              repel = TRUE,
-              axes = c(1,3),
-              col.var = "blue",
-              "quanti.var"
-              )
-fviz_famd_ind(X = famd, 
-              repel = FALSE,
-              axes = c(1,3),
-              col.ind = "skyblue4",
-              col.quali.var = "blue"
-              )
-
-
-```
-
-For this projection with the axes 1 and 3, we distinguish three groups.
-
--   Top : a specific combination of variables : the Vesper Sparrow
-    living in the prairies of Monroe in 2002.
-
-[At the left we see]{.underline} :
-
--   Year : 1994, 1999, 2000, 2001, 2003, 2004, 2005, 2006, 2010, 2011.
-
--   State : Wisconsin.
-
--   Species : Savanahh Sparrow, Bobolink, Eeastern Meadowlark
-
--   Counties : Grant, Iowa, Green, Lafayette
-
--   Habitat : Pasture
-
-[At the right we see]{.underline} :
-
--   Year : 1991, 1993, 1995, 1996, 1997, 1998, 2007, 2009
-
--   State : Illinois
-
--   Species : Dickcisel, Jo_Daviess, Western meadowlark, Grasshopper
-    Sparrow,
-
--   Counties : Carroll, Lee/Ogel, Grundy, Rock, Lee
-
--   Habitat : Cool and Warm season grassland
-
-```{r}
+```{r cluster}
 famd_g <- as.data.frame(famd$ind$coord[,1:2])
 class <- HCPC(famd_g,
               nb.clust = 3
               )
-plot(class$call$t$inert.gain,
-     type = "s")
-```
 
-```{r}
 fviz_nbclust(x = famd_g,
              method = "silhouette",
              FUNcluster = kmeans,
@@ -689,8 +596,51 @@ fviz_nbclust(x = famd_g,
              )
 ```
 
-We can define classes for a CAH.
+Three clusters is the best choice according to the k-means method.
 
-```{r}
+We can define classes for a CAH thanks to the function fviz_cluster.
+
+```{r cluster_graph}
 fviz_cluster(class, axes = c(1,2), ellipse.type = "convex")
 ```
+
+The fviz_cluster function shows three clusters. The projection of the
+variables shows an homogeneous scatterplots. The projection of the
+observations suggests two groups of individuals, separated merely by the
+axe of the ordinates. To determine the kinds of the groups, we have to
+gather variables.
+
+The blue cluster is characterised by :
+
+-   Year = 1991, 1992, 1993, 1995, 1996 et 1997, 1998
+
+-   County = Jo_Daviess, Lee, Lee/Ogle, Grundy, Rock, Will (Illinois)
+
+-   State : Illinois
+
+-   Species : Dickcissel, Western_Meadowlark,
+
+-   Habitat : Prairie, Warm-season Grassland
+
+The red cluster is characterised by :
+
+-   Year : 1994, 1999, 2000, 2001, 2002
+-   County : Green, Grant , Monroe, Lafayette
+-   State : Wisconsin
+-   Species : Savanah Sparrow
+-   Habitat : Pasture
+
+The green side is characterised by :
+
+-   Year : 2003, 2004, 2005, 2006
+-   County : Dane
+-   State : Wisconsin
+-   Species : Bobolink, Henslow's Sparrow, Eastern Meadowlark
+-   Habitat : Cool-season Grassland
+
+It is necessary to note that several species are located on the counties
+near the border between the Illinois and the Wisconsin. Thus they can be
+seen in both states, which can be counter-intuitive by seeing the FAMD.
+However, one factor that can explain this distribution could be years of
+sampling. There is a clear separation of the years depending on the part
+of the graphics.
