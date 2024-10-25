@@ -78,7 +78,9 @@ required_packages <- c(
   "DHARMa",     # for model diagnostics
   "rcompanion", # for pseudo R² in models
   "lattice",    # for multipanel graphics
-  "dplyr"       # for data manipulation
+  "dplyr",      # for data manipulation
+  "FactoMineR", # for ordinations
+  "factoextra"
 )
 
 # Install and load the packages
