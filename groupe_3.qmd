@@ -337,9 +337,11 @@ p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
 
 ```
 
-On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig. 3A) ou sur l'histogramme (Fig. 3B).
 
-On remarque grâce au Quantile plot (Fig. 3C) un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
+Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
+
+Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
+
 
 [**L'élévation**]{.underline} **:**
 
@@ -396,9 +398,11 @@ p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
 
 ```
 
-On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig. 4A) ou sur l'histogramme (Fig. 4B).
 
-On remarque grâce au Quantile plot (Fig. 4C) un écart à la normalité. Ceci suggère qu'il est ici interressant d'utilisé un modèle linéaire généralisé et non un modèle linéaire classique.
+Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
+
+Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé et non un modèle linéaire classique.
+
 
 [**L'aire**]{.underline} **:**
 
@@ -512,14 +516,14 @@ p6 <- ggplot(dataAnts, aes(sample = LogArea)) +
 
 ```
 
-On ne constate pas de valeurs aberrantes sur le Cleveland plot (Fig 6A) ou sur l'histogramme (Fig. 6B).
+
+Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
 
 [**Conclusion**]{.underline} **:**
 
-L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
+L'analyse de valeurs aberrantes et de la distribution des variables suggère qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea* peuvent être utilisées dans la construction du modèle.
 
-````         
-```         
+
   **c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
 ```
 ````
