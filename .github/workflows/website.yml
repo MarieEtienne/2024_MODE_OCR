@@ -18,7 +18,7 @@ jobs:
       - name: Install R packages
         run: |
           Rscript -e "install.packages(c('factoextra'))" 
-          Rscript -e "install.packages(c('dplyr','readxl', 'lubridate', 'ggplot2','stringr', 'tidyr', 'ade4', 'spdep', 'tripack', 'sp', 'geoR', 'R2jags')" 
+          Rscript -e "install.packages(c('dplyr','readxl', 'lubridate', 'ggplot2','stringr', 'tidyr', 'ade4', 'spdep', 'tripack', 'sp', 'geoR', 'R2jags'))" 
       - name: Additional Python packages
         run: |
           pip install numpy 
