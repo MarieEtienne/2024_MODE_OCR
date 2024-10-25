@@ -1,18 +1,4 @@
 ---
-<<<<<<< HEAD
-
-title: "Exploring data on penguins"
-group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline"
-bibliography: references.
-bib execute:
-freeze: auto
-output:
-  html_document:
-    code-fold: true
-    code-summary: "Show the code"
-    toc: true
-    toc_float: true
-=======
 title: "Exploring data on penguins" 
 author: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline" 
 bibliography: references.bib 
@@ -23,7 +9,6 @@ output:
   html_document: 
     toc: true 
     toc_float: true 
->>>>>>> Penguins
     toc_depth: 3
 ---
 
@@ -52,7 +37,7 @@ library(tidyverse)  # for data manipulation and visualization
 library(dplyr)      # for data manipulation
 library(ggplot2)    # for data visualization
 library(corrplot)   # for correlation test
-
+library(quarto)
 
 library(sf)
 library(rnaturalearth)
@@ -217,11 +202,8 @@ NA_mean<-mean(NA_df)
 # 0.78% 
 
 abline(h=NA_mean, col = "red", lwd = 2)
-<<<<<<< HEAD
-=======
 
 
->>>>>>> Penguins
 ```
 
 The red line represents the mean of NA values in the dataset and the bars are showing the number of NA's for each variables.
@@ -268,8 +250,7 @@ Box2: Penguins from Biscoe Island appear to be heavier than the other two island
 Box3: Male penguins appear to be heavier than the other two categories.
 
 ```{r,include=TRUE, fig.height=5, fig.width=5}
-#| label : boxplot_trends
-#| fig-cap : "Boxplots between body mass and other variables"
+
 
 box1 <- ggplot(data = data)+
   geom_boxplot(aes(x=species,y=body_mass, fill = species))
@@ -594,6 +575,33 @@ summary(anova3)
 
 There is a significant *difference between the body mass and the sex.*
 
+# Model of the body mass
+
+The aim of this part is to determine which variable influence the body mass of the penguins.
+
+```{r data preparation}
+#selection of the interesting variables
+dataLM<-data %>% 
+  select(species,island,clutch_completion,culmen_length,culmen_depth,flipper_length,body_mass,sex,delta_15_N,delta_13_C)
+
+#set the variable type (factors or numerics)
+dataLM$species<-as.factor(dataLM$species)
+dataLM$island<-as.factor(dataLM$island)
+dataLM$clutch_completion<-as.factor(dataLM$clutch_completion)
+dataLM$sex<-as.factor(dataLM$sex)
+dataLM$flipper_length<-as.numeric(dataLM$flipper_length)
+dataLM$body_mass<-as.numeric(dataLM$body_mass)
+
+str(dataLM)
+
+#check if there is missing values 
+colSums(is.na(dataLM))
+
+#delete individual with missing values
+dataLM<-dataLM %>% 
+  drop_na(culmen_length,culmen_depth,flipper_length,body_mass,sex,delta_15_N,delta_13_C)
+```
+
 Finally we look at the qualitativ explanatory variables.
 
 ```{r cofactors, include=TRUE}
@@ -612,6 +620,11 @@ We observe that the plan is non orthogonal.
 Secondly, we explore the dynamics between body mass and the explanatory variable, to see if there is some trend.
 
 ```{r datagraph, include=TRUE, fig.height=15, fig.width=6}
+#| label: fig-lm_mass_covariable
+#| fig-cap: Effect of the explanatories variables on the body mass
+#| code-fold: true
+#| code-summary: "Show the code"
+
 par(mfrow=c(5,2))
 # Culmen length
 plot(dataLM$body_mass~dataLM$culmen_length,pch=16,col='dodgerblue3',xlab='culmen length',ylab='body mass')
@@ -633,9 +646,13 @@ boxplot(dataLM$body_mass~dataLM$clutch_completion, varwidth = TRUE, ylab = "body
 boxplot(dataLM$body_mass~dataLM$sex, varwidth = TRUE, ylab = "body mass", xlab = "Sex", col='brown', main = "")
 ```
 
-The variables that seems to influence body mass are culmen length, flipper length, delta 15N, species and island.
+We can see on the figure @fig-lm_mass_covariable The variables that seems to influence body mass are culmen length, flipper length, delta 15N, species and island.
 
 Finally we check if there is colinearity between some variable. First, between covariables.
+
+```{r}
+corrplot.mixed(cor(dataLM %>% select_if(is.numeric)%>%select(-body_mass)),upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
+```
 
 We chose the threshold at 0.7 so there is no colinearity detected between the covariables.
 
@@ -755,6 +772,11 @@ Residuals have a normal distribution.
 We check the homoscedasticity of residuals.
 
 ```{r Residhomo, include=TRUE, fig.height=5, fig.width=5}
+#| label: fig-lm_variance
+#| fig-cap: Residuals of the model as function of the fitted value
+#| code-fold: true
+#| code-summary: "Show the code"
+ 
 # residuals vs fitted
 plot(residuals(modlm3)~fitted(modlm3)
       , col='dodgerblue3'
