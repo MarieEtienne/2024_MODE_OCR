@@ -74,7 +74,7 @@ head(data)
 
 ### Repartition of the data through time
 
-##### Rudy part : Statistical tests
+#### MCA
 
 In this part, several statistical tests are performed in order to answer
 questions.
@@ -505,7 +505,7 @@ fviz_nbclust(x = mca_g,
 fviz_cluster(class, axes = c(1,2), ellipse.type = "convex")
 ```
 
-#### Rudy part : Réalisation of an FAMD
+#### FAMD
 
 Here, we perform an FAMD on the initial dataframe. The FAMD is used for
 table with qualitative and quanitative variables. The ID are removed
@@ -524,7 +524,7 @@ data_famd <- data_famd |>
 We can perform the famd ; it takes some times.
 
 ```{r famd.real}
-famd <- FAMD(base = data_famd, ncp = 3)
+famd <- FAMD(base = data_famd)
 ```
 
 First, let's see the summary :
@@ -585,7 +585,8 @@ fviz_famd_var(X = famd,
 fviz_famd_ind(X = famd, 
               repel = FALSE,
               axes = c(1,2),
-              col.ind = "orange"
+              col.ind = "orange",
+              col.quali.var = "red"
               )
 
 ```
@@ -634,7 +635,8 @@ fviz_famd_var(X = famd,
 fviz_famd_ind(X = famd, 
               repel = FALSE,
               axes = c(1,3),
-              col.ind = "skyblue4"
+              col.ind = "skyblue4",
+              col.quali.var = "blue"
               )
 
 
@@ -669,3 +671,26 @@ For this projection with the axes 1 and 3, we distinguish three groups.
 -   Counties : Carroll, Lee/Ogel, Grundy, Rock, Lee
 
 -   Habitat : Cool and Warm season grassland
+
+```{r}
+famd_g <- as.data.frame(famd$ind$coord[,1:2])
+class <- HCPC(famd_g,
+              nb.clust = 3
+              )
+plot(class$call$t$inert.gain,
+     type = "s")
+```
+
+```{r}
+fviz_nbclust(x = famd_g,
+             method = "silhouette",
+             FUNcluster = kmeans,
+             linecolor = "green3"
+             )
+```
+
+We can define classes for a CAH.
+
+```{r}
+fviz_cluster(class, axes = c(1,2), ellipse.type = "convex")
+```
