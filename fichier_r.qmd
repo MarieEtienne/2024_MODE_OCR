@@ -175,7 +175,7 @@ data_merged = read.csv("data_merged.csv", header = T)
 datamap<-read.csv("data_meteo.csv",row.names = 1)
 coord <- datamap[,c(4,3)] #on récupère les coordonnées de chaque stations météos
 
-dd <- unique(data_merged$Date)
+dd <- unique(data_chiro$Date)
 res<- c()
 for(d in dd){
   
@@ -196,13 +196,13 @@ for(d in dd){
       if(length(which(is.na(variograme$v)==T))>0){m.d=variograme$u[which(is.na(variograme$v))][1]}
       variograme <- variog(geodata, option  = "sm",max.dist = m.d)
       mod1 <- variofit(variograme,ini.cov.pars = c((0.9*max(variograme$v,na.rm = T)[1]-variograme$u[1]),variograme$u[which(variograme$v==max(variograme$v,na.rm = T)[1])][1]),nugget=variograme$v[1],"exponential")#on réalise une interpolation spatiale 
-      res[which(data_merged$Date==d)] <- as.numeric(krige.conv(geodata, loc = data_merged[which(data_merged$Date==d),c(11,10)] , krige = krige.control(obj.m = mod1))$predict)
+      res[which(data_chiro$Date==d)] <- as.numeric(krige.conv(geodata, loc = data_chiro[which(data_chiro$Date==d),c(11,10)] , krige = krige.control(obj.m = mod1))$predict)
     }else{
-      res[which(data_merged$Date==d)] <- mean(datamap$rain_mm[which(datamap$date==d)])# en l'absence de structure spatiale, on considère que la valeur en tout point est égale à la moyenne des données mesurées
+      res[which(data_chiro$Date==d)] <- mean(datamap$rain_mm[which(datamap$date==d)])# en l'absence de structure spatiale, on considère que la valeur en tout point est égale à la moyenne des données mesurées
     }   
     
   }else{
-    res[which(data_merged$Date==d)] <- NA
+    res[which(data_chiro$Date==d)] <- NA
   }
   print(d)
   flush.console()
@@ -210,14 +210,14 @@ for(d in dd){
   
 }
 
-data_merged$Pluie <- res
+data_chiro$Pluie <- res
 
 
 ```
 
 ```{r Temperature, include=FALSE}
 
-dd <- unique(data_merged$Date)
+dd <- unique(data_chiro$Date)
 res<- c()
 for(d in dd){
   
@@ -238,14 +238,14 @@ for(d in dd){
       if(length(which(is.na(variograme$v)==T))>0){m.d=variograme$u[which(is.na(variograme$v))][1]}
       variograme <- variog(geodata, option  = "sm",max.dist = m.d)
       mod1 <- variofit(variograme,ini.cov.pars = c((0.9*max(variograme$v,na.rm = T)[1]-variograme$u[1]),variograme$u[which(variograme$v==max(variograme$v,na.rm = T)[1])][1]),nugget=variograme$v[1],"exponential")
-      res[which(data_merged$Date==d)] <- as.numeric(krige.conv(geodata, loc = data_merged[which(data_merged$Date==d),c(11,10)] , krige = krige.control(obj.m = mod1))$predict)
+      res[which(data_chiro$Date==d)] <- as.numeric(krige.conv(geodata, loc = data_chiro[which(data_chiro$Date==d),c(11,10)] , krige = krige.control(obj.m = mod1))$predict)
       
     }else{
-      res[which(data_merged$Date==d)] <- mean(datamap$Temperature[which(datamap$date==d)])
+      res[which(data_chiro$Date==d)] <- mean(datamap$Temperature[which(datamap$date==d)])
     }   
     
   }else{
-    res[which(data_merged$Date==d)] <- NA
+    res[which(data_chiro$Date==d)] <- NA
   }
   print(d)
   flush.console()
@@ -253,13 +253,13 @@ for(d in dd){
   
 }
 
-data_merged$Température <- res
+data_chiro$Température <- res
 
 ```
 
 ```{r Range, include=FALSE}
 
-dd <- unique(data_merged$Date)
+dd <- unique(data_chiro$Date)
 res<- c()
 for(d in dd){
   
@@ -281,15 +281,15 @@ for(d in dd){
       if(length(which(is.na(variograme$v)==T))>0){m.d=variograme$u[which(is.na(variograme$v))][1]}
       variograme <- variog(geodata, option  = "sm",max.dist = m.d)
       mod1 <- variofit(variograme,ini.cov.pars = c((0.9*max(variograme$v,na.rm = T)[1]-variograme$u[1]),variograme$u[which(variograme$v==max(variograme$v,na.rm = T)[1])][1]),nugget=variograme$v[1],"exponential")
-      res[which(data_merged$Date==d)] <- as.numeric(krige.conv(geodata, loc = data_merged[which(data_merged$Date==d),c(11,10)] , krige = krige.control(obj.m = mod1))$predict)
+      res[which(data_chiro$Date==d)] <- as.numeric(krige.conv(geodata, loc = data_chiro[which(data_chiro$Date==d),c(11,10)] , krige = krige.control(obj.m = mod1))$predict)
       
     }else{
-      res[which(data_merged$Date==d)] <- mean(datamap$ampli_Temp[which(datamap$date==d)],na.rm = T)
+      res[which(data_chiro$Date==d)] <- mean(datamap$ampli_Temp[which(datamap$date==d)],na.rm = T)
       
     }   
     
   }else{
-    res[which(data_merged$Date==d)] <- NA
+    res[which(data_chiro$Date==d)] <- NA
   }
   print(d)
   flush.console()
@@ -297,13 +297,13 @@ for(d in dd){
   
 }
 
-data_merged$Amplitude <- res
+data_chiro$Amplitude <- res
 
 ```
 
 ```{r Wind, include=FALSE}
 
-dd <- unique(data_merged$Date)
+dd <- unique(data_chiro$Date)
 res<- c()
 
 for(d in dd){
@@ -326,15 +326,15 @@ for(d in dd){
       if(length(which(is.na(variograme$v)==T))>0){m.d=variograme$u[which(is.na(variograme$v))][1]}
       variograme <- variog(geodata, option  = "sm",max.dist = m.d)
       mod1 <- variofit(variograme,ini.cov.pars = c((0.9*max(variograme$v,na.rm = T)[1]-variograme$u[1]),variograme$u[which(variograme$v==max(variograme$v,na.rm = T)[1])][1]),nugget=variograme$v[1],"exponential")
-      res[which(data_merged$Date==d)] <- as.numeric(krige.conv(geodata, loc = data_merged[which(data_merged$Date==d),c(11,10)] , krige = krige.control(obj.m = mod1))$predict)
+      res[which(data_chiro$Date==d)] <- as.numeric(krige.conv(geodata, loc = data_chiro[which(data_chiro$Date==d),c(11,10)] , krige = krige.control(obj.m = mod1))$predict)
       
     }else{
-      res[which(data_merged$Date==d)] <- mean(datamap$wind_ms[which(datamap$date==d)],na.rm = T)
+      res[which(data_chiro$Date==d)] <- mean(datamap$wind_ms[which(datamap$date==d)],na.rm = T)
       
     }   
     
   }else{
-    res[which(data_merged$Date==d)] <- NA
+    res[which(data_chiro$Date==d)] <- NA
   }
   print(d)
   flush.console()
@@ -342,19 +342,19 @@ for(d in dd){
   
 }
 
-data_merged$Vent <- res
+data_chiro$Vent <- res
 
 ```
 
 ```{r export, include=FALSE}
-data_clean <- data_merged[,-c(12,13,14,15)]
+
 
 # Créer une nouvelle colonne pour indiquer si l'indice de reproduction est différent de 0 (1 si Repro != 0, 0 sinon)
-data_clean <- data_clean %>%
+data_chiro <- data_chiro %>%
   mutate(Repro_binary = ifelse(Repro != 0, 1, 0)) #on transforme l'indice repro en binaire pour avoir 0 si pas de repro 1 si repro
 
 # Calculer la proportion d'individus ayant un indice de reproduction différent de 0
-data_bin <- data_clean %>%
+data_bin <- data_chiro %>%
   group_by(Date) %>% #on groupe par date
   summarise(
     total_individuals = n(),  # Nombre total d'individus pour chaque combinaison
@@ -368,11 +368,11 @@ data_bin <- data_clean %>%
 data_bin <- data_bin %>%
   mutate(Date = as.Date(Date, format = "%d-%m-%Y"))
 
-data_clean <- data_clean %>%
+data_chiro <- data_chiro %>%
   mutate(Date = as.Date(Date, format = "%d-%m-%Y"))
 
 data_final <- data_bin %>%
-  left_join(data_clean %>%
+  left_join(data_chiro %>%
               select(julian_day, Year, LAT, LON, Lune, Pluie, Température, Vent, Amplitude, Date) %>%
               distinct(),
             by = "Date")
