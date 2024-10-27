@@ -4,6 +4,8 @@ autor: "Gabriel-Marie Arnault, Giuliana Brambilla, Apolline Byrdy, Anaelle Hulbe
 source : "Yannick Outreman, selon les données de Gotelli & Ellison (2002) - Biogeography at a regional scale : determinants of antspecies density in New England bogs and forests. Ecology, 83 : 1604-1609."
 editor: visual
 bibliography: references.bib
+output:
+  bookdown::html_document2: default
 ---
 
 # INTRODUCTION
@@ -176,8 +178,11 @@ La première étape de l'exploration du jeu de données consiste à vérifier la
 
 Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à un **Cleveland plot** des valeurs de $Y$.
 
-```{r valeurs aberrantes de Y, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
-
+```{r plot-Y}
+#| label: fig-plot1
+#| echo: true
+#| message: false
+#| fig-cap: "On test si les titres marchent ou past"
 # Boxplot 
 bp <- ggplot(data = dataAnts, aes(y = Nsp))+
   geom_boxplot()+
@@ -223,7 +228,7 @@ cp <- ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
 
 ```
 
-D'après la figure 1, $Y$ ne présente pas de valeurs extrêmes ou aberrantes.
+D'après la  @fig-plot1, $Y$ ne présente pas de valeurs extrêmes ou aberrantes.
 
 **Distribution des valeurs :** analyser la distribution des valeurs de $Y$ permet d'identifier *a priori* la loi de probabilité qui expliquera au mieux les processus écologiques en cours. Cela est d'autant plus intéressant si les données suggèrent une relation non linéaire ou asymétrique.
 
@@ -274,9 +279,7 @@ La distribution de $Y$ (exponentielle négative) et la nature du jeu de données
 
 Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
 
-      
-  **b. $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
-
+**b.** $X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$
 
 Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.* De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
 
@@ -335,11 +338,9 @@ p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
 
 ```
 
-
 Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
 
 Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
-
 
 [**L'élévation**]{.underline} **:**
 
@@ -396,11 +397,9 @@ p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
 
 ```
 
-
 Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
 
 Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé et non un modèle linéaire classique.
-
 
 [**L'aire**]{.underline} **:**
 
@@ -514,15 +513,13 @@ p6 <- ggplot(dataAnts, aes(sample = LogArea)) +
 
 ```
 
-
 Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
 
 [**Conclusion**]{.underline} **:**
 
 L'analyse de valeurs aberrantes et de la distribution des variables suggère qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea* peuvent être utilisées dans la construction du modèle.
 
-
-  **c. $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
+**c.** $X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité
 
 Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
 
@@ -968,9 +965,7 @@ L'histogramme des résidus (Fig. 20) et le Q-Q plot (Fig. 21) montrent des rési
 
 Nous pouvons conclure qu'il n'y a pas de tendance dans les résidus.
 
-
 **c.Vérification des individus influents**
-
 
 ```{r contri, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -1029,3 +1024,4 @@ Nous en concluons donc que la richesse spécifique des fourmis dans les tourbiè
 Dans les forêts comme dans les tourbières, la latitude est le prédicteur le plus significatif de la densité des espèces.
 
 Cependant, d'autres recherches à plus grandes échelles sont nécessaires pour généraliser ces résultats, l'étude ne couvrant qu'une zone géographique restreinte avec deux types d'habitats seulement.
+.
