@@ -7,15 +7,15 @@ editor: visual
 
 # INTRODUCTION
 
-**1.Article presentation**
+### **1. Article presentation**
 
 Our data come from the article "Biogeography at a Regional Scale: Determinants of Ant Species Density in New England Bogs and Forests" by Gotelli & Ellison published in *Ecology* in 2002 (83(6), 2002, pp. 1604--1609) (https://doi.org/10.1890/0012-9658(2002)083\[1604:BAARSD\]2.0.CO;2)
 
-**2.Biological context**
+### **2. Biological context**
 
 Gotelli and Ellison are two ecologists, the first one specializing in questions of organization of animal and plant communities, the second one in the disintegration and reassembly of ecosystems following natural and anthropogenic disturbances. Here, they focused on the influence of the latitudinal gradient on the species richness of ants in the state of New England in the northeastern United States. Their study was carried out on 22 sites where, for each, 25 traps were placed in an ombrotrophic peat bog and 25 in the surrounding forest. The species of ants contained in the traps are subsequently identified in the laboratory and, for a given site and habitat, they calculated the species richness (total number of species present).
 
-**3.Datas and variables**
+### **3. Datas and variables**
 
 The variables used are :\
 - *Site* : the name of the sampled site\
@@ -25,7 +25,7 @@ The variables used are :\
 - *Location* : the location of the traps ("Bog" or "Forest") (qualitative)\
 - *Nsp* : the specific richness of ants, corresponding to the response variable
 
-**4.Research question**
+### **4. Research question**
 
 Gotelli and Ellison address 3 questions in this study, but we focus here on two:
 
@@ -35,7 +35,7 @@ Gotelli and Ellison address 3 questions in this study, but we focus here on two:
 
 In other words: what are the quantitative (latitude, altitude, area) and qualitative (location) variables that determine ant species richness in New England peatlands?
 
-**5.Importing the dataset**
+### **5. Importing the dataset**
 
 From then on, we can import the dataset located in file "BogAnts.txt"
 
@@ -59,7 +59,7 @@ str(dataAnts)
 
 Qualitative or quantitative variables are well considered as such.
 
-**6.Which model and why?**
+### **6. Which model and why?**
 
 To model the relationship between a quantitative response variable $Y$ and explanatory variables $X_{1}$,$X_{2}$...$X_{p}$, quantitative and/or qualitative we use general linear models, or *glm*, (linear regression, ANCOVA, ANOVA). To be able to use these *glm*, three conditions of application are necessary: ​​*homogeneity of variances*, *residual independence* and *residual normality*. However, the $Y$ responses analyzed in ecology can sometimes be discrete and deviate from the hypothesis of normality.
 
@@ -84,7 +84,7 @@ In a Poisson-type *glim*, the link function is the **log** function. Thus, the m
 
 Generalized linear models of the Poisson type have an error structure that follows a Poisson distribution. This structure allows, among other things, to precisely define the relationship between the mean and the variance. This relationship is exploited by the maximum likelihood method to estimate the coefficients and standard errors of the parameters of the GLM model.
 
-**7.Environment Configuration and Packages**
+### **7. Environment Configuration and Packages**
 
 To analyze our data we set up the session by cleaning the workspace. We will also need to load the following packages : *knitr*, *ggplot2*, *tinytext*, *corrplot*, *plot3D*, *DHARMa*, *rcompanion*, *lattice*, *patchwork*, *MASS* et *rcompanion*
 
@@ -104,7 +104,7 @@ library(MASS) # Functions and datasets for analyses
 
 ```
 
-**8. Checking for missing data**
+### **8. Checking for missing data**
 
 ```{r datalack, echo=TRUE,include=TRUE}
 
@@ -116,36 +116,34 @@ summary(dataAnts)
 
 There are no missing values.
 
-**9. Analysis process**
+### **9. Analysis process**
 
 From this, we will first examine the dataset (outliers, potential relationships between Y and Xs, ...) in order to have a first impression. Subsequently, we will carry out our statistical analysis by building and refining our model. Finally, we will analyze its coefficients and its explanatory power in order to validate it or not.
 
-# EXPLORATION DU JEU DE DONNEES
+# DATA EXPLORATION
 
-**1.Présentation du jeu de données**
+### **1. Data overview**
 
-```         
-**a. Valeurs aberrantes dans $Y$ et distribution des valeurs de $Y$**
-```
+##### **a. Outliers in** Y **and distribution of** Y **values**
 
-La première étape de l'exploration du jeu de données consiste à vérifier la présence de potentielles valeurs aberrantes dans la variable réponse $Y$ et à examiner la distribution de ses valeurs.
+The first step in exploring the dataset is to check for **potential outliers** in the response variable $Y$ and to examine the **distribution** of its values.
 
-**Valeurs aberrantes :** dans un jeu de données écologiques, il est probable de rencontrer des individus présentant des valeurs extrêmes pour la variable réponse. Ces individus, en raison de leurs valeurs inhabituelles, peuvent avoir un impact disproportionné sur la construction du modèle. Toutefois, ces valeurs extrêmes peuvent résulter soit de la variabilité naturelle des phénomènes écologiques, soit d'erreurs (par exemple, des erreurs de mesure ou de manipulation). Identifier ces individus avant l'analyse statistique permet de prévenir les erreurs et de justifier, si nécessaire, l'exclusion de certaines valeurs aberrantes pour améliorer la robustesse du modèle.
+**Outliers:** In ecological datasets, it is common to encounter individuals with extreme values for the response variable. These individuals, due to their unusual values, may disproportionately impact model construction. However, these extreme values may arise from either the natural variability of ecological phenomena or from errors (e.g., measurement or handling errors). Identifying these individuals prior to statistical analysis helps prevent errors and, if necessary, justifies the exclusion of certain outliers to improve the model's robustness.
 
-Les valeurs aberrantes peuvent être identifiées grâce à un **Boxplot** ou à un **Cleveland plot** des valeurs de $Y$.
+Outliers can be identified using a **Boxplot** or a **Cleveland plot** of the values of $Y$.
 
-```{r valeurs aberrantes de Y, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r outliers de Y, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 # Boxplot 
 bp <- ggplot(data = dataAnts, aes(y = Nsp))+
   geom_boxplot()+
   labs(subtitle = "A. Boxplot",
-       y = "richesse spécifique")+
+       y = "species richness")+
   theme(
     panel.background = element_rect(fill="white"),
-    panel.grid.major = element_blank(),
+    panel.grid.major = element_blank(), 
     panel.grid.minor = element_blank(),
-    axis.text.x = element_blank(),
+    axis.text.x = element_blank(), 
     axis.ticks.x = element_blank(),
     
     axis.title.x = element_text(size = 8, color = "darkblue"),
@@ -159,7 +157,7 @@ bp <- ggplot(data = dataAnts, aes(y = Nsp))+
 cp <- ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
   geom_jitter(width = 0.1, size = 3, color = "black")+
   labs(subtitle = "B. Cleveland plot",
-       x = "richesse spécifique")+
+       x = "species richness")+
   theme_minimal()+
   theme(
     panel.grid.major.x = element_blank(),
@@ -174,28 +172,28 @@ cp <- ggplot(data = dataAnts, aes(x = Nsp, y = 1:nrow(dataAnts)))+
     plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
   )
 
-## Affichage 
+## Display
 (bp + cp) + 
   plot_layout(widths = c(1, 2)) + 
-  plot_annotation(title = "Figure 1 : Analyse des valeurs aberrantes de Y")
+  plot_annotation(title = "Figure 1 : Analyse of Y outliers")
 
 ```
 
-D'après la figure 1, $Y$ ne présente pas de valeurs extrêmes ou aberrantes.
+According to Figure 1, $Y$ does not exhibit any extreme or outlier values.
 
-**Distribution des valeurs :** analyser la distribution des valeurs de $Y$ permet d'identifier *a priori* la loi de probabilité qui expliquera au mieux les processus écologiques en cours. Cela est d'autant plus intéressant si les données suggèrent une relation non linéaire ou asymétrique.
+**Distribution of values:** Analyzing the distribution of the values of $Y$ allows us to preliminarily identify the probability distribution that best explains the ongoing ecological processes. This is particularly interesting if the data suggest a non-linear or asymmetric relationship.
 
-La distribution des valeurs de $Y$ peut être visualisée grâce à un **histogramme** ou à un **Normal Q-Q plot**.
+The distribution of $Y$ values can be visualized using a **histogram** or a **Normal Q-Q plot**.
 
-```{r distribution de Y, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r Y distribution, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
-# Histogramme 
+# Histogram
 hg <- ggplot(data = dataAnts, aes(x = Nsp))+
   geom_histogram(binwidth = 2, fill = "blue", color = "black")+
   theme_minimal()+
-  labs(subtitle = "A. Histogramme",
-       x = "richesse spécifique",
-       y = "fréquence")+
+  labs(subtitle = "A. Histogram",
+       x = "species richness",
+       y = "frequency")+
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"),
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -209,8 +207,8 @@ qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
   geom_qq()+
   theme_minimal()+
   labs(subtitle = "B. Q-Q plot",
-       x = "quantiles théoriques",
-       y = "quantiles observés")+
+       x = "theorical quantiles",
+       y = "observed quantiles")+
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"),
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -219,53 +217,51 @@ qqp <- ggplot(data = dataAnts, aes(sample = Nsp))+
     plot.caption = element_text(size = 4, face = "italic", color = "darkgrey")
   )
 
-# Affichage
+# Display
 (hg + qqp) +
   plot_layout(widths = c(1, 2)) + 
-  plot_annotation(title = "Figure 2 : Analyse de la distribution de Y")
+  plot_annotation(title = "Figure 2 : Analyse of Y distribution")
 
 ```
 
-La distribution de $Y$ (exponentielle négative) et la nature du jeu de données (comptage sans aggrégation) suggèrent que $Y$ suit une loi de Poisson. Cette hypothèse est appuyée par l'écart à la normalité des valeurs de $Y$ observé en figure 2B.
+The distribution of $Y$ (negative exponential, Figure 2A) and the nature of the dataset (count data without aggregation) suggest that $Y$ follows a Poisson distribution. This hypothesis is supported by the deviation from normality of $Y$ observed values shown in Figure 2B.
 
 [**Conclusion**]{.underline} **:**
 
-Après analyse des valeurs aberrantes et de la distribution de la variable réponse $Y$, il semble pertinent d'utiliser $Y$ tel quel en appliquant une loi de Poisson.
+After analyzing the outliers and the distribution of the response variable \$Y\$, it appears appropriate to use $Y$ as is while applying a Poisson distribution.
 
-```         
-**b.$X$ quantitative : présence de valeurs abérrantes et distribution de valeurs de $X$**
-```
+##### **b.** X **quantitative: presence of outliers and distribution of** X **values**
 
-Le jeu de données dispose de trois variables explicatives quantitatives : *Latitude*, *Elevation* et *Area.* De même que pour la variable réponse Y, il est nécessaire d'observer la présence de valeurs aberrantes ainsi que la distribution de chacune des variables réponses.
+The dataset has three quantitative explanatory variables: **Latitude, Elevation,** and **Area**. Just like for the response variable $Y$, it is necessary to examine the presence of **outliers** as well as the **distribution** of each of these explanatory variables.
 
-[**La latitude**]{.underline} **:**
+[**Latitude**]{.underline} **:**
 
 ```{r Latitude, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 p1 <- ggplot(dataAnts) +
-  aes(x=Latitude, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  aes(x=Latitude, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # display in the order of appearance
   geom_jitter(width=0, height=0.1) +
-  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) + # Valeurs de l'axe X
-  labs(title = "Figure 3 : Variable explicative Latitude",
+  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) + # values of the X axis
+  labs(title = "Figure 3 : Xplanatory variable Latitude",
        subtitle = "A. Cleveland Plot",
        x= "Latitude") +  # Titres
   theme_minimal() +
-  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
-        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
-        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+  theme(axis.text.y = element_blank(),   # remove the labels from the Y axis
+        axis.ticks.y = element_blank(),  # remove the ticks from the Y axis
+        axis.title.y = element_blank(),  # remove the title from the X axis
         axis.title.x = element_text(size = 8, color = "darkblue"),
         plot.title = element_text(size = 14, face = "bold", color = "black"),
         plot.subtitle = element_text(size = 10, color = "black")
         )   
 
 p2 <- ggplot(dataAnts) +
-  aes(x = Latitude) +  # Utiliser Latitude sur l'axe X
-  geom_histogram(binwidth = 0.25, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
-  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) +  # Valeurs de l'axe X
-  scale_y_continuous(breaks = seq(0, 10, by = 2)) +  # Valeurs de l'axe X
-  labs(subtitle = "B. Histogramme",
-       x = "Latitude") +  # Titres
-  theme_minimal() +  # Appliquer un thème minimal
+  aes(x = Latitude) +  
+  geom_histogram(binwidth = 0.25, fill = "blue", color = "black", alpha = 0.7) +  # histogram
+  scale_x_continuous(breaks = seq(41.5, 45, by = 0.5)) +  # values of the X axis
+  scale_y_continuous(breaks = seq(0, 10, by = 2)) +  # values of the Y axis 
+  labs(subtitle = "B. Histogram",
+       x = "Latitude") +  # title
+  theme_minimal() +  # theme of the graph: minimal
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"), 
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -274,12 +270,12 @@ p2 <- ggplot(dataAnts) +
 
 p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
   labs(subtitle = "C. Quantile-Quantile Plot",
-       caption = "D'après le jeu de données dataAnts",
-       x = "Quantiles Théorique",
-       y = "Quantiles Observés") +
-  stat_qq() +  # Ajoute les points du Q-Q plot
-  stat_qq_line(col = "red", size = 1) +  # Ajoute la ligne théorique
-  theme_minimal() + # Applique un thème minimal
+       caption = "From the dataset dataAnts",
+       x = "theorical quantiles",
+       y = "observed quantiles") +
+  stat_qq() +  # observed quantiles
+  stat_qq_line(col = "red", size = 1) +  # theorical quantiles
+  theme_minimal() + 
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"),
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -293,38 +289,38 @@ p3 <- ggplot(dataAnts, aes(sample = Latitude)) +
 
 ```
 
-Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
+There are no outliers observed in the Cleveland plot (Fig. 3A) or in the histogram (Fig. 3B).
 
-Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé (glm) et non un modèle linéaire classique (lm).
+The Quantile plot (Fig. 3C) shows a deviation from normality. This suggests that it is more appropriate to use a generalized linear model (glm) rather than a classical linear model (lm).
 
-[**L'élévation**]{.underline} **:**
+[**Elevation**]{.underline} **:**
 
 ```{r Elevation, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 p4 <- ggplot(dataAnts) +
-  aes(x=Elevation, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  aes(x=Elevation, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) +
   geom_jitter(width=0, height=0.1) +
-  scale_x_continuous(breaks = seq(0, 545, by = 100)) + # Valeurs de l'axe X
-  labs(title = "Figure 4 : Variable explicative Elevation",
+  scale_x_continuous(breaks = seq(0, 545, by = 100)) + 
+  labs(title = "Figure 4 : Explanatory variable Elevation",
        subtitle = "A. Cleveland Plot",
-       x= "Elevation") +  # Titres
+       x= "Elevation") +  
   theme_minimal() +
-  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
-        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
-        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+  theme(axis.text.y = element_blank(),   
+        axis.ticks.y = element_blank(),  
+        axis.title.y = element_blank(), 
         axis.title.x = element_text(size = 8, color = "darkblue"),
         plot.title = element_text(size = 14, face = "bold", color = "black"),
         plot.subtitle = element_text(size = 10, color = "black")
         )   
 
 p5 <- ggplot(dataAnts) +
-  aes(x = Elevation) +  # Utiliser Elevation sur l'axe X
+  aes(x = Elevation) + 
   geom_histogram(binwidth = 75, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
-  scale_x_continuous(breaks = seq(0, 545, by = 100)) +  # Valeurs de l'axe X
-  scale_y_continuous(breaks = seq(0, 10, by = 2)) +  # Valeurs de l'axe X
-  labs(subtitle = "B. Histogramme",
-       x = "Elevation") +  # Titres
-  theme_minimal() +  # Appliquer un thème minimal
+  scale_x_continuous(breaks = seq(0, 545, by = 100)) +  
+  scale_y_continuous(breaks = seq(0, 10, by = 2)) +  
+  labs(subtitle = "B. Histogram",
+       x = "Elevation") +  
+  theme_minimal() +  
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"), 
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -333,12 +329,12 @@ p5 <- ggplot(dataAnts) +
 
 p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
   labs(subtitle = "C. Quantile-Quantile Plot",
-       caption = "D'après le jeu de données dataAnts",
-       x = "Théorique Quantiles",
-       y = "Quantiles Observés") +
-  stat_qq() +  # Ajoute les points du Q-Q plot
-  stat_qq_line(col = "red", size = 1) +  # Ajoute la ligne théorique
-  theme_minimal() + # Applique un thème minimal
+       caption = "From the dataset dataAnts",
+       x = "theorical quantiles",
+       y = "observed quantiles") +
+  stat_qq() + 
+  stat_qq_line(col = "red", size = 1) +  
+  theme_minimal() + 
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"),
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -352,38 +348,38 @@ p6 <- ggplot(dataAnts, aes(sample = Elevation)) +
 
 ```
 
-Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
+No outliers are observed in the Cleveland plot (Fig. 4A) or in the histogram (Fig. 4B).
 
-Nous remarquons grâce au Quantile plot un écart à la normalité. Ceci suggère qu'il est ici intéressant d'utiliser un modèle linéaire généralisé et non un modèle linéaire classique.
+The Quantile plot (Fig. 4C) shows a deviation from normality. This suggests that it is advisable to use a generalized linear model rather than a classical linear model.
 
-[**L'aire**]{.underline} **:**
+[**Area**]{.underline} **:**
 
 ```{r Area, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 p4 <- ggplot(dataAnts) +
-  aes(x=Area, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  aes(x=Area, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + 
   geom_jitter(width=0, height=0.1) +
-  scale_x_continuous(breaks = seq(0, 865000, by = 200000)) + # Valeurs de l'axe X
-  labs(title = "Figure 5 : Variable explicative Area",
+  scale_x_continuous(breaks = seq(0, 865000, by = 200000)) + 
+  labs(title = "Figure 5 : Explanatory variable Area",
        subtitle = "A. Cleveland Plot",
        x= "Area") +  # Titres
   theme_minimal() +
-  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
-        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
-        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+  theme(axis.text.y = element_blank(),   
+        axis.ticks.y = element_blank(),  
+        axis.title.y = element_blank(),  
         axis.title.x = element_text(size = 8, color = "darkblue"),
         plot.title = element_text(size = 14, face = "bold", color = "black"),
         plot.subtitle = element_text(size = 10, color = "black")
         )   
 
 p5 <- ggplot(dataAnts) +
-  aes(x = Area) +  # Utiliser Aera sur l'axe X
+  aes(x = Area) +  
   geom_histogram(binwidth = 50000, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
-  scale_x_continuous(breaks = seq(0, 865000, by = 200000)) +  # Valeurs de l'axe X
-  scale_y_continuous(breaks = seq(0, 20, by = 5)) +  # Valeurs de l'axe X
-  labs(subtitle = "B. Histogramme",
-       x = "Area") +  # Titres
-  theme_minimal() +  # Appliquer un thème minimal
+  scale_x_continuous(breaks = seq(0, 865000, by = 200000)) +  
+  scale_y_continuous(breaks = seq(0, 20, by = 5)) + 
+  labs(subtitle = "B. Histogram",
+       x = "Area") +  
+  theme_minimal() +  
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"), 
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -392,12 +388,12 @@ p5 <- ggplot(dataAnts) +
 
 p6 <- ggplot(dataAnts, aes(sample = Area)) +
   labs(subtitle = "C. Quantile-Quantile Plot",
-       caption = "D'après le jeu de données dataAnts",
-       x = "Quantiles Théorique",
-       y = "Quantiles Observés") +
-  stat_qq() +  # Ajoute les points du Q-Q plot
-  stat_qq_line(col = "red", size = 1) +  # Ajoute la ligne théorique
-  theme_minimal() + # Applique un thème minimal
+       caption = "From the dataset dataAnts",
+       x = "theorical quantiles",
+       y = "observed quantiles") +
+  stat_qq() +  
+  stat_qq_line(col = "red", size = 1) +  
+  theme_minimal() + 
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"),
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -411,36 +407,36 @@ p6 <- ggplot(dataAnts, aes(sample = Area)) +
 
 ```
 
-Nous constatons des valeurs aberrantes sur le Cleveland plot (Fig. 5A) et sur l'histogramme (Fig. 5B) en raison de la présence de tourbières très étendues. Nous pouvons effectuer une transformation de cette variable et envisager une transformation logarithmique.
+We observe outliers in the Cleveland plot (Fig. 5A) and in the histogram (Fig. 5B) due to the presence of very extensive peatlands. We can apply a transformation to this variable and consider a **logarithmic transformation**.
 
 ```{r LogArea, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 dataAnts$LogArea<-log(dataAnts$Area)
 
 p4 <- ggplot(dataAnts) +
-  aes(x=LogArea, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # Affichage avec classification
+  aes(x=LogArea, y=factor(1:nrow(dataAnts), levels = 1:nrow(dataAnts))) + # logarithmic transformation of Area
   geom_jitter(width=0, height=0.1) +
-  scale_x_continuous(breaks = seq(2, 15, by = 2)) + # Valeurs de l'axe X
-  labs(title = "Figure 6 : Variable explicative LogArea",
+  scale_x_continuous(breaks = seq(2, 15, by = 2)) + 
+  labs(title = "Figure 6 : Explanatory variable LogArea",
        subtitle = "A. Cleveland Plot",
-       x= "LogArea") +  # Titres
+       x= "LogArea") +  
   theme_minimal() +
-  theme(axis.text.y = element_blank(),   # Supprimer les étiquettes de l'axe Y
-        axis.ticks.y = element_blank(),  # Supprimer les ticks de l'axe Y
-        axis.title.y = element_blank(),  # Supprimer le titre de l'axe Y
+  theme(axis.text.y = element_blank(),   
+        axis.ticks.y = element_blank(),  
+        axis.title.y = element_blank(),  
         axis.title.x = element_text(size = 8, color = "darkblue"),
         plot.title = element_text(size = 14, face = "bold", color = "black"),
         plot.subtitle = element_text(size = 10, color = "black")
         )   
 
 p5 <- ggplot(dataAnts) +
-  aes(x = LogArea) +  # Utiliser Aera sur l'axe X
-  geom_histogram(binwidth = 2, fill = "blue", color = "black", alpha = 0.7) +  # Histogramme
-  scale_x_continuous(breaks = seq(2, 15, by = 2)) +  # Valeurs de l'axe X
-  scale_y_continuous(breaks = seq(0, 30, by = 5)) +  # Valeurs de l'axe X
-  labs(subtitle = "B. Histogramme",
-       x = "LogArea") +  # Titres
-  theme_minimal() +  # Appliquer un thème minimal
+  aes(x = LogArea) +  # logarithmic transformation of Area
+  geom_histogram(binwidth = 2, fill = "blue", color = "black", alpha = 0.7) +  
+  scale_x_continuous(breaks = seq(2, 15, by = 2)) +  
+  scale_y_continuous(breaks = seq(0, 30, by = 5)) +  
+  labs(subtitle = "B. Histogram",
+       x = "LogArea") +  
+  theme_minimal() +  
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"), 
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -449,12 +445,12 @@ p5 <- ggplot(dataAnts) +
 
 p6 <- ggplot(dataAnts, aes(sample = LogArea)) +
   labs(subtitle = "C. Quantile-Quantile Plot",
-       caption = "D'après le jeu de données dataAnts",
-       x = "Quantiles Théorique",
-       y = "Quantiles Observés") +
-  stat_qq() +  # Ajoute les points du Q-Q plot
-  stat_qq_line(col = "red", size = 1) +  # Ajoute la ligne théorique
-  theme_minimal() + # Applique un thème minimal
+       caption = "From the dataset dataAnts",
+       x = "theorical quantiles",
+       y = "observed quantiles") +
+  stat_qq() +  
+  stat_qq_line(col = "red", size = 1) +  
+  theme_minimal() + 
   theme(
     axis.title.x = element_text(size = 8, color = "darkblue"),
     axis.title.y = element_text(size = 8, color = "darkblue"),
@@ -468,35 +464,31 @@ p6 <- ggplot(dataAnts, aes(sample = LogArea)) +
 
 ```
 
-Nous ne constatons pas de valeur aberrante sur le Cleveland plot ou sur l'histogramme.
+No outliers are observed in the Cleveland plot (Fig. 6A) or in the histogram (Fig. 6B).
 
 [**Conclusion**]{.underline} **:**
 
-L'analyse de valeurs aberrantes et de la distribution des variables suggèrent qu'après modification les trois variables quantitatives (covariables) *Latitude*, *Elevation* et *LogArea.* peuvent être utilisées dans la construction du modèle.
+The analysis of outliers and the distribution of the variables suggest that, after modification, the three quantitative variables (covariates) **Latitude, Elevation,** and **LogArea** can be used in the construction of the model.
 
-```         
-**c.$X$ qualitative : analyser le nombre de modalités et le nombre d'individus par modalité**
-```
+##### **c. X qualitative : number of modalities and number of individuals per modalities**
 
-Quand le jeu de données comporte des variables qualitatives (facteurs), il est nécessaire d'analyser l'équilibre des modalités: si il y a plus d'individus qui prennent une modalité par rapport à une autre, leur poids dans le modèle peuvent mener à interprétation finale biaisée.
+When the dataset includes qualitative variables (factors), it is essential to analyze the balance of modalities: if there are more individuals in one modality compared to another, their weight in the model may lead to a biased final interpretation.
 
-```{r equilibre des modalites, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r modalities equilibrium, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 summary(dataAnts$Location)
 
 ```
 
-Ici les données sont bien réparties entre les deux modalités (Bog = tourbières et Forest = forêts).
+Here, the data are well distributed between the two modalities (Bog = peatlands and Forest = forests).
 
 [**Conclusion**]{.underline} **:**
 
-L'analyse de valeurs aberrantes et de la distribution de la variable qualitative suggèrent qu'elle peut être utilisée dans la construction du modèle.
+The analysis of outliers and the distribution of the qualitative variable suggest that it can be used in the construction of the model.
 
-**2.Analysis of interactions between variables Y and Xs**
+### **2. Analysis of interactions between variables Y and Xs**
 
-```         
-**a.Analyze the potential relationship between Y and Xs**
-```
+##### **a. Analyze the potential relationship between Y and Xs**
 
 In order to test the possible relationship between the response variable $Y$ and the explanatory variables $Xs$, it will be essential to carry out statistical modelling, as this is the only way to test the significance of the relationships. However, we can start by performing graphical analyses to better visualize the data and get an idea
 
@@ -529,9 +521,7 @@ Relationship between $X$ and location (Fig. 10): Here, there appears to be a rel
 
 It seems that the further north and the higher the relief, the lower the ant species richness. What's more, if we're in a forest, the species richness will be greater than in bogs.
 
-```         
-**b.Analysis of Potential Interactions Among the X Variables**
-```
+##### **b. Analysis of Potential Interactions Among the X Variables**
 
 We aim to study interactions between the factor and the three covariates. Thus, we exclude any interaction among the quantitative explanatory variables. We use a graphical approach to estimate the potential interactive effect among these different variables.
 
@@ -558,9 +548,7 @@ points(dataAnts$Nsp[dataAnts$Location=="Forest"]~dataAnts$LogArea[dataAnts$Locat
 
 Generally, we can assume an interaction between covariates if the slopes formed by the two point clouds are different. Here, the clouds do not clearly reveal any similarity or difference in trend for each graph. It is therefore difficult to draw conclusions about these interactions.
 
-```         
-**c.Checking for Potential Collinearity Among the X Variables**
-```
+##### **c. Checking for Potential Collinearity Among the X Variables**
 
 We aim to avoid collinearity among the explanatory variables in our modeling to prevent multiple variables from providing the same information. To do this, we must examine the statistical relationships that may exist among the variables by calculating the correlation between quantitative $X$ variables, and analyzing the influence of the qualitative $X$ on the quantitative $X$ variables using plot graphics.
 
@@ -600,7 +588,7 @@ There does not appear to be any colinearity among the variables, so we can retai
 
 # STATISTICAL ANALYSIS
 
-**1.Model construction**
+### **1. Model construction**
 
 We aim to produce the best model for predicting the number of species. The response variable is a count (a discrete quantitative variable) with small numbers (\<30), so the appropriate distribution is the **Poisson** distribution. We're going to model it using a generalized linear Poisson model.
 
@@ -732,7 +720,7 @@ Note: it is recommended to use AIC with more than 40 individuals per parameter, 
 
 Both methods arrive at the same candidate model: *Nsp\~Latitude+Elevation+LogArea*.
 
-**2. coefficients analysis**
+### **2. Coefficients analysis**
 
 The next step is to analyze the coefficients. We'll be looking at the precise effect of the selected explanatory variables (Latitude, Elevation, LogArea) on ant species richness.
 
@@ -765,7 +753,7 @@ The candidate model with the coefficients is written (equation 5): $$ log(Specie
 
 Reminder: to model a discrete quantitative variable with a generalized linear model, we use a link function. Here, with Poisson distribution, we use the log() function.
 
-**3. explanatory power of the model**
+### **3. Explanatory power of the model**
 
 To determine the quality of our model, we'll calculate the distance between the candidate model and the null model. The null model is a model that summarizes the data with a single parameter: the mean of $Y$. This model does not explain the data.
 
@@ -799,7 +787,7 @@ abline(0,1)
 
 ```
 
-**4.Model validation**
+### **4. Model validation**
 
 The *independence of residuals* is the only limitation of the generalized linear model. Analysis of the residuals therefore enables us to identify possible trends and check for the presence of influential statistical units.
 
@@ -807,9 +795,7 @@ To begin with, checking for **overdispersion** is essential when running a Poiss
 
 To do this, we calculate a parameter called the 'scale parameter'. If its value is significantly greater than 1 (from 1.6 or 1.7), there is overdispersion. The model is therefore invalid.
 
-```         
-**a.Checking for overdispersion**
-```
+##### **a. Checking for overdispersion**
 
 When the dispersion index is greater than 1.5, there are various explanations.
 
@@ -847,9 +833,7 @@ sum(E1^2) / (N - p)
 
 Here, dispersion is 1.02, there is no overdispersion.
 
-```         
-**b.Residual analysis**
-```
+##### **b. Residual analysis**
 
 Although the assumptions of normality and homogeneity of residuals are not expected in generalized linear models, we can analyze them graphically. By plotting the residuals against the model's significant $Xs$, we need to validate the absence of a trend in their distribution. If we find a trend, the modeling may be problematic: it may be due to a lack of fit, data dependency or influential observations. Remember that in generalized linear models, we use **Pearson residuals** because they include heterogeneity of variance and are easy to calculate and understand.
 
@@ -903,9 +887,7 @@ The histogram of residuals (Fig. 20) and the Q-Q plot (Fig. 21) show relatively 
 
 We can conclude there is no tendency in the residuals.
 
-```         
-**c.Checking for influent individuals**
-```
+##### **c. Checking for influent individuals**
 
 ```{r contri, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -919,9 +901,7 @@ abline(h = 1, col = 2,lwd = 3)
 
 Here (Fig. 26), there are no overly influential individuals.
 
-```         
-**d.Residual analysis with DHARMa**
-```
+##### **d. Residual analysis with DHARMa**
 
 For a different graphical representation, we can use the 'DHARMa' package. This package can be used to analyze residuals, in particular overdispersion and outliers. Residuals that do not comply with expected values are highlighted in red.
 
