@@ -26,8 +26,6 @@ This document is a report on the analysis of a dataset on penguins. This dataset
 #| message: false
 #| warning: false
 #| echo: true
-#| code-fold: true
-#| code-summary: "test 1"
 #| results: hide
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -121,8 +119,6 @@ grid.arrange(gg_antartique, gg_zone_interet, ncol = 2)
 
 ```
 
-
-
 ## Dataset presentation {#column_name}
 
 **Columns name :**
@@ -189,6 +185,7 @@ data = data %>%
 These names are easier to understand.
 
 ## Missing values :
+
 The @fig-missing-val have a red line that represents the mean of NA values in the dataset and the bars are showing the number of NA's for each variables.
 
 ```{r}
@@ -219,7 +216,6 @@ abline(h=NA_mean, col = "red", lwd = 2)
 
 ```
 
-
 # Exploratory analysis
 
 In this Data set, we would like to compare the different qualitative variables :\
@@ -231,6 +227,7 @@ In this Data set, we would like to compare the different qualitative variables :
 - *Delta 15N*\
 
 The representation of this matrix isn't the best.
+
 ```{r}
 sub_data_num = data%>%
   select(culmen_length, culmen_depth,flipper_length,body_mass,delta_13_C,delta_15_N)%>%
@@ -287,9 +284,10 @@ box3 <- ggplot(data = data)+
   geom_boxplot(aes(x=sex,y=body_mass, fill = sex))
 global_box <- grid.arrange(box1,box2,box3)
 ```
+
 ## Violin plot :
 
-Here is another way to visualize in @fig-violin the distribution between two variables. 
+Here is another way to visualize in @fig-violin the distribution between two variables.
 
 ```{r violin, fig.height=3, fig.width=9}
 #| label: fig-violin
@@ -344,7 +342,6 @@ grid.arrange(v1, v2, v3,  #names of graphs
              ncol = 3, nrow = 1)
 ```
 
-
 We run anovas to confirm these differences.\
 There is a significant **difference between the body mass of these 3 species**, almost 2 of them, with a p-value of *2e-16*.
 
@@ -369,7 +366,6 @@ anova3 = aov(body_mass~sex, data = data)
 
 summary(anova3)
 ```
-
 
 Distribution of species between the islands in @tbl-table-distribution : we can see from this table that the *Adelie* species is present on all three islands, while the *Chrinstrap* and *Gentoo* species are only present on 2 islands, Dream and Biscoe respectively.
 
@@ -462,6 +458,7 @@ These results show that beak length is significant and positive in *Adélie*. In
 We can conclude that beak depth depends on beak length but this does not vary between species. Gentoo\* penguins have a shallower beak than the others.
 
 In @fig-delta, in the There seems to be different trends between species.
+
 ```{r, fig.width=10, fig.height=5}
 #| label: fig-delta
 #| fig-cap: Delta_15_N as a function of delta_13_C 
@@ -538,7 +535,7 @@ c2 = fviz_contrib(acp_data,choice = "var",axes =2,
 grid.arrange(c1,c2, ncol = 2)
 ```
 
-First graph (@fig-projection)  show the result of PCA on axes 1 and 2. *A priori* clustering by the Species has been performed. Gentoo penguins have a greater mass and a longer culmen. Adelies are lighter and have a depth culmen. Chinstrap penguins are the lightest and have a long, depth culmen. Adelies and Chinstrap penguins both have a high concentration of carbon 13 and nitrogen 15.
+First graph (@fig-projection) show the result of PCA on axes 1 and 2. *A priori* clustering by the Species has been performed. Gentoo penguins have a greater mass and a longer culmen. Adelies are lighter and have a depth culmen. Chinstrap penguins are the lightest and have a long, depth culmen. Adelies and Chinstrap penguins both have a high concentration of carbon 13 and nitrogen 15.
 
 ```{r,warning=FALSE,message=FALSE, fig.height=7, fig.width=12, fig.align = "center"}
 #| label: fig-projection
@@ -582,7 +579,6 @@ grid.arrange(bi_plot, va_propre, c1, c2, #names of graphs
                                    c(2,3,4))) #On the second col, the 3 other graphs
 ```
 
-
 There is a significant *difference between the body mass of these 3 species*, almost 2 of them.
 
 ```{r}
@@ -601,11 +597,24 @@ summary(anova3)
 
 There is a significant *difference between the body mass and the sex.*
 
-# Model of the body mass
+# Body mass model: an example of ANCOVA
 
-The aim of this part is to determine which variable influence the body mass of the penguins.
+ANCOVA (i.e. analysis of variance-covariance) is a statistic method that enable to model the relation between a dependent quantitative variable and several dependent explanatory variable that can be **quantitative AND qualitative**.
+
+Here we aim to determine:
+
+1.  Which variable influence the penguins' body mass of the penguins
+
+2.  What is the equation of the body mass model
+
+We are selecting different variable of the data set that we think can influence the body mass: *species, island, clutch_completion, culmen_length, culmen_depth, flipper_length, body_mass, sex, delta_15_N, delta_13_C*. They are the explanatory variables. It is important to check the type (numeric or factor) of each variable and change if necessary.
+
+We remove the individuals for which at least one measure is missing.
 
 ```{r data preparation}
+#| results: hide
+
+
 #selection of the interesting variables
 dataLM<-data %>% 
   select(species,island,clutch_completion,culmen_length,culmen_depth,flipper_length,body_mass,sex,delta_15_N,delta_13_C)
@@ -628,7 +637,98 @@ dataLM<-dataLM %>%
   drop_na(culmen_length,culmen_depth,flipper_length,body_mass,sex,delta_15_N,delta_13_C)
 ```
 
-Finally we look at the qualitativ explanatory variables.
+## Data exploration
+
+Before any modelisation, we have to explore the data to avoid some mistake. These are the different step to follow prior to execute a model:
+
+1.  Check for aberrant values and distribution shape of the response variable which is here *body_mass*.
+2.  If the explanatory variable is **quantitative**, check for aberrant values and distribution shape, and if the explanatory variable is **qualitative**, analyse the number mode and the number of individual in each one.
+3.  Analyse the potential relation between the response variable and the different explanatory variables.
+4.  Look for potential interaction between explanatory variables.
+5.  Check for potential colinearity between explanatory variables.
+
+### 1. Response variable exploration
+
+```{r, fig.height=5, fig.width=15}
+#| label: fig-lm_resp_varia
+#| fig-cap: Distribution of the values of the variable body mass
+#| code-fold: true
+#| code-summary: "Show the code"
+
+par(mfrow=c(1,3))
+# Cleveland plot
+dotchart(dataLM$body_mass,pch=16,col='dodgerblue3',xlab='Body mass')
+#Histogram
+hist(dataLM$body_mass,col='dodgerblue3',xlab="body mass",main="")
+# Quantile-Quantile plot
+qqnorm(dataLM$body_mass,pch=16,col='dodgerblue3',xlab='')
+qqline(dataLM$body_mass,col='red',lwd=2)
+```
+
+We can see on the first graphic of the @fig-lm_resp_varia that there is no aberrant values for the variable body mass. The two other graphic of the figure show that there is a deviation of normality. However, normality of the response variable is not a requirement for ANCOVA.
+
+### 2. Explanatory variables exploration
+
+First we invastigate the distribution of the quantitative explanatory variables.
+
+```{r covariable, include=TRUE, fig.height=12, fig.width=9}
+#| label: fig-lm_expl_varia
+#| fig-cap: Distribution of the values of the explanatory variables
+#| code-fold: true
+#| code-summary: "Show the code"
+
+
+par(mfrow=c(5,3))
+
+# Culmen Length
+# Cleveland plot
+dotchart(dataLM$culmen_length,pch=16,col='dodgerblue3',xlab='culmen_length')
+# Histogram
+hist(dataLM$culmen_length,col='dodgerblue3',xlab="culmen_length",main="")
+# Quantile-Quantile plot
+qqnorm(dataLM$culmen_length,pch=16,col='dodgerblue3',xlab='')
+qqline(dataLM$culmen_length,col='red',lwd=2)
+
+# Culmen Depth
+# Cleveland plot
+dotchart(dataLM$culmen_depth,pch=16,col='dodgerblue3',xlab='culmen_depth')
+# Histogram
+hist(dataLM$culmen_depth,col='dodgerblue3',xlab="culmen_depth",main="")
+# Quantile-Quantile plot
+qqnorm(dataLM$culmen_depth,pch=16,col='dodgerblue3',xlab='')
+qqline(dataLM$culmen_depth,col='red',lwd=2)
+
+# Flipper length
+# Cleveland plot
+dotchart(dataLM$flipper_length,pch=16,col='dodgerblue3',xlab='flipper length')
+# Histogram
+hist(dataLM$flipper_length,col='dodgerblue3',xlab="flipper length",main="")
+# Quantile-Quantile plot
+qqnorm(dataLM$flipper_length,pch=16,col='dodgerblue3',xlab='')
+qqline(dataLM$flipper_length,col='red',lwd=2)
+
+# Delta_15_N
+# Cleveland plot
+dotchart(dataLM$delta_15_N,pch=16,col='dodgerblue3',xlab='delta_15_N')
+# Histogram
+hist(dataLM$delta_15_N,col='dodgerblue3',xlab="delta_15_N",main="")
+# Quantile-Quantile plot
+qqnorm(dataLM$delta_15_N,pch=16,col='dodgerblue3',xlab='')
+qqline(dataLM$delta_15_N,col='red',lwd=2)
+
+# Delta_13_C
+# Cleveland plot
+dotchart(dataLM$delta_13_C,pch=16,col='dodgerblue3',xlab='delta_13_C')
+# Histogram
+hist(dataLM$delta_13_C,col='dodgerblue3',xlab="delta_13_C",main="")
+# Quantile-Quantile plot
+qqnorm(dataLM$delta_13_C,pch=16,col='dodgerblue3',xlab='')
+qqline(dataLM$delta_13_C,col='red',lwd=2)
+```
+
+We can see on the first graphic of each row of the @fig-lm_expl_varia that there is no abberant values for the variable *culmen_length*, *culmen_depth*, *flipper_length*, *delta_15_N* and *delat_13_C*. The two other graphic of each row of the figure show that there is a deviation of normality for all explanatory variable. However, normality of the explanatory variable is not a requirement for ANCOVA.
+
+Secondly we analyse the qualitative explanatory variables. We look at the distribution of the values in the different mode.
 
 ```{r cofactors, include=TRUE}
 # Factor Sex
@@ -641,12 +741,14 @@ summary(dataLM$species)
 summary(dataLM$clutch_completion)
 ```
 
-We observe that the plan is non orthogonal.
+We observe that there is not the same number of observation in each mode so the plan is non orthogonal. This is not mandatory but it is best when the plan is orthogonal.
 
-Secondly, we explore the dynamics between body mass and the explanatory variable, to see if there is some trend.
+### 3. Analysis of potential relation between response and explanatories variables
+
+We explore the dynamics between body mass and the explanatory variable, to see if there is some trend.
 
 ```{r datagraph, include=TRUE, fig.height=15, fig.width=6}
-#| label: fig-lm_mass_covariable
+#| label: fig-lm_mass_effect
 #| fig-cap: Effect of the explanatories variables on the body mass
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -672,19 +774,39 @@ boxplot(dataLM$body_mass~dataLM$clutch_completion, varwidth = TRUE, ylab = "body
 boxplot(dataLM$body_mass~dataLM$sex, varwidth = TRUE, ylab = "body mass", xlab = "Sex", col='brown', main = "")
 ```
 
-We can see on the figure @fig-lm_mass_covariable The variables that seems to influence body mass are culmen length, flipper length, delta 15N, species and island.
+We can see on the @fig-lm_mass_effect that the variables *culmen length, culmen depth, flipper length, delta 15N, species* and *island* seems to influence the body mass. The body mass seems to increase when *culmen length, culmen depth* and *flipper length* increase. On the opposite, body mass seems to decrease when *delta 15N* increase. The species Gentoo and the individuals of the island Biscoe seem to have a higher body mass.
 
-Finally we check if there is colinearity between some variable. First, between covariables.
+### 4. Look for potential interaction between explanatory variables
 
-```{r}
+Here we are considering a simple model with no interaction but in some case it can usefull to examine the potential interaction between the different variables.
+
+### 5. Check of potential colinearity bewteen explanatories variables
+
+In order to avoid colinearity in modelling, we analyse how the explanatories variables are related. To do so we calculate the correlation between the quantitative explanatories variables and evaluate if the qualitative explanatory variables impact the quantitative one using boxplot.
+
+First between covariable: the quantitative explanatories variables.
+
+```{r, fig.height=5, fig.width=5}
+#| label: fig-lm_colinearity_covariable
+#| fig-cap: Corelation matrice between the covariables
+#| code-fold: true
+#| code-summary: "Show the code"
+
+
 corrplot.mixed(cor(dataLM %>% select_if(is.numeric)%>%select(-body_mass)),upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
 ```
 
-We chose the threshold at 0.7 so there is no colinearity detected between the covariables.
+The threshold above which we cosider there is colinearity is usually choose at +/- 0.7. We can thus see in the @fig-lm_colinearity_covariable that there is no colinearity detected between the covariables.
 
-Then, between cofactors. In order to do so, we plot all the covariable as a function of all cofactors.
+Then between cofactors: the qualitative explanatory variables.
 
 ```{r colinearity cofactors,include=TRUE, fig.height=15, fig.width=12}
+#| label: fig-lm_colinearity_cofactor
+#| fig-cap: Exploration of potential colinearities between cofactors and covariable
+#| code-fold: true
+#| code-summary: "Show the code"
+
+
 # Checking collinearity between cofactors and covariables
 par(mfrow=c(5,4))
 #Culmen length and species
@@ -734,21 +856,29 @@ boxplot(dataLM$delta_13_C~dataLM$clutch_completion, varwidth = TRUE, ylab = "del
 
 ```
 
-## Statistics analysis - Model selection
+According to the @fig-lm_colinearity_cofactor there is no colinearity between cofactors and covariables.
 
-We build the statistical model, including all explanatory variable at first.
+We keep all our explanatory variables to do the modelisation.
+
+## Statistics analysis
+
+For the statistic modelisation, we analyse first the full model, which means the model including all explanatories variables.
+
+In order to identify the candidate model from the full model, we are going to use the backward selection model. This method is based on the significance of the model terms. From the full model, we identify the significance of each term of the model and proceed to a skimming of the non-sgnificant terms. The withdraw on the non significant term have to follow two step: - first step : remove successively the non significant interaction - second step : remove successively the explanatory variable that are non significant and not include in interaction terms.
+
+First we build the full model:
 
 ```{r full model}
 modlm<-lm(body_mass ~ species + island + clutch_completion + culmen_length + culmen_depth + flipper_length + sex + delta_15_N + delta_13_C,data=dataLM) #full model
 ```
 
-Now we are going to select the best model "by hand"
+Using the function *drop1* we analyse the significance of each variables:
 
 ```{r full model selection}
 drop1(modlm,test="F") #test significativté des variables avec test fischer
 ```
 
-We exclude the variable "island" of the model, because it is the non-significant variable with the highest p-value. Then, we create a new model (without the variable "island") and test for significance.
+We exclude the variable *island* of the model, because it is the non-significant variable with the highest p-value. Then, we create a new model (without the variable *island*) and test for significance:
 
 ```{r model2}
 modlm2<-lm(body_mass ~ species + clutch_completion + culmen_length + 
@@ -756,7 +886,7 @@ modlm2<-lm(body_mass ~ species + clutch_completion + culmen_length +
 drop1(modlm2,test="F")
 ```
 
-As previously, we exclude the variable "clutch_completion" of the model, because it is non-significant. We build a new model and test again for variables' significance.
+for the same reason as previously, we exclude the variable *clutch_completion* of the model. We build a new model and test again for variables' significance:
 
 ```{r model3}
 modlm3<-lm(body_mass ~ species + culmen_length + 
@@ -764,27 +894,34 @@ modlm3<-lm(body_mass ~ species + culmen_length +
 drop1(modlm3,test="F")
 ```
 
-All the variable in the model are significant, so we keep all of them in our final model. The best model is thus: body_mass \~ species + culmen_length + culmen_depth + flipper_length + sex + delta_15_N + delta_13_C
+All the variable in the model are significant, so we keep all of them in our final model. The best model is thus: $body\:mass$ \~ $species + culmen_{length} + culmen_{depth} + flipper_{length} + sex + delta\:15\:N + delta\:13\:C$
+
+Using the function *summary* we can acces the coefficient for all variable.
 
 ```{r}
 summary(modlm3)
 ```
 
-Finally, the model can be written as:
+The model can thus be written as:
 
 $$ Body\:Mass = 1467.1\:+\:(Species_{Adeliae} = 0 \:;\:Species_{Pygoscelis antarctica} = -245.1^{**}\:;\:Species_{Pygoscelis papua} = 882.1^{***})$$ $$ +\:17.1^{*NS*}. Culmen\:Length\:+\:61.6^{**}. Culmen\:Depth\:+\:17.8^{***}. Flipper\:Length $$ $$ + (Sex_{Female}= 0\:;\: Sex_{Male}=417.9^{***})\:-\:164.3^{***}. Delta\:15N\:+\:65.2^{*}. Delta\:13C)$$
 
-We can also notice that the model explain 88% of the body mass variance.
+From the summary of the model we can also access the variance proportion that is explained by the model. It correspond to the variable of *Adjusted R-squared* which is here 0.8813. The model is thus explaining 88% of the body mass variance.
 
 ## Model validation
 
-We need the validation of the model. Because it is a linear model, we need independence of the variable, normality and homoscedasticity of residuals.
+The hypotheses for ANCOVA are **independence**, **residuals normality** and **variance homogeneity**. We also need to check for influent statistics unities, which means an observation with a high contribution to model construction.
 
 Here, we assume an independence of variables as we don't have the details of the data collection.
 
 We check the normality of residuals.
 
 ```{r ResidNorm, include=TRUE, fig.height=3, fig.width=6}
+#| label: fig-lm_resid_norm
+#| fig-cap: Verification of residuals normality
+#| code-fold: true
+#| code-summary: "Show the code"
+
 par(mfrow=c(1,2))
 # Histogram
 hist(modlm3$residuals,col='dodgerblue3',xlab="residuals",main="Check Normality")
@@ -793,16 +930,17 @@ qqnorm(modlm3$residuals,pch=16,col='dodgerblue3',xlab='')
 qqline(modlm3$residuals,col='red',lwd=2)
 ```
 
-Residuals have a normal distribution.
+We can see on the first plot of @fig-lm_resid_norm that the histogram seems to have a normal distribution. This is confirmed by the second plot of the figure where we can see that the residuals are align with the red line, which means that the residuals have a normal distribution.
 
 We check the homoscedasticity of residuals.
 
 ```{r Residhomo, include=TRUE, fig.height=5, fig.width=5}
 #| label: fig-lm_variance
-#| fig-cap: Residuals of the model as function of the fitted value
+#| fig-cap: verification of residuals homoscedasticity
 #| code-fold: true
 #| code-summary: "Show the code"
- 
+
+
 # residuals vs fitted
 plot(residuals(modlm3)~fitted(modlm3)
       , col='dodgerblue3'
@@ -811,11 +949,16 @@ abline(h = 0)
 
 ```
 
-The variance is homogeneous.
+We can see on the @fig-lm_variance that there is no tendency on the point repartition. We can thus conclude that the variance is homogeneous.
 
 We also verify that there isn't an individual that is particularly influential.
 
 ```{r Contri, include=TRUE, fig.height=4, fig.width=4}
+#| label: fig-lm_influent_indiv
+#| fig-cap: Verification of influential individual
+#| code-fold: true
+#| code-summary: "Show the code"
+
 
 par(mfrow = c(1, 1))
 plot(cooks.distance(modlm3), type = "h", ylim = c(0, 1))
@@ -823,6 +966,6 @@ abline(h = 1, col = 2,lwd = 3)
 
 ```
 
-As all the bar are lower that 1, there is no influential individual.
+As all the bar are lower that 1 on the @fig-lm_influent_indiv, we can conclude that there is no influential individual.
 
-We can conclude that the linear model is valid.
+Finally, we can conclude that the **linear model is valid**.
