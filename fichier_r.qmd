@@ -1,5 +1,5 @@
 ---
-title: "Unveiling the influence of climatic factors on reproductive patterns in neotropical bats through a bayesian framework"
+title: "Unveiling the influence of climatic factors on reproductive patterns in neotropical bats through a Bayesian framework"
 author: "TESSIER/GRAVE/DAVID/DENOUAL/SERRE/LAPORTE/LEROUX/BRUZZO"
 date: "2024-10-22"
 output: html_document
@@ -371,6 +371,9 @@ data_bin <- data_bin %>%
 data_chiro <- data_chiro %>%
   mutate(Date = as.Date(Date, format = "%d-%m-%Y"))
 
+data_chiro$Lune <-Lune(data_chiro$Date)
+
+
 data_final <- data_bin %>%
   left_join(data_chiro %>%
               select(julian_day, Year, LAT, LON, Lune, Pluie, Température, Vent, Amplitude, Date) %>%
@@ -378,5 +381,50 @@ data_final <- data_bin %>%
             by = "Date")
 
 
+
+```
+
+### At this time, we plot the relation between our response variable and every covariable
+
+```{r}
+ggplot(data_final, aes(Amplitude, repro_positive)) +
+  geom_point() + 
+  geom_smooth(method = "loess") +
+  scale_y_continuous(trans='log10')
+
+ggplot(data_final, aes(julian_day, repro_positive)) +
+  geom_point() + 
+  geom_smooth(method = "loess") +
+  scale_y_continuous(trans='log10')
+
+ggplot(data_final, aes(Pluie, repro_positive)) +
+  geom_point() + 
+  geom_smooth(method = "loess") #+
+  #scale_y_continuous(trans='log10')
+
+ggplot(data_final, aes(Température, repro_positive)) +
+  geom_point() + 
+  geom_smooth(method = "loess") +
+  scale_y_continuous(trans='log10')
+
+ggplot(data_final, aes(Year, repro_positive)) +
+  geom_point() + 
+  geom_smooth(method = "loess") +
+  scale_y_continuous(trans='log10')
+```
+
+### Now, we will use the Bayesian approach to estimate the effect of those different covariates on the frequency of reproductive individuals...
+
+#### But firstly, let's introduce quickly the Bayes' theorem :
+
+This theorem is based on conditional probabilities :
+
+$P(B \mid A) = \displaystyle{\frac{ P(A \mid B) \; P(B)}{P(A)}}$
+
+But we might try to explain more explicitly as this :
+
+$$P(\text{hypothesis} \mid \text{data}) = \frac{ P(\text{data} \mid \text{hypothesis}) \; P(\text{hypothesis})}{P(\text{data})}$$
+
+```{r}
 
 ```
