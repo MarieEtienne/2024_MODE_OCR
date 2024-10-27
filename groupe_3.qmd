@@ -551,11 +551,11 @@ boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Ant species ric
 
 ```
 
-Relationship between $X$ and latitude (@fig-plotYXS A.): We can see that the higher the latitude, the lower the species richness. We can say that the further north we are, the fewer ant species there are.
+Relationship between $X$ and latitude (@fig-plotYXS A): We can see that the higher the latitude, the lower the species richness. We can say that the further north we are, the fewer ant species there are.
 
-Relationship between $X$ and altitude (@fig-plotYXS B.): In this graph, we can again see that the higher the altitude, the lower the species richness.
+Relationship between $X$ and altitude (@fig-plotYXS B): In this graph, we can again see that the higher the altitude, the lower the species richness.
 
-Relationship between $X$ and bog area (@fig-plotYXS C.): Here, there appears to be no relationship between ant species richness and bog area.
+Relationship between $X$ and bog area (@fig-plotYXS C): Here, there appears to be no relationship between ant species richness and bog area.
 
 Relationship between $X$ and location (@fig-plotYXS D.): Here, there appears to be a relationship between location and ant species richness, with higher species richness in forests than in bogs.
 
@@ -670,7 +670,12 @@ To arrive at the "candidate" model to be tested, we'll start with the "complete"
 
 Let's start with the complete model:
 
-```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r models}
+#| echo: true
+#| message: false
+#| warning: false
+#| paged.print: true
+
 
 # model formulation with the fonction glm() and family=poisson(link="log")
 mod1<-glm(Nsp~ Location
@@ -687,7 +692,12 @@ mod1<-glm(Nsp~ Location
 
 Based on this complete model, we will eliminate the insignificant interactions step by step.
 
-```{r colinéarité2, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r colinéarité2}
+#| echo: true
+#| message: false
+#| warning: false
+#| paged.print: true
+
 
 # Step 1
 drop1(mod1,test="Chi")
@@ -698,7 +708,12 @@ All three interactions are insignificant. We remove the 'Location:Latitude' inte
 
 We obtain the following model:
 
-```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r model2}
+#| echo: true
+#| message: false
+#| warning: false
+#| paged.print: true
+
 
 # Step 2
 mod1<-glm(Nsp~ Location
@@ -716,7 +731,11 @@ drop1(mod1,test="Chi")
 
 In the same way, we remove the 'Location:LogArea' interaction.
 
-```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r model3}
+#| echo: true
+#| message: false
+#| warning: false
+#| paged.print: true
 
 # Step 3
 mod1<-glm(Nsp~ Location
@@ -733,7 +752,11 @@ drop1(mod1,test="Chi")
 
 We also remove the 'Location:Elevation' interaction. We now look at the significance of the explanatory variables.
 
-```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r model4}
+#| echo: true
+#| message: false
+#| warning: false
+#| paged.print: true
 
 # Step 4
 mod1<-glm(Nsp~ Location
@@ -749,7 +772,11 @@ drop1(mod1,test="Chi")
 
 As the 'LogArea' variable does not have a siginificative effect, we eliminate it from the model.
 
-```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r model5}
+#| echo: true
+#| message: false
+#| warning: false
+#| paged.print: true
 
 # Step 5
 mod1<-glm(Nsp~ Location
@@ -766,7 +793,11 @@ The remaining explanatory variables are significant, so we retain this model as 
 
 We will then identify the candidate model using an approach other than the significance of the p-values: the AIC with the stepwise mode.
 
-```{r model AIC, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r model AIC}
+#| echo: true
+#| message: false
+#| warning: false
+#| paged.print: true
 
 # complete model construction
 modelcomplet<- glm(Nsp~ Location
@@ -798,7 +829,11 @@ Both methods arrive at the same candidate model: *Nsp\~Latitude+Elevation+LogAre
 
 The next step is to analyze the coefficients. We'll be looking at the precise effect of the selected explanatory variables (Latitude, Elevation, LogArea) on ant species richness.
 
-```{r, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r coeff}
+#| echo: true
+#| message: false
+#| warning: false
+#| paged.print: true
 
 # Coefficients 
 summary(mod1)
@@ -841,7 +876,11 @@ In our example, as seen in the previous section, the null model has a deviance o
 
 We will therefore calculate the quality of the model with the following lines:
 
-```{r deviance, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r deviance}
+#| echo: true
+#| message: false
+#| warning: false
+#| paged.print: true
 
 # Estimate of deviance explained
 (mod1$null.deviance-mod1$deviance)/mod1$null.deviance
@@ -854,9 +893,18 @@ nagelkerke(mod1)
 
 Here, the estimate of deviance explained is 60% or 75%, depending on the method used.
 
-```{r Prediction,include=TRUE, fig.height=6, fig.width=6}
+```{r Prediction}
+#| label: fig-plotpredict
+#| echo: true
+#| message: false
+#| warning: false
+#| paged.print: true
+#| include: true
+#| fig.height: 6
+#| fig.width: 6
+#| fig-cap: "Representation of predict values"
 
-plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Estimated values",xlab="Observed values", main="Figure 19")
+plot(fitted(mod1)~dataAnts$Nsp,col='dodgerblue3',pch=16,ylab="Estimated values",xlab="Observed values")
 abline(0,1)
 
 ```
@@ -881,9 +929,9 @@ It may be due to :
 
 -   Missing interactions. Add them to the model.
 
--   Zero inflation occurs. Use negative Binomial regression with zero inflation (@Long_J.S._1997)
+-   Zero inflation occurs. Use negative Binomial regression with zero inflation (@Long_1997)
 
--   A dependency between the data and a factor or variable is present. A general linear mixed model should be used. (@Johnson_et_al._2015)
+-   A dependency between the data and a factor or variable is present. A general linear mixed model should be used. (@Johnson_et_al_2015)
 
 -   Relationship between data and variables or factors is not linear. A generalized additive model must be used. (@Irz_et_Levi-Valensin_2016)
 
@@ -893,7 +941,11 @@ It may be due to :
 
 In our example, we will calculate the scale parameter. To do this, we will use the command :
 
-```{r surdispersion, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r surdispersion}
+#| echo: true
+#| message: false
+#| warning: false
+#| paged.print: true
 
 # Scale parameter calculation
 E1 <- resid(mod1, type = "pearson") # (Y - mu) / sqrt(mu)
@@ -961,7 +1013,7 @@ abline(h = 0)
 
 ```
 
-The histogram of residuals (@fig-plotresiduals A.) and the Q-Q plot (@fig-plotresiduals B.) show relatively normal residuals. The following four graphs (@fig-plotresiduals C.D.E.F.) show the distribution of residuals according to model estimates and the three explanatory variables. We can see that the residuals remain homogeneous whatever the values of the explanatory variables.
+The histogram of residuals (@fig-plotresiduals A) and the Q-Q plot (@fig-plotresiduals B) show relatively normal residuals. The following four graphs (@fig-plotresiduals C, D ,E and F) show the distribution of residuals according to model estimates and the three explanatory variables. We can see that the residuals remain homogeneous whatever the values of the explanatory variables.
 
 [**Conclusion**]{.underline} **:**
 
@@ -991,7 +1043,17 @@ Here (@fig-plotINDIV), there are no overly influential individuals.
 
 For a different graphical representation, we can use the 'DHARMa' package. This package can be used to analyze residuals, in particular overdispersion and outliers. Residuals that do not comply with expected values are highlighted in red.
 
-```{r Dharma, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r Dharma}
+#| label: fig-plotDharma
+#| echo: true
+#| message: false
+#| warning: false
+#| paged.print: true
+#| include: true
+#| fig.height: 6
+#| fig.width: 6
+#| fig-cap: "Dharma"
+
 
 # TestDispersion(mod1)
 library(DHARMa)
@@ -1007,7 +1069,7 @@ plotResiduals(simulationOutput, form = dataAnts$Latitude)
 
 [**Conclusion**]{.underline} **:**
 
-In our example, the residuals are not overdispersed and show no outliers.
+In our example, the residuals are not overdispersed and show no outliers (@fig-plotDharma).
 
 # CONCLUSION
 
