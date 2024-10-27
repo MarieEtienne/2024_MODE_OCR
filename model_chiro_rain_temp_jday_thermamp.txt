@@ -1,0 +1,27 @@
+
+model {
+  for (i in 1:N) {
+    repro_positive[i] ~ dbin(p[i], total_individuals[i])  # Distribution binomiale
+    logit(p[i]) <- a + b.rain * rain[i] 
+                     + b.rain2 * pow(rain[i],2)  
+                     + b.temp * temp[i] 
+                     + b.julian_day * julian_day[i]
+                     + b.julian_day2 * pow(julian_day[i], 2)
+                     + b.julian_day3 * pow(julian_day[i], 3)
+                     + b.julian_day4 * pow(julian_day[i], 4)
+                     + b.thermal_amp * thermal_amp[i]
+                     + b.thermal_amp2 * pow(thermal_amp[i], 2)
+  }
+  
+  a ~ dnorm(0, 0.001)  # Prior sur l'intercept
+  b.rain ~ dnorm(0, 0.001)
+  b.rain2 ~ dnorm(0, 0.001)
+  b.temp ~ dnorm(0, 0.001)
+  b.julian_day ~ dnorm(0, 0.001)
+  b.julian_day2 ~ dnorm(0, 0.001) 
+  b.julian_day3 ~ dnorm(0, 0.001)
+  b.julian_day4 ~ dnorm(0, 0.001)
+  b.thermal_amp ~ dnorm(0, 0.001)
+  b.thermal_amp2 ~ dnorm(0, 0.001)
+}
+
