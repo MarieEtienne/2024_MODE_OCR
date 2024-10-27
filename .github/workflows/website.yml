@@ -18,6 +18,7 @@ jobs:
       - name: Install R packages
         run: |
           Rscript -e "install.packages(c('factoextra'))"
+	  Rscript -e "install.packages(c('quarto'))"
           Rscript -e "install.packages(c('rnaturalearth','rnaturalearthdata', 'ggspatial'))" 
 
       - name: Additional Python packages
