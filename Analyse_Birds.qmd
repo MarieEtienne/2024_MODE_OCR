@@ -8,39 +8,66 @@ bibliography: references.bib
 execute: 
   freeze: auto 
 output: html_document
-output: html_document 
 toc: true 
 toc_float: true
 ---
 
 # Data presentation
 
-The dataset (available following this link https://zenodo.org/records/8251495 ) used for this work contains nest records from different studies conducted in North America and more specifically in Wisconsin and Illinois. It was conducted in 13 different counties : Dane, Grant, Green, Iowa, Lafayette, Monroe, Rock, Lee, Ogle, Will, Grundy, Carroll, and Jo Daviess counties. The dataset contains the records of 3257 nests and for each of them different observations.
+The dataset (available following this link
+https://zenodo.org/records/8251495 ) used for this work contains nest
+records from different studies conducted in North America and more
+specifically in Wisconsin and Illinois. It was conducted in 13 different
+counties : Dane, Grant, Green, Iowa, Lafayette, Monroe, Rock, Lee, Ogle,
+Will, Grundy, Carroll, and Jo Daviess counties. The dataset contains the
+records of 3257 nests and for each of them different observations.
 
 These observations are the following:
 
--   ***State***: Illinois or Wisconsin - *qualitative explanatory variable*
--   ***County***: Dane (Wisconsin), Grant (Wisconsin), Green (Wisconsin), Iowa (Wisconsin), Lafayette (Wisconsin), Monroe (Wisconsin), Rock (Wisconsin), Lee (Illinois), Ogle (Illinois), Will (Illinois), Grundy (Illinois), Carroll (Illinois), and Jo Daviess (Illinois) - *qualitative explanatory variable*
--   ***Habitat***: Cool-season Grassland, Pasture, Prairie, Warm-season Grassland - *qualitative explanatory variable*
--   ***Species***: Species of birds - Bobolink, Dickcissel, Eastern Meadowlark, Grasshopper Sparrow, Henslow’s Sparrow, Savannah Sparrow, Vesper Sparrow, and Western Meadowlark - *qualitative explanatory variable*
+-   ***State***: Illinois or Wisconsin - *qualitative explanatory
+    variable*
+-   ***County***: Dane (Wisconsin), Grant (Wisconsin), Green
+    (Wisconsin), Iowa (Wisconsin), Lafayette (Wisconsin), Monroe
+    (Wisconsin), Rock (Wisconsin), Lee (Illinois), Ogle (Illinois), Will
+    (Illinois), Grundy (Illinois), Carroll (Illinois), and Jo Daviess
+    (Illinois) - *qualitative explanatory variable*
+-   ***Habitat***: Cool-season Grassland, Pasture, Prairie, Warm-season
+    Grassland - *qualitative explanatory variable*
+-   ***Species***: Species of birds - Bobolink, Dickcissel, Eastern
+    Meadowlark, Grasshopper Sparrow, Henslow’s Sparrow, Savannah
+    Sparrow, Vesper Sparrow, and Western Meadowlark - *qualitative
+    explanatory variable*
 -   ***Years***: from 1991 to 2011 - *qualitative explanatory variable*
--   ***Nest Fate***: the fate of the chicks -\> Successly fledged at least one young (1) or Failed (0)- *quantitative explanatory variable*
--   ***Initiation Date***: Date of the first laided egg - *quantitative explanatory variable*
--   ***Number fledged***: Number of chicks that survived and fledged the nest - *quantitative explanatory variable*
--   ***Nest End Date***: the date when the fate of it was recorded - *quantitative explanatory variable*
+-   ***Nest Fate***: the fate of the chicks -\> Successly fledged at
+    least one young (1) or Failed (0)- *quantitative explanatory
+    variable*
+-   ***Initiation Date***: Date of the first laided egg - *quantitative
+    explanatory variable*
+-   ***Number fledged***: Number of chicks that survived and fledged the
+    nest - *quantitative explanatory variable*
+-   ***Nest End Date***: the date when the fate of it was recorded -
+    *quantitative explanatory variable*
 
-All theses observations are presented in a table with the following collums :
+All theses observations are presented in a table with the following
+collums :
 
 -   *Nest_ID* = unique nest identifier
 -   *State* = State in which nest was located (Illinois or Wisconsin)
 -   *County* = County in the state in which nest was located
--   *Habitat* = Grassy habitat in which nest was located (pasture, cool-season grassland, warm-season grassland, or prairie)
+-   *Habitat* = Grassy habitat in which nest was located (pasture,
+    cool-season grassland, warm-season grassland, or prairie)
 -   *Species* = English common name
 -   *Year* = Year nest was found
--   *Nest_Fate* = Successly fledged at least one young (1) or Failed (0).
--   *Initiation_Date* = Coded date when the first egg was laid. April 1 = 1; May 1 = 31; June 1 = 62; July 1 = 92; August 1 = 123; September 1 = 154
--   *Number_Fledged* = For a successful nest, number of young in nest on nest end date; For a failed nest, Number_Fledged is 0
--   *Nest_End_Date* = Coded date when the nest failed or was successful. April 1 = 1; May 1 = 31; June 1 = 62; July 1 = 92; August 1 = 123; September 1 = 154
+-   *Nest_Fate* = Successly fledged at least one young (1) or Failed
+    (0).
+-   *Initiation_Date* = Coded date when the first egg was laid. April 1
+    = 1; May 1 = 31; June 1 = 62; July 1 = 92; August 1 = 123; September
+    1 = 154
+-   *Number_Fledged* = For a successful nest, number of young in nest on
+    nest end date; For a failed nest, Number_Fledged is 0
+-   *Nest_End_Date* = Coded date when the nest failed or was successful.
+    April 1 = 1; May 1 = 31; June 1 = 62; July 1 = 92; August 1 = 123;
+    September 1 = 154
 
 # What kind of questions can we rise ?
 
@@ -93,13 +120,16 @@ install_if_missing(required_packages)
 
 ##### Statistical tests
 
-In this part, several statistical tests are performed in order to answer questions.
+In this part, several statistical tests are performed in order to answer
+questions.
 
--   *First question : Does the number of fledged birds depend on the species ?*
+-   *First question : Does the number of fledged birds depend on the
+    species ?*
 
 H0 : there is no differences between species
 
-First, we observe the data with a boxplot. There is no significant differences through the boxplots.
+First, we observe the data with a boxplot. There is no significant
+differences through the boxplots.
 
 ```{r boxplots}
 ggplot(data = data, 
@@ -114,7 +144,8 @@ ggplot(data = data,
     )
 ```
 
-Then, we test the normality of the data. All the p-values are ranged in a dataframe.
+Then, we test the normality of the data. All the p-values are ranged in
+a dataframe.
 
 ```{r testnormality}
 data |>
@@ -130,7 +161,8 @@ data |>
   )
 ```
 
-Conclusion : each subset does not follow the normality. We can perform a U test (non parametric test) :
+Conclusion : each subset does not follow the normality. We can perform a
+U test (non parametric test) :
 
 ```{r Utest}
 # Construction of an empty 8x8 dataframe. It will contains each p-value of the U test
@@ -199,11 +231,19 @@ ggcorrplot(
 
 ```
 
-Observation : we see that there is globally no differences in the mean of the groups. So we keep H0.
+Observation : we see that there is globally no differences in the mean
+of the groups. So we keep H0.
 
--   *Second question : we want to summarise the information depending on different factor.*
+-   *Second question : we want to summarise the information depending on
+    different factor.*
 
-In the following chunks, a list named *data_summariser* is created and it will contains several dataframes. These dataframes summarise the different quantitative variables (i.e. Nest_Fate, Initiation_Date, Number_Fledged and Nest_End_Date) by the means and for each factor (i.e. County, State, Species and Habitat). There is one dataframe per factor. The goal is to better visualise the repartition of the species as a function of a factor AND to see the means.
+In the following chunks, a list named *data_summariser* is created and
+it will contains several dataframes. These dataframes summarise the
+different quantitative variables (i.e. Nest_Fate, Initiation_Date,
+Number_Fledged and Nest_End_Date) by the means and for each factor (i.e.
+County, State, Species and Habitat). There is one dataframe per factor.
+The goal is to better visualise the repartition of the species as a
+function of a factor AND to see the means.
 
 Here, we summarise with the factor : Species.
 
@@ -274,7 +314,8 @@ data_county <- data |>
 data_sp
 ```
 
-We create a list called data_summariser that will contains each previously created tables.
+We create a list called data_summariser that will contains each
+previously created tables.
 
 ```{r summarizedata}
 data_summariser <-list()  # Creation of the due list data_summariser
@@ -332,7 +373,8 @@ data_ACM <- data_ACM |>
 
 ##### MCA analysis (data exploring)
 
-Before doing the MCA analysis, we must verify that all the modalities represent at least 3% of the data
+Before doing the MCA analysis, we must verify that all the modalities
+represent at least 3% of the data
 
 ```{r proptable}
 # Proportions de chaques modalités dans chaques variables:
@@ -347,7 +389,11 @@ prop.table(table(data_ACM$Initiation_Date))*100
 prop.table(table(data_ACM$Nest_End_Date))*100
 ```
 
-Some of the modalities are under-represented. We must delete them. The modalities under-represented are: Countries Carroll, Carroll/Whiteside, Grundy, Lee and Rock, Species Henslow's Sparrow and Western Meadowlark, half of the years modalities, 6 fledged chicks, and months April and August for both nest initiation date and nest end date.
+Some of the modalities are under-represented. We must delete them. The
+modalities under-represented are: Countries Carroll, Carroll/Whiteside,
+Grundy, Lee and Rock, Species Henslow's Sparrow and Western Meadowlark,
+half of the years modalities, 6 fledged chicks, and months April and
+August for both nest initiation date and nest end date.
 
 ```{r sortingcounty}
 prop.table(table(data_ACM$County))*100 < 3
@@ -412,7 +458,8 @@ data_ACM <- data_ACM[-which(data_ACM$Nest_End_Date == "august" |
 data_ACM$Nest_End_Date <- droplevels(data_ACM$Nest_End_Date)
 ```
 
-Now, we can check again that no modalities are under-represented (threshold 3%).
+Now, we can check again that no modalities are under-represented
+(threshold 3%).
 
 ```{r proptableagain}
 # Proportions de chaques modalités dans chaques variables:
@@ -427,7 +474,8 @@ prop.table(table(data_ACM$Initiation_Date))*100
 prop.table(table(data_ACM$Nest_End_Date))*100
 ```
 
-All the modalities are enough represented. We can now start the MCA analysis.
+All the modalities are enough represented. We can now start the MCA
+analysis.
 
 ```{r mca}
 # MCA without the Nest IDs.
@@ -440,14 +488,17 @@ fviz_eig(ACM_bird, main="histogram of % inertia", addlabels = T)
 
 The inertia holded by the first axis is very low (9.3%)
 
-Let's see wich modalities are significantly contributing to the analysis, for the axis 1 and 2
+Let's see wich modalities are significantly contributing to the
+analysis, for the axis 1 and 2
 
 ```{r contributionsofmodalities}
 fviz_contrib(ACM_bird, choice='var', axes=1)
 fviz_contrib(ACM_bird, choice='var', axes=2)
 ```
 
-Let's print only the modalities above the thresold of 1/n, n is the number of modalities, and the modalities above this thresold are significantly contributing to the MCA.
+Let's print only the modalities above the thresold of 1/n, n is the
+number of modalities, and the modalities above this thresold are
+significantly contributing to the MCA.
 
 ```{r printcontributingmodalities}
 # We set the thresold for significant modalities
@@ -475,17 +526,38 @@ fviz_mca_var(ACM_bird, col.var='blue', repel = T, select.var = list(contrib = 24
 plotellipses(ACM_bird, means = F)
 ```
 
-We can see that the nests are clearly separated by the state they come from. We can see a light shift on axis 2 with the nest fate values. The other variables are forming less distinct groups.
+We can see that the nests are clearly separated by the state they come
+from. We can see a light shift on axis 2 with the nest fate values. The
+other variables are forming less distinct groups.
 
-On axis 1, the most contributing variable is the state Illinois. It is associated with the specie Dickcissel, with the county Will and Lee/Ogle, years 1994-1996, and the warm season on Grassland. On the other side of the axis, the specie Savannah Sparrow is higly associated with years 2000-2002, and also with the county Lafayette and Iowa and the state Wisconsin.
+On axis 1, the most contributing variable is the state Illinois. It is
+associated with the specie Dickcissel, with the county Will and
+Lee/Ogle, years 1994-1996, and the warm season on Grassland. On the
+other side of the axis, the specie Savannah Sparrow is higly associated
+with years 2000-2002, and also with the county Lafayette and Iowa and
+the state Wisconsin.
 
-On axis 2, the most contributing variable is the county Dane, and associated with years 2006-2008 and cool season Grassland. It is also associated with the specie Bobolink, the nest fate equal 1, and the number fledged superior or equal to 5. To say otherwise, the nesting birds have a better success in the county Dane, especially between 2006 and 2008 and during the cool season in grasslands. The specie Bobolink is also highly successive in nesting a lot of chicks. On the other side of the axis, the variable significantly contributing are years 1997-1999, state Illinois, nest end in July, habitat pasture and county Jo Daviess, with nest fate 0 and number fledged 0. Therefore, it is most likely that these conditions are decreasing the probabilities of success in nesting chicks.
+On axis 2, the most contributing variable is the county Dane, and
+associated with years 2006-2008 and cool season Grassland. It is also
+associated with the specie Bobolink, the nest fate equal 1, and the
+number fledged superior or equal to 5. To say otherwise, the nesting
+birds have a better success in the county Dane, especially between 2006
+and 2008 and during the cool season in grasslands. The specie Bobolink
+is also highly successive in nesting a lot of chicks. On the other side
+of the axis, the variable significantly contributing are years
+1997-1999, state Illinois, nest end in July, habitat pasture and county
+Jo Daviess, with nest fate 0 and number fledged 0. Therefore, it is most
+likely that these conditions are decreasing the probabilities of success
+in nesting chicks.
 
 # II. Analysing the relationship between nest fate and county, habitat, species, year, initiation date using a generalized linear model (GLM) with a binomial distribution
 
 ## A. Data Exploration
 
-In this part we choose to explain the nest fate with different variables. We chose to focus on the state of Illinois because adding the state might lead to bad modelling as there might be not enough data for each of them.
+In this part we choose to explain the nest fate with different
+variables. We chose to focus on the state of Illinois because adding the
+state might lead to bad modelling as there might be not enough data for
+each of them.
 
 ```{r,include=FALSE}
 
@@ -512,11 +584,18 @@ Variables are :
 -   *Year* : qualitative explanatory variable
 -   *Initiation_Date* : Quantitative explanatory variable
 
-**Aim of the study** : We want to model the fate of the nest as a response of the County, the Habitat, the Species, the Year, the Initiation date. We are looking for a model that could explain the distribution of Nest fate.
+**Aim of the study** : We want to model the fate of the nest as a
+response of the County, the Habitat, the Species, the Year, the
+Initiation date. We are looking for a model that could explain the
+distribution of Nest fate.
 
-**Method** : Here our response variable is either a sucess or a failure. This response follows a **binomial distribution** with the probability density function $$P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}$$
+**Method** : Here our response variable is either a sucess or a failure.
+This response follows a **binomial distribution** with the probability
+density function $$P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}$$
 
-The term $$ \binom{n}{k} $$ is the binomial coefficient, which represents the number of ways to choose ( k ) successes from ( n ) trials.
+The term $$ \binom{n}{k} $$ is the binomial coefficient, which
+represents the number of ways to choose ( k ) successes from ( n )
+trials.
 
 $$ p $$ is the probability of success on a single trial.
 
@@ -537,11 +616,13 @@ table(data_Illinois$Nest_Fate)
 
 ```
 
-According to the results table, it appears that overall, there are roughly twice as many failures as successes.
+According to the results table, it appears that overall, there are
+roughly twice as many failures as successes.
 
 ### For quantitative Xs : outlier and distribution of $X$ values
 
-Here we have one quantitative explanatory variable $X$. We check its distribution and if there is any outlier value.
+Here we have one quantitative explanatory variable $X$. We check its
+distribution and if there is any outlier value.
 
 ```{r dataCov, fig.height=3, fig.width=8}
 #| echo: true
@@ -560,11 +641,13 @@ qqnorm(data_Illinois$Initiation_Date,pch=16,col='dodgerblue3',xlab='')
 qqline(data_Illinois$Initiation_Date,col='red',lwd=2)
 ```
 
-We do not observe any outliers and it seems that the initiation date of the nesting period follows a normal distribution.
+We do not observe any outliers and it seems that the initiation date of
+the nesting period follows a normal distribution.
 
 ### For each qualitative explanatory variable $X$ : Modalities and number of individuals for each of them
 
-We need to analyse the modalities and the number of individuals for each modality.
+We need to analyse the modalities and the number of individuals for each
+modality.
 
 ```{r}
 #| echo: true
@@ -584,11 +667,20 @@ summary(data_Illinois$Species)
 summary(data_Illinois$Year)
 ```
 
-The results tables provided by our script show different things. First of all for the **County** variable we can observe that some counties have very little records. For example Carrol/Whiteside has 5 records of nest while counties like Jo Daviess have 292 records. This could lead to mis-modelling so attention on the model results is necessary. For **Habitat** variable it seems that one habitat in particular (Pasture) has more records than the other. For the **Species** variable, similarly to county variable, we observe that some species have more records than others. We observe the same for the **Year** variable.
+The results tables provided by our script show different things. First
+of all for the **County** variable we can observe that some counties
+have very little records. For example Carrol/Whiteside has 5 records of
+nest while counties like Jo Daviess have 292 records. This could lead to
+mis-modelling so attention on the model results is necessary. For
+**Habitat** variable it seems that one habitat in particular (Pasture)
+has more records than the other. For the **Species** variable, similarly
+to county variable, we observe that some species have more records than
+others. We observe the same for the **Year** variable.
 
 ### Relationships between Y and Xs ?
 
-We can then analyse graphically if we might have relationships between $Y$ and $Xs$.
+We can then analyse graphically if we might have relationships between
+$Y$ and $Xs$.
 
 ```{r datagraph, fig.height=4, fig.width=10}
 #| echo: true
@@ -647,15 +739,25 @@ title("Relationship Nest Fate & Year", cex.main=1.2)
 
 ```
 
-Looking at those graphs it doesn't seems like the **Initiation_date**, the **County** or the **Habitat** has any effects on the **Nest_fate**. Maybe a little bit for **County** but the statistical analysis afterward will enable us to have more information on which variable has an effect. For the **Year** and the **Species** we might observe a little difference, but still really light.
+Looking at those graphs it doesn't seems like the **Initiation_date**,
+the **County** or the **Habitat** has any effects on the **Nest_fate**.
+Maybe a little bit for **County** but the statistical analysis afterward
+will enable us to have more information on which variable has an effect.
+For the **Year** and the **Species** we might observe a little
+difference, but still really light.
 
 ### Analysing interaction between Xs
 
-In any modelling approach there is a need to check for interactions between variables. In our study we judge that there is none.
+In any modelling approach there is a need to check for interactions
+between variables. In our study we judge that there is none.
 
 ### Checking collinearity between $Xs$
 
-To avoid multicollinearity in modeling, we need to analyze how the explanatory variables $X_s$ are related. It is important to check for collinearity. Indeed if some variables are correlated they measure the same thing and therefore keeping both of them might lead to bad prediction.
+To avoid multicollinearity in modeling, we need to analyze how the
+explanatory variables $X_s$ are related. It is important to check for
+collinearity. Indeed if some variables are correlated they measure the
+same thing and therefore keeping both of them might lead to bad
+prediction.
 
 ```{r datacolin, fig.height=4, fig.width=8}
 #| echo: true
@@ -703,13 +805,18 @@ boxplot(data_Illinois$Initiation_Date ~ data_Illinois$Year,
 
 ```
 
-Here it seems that there is a strong collinearity between *County* and *Habitat* as well as between **Species** and **Year** and also between **Species** and **Habitat**. Therefore, we are not going to keep **County**, **Habitat** and **Year** as explanatory variables in our model.
+Here it seems that there is a strong collinearity between *County* and
+*Habitat* as well as between **Species** and **Year** and also between
+**Species** and **Habitat**. Therefore, we are not going to keep
+**County**, **Habitat** and **Year** as explanatory variables in our
+model.
 
 ## B. Statistical Analysis
 
 ### Model building up
 
-Because our response variable is a binary variable that follows a binomial distribution we have a link function : **the logit**.
+Because our response variable is a binary variable that follows a
+binomial distribution we have a link function : **the logit**.
 
 ```{r fullmodel}
 #| echo: true
@@ -725,7 +832,9 @@ mod1<-glm(Nest_Fate~Species
 drop1(mod1,test="Chi")
 ```
 
-The results table shows that Initiation_Date is not significant. However the AIC with Initiation_Date is better which means we should keep this variable despite its lack of significance.
+The results table shows that Initiation_Date is not significant. However
+the AIC with Initiation_Date is better which means we should keep this
+variable despite its lack of significance.
 
 ### Model coefficient and its equation
 
@@ -739,23 +848,42 @@ summary(mod1)
 
 ```
 
-The following equation is the one of the model : $$\log\left(\frac{p}{1-p}\right) = -1.097853 + 0.189410 \cdot \text{Species}_{\text{Dickcissel}} - 0.382551 \cdot \text{Species}_{\text{Eastern Meadowlark}} + 0.664586 \cdot \text{Species}_{\text{Grasshopper Sparrow}} - 0.327407 \cdot \text{Species}_{\text{Henslow's Sparrow}} - 0.655641 \cdot \text{Species}_{\text{Savannah Sparrow}} + 0.180147 \cdot \text{Species}_{\text{Vesper Sparrow}} + 0.961508 \cdot \text{Species}_{\text{Western Meadowlark}} + 0.000686 \cdot \text{Initiation\_Date}$$
+The following equation is the one of the model :
+$$\log\left(\frac{p}{1-p}\right) = -1.097853 + 0.189410 \cdot \text{Species}_{\text{Dickcissel}} - 0.382551 \cdot \text{Species}_{\text{Eastern Meadowlark}} + 0.664586 \cdot \text{Species}_{\text{Grasshopper Sparrow}} - 0.327407 \cdot \text{Species}_{\text{Henslow's Sparrow}} - 0.655641 \cdot \text{Species}_{\text{Savannah Sparrow}} + 0.180147 \cdot \text{Species}_{\text{Vesper Sparrow}} + 0.961508 \cdot \text{Species}_{\text{Western Meadowlark}} + 0.000686 \cdot \text{Initiation\_Date}$$
 
 where $p$ is the probability that the event is true.
 
--   **Intercept (-1.097853)**: The value of the log-odds when all explanatory variables are zero.
--   **Species Dickcissel (0.189410)**: A positive coefficient, but not significant ((p = 0.56565)), indicating that the effect of this species on the chances of nest success is not statistically significant.
--   **Species Eastern Meadowlark (-0.382551)**: A negative coefficient, not significant ((p = 0.25424)).
--   **Species Grasshopper Sparrow (0.664586)**: A positive and significant coefficient ((p = 0.03505)), suggesting that this species increases the chances of nest success.
--   **Species Henslow's Sparrow (-0.327407)**: A negative coefficient, not significant ((p = 0.77686)).
--   **Species Savannah Sparrow (-0.655641)**: A negative coefficient, not significant ((p = 0.42549)).
--   **Species Vesper Sparrow (0.180147)**: A positive coefficient, not significant ((p = 0.66871)).
--   **Species Western Meadowlark (0.961508)**: A positive and significant coefficient ((p = 0.02092)).
--   **Initiation Date (0.000686)**: A positive coefficient, but not significant ((p = 0.86557)), indicating that it does not have a statistically significant effect on nest success.
+-   **Intercept (-1.097853)**: The value of the log-odds when all
+    explanatory variables are zero.
+-   **Species Dickcissel (0.189410)**: A positive coefficient, but not
+    significant ((p = 0.56565)), indicating that the effect of this
+    species on the chances of nest success is not statistically
+    significant.
+-   **Species Eastern Meadowlark (-0.382551)**: A negative coefficient,
+    not significant ((p = 0.25424)).
+-   **Species Grasshopper Sparrow (0.664586)**: A positive and
+    significant coefficient ((p = 0.03505)), suggesting that this
+    species increases the chances of nest success.
+-   **Species Henslow's Sparrow (-0.327407)**: A negative coefficient,
+    not significant ((p = 0.77686)).
+-   **Species Savannah Sparrow (-0.655641)**: A negative coefficient,
+    not significant ((p = 0.42549)).
+-   **Species Vesper Sparrow (0.180147)**: A positive coefficient, not
+    significant ((p = 0.66871)).
+-   **Species Western Meadowlark (0.961508)**: A positive and
+    significant coefficient ((p = 0.02092)).
+-   **Initiation Date (0.000686)**: A positive coefficient, but not
+    significant ((p = 0.86557)), indicating that it does not have a
+    statistically significant effect on nest success.
 
 ### Explanation provided by the model
 
-One way to evaluate the goodness of fit for our models is to assess the difference between our model and the null model (which summarizes the data with a single parameter: the mean of𝑌) Y). This null model essentially explains nothing. To do so we calculate a parameter, $${pseudo}-R^2$$ by examining the distance between the deviance of the null model and the residual deviance of our model.
+One way to evaluate the goodness of fit for our models is to assess the
+difference between our model and the null model (which summarizes the
+data with a single parameter: the mean of𝑌) Y). This null model
+essentially explains nothing. To do so we calculate a parameter,
+$${pseudo}-R^2$$ by examining the distance between the deviance of the
+null model and the residual deviance of our model.
 
 ```{r deviance}
 #| echo: true
@@ -769,7 +897,8 @@ One way to evaluate the goodness of fit for our models is to assess the differen
 nagelkerke(mod1)
 ```
 
-According to this table, the estimate of the explained deviance is **2.9%** which is very low.
+According to this table, the estimate of the explained deviance is
+**2.9%** which is very low.
 
 ## C. Model validation
 
@@ -791,7 +920,8 @@ The graph does not show any influential individuals.
 
 ### Prediction with different data
 
-Here we want to assess if our model is able to well-classify nest based on our data.
+Here we want to assess if our model is able to well-classify nest based
+on our data.
 
 ```{r Simul, fig.height=4, fig.width=4}
 #| echo: true
@@ -826,9 +956,13 @@ boxplot(diagZ[2,], col='dodgerblue3',ylab='#Rate of nest fate well-classified')
 mean(diagZ[2,])
 ```
 
-Here we have **58%** of good predictions, which is somewhat below the common threshold of 70% for a model to be considered good. This suggests that the model may need improvement.
+Here we have **58%** of good predictions, which is somewhat below the
+common threshold of 70% for a model to be considered good. This suggests
+that the model may need improvement.
 
-This result is not surprising given our initial data. Because they are from different studies some variables barely contains some species or years, etc... This could explain why our model is not suitable.
+This result is not surprising given our initial data. Because they are
+from different studies some variables barely contains some species or
+years, etc... This could explain why our model is not suitable.
 
 # III. Analysing the relationship between nest fate and county, habitat, species, year, initiation date using a generalized linear model (GLM) with a Poisson distribution
 
@@ -841,15 +975,29 @@ data$Habitat <- as.factor(data$Habitat)
 data$Year <- as.factor(data$Year)
 ```
 
--   *County* : the county in the state where the state has been found. 14 levels factor.
--   *Habitat* : the type of habitat in which the nest has been found. 4 levels factor.
--   *Species* : the species of the bird that has build the nest. 8 levels factor.
+-   *County* : the county in the state where the state has been found.
+    14 levels factor.
+-   *Habitat* : the type of habitat in which the nest has been found. 4
+    levels factor.
+-   *Species* : the species of the bird that has build the nest. 8
+    levels factor.
 -   *Year* : the year of the nest building. 21 levels factor.
--   *Number_Fledged* : the number of birds that hatch on the nest when they hatch. Quantitative variable.
+-   *Number_Fledged* : the number of birds that hatch on the nest when
+    they hatch. Quantitative variable.
 
-We want to study the impact of four qualitative variables, the habitat, the county, the species and the year over the number of young hatched in the nest *"Number_Fledged"*. It is a counting variable, which imply that it follows a Poisson distribution. A negative binomial distribution could be used but is preferred when the count values are high (which is not really the case here since the highest value is of 6)
+We want to study the impact of four qualitative variables, the habitat,
+the county, the species and the year over the number of young hatched in
+the nest *"Number_Fledged"*. It is a counting variable, which imply that
+it follows a Poisson distribution. A negative binomial distribution
+could be used but is preferred when the count values are high (which is
+not really the case here since the highest value is of 6)
 
-A Poisson law is used to describe rare, discrete and independent events. Hence the variable $Y$ that follows a Poisson distribution of parameter $\lambda$ is written: $$Pr(Y=y)=\frac{e^{-\lambda}.\lambda^y}{y!}$$ where $y$ represent the value of the count (here $y$ ∈ \[0-6\]) and $\lambda$ is the mean value and variance of the Poisson distribution (because in a Poisson law E($y$)= Var($y$)=$\lambda$).
+A Poisson law is used to describe rare, discrete and independent events.
+Hence the variable $Y$ that follows a Poisson distribution of parameter
+$\lambda$ is written: $$Pr(Y=y)=\frac{e^{-\lambda}.\lambda^y}{y!}$$
+where $y$ represent the value of the count (here $y$ ∈ \[0-6\]) and
+$\lambda$ is the mean value and variance of the Poisson distribution
+(because in a Poisson law E($y$)= Var($y$)=$\lambda$).
 
 ## A. Data exploration
 
@@ -870,7 +1018,9 @@ qqnorm(data$Number_Fledged,pch=16,col='dodgerblue3',xlab='')
 qqline(data$Number_Fledged,col='red',lwd=2)
 ```
 
-There aren't any outlayer values. There are a lot of value at 0. Maybe we can study only the number of young when there are some. It could be a normal distribution.
+There aren't any outlayer values. There are a lot of value at 0. Maybe
+we can study only the number of young when there are some. It could be a
+normal distribution.
 
 ```{r poisson_data_filtered, include=TRUE}
 # Get rid of the lines where the Number of young individuals in the nest is equal to 0
@@ -905,7 +1055,9 @@ summary(data_filtered$Species)
 summary(data_filtered$Year)
 ```
 
-Problem: there aren't the same number of observations in each level of each factors. Suggestion: normalize by the number of observation for each level.
+Problem: there aren't the same number of observations in each level of
+each factors. Suggestion: normalize by the number of observation for
+each level.
 
 ### Analyze the relation between Y and Xs
 
@@ -926,11 +1078,15 @@ boxplot(Number_Fledged~Species, varwidth = TRUE, ylab = "Number of young in nest
 boxplot(Number_Fledged~Year, varwidth = TRUE, ylab = "Number of young in nest", xlab = "Year", col=terrain.colors(21), main = "",data=data_filtered)
 ```
 
-It's not easy to see if the variables have an impact because some of them have a lot of levels, but it is possible to see small differences between them. The analysis will tell us if they really got an impact over the number of young in the nest.
+It's not easy to see if the variables have an impact because some of
+them have a lot of levels, but it is possible to see small differences
+between them. The analysis will tell us if they really got an impact
+over the number of young in the nest.
 
 ### Analyze the interactions between Xs
 
-There are a lot of levels so it's hard to plot the interactions. We will see if there are some in the analysis.
+There are a lot of levels so it's hard to plot the interactions. We will
+see if there are some in the analysis.
 
 ```{r poisson_dataInter, include=TRUE, fig.height=3, fig.width=8}
 
@@ -943,11 +1099,14 @@ points(Number_Fledged[Habitat=="Prairie"]~County[Habitat=="Prairie"],pch=16,cex=
 points(Number_Fledged[Habitat=="Warm-season Grassland"]~County[Habitat=="Warm-season Grassland"],pch=16,cex=2,col='yellow', data=data_filtered)
 ```
 
-Here the example between county and habitat doesn't show a clear pattern. It's hard to conclude on the interaction aspect.
+Here the example between county and habitat doesn't show a clear
+pattern. It's hard to conclude on the interaction aspect.
 
 ### Checking collinearity between categorical independent variables Xs:
 
-The following code only presents the contingency table between the variables Habitat and Species for convenience, but the same table has to be done with every couple of 4 variables.
+The following code only presents the contingency table between the
+variables Habitat and Species for convenience, but the same table has to
+be done with every couple of 4 variables.
 
 ```{r poisson_datacolin, include=TRUE, fig.height=4, fig.width=8}
 
@@ -959,15 +1118,20 @@ print(chi2_test)
 print(chi2_test$expected)
 ```
 
-Problem : for most of the variables the chi² test can't be done because of the low number of values in each group. The only one that fulfill the conditions and therefore can be made is between Habitat and Species but the result shows that the variables are correlated.
+Problem : for most of the variables the chi² test can't be done because
+of the low number of values in each group. The only one that fulfill the
+conditions and therefore can be made is between Habitat and Species but
+the result shows that the variables are correlated.
 
 ## B. Statistical Analysis
 
-Now that we have a better idea of the data implied in this study, we can begin the statistical analysis.
+Now that we have a better idea of the data implied in this study, we can
+begin the statistical analysis.
 
 ## Building of the model
 
-Because our response variable follows a poisson distribution we use a link function : **the log function**.
+Because our response variable follows a poisson distribution we use a
+link function : **the log function**.
 
 ```{r poisson_fullmodel,include=TRUE}
 # Model formulation
@@ -1038,7 +1202,9 @@ The equation of the model is the following:
 
 $$ Number_Fledged = 1.29^{***} + (Species{Bobolink} = 0 ;\:Species{Dickcissel} = -0.18^{**} ; \:Species{Eastern Meadowlark} = -0.14^{**} ; \:Species{Grasshopper Sparrow} = -0.05 ; \:Species{Henslow's Sparrow} = -0.18 ; \:Species{Savannah Sparrow = -0.19^{***} ; \:Species{Vesper Sparrow = -0.32^{***} ; \:Species{Western Meadowlark} = -0.04) $$
 
-According to the model's summary, the null deviance is of 599.76 and residual deviance is of 572.82. In order to estimate the explained deviance, one can use the following formula:\
+According to the model's summary, the null deviance is of 599.76 and
+residual deviance is of 572.82. In order to estimate the explained
+deviance, one can use the following formula:\
 
 $$Pseudo\:R^2=100\:.\:\frac{Null\:Deviance- Residual\:Deviance}{Null\:Deviance}$$
 
@@ -1047,13 +1213,19 @@ $$Pseudo\:R^2=100\:.\:\frac{Null\:Deviance- Residual\:Deviance}{Null\:Deviance}$
 (mod1$null.deviance-mod1$deviance)/mod1$null.deviance
 ```
 
-This is very very bad... The variable species doesn't seem to explain a lot of the variation in the number of young individuals in the nest.
+This is very very bad... The variable species doesn't seem to explain a
+lot of the variation in the number of young individuals in the nest.
 
 ## C. Model validation:
 
-The model that we have done is a generalized linear model so there aren't residual normality or homogeneity. However, it is important to check the independence of residuals.
+The model that we have done is a generalized linear model so there
+aren't residual normality or homogeneity. However, it is important to
+check the independence of residuals.
 
-First of all, in situations where a counting model is used, such as when following a Poisson distribution, the overdispersion has to be checked. It can be done with the following code. If the result is over 1, there are overdispersion and the model should be reconsidered.
+First of all, in situations where a counting model is used, such as when
+following a Poisson distribution, the overdispersion has to be checked.
+It can be done with the following code. If the result is over 1, there
+are overdispersion and the model should be reconsidered.
 
 ```{r poisson_overdisp, include=TRUE}
 # Scale parameter calculation
@@ -1075,17 +1247,26 @@ abline(h = 1, col = 2,lwd = 3)
 
 ```
 
-There aren't very influential individuals which can be logical because of the high number of them and the low impact of species over the number of young individuals in the nest.
+There aren't very influential individuals which can be logical because
+of the high number of them and the low impact of species over the number
+of young individuals in the nest.
 
 ## Conclusions:
 
-The species of the birds has an impact over the number of young individuals in the nest, but it is clearly not the only variable that explain the variation of the response (only 4% are due to the species).
+The species of the birds has an impact over the number of young
+individuals in the nest, but it is clearly not the only variable that
+explain the variation of the response (only 4% are due to the species).
 
 # IV. ANOVA
 
-Analysis of variance (ANOVA) is one of the most widely used statistical methods in various disciplines. It allows to model the relationship between a quantitative dependent variable $Y$ according to the different modalities of one or more qualitative explanatory variables $Xs$.
+Analysis of variance (ANOVA) is one of the most widely used statistical
+methods in various disciplines. It allows to model the relationship
+between a quantitative dependent variable $Y$ according to the different
+modalities of one or more qualitative explanatory variables $Xs$.
 
-We will perform an ANOVA to see the effect of qualitatives variables (state, habitat, species, year) on the quantitative variable Initiation_Date in the Bird_dataset.csv dataset.
+We will perform an ANOVA to see the effect of qualitatives variables
+(state, habitat, species, year) on the quantitative variable
+Initiation_Date in the Bird_dataset.csv dataset.
 
 We need to check the type of the variables :
 
@@ -1116,15 +1297,22 @@ colSums(is.na(data))
 
 There is no missing data here.
 
-Before any modeling, we must explore the data in order to avoid possible errors. Below we present the list of steps to follow before proceeding to the modeling:
+Before any modeling, we must explore the data in order to avoid possible
+errors. Below we present the list of steps to follow before proceeding
+to the modeling:
 
--   1: Check for the presence of outliers in $Y$ and the distribution of the values of $Y$
+-   1: Check for the presence of outliers in $Y$ and the distribution of
+    the values of $Y$
 
--   2: If $X$ is a **quantitative** explanatory variable, check for the presence of outliers and the distribution of the values of $X$ **OR/AND** If $X$ is a **qualitative** explanatory variable, analyze the number of modalities and the number of individuals per modality
+-   2: If $X$ is a **quantitative** explanatory variable, check for the
+    presence of outliers and the distribution of the values of $X$
+    **OR/AND** If $X$ is a **qualitative** explanatory variable, analyze
+    the number of modalities and the number of individuals per modality
 
 -   3: Analyze the potential relationship between $Y$ and the $X_{s}$
 
--   4: Check for the presence of possible interactions between the $X_{s}$
+-   4: Check for the presence of possible interactions between the
+    $X_{s}$
 
 ### Outliers in $Y$ and distribution of values of $Y$
 
@@ -1144,11 +1332,13 @@ qqnorm(data$Initiation_Date,pch=16,col='dodgerblue3',xlab='')
 qqline(data$Initiation_Date,col='red',lwd=2)
 ```
 
-The different graphs show us no outliers for Initiation_Date. In addition, our Y variable seems to follow a Normal Distribution.
+The different graphs show us no outliers for Initiation_Date. In
+addition, our Y variable seems to follow a Normal Distribution.
 
 ### Outliers and distribution of the values of $X$
 
-The four $Xs$ are factors. We can analyze the number of modalities and the number of individuals per modality.
+The four $Xs$ are factors. We can analyze the number of modalities and
+the number of individuals per modality.
 
 ```{r Ini_datafact}
 #| echo: true
@@ -1165,13 +1355,23 @@ summary(data$Species)
 summary(data$Year)
 ```
 
-Factor State: The experimental design is not balanced (1071 and 2150 data), but the analysis can be performed because there are enough data in each modality (\> 10).
+Factor State: The experimental design is not balanced (1071 and 2150
+data), but the analysis can be performed because there are enough data
+in each modality (\> 10).
 
-Factor Habitat: The experimental design is not balanced (from 392 to 1683 data), but the analysis can be performed because there are enough data in each modality (\> 10).
+Factor Habitat: The experimental design is not balanced (from 392 to
+1683 data), but the analysis can be performed because there are enough
+data in each modality (\> 10).
 
-Factor Species: The experimental design is not balanced. Several species have less than 10 data per modality. It will therefore be necessary to remove these data before continuing the analysis
+Factor Species: The experimental design is not balanced. Several species
+have less than 10 data per modality. It will therefore be necessary to
+remove these data before continuing the analysis
 
-Factor Year: The experimental design is not balanced (from 24 to 448 data), but the analysis can be performed because there are enough data in each modality (\> 10 : threshold from which we consider that carrying out statistical analyses makes sense. You can choose your own threshold).
+Factor Year: The experimental design is not balanced (from 24 to 448
+data), but the analysis can be performed because there are enough data
+in each modality (\> 10 : threshold from which we consider that carrying
+out statistical analyses makes sense. You can choose your own
+threshold).
 
 ### Removal of poorly represented modalities (\< 10 data)
 
@@ -1193,7 +1393,11 @@ summary(data$Species)
 
 ### Analyzing the potential relationship between Y vs Xs
 
-We can graphically analyze the possible relationships between Y and X. This graphical analysis of the relationships between Y and X **does not allow us to predict the significance of the relationship**. Statistical modeling remains the only available means to identify whether a relationship exists or not.
+We can graphically analyze the possible relationships between Y and X.
+This graphical analysis of the relationships between Y and X **does not
+allow us to predict the significance of the relationship**. Statistical
+modeling remains the only available means to identify whether a
+relationship exists or not.
 
 ```{r Ini_datagraph, fig.height=3, fig.width=6}
 #| echo: true
@@ -1208,11 +1412,16 @@ boxplot(data$Initiation_Date~data$Species, varwidth = TRUE, ylab = "Initiation d
 boxplot(data$Initiation_Date~data$Year, varwidth = TRUE, ylab = "Initiation date", xlab = "Year", col='darkgrey', main = "")
 ```
 
-From the first visualizations, we could make the hypothesis that Year and Species influence Initiation_Date.
+From the first visualizations, we could make the hypothesis that Year
+and Species influence Initiation_Date.
 
 ### Analysis of possible interactions between the four Xs
 
-The interaction between two factors can only be tested if the factors are crossed (all the modalities of one factor are represented in all the modalities of the other factor and vice versa = a complete factorial design). To estimate the presence of interactive effects, we will develop a graphical approach.
+The interaction between two factors can only be tested if the factors
+are crossed (all the modalities of one factor are represented in all the
+modalities of the other factor and vice versa = a complete factorial
+design). To estimate the presence of interactive effects, we will
+develop a graphical approach.
 
 ```{r Ini_dataInter, fig.height=4, fig.width=7}
 #| echo: true
@@ -1229,7 +1438,8 @@ table(data$Species,data$Year)
 
 ```
 
-Subsequently, we will not analyze the interactions between the factors since there is no interaction between the Xs variables.
+Subsequently, we will not analyze the interactions between the factors
+since there is no interaction between the Xs variables.
 
 ### Search for candidate model
 
@@ -1245,7 +1455,8 @@ mod1<-lm(Initiation_Date~State+Habitat+Species+Year,data=data)
 drop1(mod1,test="F")
 ```
 
-Since the Habitat factor is not significant, we can remove it in our search for the candidate model.
+Since the Habitat factor is not significant, we can remove it in our
+search for the candidate model.
 
 ```{r Ini_candidate_model}
 #| echo: true
@@ -1261,7 +1472,8 @@ drop1(mod2,test="F")
 
 All factors are significant. So we have our candidate model.
 
-To understand how factors influence Initiation_Date, we need to analyze the coefficients of the model.
+To understand how factors influence Initiation_Date, we need to analyze
+the coefficients of the model.
 
 ### Analysis of the coefficients of the candidate model
 
@@ -1320,11 +1532,16 @@ We can determine the portion of variance of $Y$ explained by our model.
 summary(mod2)$adj.r.squared
 ```
 
-We obtain the adjusted R² = 0.22. This means that approximately 22% of the variance of Initiation_Date is explained by our modeling.
+We obtain the adjusted R² = 0.22. This means that approximately 22% of
+the variance of Initiation_Date is explained by our modeling.
 
 ## Validation of modeling
 
-The assumptions of ANOVA are the same as for any general linear model, namely **independence**, **normality of residuals** and **homogeneity of variances**. In addition, one must check the presence of influential statistical units (i.e. observations having a significant contribution to the construction of the model).
+The assumptions of ANOVA are the same as for any general linear model,
+namely **independence**, **normality of residuals** and **homogeneity of
+variances**. In addition, one must check the presence of influential
+statistical units (i.e. observations having a significant contribution
+to the construction of the model).
 
 ### Normality of residuals
 
@@ -1345,7 +1562,11 @@ The residuals seem to follow a Normal Distribution.
 
 ### Homogeneity of variance
 
-The assumption of homogeneity of variance is the fact that the variation of the residuals is approximately equal over the entire range of explanatory variables, should be verified by plotting the residuals at the estimated values ​​and the residuals at the values ​​of the significant variables. The residuals should show **no trend**.
+The assumption of homogeneity of variance is the fact that the variation
+of the residuals is approximately equal over the entire range of
+explanatory variables, should be verified by plotting the residuals at
+the estimated values ​​and the residuals at the values ​​of the significant
+variables. The residuals should show **no trend**.
 
 ```{r ini_Residhomo, fig.height=6, fig.width=8}
 #| echo: true
@@ -1380,11 +1601,16 @@ boxplot(residuals(mod2)~ data$Year,
         main = "")
 ```
 
-We do not observe any trend. Therefore the hypothesis of homogeneity of variance is verified.
+We do not observe any trend. Therefore the hypothesis of homogeneity of
+variance is verified.
 
 ### Independence
 
-ANOVA (like any other general linear model) assumes that all statistical units (and therefore residuals) are independent of each other. This issue must be taken into account at the *research design stage*. Given the approach here, the statistical individuals are independent. This assumption is verified.
+ANOVA (like any other general linear model) assumes that all statistical
+units (and therefore residuals) are independent of each other. This
+issue must be taken into account at the *research design stage*. Given
+the approach here, the statistical individuals are independent. This
+assumption is verified.
 
 ### Verification of influential individuals
 
@@ -1404,7 +1630,8 @@ All conditions being verified, our modeling can be validated.
 
 ### Conclusion of our ANOVA
 
-The explanatory variables retained in our model are "State", "Species" and "Year".
+The explanatory variables retained in our model are "State", "Species"
+and "Year".
 
 The equation of our model is:
 
@@ -1412,15 +1639,19 @@ $$
 \text{Y} = 75.7832 - 4.4838 \cdot \text{State}_{\text{Wisconsin}} + 21.9212 \cdot \text{Species}_{\text{Dickcissel}} + 0.5278 \cdot \text{Species}_{\text{Eastern Meadowlark}} + 10.6652 \cdot \text{Species}_{\text{Grasshopper Sparrow}} + 1.9590 \cdot \text{Species}_{\text{Savannah Sparrow}} + 6.2687 \cdot \text{Species}_{\text{Vesper Sparrow}} + 4.5978 \cdot \text{Species}_{\text{Western Meadowlark}} - 8.1836 \cdot \text{Year}_{1992} - 9.3039 \cdot \text{Year}_{1993} - 11.0971 \cdot \text{Year}_{1994} - 11.7709 \cdot \text{Year}_{1995} - 11.2748 \cdot \text{Year}_{1996} - 10.4340 \cdot \text{Year}_{1997} - 9.4950 \cdot \text{Year}_{1998} - 6.4308 \cdot \text{Year}_{1999} - 4.7644 \cdot \text{Year}_{2000} - 6.3518 \cdot \text{Year}_{2001} - 10.3377 \cdot \text{Year}_{2002} - 12.4141 \cdot \text{Year}_{2003} - 17.6615 \cdot \text{Year}_{2004} - 14.4370 \cdot \text{Year}_{2005} - 20.7535 \cdot \text{Year}_{2006} - 15.3033 \cdot \text{Year}_{2007} - 17.9192 \cdot \text{Year}_{2008} - 19.0311 \cdot \text{Year}_{2009} - 15.0863 \cdot \text{Year}_{2010} - 13.2651 \cdot \text{Year}_{2011}
 $$
 
-In this equation each variable takes the value 1 if the corresponding condition is true and 0 otherwise.
+In this equation each variable takes the value 1 if the corresponding
+condition is true and 0 otherwise.
 
-But despite all the conditions of the model being validated, this model only explains 22% (R² = 0.22) of our variable Y (Initiation_Date).
+But despite all the conditions of the model being validated, this model
+only explains 22% (R² = 0.22) of our variable Y (Initiation_Date).
 
 # V. FAMD
 
 ### Generical exploration
 
-Here, we perform an FAMD on the initial dataframe. The FAMD is used for tables with qualitative and quantitative variables. The ID are removed because of their uselessness.
+Here, we perform an FAMD on the initial dataframe. The FAMD is used for
+tables with qualitative and quantitative variables. The ID are removed
+because of their uselessness.
 
 ```{r famd.format}
 #| echo: true
@@ -1469,7 +1700,11 @@ fviz_eig(X = famd,
          addlabels = TRUE)
 ```
 
-*Conclusion :* We can see that keeping three axes is necessary to cover as much inertia as possible while being parcimonious. However, we will simplify the analysis by keeping only two axes in the interpretation parts. Now, we can see the contribution of the variables to the factorial axes :
+*Conclusion :* We can see that keeping three axes is necessary to cover
+as much inertia as possible while being parcimonious. However, we will
+simplify the analysis by keeping only two axes in the interpretation
+parts. Now, we can see the contribution of the variables to the
+factorial axes :
 
 ```{r fam.contrib, fig.height=4, fig.width=8}
 #| echo: true
@@ -1497,9 +1732,12 @@ famd$var$contrib[,1:3] > 1/9*100
 ### County / Habitat / Year / Species
 ```
 
-We can see that the only variables that contributed to the axes are the qualitative variables such as County, State, Year, Habitat and Species. The quantitative variables have low contributions.
+We can see that the only variables that contributed to the axes are the
+qualitative variables such as County, State, Year, Habitat and Species.
+The quantitative variables have low contributions.
 
-And now, let's observe the projections of the variables and of the observations :
+And now, let's observe the projections of the variables and of the
+observations :
 
 ```{r famd_axes_12}
 #| echo: true
@@ -1530,7 +1768,8 @@ fviz_famd_ind(X = famd,
 
 ### Realisation of a Hierarchical clustering
 
-We can use the function fviz_cluster to visualise the optimal number of clusters to make. The k-means method is used.
+We can use the function fviz_cluster to visualise the optimal number of
+clusters to make. The k-means method is used.
 
 ```{r cluster}
 #| echo: true
@@ -1550,7 +1789,8 @@ fviz_nbclust(x = famd_g,
 
 Three clusters is the best choice according to the k-means method.
 
-We can define classes for a Hierarchical Clustering thanks to the function fviz_cluster.
+We can define classes for a Hierarchical Clustering thanks to the
+function fviz_cluster.
 
 ```{r cluster_graph}
 #| echo: true
@@ -1559,7 +1799,11 @@ We can define classes for a Hierarchical Clustering thanks to the function fviz_
 fviz_cluster(class, axes = c(1,2), ellipse.type = "convex")
 ```
 
-The fviz_cluster function shows three clusters. The projection of the variables shows an homogeneous scatterplots. The projection of the observations suggests two groups of individuals, separated merely by the axe of the ordinates. To determine the kinds of the groups, we have to gather variables.
+The fviz_cluster function shows three clusters. The projection of the
+variables shows an homogeneous scatterplots. The projection of the
+observations suggests two groups of individuals, separated merely by the
+axe of the ordinates. To determine the kinds of the groups, we have to
+gather variables.
 
 The blue cluster is characterised by :
 
@@ -1585,4 +1829,9 @@ The green side is characterised by :
 -   Species : Bobolink, Henslow's Sparrow, Eastern Meadowlark
 -   Habitat : Cool-season Grassland
 
-It is necessary to note that several species are near the border between the Illinois and the Wisconsin. Thus they can be seen in both states, which can be counter-intuitive by seeing the FAMD. However, the only factor that can explain this distribution could be years of sampling. There is a clear separation of the years depending on the part of the graphics.
+It is necessary to note that several species are near the border between
+the Illinois and the Wisconsin. Thus they can be seen in both states,
+which can be counter-intuitive by seeing the FAMD. However, the only
+factor that can explain this distribution could be years of sampling.
+There is a clear separation of the years depending on the part of the
+graphics.
