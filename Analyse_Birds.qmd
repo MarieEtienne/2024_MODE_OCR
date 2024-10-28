@@ -58,7 +58,9 @@ library(maps)
 head(data)
 ```
 
-Separation of the dataset in function of the County
+In order to picture the data in a more visual way, we will be representing our dataset on a map. 
+The first step in our map creation is the separation of the dataset by the counties. 
+
 ```{r}
 data_list_county <- split(data, data$County)
 
@@ -78,7 +80,8 @@ data_carroll <- data_list_county[["Carroll"]]
 data_carroll_whiteside <- data_list_county[["Carroll/Whiteside"]]
 ```
 
-## Adding columns for the coordinates depending of the County and the number of nest observed per year for each one of them
+We are now adding columns for the coordinates of each county, the coordinates were obtained by searching for the conties on openstreetmap. 
+
 ```{r}
 data_will <- data_will %>%
   mutate(longitude_column = -88.0817,
@@ -138,35 +141,26 @@ data_carroll_whiteside <- data_carroll_whiteside %>%
 ```
 
 
+Now, for each county dataset, we subdivide the said dataset for each year when at least one nest has been observed in this conty. 
 
-
-
-# OMG, celui là fonctionne !!! 
 ```{r}
-
-# Créez une liste des noms de comtés et des dataframes
 county_names <- c("data_will", "data_jo_daviess", "data_lafayette", "data_iowa", 
                   "data_dane", "data_green", "data_grant", "data_grundy", 
                   "data_lee_ogle", "data_lee", "data_rock", "data_monroe", 
                   "data_carroll", "data_carroll_whiteside")
 
-# Créez une liste de dataframes en utilisant mget pour récupérer les dataframes par leur nom
 county_dataframes <- mget(county_names)
-
-# Boucle à travers chaque dataframe avec un compteur pour l'indice
 tables <- c()
 
 for(i in seq_along(county_dataframes)) {
     county <- county_dataframes[[i]]
-    county_name <- county_names[i]  # Obtenez le nom correspondant
-
-    # Vérifiez si l'élément est un dataframe
+    county_name <- county_names[i]
+    
     if (!is.data.frame(county)) {
         print(paste0("Error: ", county_name, " is not a dataframe"))
         next
     }
     
-    # Vérifiez la présence de la colonne 'Year'
     if (!"Year" %in% colnames(county)) {
         print(paste0("Error: ", county_name, " does not contain a 'Year' column"))
         next
@@ -174,31 +168,30 @@ for(i in seq_along(county_dataframes)) {
     
     data_county_year <- split(county, county$Year)
 
-    # Boucle sur les années présentes dans les données
     for(year in min(county$Year):max(county$Year)){
         tableau <- data_county_year[[as.character(year)]]
         
-        # Si le dataframe n'est pas vide, on l'assigne
         if (!is.null(tableau)) {
-            # Créez un nom pour la variable
             variable_name <- paste0(county_name, "_", year)
             tables <- c(tables, variable_name)
-            assign(variable_name, tableau, envir = .GlobalEnv)  # Assignez à l'environnement global
+            assign(variable_name, tableau, envir = .GlobalEnv)
         }
     }
 }
 ```
 
 
-Example of an existing dataframe 
-Thoose data were colected on the Will county in 1995
+We went from a full dataset with everything mixed-up to multiple datasets for each year and each county when an observation is available. 
+
+Here are, for example, the first rows of the dataframe related to the county of Will in 1995
 
 ```{r}
 head(data_will_1995)
 ```
 
+The main information that we want to present on the map are the mean number of fledged birds by nest and the amount of data available for each county and each year. 
 
-Creation of a summary dataframe for each dataframe
+Here is the creation of a summary dataframe that contains all theese information for each dataframe. 
 
 ```{r}
 annee <- c()
@@ -231,8 +224,8 @@ tableau_sf <- st_as_sf(tableau, coords = c("lon", "lat"), crs = 4326)
 tableau_sf <- st_transform(tableau_sf, crs = st_crs(us_states))
 ```
 
-
-Actually creating the map
+As we now have all the data of interest in one single organized table, 
+we can actually create the map. 
 
 ```{r}
 tmap_mode("view")
@@ -246,10 +239,11 @@ bird_anim <- tm_shape(us_states) +
             legend.position = c("left", "bottom"),
             frame = FALSE, 
             legend.show = T) +
-  tm_facets(by = "annee", nrow = 1, ncol = 1, free.coords = FALSE) +
-  tm_view(bbox = c(-92.6, 36.9, -87.5, 49.0))
+  tm_facets(by = "annee", nrow = 1, ncol = 1, free.coords = FALSE)
+```
 
-# Show the animated map
+And now, we just have to run the following cell to display the map. 
+```{r}
 tmap_animation(bird_anim)
 ```
-Please, check out the newly created map on the "Viewer" panel of your Rstudio 
+Please, check out the newly created map on the "Viewer" panel of your Rstudio application. 
