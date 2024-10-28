@@ -19,6 +19,8 @@ jobs:
         run: |
           Rscript -e "install.packages(c('factoextra'))" 
           Rscript -e "install.packages(c('DHARMa', 'rcompanion', 'dplyr'))" 
+          Rscript -e "install.packages(c('ggcorrplot'))"
+
           
       - name: Additional Python packages
         run: |
