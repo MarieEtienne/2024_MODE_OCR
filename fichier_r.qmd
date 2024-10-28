@@ -831,4 +831,4 @@ ggplot(pred_data, aes(x = julian_day)) +
   scale_y_continuous(limits = c(0, 1))
 ```
 
-#### Those results suggest that the probability of being reproductive could be mainly influenced by the two rainy seasons that occurs in the lowlands of French Guiana and, therefore, with the fructification period of many plants. As the extreme majority of the species caugth with mist-nets are frugivorous. We would greatly appreciate advice on how to improve this analysis! 
+#### Those results suggest that the probability of being reproductive could be mainly influenced by the two rainy seasons that occurs in the lowlands of French Guiana and, therefore, with the fructification period of many plants. As the extreme majority of the species caugth with mist-nets are frugivorous. We would greatly appreciate advice on how to improve this analysis!
