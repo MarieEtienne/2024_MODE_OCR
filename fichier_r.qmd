@@ -19,6 +19,32 @@ BIB :
   journal={R package version 0.03-08, URL http://CRAN. R-project. org/package= R2jags},
   year={2015}
 }
+
+@book{hollowell2005checklist,
+  title={Checklist of the terrestrial vertebrates of the Guiana Shield},
+  author={Hollowell, Tom and Reynolds, Robert P},
+  number={13},
+  year={2005},
+  publisher={Biological Society of Washington, National Museum of Natural History}
+}
+
+@article{macswiney2008you,
+  title={What you see is not what you get: the role of ultrasonic detectors in increasing inventory completeness in Neotropical bat assemblages},
+  author={MacSwiney G, M Cristina and Clarke, Frank M and Racey, Paul A},
+  journal={Journal of applied Ecology},
+  volume={45},
+  number={5},
+  pages={1364--1371},
+  year={2008},
+  publisher={Wiley Online Library}
+}
+
+@book{charles2001chauves,
+  title={Les chauves-souris de Guyane},
+  author={Charles-Dominique, Pierre and Brosset, Andr{\'e} and Jouard, Sylvie},
+  year={2001},
+  publisher={Mus{\'e}um national d'histoire naturelle, Laboratoire d'{\'e}cologie g{\'e}n{\'e}rale}
+}
 ```
 
 -   the data collected on the species of bats captured by date and location in French Guiana, and containing information on sex, age and reproductive state\
@@ -805,4 +831,4 @@ ggplot(pred_data, aes(x = julian_day)) +
   scale_y_continuous(limits = c(0, 1))
 ```
 
-#### Those results suggest that the probability of being reproductive could be mainly influenced by the two rainy seasons that occurs in the lowlands of French Guiana and, therefore, with the fructification period of many plants. As the extreme majority of the species caugth with mist-nets are frugivorous.
+#### Those results suggest that the probability of being reproductive could be mainly influenced by the two rainy seasons that occurs in the lowlands of French Guiana and, therefore, with the fructification period of many plants. As the extreme majority of the species caugth with mist-nets are frugivorous. We would greatly appreciate advice on how to improve this analysis! 
