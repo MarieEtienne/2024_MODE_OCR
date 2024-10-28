@@ -10,6 +10,17 @@ bibliography: references.bib
 
 French Guiana is a territory belonging to the bio-geographic unit of the Guiana Shield (Hollowel and Reynolds 2005). With an area of 83,846 km², it hosts, like its neighboring territories, remarkable species diversity. Covered by 97% forest habitat mosaic, its extreme species diversity is well-documented. French Guiana represents a global hotspot in terms of bat species richness. The most commonly used method for studying bats in tropical regions is ground-level mist netting, followed by canopy netting and direct roost searches (MacSwiney et al. 2008). It is with these methods that the first studies on bat community characterization were conducted (Charles-Dominique and Brosset 2001). [To date, very little work has focused on exploring the reproduction patterns of Neotropical bat communities. Reproductive patterns are closely related to rainfall regimes (Ramoni *et al*., 2017) frequently occurring twice a year in tropical regions.]{.underline}
 
+BIB :
+
+```         
+@article{su2015package,
+  title={Package ‘r2jags’},
+  author={Su, Yu-Sung and Yajima, Masanao and Su, Maintainer Yu-Sung and SystemRequirements, JAGS},
+  journal={R package version 0.03-08, URL http://CRAN. R-project. org/package= R2jags},
+  year={2015}
+}
+```
+
 -   the data collected on the species of bats captured by date and location in French Guiana, and containing information on sex, age and reproductive state\
 -   the meteorological data of French Guiana from 1950 to 2024\
 -   the capture locations coordinates (degree minute second)
@@ -376,37 +387,6 @@ data_final <- data_bin %>%
               distinct(),
             by = "Date")
 
-
-
-```
-
-### At this time, we plot the relation between our response variable and every covariable
-
-```{r}
-ggplot(data_final, aes(Amplitude, repro_positive)) +
-  geom_point() + 
-  geom_smooth(method = "loess") +
-  scale_y_continuous(trans='log10')
-
-ggplot(data_final, aes(julian_day, repro_positive)) +
-  geom_point() + 
-  geom_smooth(method = "loess") +
-  scale_y_continuous(trans='log10')
-
-ggplot(data_final, aes(Pluie, repro_positive)) +
-  geom_point() + 
-  geom_smooth(method = "loess") #+
-  #scale_y_continuous(trans='log10')
-
-ggplot(data_final, aes(Température, repro_positive)) +
-  geom_point() + 
-  geom_smooth(method = "loess") +
-  scale_y_continuous(trans='log10')
-
-ggplot(data_final, aes(Year, repro_positive)) +
-  geom_point() + 
-  geom_smooth(method = "loess") +
-  scale_y_continuous(trans='log10')
 ```
 
 ### Now, we will use the Bayesian approach to estimate the effect of those different covariates on the frequency of reproductive individuals...
@@ -456,4 +436,128 @@ hist(data_final$repro_positive, breaks = 20)
 
 ```
 
-The number of individuals showing reproductive activity seems to follow a negative-binomial distribution
+The number of individuals showing reproductive activity seems to follow a negative-binomial distribution, but we encountered some issues to write and fit model using a negative binomial distribution... anyway ! Let's try to investigate with a binomial !
+
+#### First, we create an object containing our covariates of interest, we use a common practice which consists of centering-reducing the values of covariates :
+
+:
+
+```{r}
+datax <- list(
+  N = nrow(data_final), 
+  repro_positive = data_final$repro_positive,  
+  total_individuals = data_final$total_individuals,  
+  temp = (data_final$Température - mean(data_final$Température)) / sd(data_final$Température),  
+  rain = (data_final$Pluie - mean(data_final$Pluie)) / sd(data_final$Pluie),
+  julian_day = (data_final$julian_day - mean(data_final$julian_day)) / sd(data_final$julian_day))
+```
+
+#### We write our null model and we assume that the number of reproductive individuals follows a binomial distribution. Specifically, we define our model as follows:
+
+$$
+\text{repro_positive}[i] \sim \text{Binomial}(p[i], \text{total_individuals}[i])
+$$
+
+In this model, $\text{repro_positive}[i]$ represents the number of reproductive individuals observed for each observation ( i ), while $\text{total_individuals}[i]$ is the total number of individuals in the corresponding group. The parameter $p[i]$ is the probability of an individual being reproductive, modeled using the logit link function, where ( a ) is a parameter drawn from a normal distribution with mean 0 and a large variance (0.001), reflecting our prior belief about its value.
+
+$$
+\text{logit}(p[i]) = a
+$$
+
+#### Here is the null model in Jags language :
+
+```{r}
+model_null <- 
+  paste("
+model {
+  for (i in 1:N) {
+    repro_positive[i] ~ dbin(p[i], total_individuals[i])  
+    logit(p[i]) <- a
+  }
+  a ~ dnorm(0, 0.001)  
+}
+")
+```
+
+Then we set the initial values for the Monte-Carlo Markov Chains, we choose to set two chains to assess initial at different values to see if both converge to same distribution.
+
+```{r}
+init1 <- list (a = -0.5)
+init2 <- list (a = 0.5)   
+inits <- list(init1,init2)
+```
+
+We specify the parameter we want to estimate :
+
+```{r}
+parameters <- c("a")
+```
+
+The run the model with the function jags() :
+
+```{r}
+chiro_model_null <- jags(data = datax,
+              inits = inits, 
+              parameters.to.save = parameters, 
+              model.file = "model_chiro_null.txt", 
+              n.chains = 2, 
+              n.iter = 5000, #here the number of iterations for each MCMC
+              n.burnin = 1000) #here the number of iterations that will be discarded to avoid "temporal" autocorrelation
+```
+
+After fitting the model, we can explore how it went through some useful tools :
+
+traceplot() allows to see how MCMC converge
+
+```{r}
+traceplot(chiro_model_null, mfrow = c(1,1), varnames = c("a"), ask = F)
+autocorr.plot(as.mcmc(chiro_model_null), ask = F)
+```
+
+We can also print the object that contain the model to check other features like the estimate of the parameter, the deviance, credible intervals or the number of values used to assess the posterior distribution (n.eff)
+
+```{r}
+print(chiro_model_null)
+```
+
+Now, we put the estimated values of the two MCMC chains in the same object :
+
+```{r}
+res<-as.mcmc(chiro_model_null)
+res<-rbind(res[[1]], res[[2]])
+```
+
+Then we can compute the mean of the estimated values of the intercept that are \< 0 :
+
+```{r}
+mean(res[,'a']<0)
+```
+
+And we can plot the estimated posterior distribution of our parameter 'a' :
+
+```{r}
+par(mfrow=c(1,1))
+plot(density(res[,'a']),xlab="",ylab="", main="intercept",lwd=3,xlim=c(-0.1,2))
+abline(v=0,col='red',lwd=2)
+```
+
+Remember that we defined a non-informative prior on parameter 'a' : a \~ dnorm(0, 0.001) to see if test the effect of 'a' on $p[i]$
+
+#### You can compute the Watanabe-Akaike Information Criterion :
+
+```{r}
+samples_waic_null<-jags.samples(chiro_model_null$model, c("WAIC", "deviance"), type = "mean",
+                           n.iter = 10000,
+                           n.burnin = 1000,
+                           n.thin = 1)
+samples_waic_null$p_waic<-samples_waic_null$WAIC
+samples_waic_null$waic<-samples_waic_null$deviance + samples_waic_null$p_waic
+tmp<-sapply(samples_waic_null, sum)
+waic_null<-round(c(waic = tmp[["waic"]], p_waic = tmp[["p_waic"]]),1)
+waic_null
+```
+
+####  We write and fit several models with different parameters (rain, temperature, julian day and thermal amplitude) and we compute the WAIC for each of them.
+
+Here the table of the different models we fitted :
+
