@@ -458,9 +458,7 @@ $$
 \text{repro_positive}[i] \sim \text{Binomial}(p[i], \text{total_individuals}[i])
 $$
 
-In this model, $\text{repro_positive}[i]$ represents the number of reproductive individuals observed for each observation ( i ), while $\text{total_individuals}[i]$ is the total number of individuals in the corresponding group. The parameter $p[i]$ is the probability of an individual being reproductive, modeled using the logit link function, where ( a ) is a parameter drawn from a normal distribution with mean 0 and a large variance (0.001), reflecting our prior belief about its value.
-
-$$
+In this model, $\text{repro_positive}[i]$ represents the number of reproductive individuals observed for each observation ( i ), while $\text{total_individuals}[i]$ is the total number of individuals in the corresponding group. The parameter $p[i]$ is the probability of an individual being reproductive, modeled using the logit link function, where ( a ) is a parameter drawn from a normal distribution with mean 0 and a large variance (0.001), reflecting our prior belief about its value. $$
 \text{logit}(p[i]) = a
 $$
 
@@ -557,7 +555,254 @@ waic_null<-round(c(waic = tmp[["waic"]], p_waic = tmp[["p_waic"]]),1)
 waic_null
 ```
 
-####  We write and fit several models with different parameters (rain, temperature, julian day and thermal amplitude) and we compute the WAIC for each of them.
+#### We write and fit several models with different parameters (rain, temperature, julian day and thermal amplitude) and we compute the WAIC for each of them.
 
 Here the table of the different models we fitted :
 
+```{r}
+waic_table<-read.table("waic_model.txt", header = T)
+waic_table
+```
+
+#### So our best model is the one with rain/temperature/julian_day covariates
+
+There it is :
+
+```{r}
+model_rain_temp_jday <- 
+  paste("
+model {
+  for (i in 1:N) {
+    repro_positive[i] ~ dbin(p[i], total_individuals[i])  # Distribution binomiale
+    logit(p[i]) <- a + b.rain * rain[i] 
+                     + b.rain2 * pow(rain[i],2)  
+                     + b.temp * temp[i] 
+                     + b.julian_day * julian_day[i]
+                     + b.julian_day2 * pow(julian_day[i], 2)
+                     + b.julian_day3 * pow(julian_day[i], 3)
+                     + b.julian_day4 * pow(julian_day[i], 4)
+  }
+  
+  a ~ dnorm(0, 0.001)  # Prior sur l'intercept
+  b.rain ~ dnorm(0, 0.001)
+  b.rain2 ~ dnorm(0, 0.001)
+  b.temp ~ dnorm(0, 0.001)
+  b.julian_day ~ dnorm(0, 0.001)
+  b.julian_day2 ~ dnorm(0, 0.001) 
+  b.julian_day3 ~ dnorm(0, 0.001)
+  b.julian_day4 ~ dnorm(0, 0.001)
+}
+")
+```
+
+We decide to assess polynomial effect on $rain^2$ and on $julian\_day^4$ because of the non-linearity effect on $repro\_positive$
+
+And as we made before, we set the initial values for both MCMC, we specify the parametres to be estimated :
+
+```{r}
+init1 <- list (a = -0.5, 
+               b.rain = -0.5, 
+               b.rain2 = -0.5, 
+               b.temp = -0.5,
+               b.julian_day = -0.5,
+               b.julian_day2= -0.5,
+               b.julian_day3= -0.5,
+               b.julian_day4 = -0.5) 
+
+init2 <- list (a = 0.5, 
+               b.rain = 0.5, 
+               b.rain2 = 0.5, 
+               b.temp = 0.5, 
+               b.julian_day = 0.5,
+               b.julian_day2= 0.5,
+               b.julian_day3= 0.5,
+               b.julian_day4 = 0.5)
+
+inits <- list(init1,init2)
+
+parameters <- c("a",
+                "b.rain", 
+                "b.rain2", 
+                "b.temp",
+                "b.julian_day" ,
+                "b.julian_day2",
+                "b.julian_day3",
+                "b.julian_day4")
+```
+
+And we run jags() :
+
+```{r}
+chiro_rain_temp_jday <- jags(data = datax,
+                        inits = inits, 
+                        parameters.to.save = parameters, 
+                        model.file = textConnection(model_rain_temp_jday), 
+                        n.chains = 2, 
+                        n.iter = 10000, 
+                        n.burnin = 1000)
+chiro_rain_temp_jday
+```
+
+As we made before, we check how the MCMC converged and we trace the autocorrelation plot :
+
+```{r}
+traceplot(chiro_rain_temp_jday, mfrow = c(2,4), varnames = c("a","b.rain", "b.rain2","b.temp","b.julian_day" ,"b.julian_day2","b.julian_day3","b.julian_day4"), ask = F)
+autocorr.plot(as.mcmc(chiro_rain_temp_jday), ask = F)
+```
+
+We put the estimate values in the same object :
+
+```{r}
+res<-as.mcmc(chiro_rain_temp_jday)
+res<-rbind(res[[1]], res[[2]])
+```
+
+And we plot the estimated distribution of every parameters :
+
+```{r}
+par(mfrow=c(2,4))
+plot(density(res[,'a']),xlab="",ylab="", main="Intercept",lwd=3,xlim=c(-0.1,2))
+abline(v=0,col='red',lwd=2)
+plot(density(res[,'b.rain']),xlab="",ylab="", main="Rainfall",lwd=3)
+abline(v=0,col='red',lwd=2)
+plot(density(res[,'b.rain2']),xlab="",ylab="", main="Rainfall",lwd=3)
+abline(v=0,col='red',lwd=2)
+plot(density(res[,'b.temp']),xlab="",ylab="", main="Temperature",lwd=3, xlim=c(-0.1,1.5))
+abline(v=0,col='red',lwd=2)
+plot(density(res[,'b.julian_day']),xlab="",ylab="", main="julian_day",lwd=3)
+abline(v=0,col='red',lwd=2)
+plot(density(res[,'b.julian_day2']),xlab="",ylab="", main="julian_day2",lwd=3, xlim = c(0,4))
+abline(v=0,col='red',lwd=2)
+plot(density(res[,'b.julian_day3']),xlab="",ylab="", main="julian_day3",lwd=3)
+abline(v=0,col='red',lwd=2)
+plot(density(res[,'b.julian_day4']),xlab="",ylab="", main="julian_day4",lwd=3)
+abline(v=0,col='red',lwd=2)
+```
+
+#### Now let's try to predict some values from our model to better understand the different relations between $repro\_positive$ and the different covariates
+
+First, let's simulate some data !
+
+```{r}
+pred_data <- expand.grid(
+  rain = seq(min(datax$rain), max(datax$rain), length.out = 1000), 
+  temp = median(datax$temp),
+  julian_day = median(datax$julian_day))
+```
+
+This grid will allow us to simulate data from the source data.frame "data_final", for some reasons that we don't clearly understand... we need to sample each covariate at once and fix the other one to the median.
+
+Then we compute $p[i]$ for each estimate value from the model : $$
+\text{logit}(p_i) = a + b_{\text{rain}} \cdot \text{rain}_i + b_{\text{rain2}} \cdot \text{rain}_i^2 + b_{\text{temp}} \cdot \text{temp}_i + b_{\text{julian_day}} \cdot \text{julian_day}_i + b_{\text{julian_day2}} \cdot \text{julian_day}_i^2 + b_{\text{julian_day3}} \cdot \text{julian_day}_i^3 + b_{\text{julian_day4}} \cdot \text{julian_day}_i^4
+$$
+
+```{r}
+p_sim <- matrix(NA, nrow = n_sim, ncol = nrow(pred_data))
+
+for (i in 1:n_sim) {
+  sample_idx <- sample(1:nrow(res), 1)
+  a <- res[sample_idx, "a"]
+  b.rain <- res[sample_idx, "b.rain"]
+  b.rain2 <- res[sample_idx, "b.rain2"]
+  b.temp <- res[sample_idx, "b.temp"]
+  b.julian_day <- res[sample_idx, "b.julian_day"]
+  b.julian_day2 <- res[sample_idx, "b.julian_day2"]
+  b.julian_day3 <- res[sample_idx, "b.julian_day3"]
+  b.julian_day4 <- res[sample_idx, "b.julian_day4"]
+  
+  p_sim[i, ] <- plogis(
+    a + 
+      b.rain * pred_data$rain + b.rain2 * pred_data$rain^2 +
+      b.temp * pred_data$temp +
+      b.julian_day * pred_data$julian_day + 
+      b.julian_day2 * pred_data$julian_day^2 +
+      b.julian_day3 * pred_data$julian_day^3 + 
+      b.julian_day4 * pred_data$julian_day^4
+  )
+}
+```
+
+Then we compute our credible intervals :
+
+```{r}
+pred_data <- pred_data %>%
+  mutate(
+    mean_p = apply(p_sim, 2, mean),
+    lower = apply(p_sim, 2, quantile, probs = 0.025),
+    upper = apply(p_sim, 2, quantile, probs = 0.975)
+  )
+```
+
+We want to get back to the natural scale for the X-axis :
+
+```{r}
+mean(data_final$Pluie)
+sd(data_final$Pluie)
+pred_data$rain <- (pred_data$rain * 10.71609) + 7.087872
+
+```
+
+Then we can plot our response variable with a covariate ! here the rain :
+
+```{r}
+ggplot(pred_data, aes(x = rain)) +
+  geom_line(aes(y = mean_p), color = "blue") +
+  geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2) +
+  labs(x = "Rain (Natural Scale)", y = "Probability of Reproduction") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_y_continuous(limits = c(0, 1))
+```
+
+Same task for julian_day... yes it's a bit boring, we need to improve the code !
+
+```{r}
+pred_data <- expand.grid(
+  rain = median(datax$temp), 
+  temp = median(datax$temp),
+  julian_day = seq(min(datax$julian_day), max(datax$julian_day), length.out = 1000))
+p_sim <- matrix(NA, nrow = n_sim, ncol = nrow(pred_data))
+
+for (i in 1:n_sim) {
+  sample_idx <- sample(1:nrow(res), 1)
+  a <- res[sample_idx, "a"]
+  b.rain <- res[sample_idx, "b.rain"]
+  b.rain2 <- res[sample_idx, "b.rain2"]
+  b.temp <- res[sample_idx, "b.temp"]
+  b.julian_day <- res[sample_idx, "b.julian_day"]
+  b.julian_day2 <- res[sample_idx, "b.julian_day2"]
+  b.julian_day3 <- res[sample_idx, "b.julian_day3"]
+  b.julian_day4 <- res[sample_idx, "b.julian_day4"]
+  
+  p_sim[i, ] <- plogis(
+    a + 
+      b.rain * pred_data$rain + b.rain2 * pred_data$rain^2 +
+      b.temp * pred_data$temp +
+      b.julian_day * pred_data$julian_day + 
+      b.julian_day2 * pred_data$julian_day^2 +
+      b.julian_day3 * pred_data$julian_day^3 + 
+      b.julian_day4 * pred_data$julian_day^4
+  )
+}
+pred_data <- pred_data %>%
+  mutate(
+    mean_p = apply(p_sim, 2, mean),
+    lower = apply(p_sim, 2, quantile, probs = 0.025),
+    upper = apply(p_sim, 2, quantile, probs = 0.975)
+  )
+
+mean(data_final$julian_day)
+sd(data_final$julian_day)
+
+pred_data$julian_day <- (pred_data$julian_day * 95.50893) + 203.0329
+
+ggplot(pred_data, aes(x = julian_day)) +
+  geom_line(aes(y = mean_p), color = "blue") +
+  geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2) +
+  labs(x = "Julian day (Natural Scale)", y = "Probability of Reproduction") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_y_continuous(limits = c(0, 1))
+```
+
+#### Those results suggest that the probability of being reproductive could be mainly influenced by the two rainy seasons that occurs in the lowlands of French Guiana and, therefore, with the fructification period of many plants. As the extreme majority of the species caugth with mist-nets are frugivorous.
