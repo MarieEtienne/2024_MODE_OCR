@@ -1,5 +1,11 @@
 # MODE_reproduciblescience
 
+# Last verification
+
+As soon as you merge into master, I will update the main page of the websote o that you can look at the final rendering of your work. 
+To do so please visit https://marieetienne.github.io/2024_MODE_OCR/ 
+Currently only the work on bats (which still need some polishing by the way) is available on the main webpage.
+
 ## Merging in master
 
 When you make the pull request to merge your branch into master, please specify what is the name of teh file containing your analysis. The one which should be available on teh website at the end. 
