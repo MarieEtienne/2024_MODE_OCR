@@ -723,6 +723,8 @@ Then we compute $p[i]$ for each estimate value from the model : $$
 $$
 
 ```{r}
+n_sim<-1000
+
 p_sim <- matrix(NA, nrow = n_sim, ncol = nrow(pred_data))
 
 for (i in 1:n_sim) {
