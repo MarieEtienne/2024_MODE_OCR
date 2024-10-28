@@ -50,206 +50,13 @@ library(tmap)
 library(leaflet)
 library(spDataLarge)
 library(gifski)
+library(maps)
 ```
 
 ```{r}
 # View the firsts lignes of the dataset
 head(data)
 ```
-
-## Data exploration
-
-# Repartition of the data through time
-
-```{r}
-# Creation of an histogram
-hist(Year,breaks=15,col="blue",density=10, xlab="Years",ylab="Number of data", main = "Repartition of data through time", ylim=c(0,500))
-```
-
-```{r}
-# First and last date available
-min(Year)
-max(Year)
-```
-
-# Repartition of the data through state
-
-```{r}
-# Creation of a barplot
-ggplot(data, aes(x=State))+
-  geom_bar(stat="count", width=0.7, color="gold", fill = "purple")+
-  theme_minimal()
-```
-
-# Repartition of the data through habitat
-
-```{r}
-# Creation of a barplot
-ggplot(data, aes(x=Habitat))+
-  geom_bar(stat="count", width=0.7, color="gold", fill = "purple")+
-  theme_minimal()
-```
-
-# Repartition of the data through species
-
-```{r}
-# Creation of a barplot
-ggplot(data, aes(x=Species))+
-  geom_bar(stat="count", width=0.7, color="gold", fill = "purple")+
-  theme_minimal()
-```
-
-## We are now trying to represent the data the best way
-Here, we are trying to create a map with the data
-```{r}
-#adding columns for the coordinates
-data <- data %>%
-  mutate(longitude_column = ifelse(State == "Illinois", -88, -89),
-         latitude_column = ifelse(State == "Illinois", 40, 44))
-
-#changing the coordinates to a proper map projection
-data_sf <- st_as_sf(data, coords = c("longitude_column", "latitude_column"), crs = 4326)
-
-#initiating the map mode
-tmap_mode("plot")
-
-# actually creating the map
-tm_shape(us_states) + 
-  tm_polygons() + 
-  tm_shape(data_sf) + 
-  tm_dots(col = "Number_Fledged", 
-          size = "Number_Fledged", 
-          scale = 2, 
-          palette = "YlOrRd", 
-          border.col = "black", 
-          title = "Number of fledged birds") +
-  tm_layout(title = "Observations of the Birds")
-```
-
-## Here is a map for a specified year 
-```{r}
-tm_shape(us_states) + 
-  tm_polygons() + 
-  tm_shape(data_sf %>% filter(Year == 1995)) +  # Filter for the year 1995
-  tm_dots(col = "Number_Fledged", 
-          size = "Number_Fledged", 
-          palette = "YlOrRd", 
-          border.col = "black", 
-          title = "Number of fledged birds") +
-  tm_layout(title = "Observations of the Birds in 1995")
-```
-
-## And what the map is evolving throw the years? OMG
-```{r}
-tmap_mode("view")
-
-anim <- tm_shape(us_states) + 
-  tm_polygons() + 
-  tm_shape(data_sf) + 
-  tm_dots(col = "Number_Fledged", 
-          size = "Number_Fledged", 
-          palette = "YlOrRd", 
-          border.col = "black", 
-          title = "Number of fledged birds") +
-  tm_layout(title = "Observations des Birds per year") + 
-  tm_facets(by = "Year")
-
-tmap_animation(anim, filename = "bird_observations.gif")
-```
-
-Separation of the dataset in function of the Habitat
-```{r}
-data_list_habitat <- split(data, data$Habitat)
-
-data_Pas <- data_list_habitat[["Pasture"]]
-data_CSG <- data_list_habitat[["Cool-season Grassland"]]
-data_Pra <- data_list_habitat[["Prairie"]]
-data_WSG <- data_list_habitat[["Warm-season Grassland"]]
-```
-
-```{r}
-#adding columns for the coordinates depending the state and the habitat
-data_Pas <- data_Pas %>%
-  mutate(longitude_column = ifelse(State == "Illinois", -89.5, -89.5),
-         latitude_column = ifelse(State == "Illinois", 40.5, 44))
-
-data_Pas_sf <- st_as_sf(data_Pas, coords = c("longitude_column", "latitude_column"), crs = 4326)
-
-data_CSG <- data_CSG %>%
-  mutate(longitude_column = ifelse(State == "Illinois", -89, -89),
-         latitude_column = ifelse(State == "Illinois", 40.5, 44))
-
-data_CSG_sf <- st_as_sf(data_CSG, coords = c("longitude_column", "latitude_column"), crs = 4326)
-
-data_Pra <- data_Pra %>%
-  mutate(longitude_column = ifelse(State == "Illinois", -89.5, -89.5),
-         latitude_column = ifelse(State == "Illinois", 40, 43.5))
-
-data_Pra_sf <- st_as_sf(data_Pra, coords = c("longitude_column", "latitude_column"), crs = 4326)
-
-data_WSG <- data_WSG %>%
-  mutate(longitude_column = ifelse(State == "Illinois", -89, -89),
-         latitude_column = ifelse(State == "Illinois", 40, 43.5))
-
-data_WSG_sf <- st_as_sf(data_WSG, coords = c("longitude_column", "latitude_column"), crs = 4326)
-
-list_of_dfs <- list(data_Pas_sf, data_CSG_sf, data_Pra_sf, data_WSG_sf)
-data_formap <- bind_rows(list_of_dfs)
-```
-
-Creating the map
-```{r}
-#initiating the map mode
-tmap_mode("plot")
-
-# actually creating the map
-tm_shape(us_states) + 
-  tm_polygons() + 
-  tm_shape(data_WSG_sf) + 
-  tm_dots(col = "Number_Fledged", 
-          size = "Number_Fledged", 
-          scale = 1, 
-          palette = "lightgreen", 
-          border.col = "black", 
-          title = "Number of fledged birds") +
-  tm_layout(title = "Observations of the Birds")
-```
-
-
-# We need to create a dataframe for each year
-```{r}
-data_list_year <- split(data_formap, data_formap$Year)
-
-data_1991 <- data_list_year[["1991"]]
-data_1992 <- data_list_year[["1992"]]
-data_1993 <- data_list_year[["1993"]]
-data_1994 <- data_list_year[["1994"]]
-data_1995 <- data_list_year[["1995"]]
-data_1996 <- data_list_year[["1996"]]
-data_1997 <- data_list_year[["1997"]]
-data_1998 <- data_list_year[["1998"]]
-data_1999 <- data_list_year[["1999"]]
-data_2000 <- data_list_year[["2000"]]
-data_2001 <- data_list_year[["2001"]]
-data_2002 <- data_list_year[["2002"]]
-data_2003 <- data_list_year[["2003"]]
-data_2004 <- data_list_year[["2004"]]
-data_2005 <- data_list_year[["2005"]]
-data_2006 <- data_list_year[["2006"]]
-data_2007 <- data_list_year[["2007"]]
-data_2008 <- data_list_year[["2008"]]
-data_2009 <- data_list_year[["2009"]]
-data_2010 <- data_list_year[["2010"]]
-data_2011 <- data_list_year[["2011"]]
-```
-
-```{r}
-summary(data_1991)
-```
-
-
-
-
 
 Separation of the dataset in function of the County
 ```{r}
@@ -276,191 +83,79 @@ data_carroll_whiteside <- data_list_county[["Carroll/Whiteside"]]
 data_will <- data_will %>%
   mutate(longitude_column = -88.0817,
          latitude_column = 41.5250)
-data_will_sf <- st_as_sf(data_will, coords = c("longitude_column", "latitude_column"), crs = 4326)
 
 data_jo_daviess <- data_jo_daviess %>%
   mutate(longitude_column = -90.4290,
          latitude_column = 42.4167)
-data_jo_daviess_sf <- st_as_sf(data_jo_daviess, coords = c("longitude_column", "latitude_column"), crs = 4326)
 
 data_grundy <- data_grundy %>%
   mutate(longitude_column = -88.4210,
          latitude_column = 41.3570)
-data_grundy_sf <- st_as_sf(data_grundy, coords = c("longitude_column", "latitude_column"), crs = 4326)
 
 data_lee <- data_lee %>%
   mutate(longitude_column = -89.4850,
          latitude_column = 41.8430)
-data_lee_sf <- st_as_sf(data_lee, coords = c("longitude_column", "latitude_column"), crs = 4326)
 
 data_carroll <- data_carroll %>%
   mutate(longitude_column = -89.9826,
          latitude_column = 42.0956)
-data_carroll_sf <- st_as_sf(data_carroll, coords = c("longitude_column", "latitude_column"), crs = 4326)
 
 data_lafayette <- data_lafayette %>%
   mutate(longitude_column = -90.1160,
          latitude_column = 42.6825)
-data_lafayette_sf <- st_as_sf(data_lafayette, coords = c("longitude_column", "latitude_column"), crs = 4326)
 
 data_iowa <- data_iowa %>%
   mutate(longitude_column = -90.1160,
          latitude_column = 42.6825)
-data_iowa_sf <- st_as_sf(data_iowa, coords = c("longitude_column", "latitude_column"), crs = 4326)
 
 data_dane <- data_dane %>%
   mutate(longitude_column = -89.4012,
          latitude_column = 43.0731)
-data_dane_sf <- st_as_sf(data_dane, coords = c("longitude_column", "latitude_column"), crs = 4326)
 
 data_green <- data_green %>%
   mutate(longitude_column = -89.6387,
          latitude_column = 42.6017)
-data_green_sf <- st_as_sf(data_green, coords = c("longitude_column", "latitude_column"), crs = 4326)
 
 data_grant <- data_grant %>%
   mutate(longitude_column = -90.7082,
          latitude_column = 42.8475)
-data_grant_sf <- st_as_sf(data_grant, coords = c("longitude_column", "latitude_column"), crs = 4326)
 
 data_rock <- data_rock %>%
   mutate(longitude_column = -89.0187,
          latitude_column = 42.6828)
-data_rock_sf <- st_as_sf(data_rock, coords = c("longitude_column", "latitude_column"), crs = 4326)
 
 data_monroe <- data_monroe %>%
   mutate(longitude_column = -90.8129,
          latitude_column = 43.9447)
-data_monroe_sf <- st_as_sf(data_monroe, coords = c("longitude_column", "latitude_column"), crs = 4326)
 
 data_lee_ogle <- data_lee_ogle %>%
   mutate(longitude_column = -89.4038,
          latitude_column = 41.9293)
-data_lee_ogle_sf <- st_as_sf(data_lee_ogle, coords = c("longitude_column", "latitude_column"), crs = 4326)
 
 data_carroll_whiteside <- data_carroll_whiteside %>%
   mutate(longitude_column = -89.9742,
          latitude_column = 41.9527)
-data_carroll_whiteside_sf <- st_as_sf(data_carroll_whiteside, coords = c("longitude_column", "latitude_column"), crs = 4326)
-```
-
-```{r}
-
-# On ne run pas celui-là
-
-for(county in c(data_will_sf, data_jo_daviess_sf, data_lafayette_sf, data_iowa_sf, data_dane_sf, data_green_sf, data_grant_sf, data_grundy_sf, data_lee_ogle_sf, data_lee_sf, data_rock_sf, data_monroe_sf, data_carroll_sf, data_carroll_whiteside_sf)){
-  
-  data_county_year <- split(county, county$Year)
-  
-  for(year in min(county$Year):max(county$Year)){
-    
-    # name = str(county) + "_" + str(year)
-    
-    tableau <- data_county_year[[str(year)]]
-    
-    assign(paste0(deparse(substitute(county)), str(year)), tableau)
-    
-  }
-  
-}
-
-summary(monroe2004)
-
 ```
 
 
-
-```{r}
-
-# Seems that it doesn't work / ne pas run
-
-counties_prepared_names <- c("data_will_", "data_jo_daviess_", "data_lafayette_", "data_iowa_", 
-                    "data_dane_", "data_green_", "data_grant_", "data_grundy_", 
-                    "data_lee_ogle_", "data_lee_", "data_rock_", "data_monroe_", 
-                    "data_carroll_", "data_carroll_whiteside_")
-
-for(county in list(data_will_sf, data_jo_daviess_sf, data_lafayette_sf, data_iowa_sf, data_dane_sf, data_green_sf, data_grant_sf, data_grundy_sf, data_lee_ogle_sf, data_lee_sf, data_rock_sf, data_monroe_sf, data_carroll_sf, data_carroll_whiteside_sf)){
-    
-    # Looking for dataframes that contains a 'Year' column
-    if (!is.data.frame(county)) {
-        print(paste0("Error: ", str(county), " is not a dataframe"))
-        next
-    }
-    
-    if (!"Year" %in% colnames(county)) {
-        print(paste0("Error: ", str(county), " do not contain a 'Year' column"))
-        next
-    }
-    
-    data_county_year <- split(county, county$Year)
-    
-    for(year in min(county$Year):max(county$Year)+1){
-        tableau <- data_county_year[[as.character(year)]]
-        
-        # If the dataframe isn't empty, we asign it
-        if (!is.null(tableau)) {
-            assign(paste0(deparse(str(county)), year), tableau)
-        
-        }
-    }
-}
-```
-
-
-
-# try this one
-```{r}
-
-# Non, on ne run pas celui-là
-
-for(county in list(data_will_sf, data_jo_daviess_sf, data_lafayette_sf, data_iowa_sf, data_dane_sf, data_green_sf, data_grant_sf, data_grundy_sf, data_lee_ogle_sf, data_lee_sf, data_rock_sf, data_monroe_sf, data_carroll_sf, data_carroll_whiteside_sf)){
-    
-    # Looking for dataframes that contain a 'Year' column
-    if (!is.data.frame(county)) {
-        print(paste0("Error: ", deparse(substitute(county)), " is not a dataframe"))
-        next
-    }
-    
-    if (!"Year" %in% colnames(county)) {
-        print(paste0("Error: ", deparse(substitute(county)), " does not contain a 'Year' column"))
-        next
-    }
-    
-    data_county_year <- split(county, county$Year)
-    
-    # Get the name of the county for naming the variables
-    county_name <- deparse(substitute(county))
-
-    for(year in min(county$Year):max(county$Year)){
-        tableau <- data_county_year[[as.character(year)]]
-        
-        # If the dataframe isn't empty, we assign it
-        if (!is.null(tableau)) {
-            # Create a name for the variable
-            variable_name <- paste0(county_name, "_", year)
-            assign(variable_name, tableau, envir = .GlobalEnv)  # Assign to the global environment
-        }
-    }
-}
-```
 
 
 
 # OMG, celui là fonctionne !!! 
 ```{r}
 
-# Ok, on run que celui-là et celui-là seulement
-
 # Créez une liste des noms de comtés et des dataframes
-county_names <- c("data_will_sf", "data_jo_daviess_sf", "data_lafayette_sf", "data_iowa_sf", 
-                  "data_dane_sf", "data_green_sf", "data_grant_sf", "data_grundy_sf", 
-                  "data_lee_ogle_sf", "data_lee_sf", "data_rock_sf", "data_monroe_sf", 
-                  "data_carroll_sf", "data_carroll_whiteside_sf")
+county_names <- c("data_will", "data_jo_daviess", "data_lafayette", "data_iowa", 
+                  "data_dane", "data_green", "data_grant", "data_grundy", 
+                  "data_lee_ogle", "data_lee", "data_rock", "data_monroe", 
+                  "data_carroll", "data_carroll_whiteside")
 
 # Créez une liste de dataframes en utilisant mget pour récupérer les dataframes par leur nom
 county_dataframes <- mget(county_names)
 
 # Boucle à travers chaque dataframe avec un compteur pour l'indice
+tables <- c()
+
 for(i in seq_along(county_dataframes)) {
     county <- county_dataframes[[i]]
     county_name <- county_names[i]  # Obtenez le nom correspondant
@@ -487,6 +182,7 @@ for(i in seq_along(county_dataframes)) {
         if (!is.null(tableau)) {
             # Créez un nom pour la variable
             variable_name <- paste0(county_name, "_", year)
+            tables <- c(tables, variable_name)
             assign(variable_name, tableau, envir = .GlobalEnv)  # Assignez à l'environnement global
         }
     }
@@ -494,92 +190,66 @@ for(i in seq_along(county_dataframes)) {
 ```
 
 
-Exemple d'un tableau non vide existant
-Il s'agit des données du comté de Will en 1995
+Example of an existing dataframe 
+Thoose data were colected on the Will county in 1995
+
 ```{r}
-head(data_will_sf_1995)
+head(data_will_1995)
 ```
 
 
-
-
-
-
-Je tente un truc
+Creation of a summary dataframe for each dataframe
 
 ```{r}
+annee <- c()
+taux_de_reussite <- c()
+nb_donnees <- c()
+lat <- c()
+lon<- c()
 
-
-
-
-
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r}
-# Supposons que tu as 10 tableaux
-tableau1 <- data.frame(a = 1:3, b = 4:6)
-tableau2 <- data.frame(c = 7:9, d = 10:12)
-# Ajoute ici les autres tableaux jusqu'à tableau10
-
-# Stocker les tableaux dans une liste
-tableaux <- list(tableau1, tableau2) # Tu mets ici tous tes tableaux, jusqu'à tableau10
-noms_tableaux <- c("tableau1", "tableau2") # Les noms des tableaux
-
-# Boucle pour créer des objets contenant les noms des colonnes
-for (i in 1:length(tableaux)) {
-  # Crée un nom dynamique pour la nouvelle liste
-  assign(paste0(noms_tableaux[i], "b"), colnames(tableaux[[i]]))
+# Creation of a summary for each year
+for(table_name in tables){
+  tablecreated <- get(table_name)
+  annee <- c(annee, tablecreated$Year[1])
+  taux_de_reussite <- c(taux_de_reussite, sum(tablecreated$Number_Fledged)/nrow(tablecreated))
+  nb_donnees <- c(nb_donnees, nrow(tablecreated))
+  lat <- c(lat, tablecreated$latitude_column[1])
+  lon <- c(lon, tablecreated$longitude_column[1])
 }
 
-# Maintenant tu as tableau1b et tableau2b contenant les noms des colonnes de tableau1 et tableau2
+# Creating a dataframe of thoose summaries
+tableau <- data.frame(
+  annee = annee, 
+  Mean_number_fledged_by_nest = taux_de_reussite, 
+  nb_donnees = nb_donnees, 
+  lat = lat, 
+  lon = lon
+)
+
+# Seting the dataframe as a spatial class in order to create a map
+tableau_sf <- st_as_sf(tableau, coords = c("lon", "lat"), crs = 4326)
+tableau_sf <- st_transform(tableau_sf, crs = st_crs(us_states))
 ```
 
 
-Grouping the Counties together
+Actually creating the map
+
 ```{r}
-list_of_counties <- list(data_will_sf, data_jo_daviess_sf, data_lafayette_sf, data_iowa_sf, data_dane_sf, data_green_sf, data_grant_sf, data_grundy_sf, data_lee_ogle_sf, data_lee_sf, data_rock_sf, data_monroe_sf, data_carroll_sf, data_carroll_whiteside_sf)
+tmap_mode("view")
 
-data_for_county_map <- bind_rows(list_of_counties)
-
-data_for_county_map <- data_for_county_map %>%
-  mutate(one = 1)
-```
-
-## Just a map test
-```{r}
-#initiating the map mode
-tmap_mode("plot")
-
-# actually creating the map
-tm_shape(us_states) + 
+bird_anim <- tm_shape(us_states) + 
   tm_polygons() + 
-  tm_shape(data_for_county_map) + 
-  tm_dots(col = "one", 
-          size = "one", 
-          scale = 0.5, 
-          palette = "purple", 
-          border.col = "black", 
-          title = "Counties") +
-  tm_layout(title = "Observations of the Birds")
+  tm_shape(tableau_sf) + 
+  tm_symbols(size = "Mean_number_fledged_by_nest", col = "nb_donnees", 
+             style = "quantile", title.size = "Mean number fledged by nest", title.col = "Number of nest observed") + 
+  tm_layout(title = "Bird Observations Over Time", 
+            legend.position = c("left", "bottom"),
+            frame = FALSE, 
+            legend.show = T) +
+  tm_facets(by = "annee", nrow = 1, ncol = 1, free.coords = FALSE) +
+  tm_view(bbox = c(-92.6, 36.9, -87.5, 49.0))
+
+# Show the animated map
+tmap_animation(bird_anim)
 ```
+Please, check out the newly created map on the "Viewer" panel of your Rstudio 
