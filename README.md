@@ -1,5 +1,36 @@
 # MODE_reproduciblescience
 
+## Package available in the container
+
+As you have noticed you nedd to add some instructions to instal the package you are using in your code. However some of them are already installed in the container used to create the "virtual machine" which runs your code on Github.
+The following package are avaible (and so no need in install them in the website.yml action)
+
+* tidyverse
+* wesanderson
+* lubridate
+* rmarkdown
+* stringr
+* tinytex
+* RefManageR
+* car 
+* emmeans
+* bibtex
+* FactoMineR
+* xaringan
+* gadenbuie/xaringanExtra
+* EvaMaeRey/flipbookr
+* palmerpenguins
+* cowplot
+* ggpubr
+* GGally
+* gganimate
+* plotly
+* magick
+* ggfortify
+* animation
+* kableExtra
+
+
 
 ## The form for the groups 
 
