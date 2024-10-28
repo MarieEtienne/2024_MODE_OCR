@@ -1062,6 +1062,19 @@ residuals(simulationOutput)
 plot(simulationOutput)
 residuals(simulationOutput, quantileFunction = qnorm, outlierValues = c(-7,7))
 
+```
+
+```{r Dharma2}
+#| label: fig-plotDharma2
+#| echo: true
+#| message: false
+#| warning: false
+#| paged.print: true
+#| include: true
+#| fig.height: 6
+#| fig.width: 6
+#| fig-cap: "Dharma"
+
 # Residuals with covariate
 plotResiduals(simulationOutput, form = dataAnts$Latitude)
 
@@ -1069,7 +1082,7 @@ plotResiduals(simulationOutput, form = dataAnts$Latitude)
 
 [**Conclusion**]{.underline} **:**
 
-In our example, the residuals are not overdispersed and show no outliers (@fig-plotDharma).
+In our example, the residuals are not overdispersed and show no outliers (@fig-plotDharma, @fig-plotDharma2).
 
 # CONCLUSION
 
