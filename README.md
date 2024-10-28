@@ -1,5 +1,10 @@
 # MODE_reproduciblescience
 
+## Merging in master
+
+When you make the pull request to merge your branch into master, please specify what is the name of teh file containing your analysis. The one which should be available on teh website at the end. 
+
+
 ## Package available in the container
 
 As you have noticed you nedd to add some instructions to instal the package you are using in your code. However some of them are already installed in the container used to create the "virtual machine" which runs your code on Github.
