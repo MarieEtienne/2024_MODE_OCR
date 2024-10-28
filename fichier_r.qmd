@@ -523,7 +523,7 @@ The run the model with the function jags() :
 chiro_model_null <- jags(data = datax,
               inits = inits, 
               parameters.to.save = parameters, 
-              model.file = "model_chiro_null.txt", 
+              model.file = textConnection(model_null), 
               n.chains = 2, 
               n.iter = 5000, #here the number of iterations for each MCMC
               n.burnin = 1000) #here the number of iterations that will be discarded to avoid "temporal" autocorrelation
