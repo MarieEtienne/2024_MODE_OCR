@@ -1,6 +1,5 @@
 ---
-title: "Modèles matriciels et applications" 
-title: "Modèles matriciels et applications"
+title: "Analysis of the factors favorable to nest success of different birds species in two USA states, Wisconsin and Illinois"
 group: "Rudy, Tanguy, Manon, Garan, Anaëlle, Oceane, Victor"
 editor: 
   markdown: 
@@ -92,7 +91,7 @@ install_if_missing(required_packages)
 
 ### Repartition of the data through time
 
-##### Rudy part : Statistical tests
+##### Statistical tests
 
 In this part, several statistical tests are performed in order to answer questions.
 
@@ -331,7 +330,7 @@ data_ACM <- data_ACM |>
                 )
 ```
 
-##### Manon part : MCA analysis (data exploring)
+##### MCA analysis (data exploring)
 
 Before doing the MCA analysis, we must verify that all the modalities represent at least 3% of the data
 
@@ -348,7 +347,7 @@ prop.table(table(data_ACM$Initiation_Date))*100
 prop.table(table(data_ACM$Nest_End_Date))*100
 ```
 
-Some of the modalities are under-represented. We must delete them.
+Some of the modalities are under-represented. We must delete them. The modalities under-represented are: Countries Carroll, Carroll/Whiteside, Grundy, Lee and Rock, Species Henslow's Sparrow and Western Meadowlark, half of the years modalities, 6 fledged chicks, and months April and August for both nest initiation date and nest end date.
 
 ```{r sortingcounty}
 prop.table(table(data_ACM$County))*100 < 3
@@ -372,7 +371,7 @@ data_ACM$Species <- droplevels(data_ACM$Species)
 ```{r sortingyears}
 prop.table(table(data_ACM$Year))*100 < 3
 summary(prop.table(table(data_ACM$Year))*100 < 3)
-# As half of the modalities are under-represented, we will regroup the years by 3.
+# As half of the modalities are under-represented, we will group the years by 3.
 
 data_ACM <- data_ACM %>%
   mutate(Year = factor(case_when(
@@ -399,7 +398,7 @@ data_ACM$Number_Fledged <- droplevels(data_ACM$Number_Fledged)
 
 ```{r sortinginitiation_date}
 prop.table(table(data_ACM$Initiation_Date))*100 < 3
-# We must delete the data with an initiation date in august and april.
+# We must delete the data with an initiation date in August and April.
 data_ACM <- data_ACM[-which(data_ACM$Initiation_Date == "august" | 
                               data_ACM$Initiation_Date == "april"),]
 data_ACM$Initiation_Date <- droplevels(data_ACM$Initiation_Date)
@@ -407,13 +406,13 @@ data_ACM$Initiation_Date <- droplevels(data_ACM$Initiation_Date)
 
 ```{r sortingnest_end_date}
 prop.table(table(data_ACM$Nest_End_Date))*100 < 3
-# We must delete the data with an end date in august and april.
+# We must delete the data with an end date in August and April.
 data_ACM <- data_ACM[-which(data_ACM$Nest_End_Date == "august" | 
                               data_ACM$Nest_End_Date == "april"),]
 data_ACM$Nest_End_Date <- droplevels(data_ACM$Nest_End_Date)
 ```
 
-Now, we can check again that no modalities are under-represented (thresold 3%).
+Now, we can check again that no modalities are under-represented (threshold 3%).
 
 ```{r proptableagain}
 # Proportions de chaques modalités dans chaques variables:
