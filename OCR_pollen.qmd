@@ -39,21 +39,17 @@ Blabla sur l'experience
 
 
 
-Effet du paturage sur la richesse specifique
-```{r}
-df %>% ggplot(data = df) + 
-```
 
 
-Part 2 : effect of grazing on the morphology 
+# Part 2 : effect of grazing on the morphology 
 
-Let's begin with a morphological analysis (plant high and seed mass). 
+In this part, we'll try to analyse the effect of treatment (grazing), a qualitative variable, on the morphological parameters of the plants (height and seed mass), quantitative variables. 
 
-#Height
+### **1. Effect of grazing on the plant height**
 
-Graphic representation:
+[**Potential relationship between Height and effect of treatment**]{.underline} **:**
 
-Let's start by representing plant size as a function of the applied treatment (grazing or no grazing).
+Let's start by representing plant size as a function of the applied treatment (grazing or no grazing) to have an idea of the possible effect.
 
 ```{r effect_treatment_on_height_graph}
 boxplot(df$logHeight.score~df$treatment, varwidth = TRUE, ylab = "plant height (log)", xlab = "Treatment", col='darkgrey', main = "", title = "effect of grazing on the height")
@@ -65,14 +61,20 @@ ggplot(data=df)+
   xlab("Treatment")
 
 ```
+Interpretation :
+
 The median for the no grazing treatment is slightly higher than for the grazing treatment. The data also seems slightly more dispersed and spread out.
-To verify the effect of grazing on plant size, we will perform a significance test.
+So we could say that the plants without grazing are potentially higher than the ones which had the treatment.
+
+[**Statistical analysis of the relationship between Height and effect of treatment**]{.underline} **:**
+
+We saw earlier that there could be a potential effect of treatment on the plant's height, we now want to know if this effect is really significant.
  
+We perform an ANOVA to compare a random model with our model.
+
 Significance test:
 Hypothesis H0: Grazing has no effect on plant size.
 Hypothesis H1: Grazing has an effect on plant size.
-
-We perform an ANOVA to compare a random model with our model.
 
 
 ```{r model_treatment_height_anova}
@@ -84,12 +86,14 @@ anova(hyp0,hyp1)
 The p-value is 2.39e-4 < 0.05. The test is significant, so hypothesis H0 is rejected. Grazing significantly reduces plant size.
 
 
-#Mass
+### **2. Effect of grazing on the seed mass**
+
 Now, let's study the seed mass of plants in relation to grazing.
 
-Graphic representation:
+[**Potential relationship between seed mass and effect of treatment**]{.underline} **:**
 
-Let's start by representing the seed mass of plants as a function of the applied treatment (grazing or no grazing).
+Let's start by representing the seed mass of plants as a function of the applied treatment (grazing or no grazing) to have an idea of the possible effect.
+
 ```{r effect_treatment_on_seed_mass_graph}
 boxplot(df$logSeedMass.score~df$treatment, varwidth = TRUE, ylab = "Seed mass (log)", xlab = "Treatment", col='darkgrey', main = "", title = "effect of grazing on seed mass")
 
@@ -98,13 +102,21 @@ ggplot(data=df)+
   geom_jitter(aes(x=treatment, y=logSeedMass.score))+
   labs(y = "Seed mass (log)", x = "Treatment")
 ```
-The medians are almost identical. The data for the no grazing treatment also seems more dispersed and spread out. To confirm the absence of effect, we will perform a significance test.
+Interpretation :
+
+The medians are almost identical. The data for the no grazing treatment also seems more dispersed and spread out. So we could say that there is potentially no effect of treatment on seed mass.
+
+[**Statistical analysis of the relationship between Height and effect of treatment**]{.underline} **:**
+
+We saw earlier that there could be no potential effect of treatment on seed mass. We now want to know if this is really significant.
+ 
+We perform an ANOVA to compare the model where we only consider the effect of grazing with a model where the effect of grazing is random.
 
 Significance test:
 Hypothesis H0: Grazing has no effect on seed mass.
 Hypothesis H1: Grazing has an effect on seed mass.
 
-We perform an ANOVA to compare the model where we only consider the effect of grazing with a model where the effect of grazing is random.
+
 
 ```{r model_treatment_seed_mass_anova}
 hyp2<-lm(logSeedMass.score~1,data=df)
@@ -114,7 +126,7 @@ anova(hyp2,hyp3)
 The p-value = 0.3573 > 0.05, so the seed mass under hypothesis H1 is not significantly different from that under hypothesis H0.
 We can conclude that there is no effect of grazing on seed mass.
 
-#Model test :
+### **3. Is the height of plants only affected by grazing ?**
 
 We will now analyze the effect of grazing on plant size more precisely. We want to know if the size is influenced by grazing (treatment) alone or by its interaction with other factors.
 
