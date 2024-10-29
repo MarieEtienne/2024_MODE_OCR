@@ -37,7 +37,6 @@ library(tidyverse)  # for data manipulation and visualization
 library(dplyr)      # for data manipulation
 library(ggplot2)    # for data visualization
 library(corrplot)   # for correlation test
-library(quarto)
 
 library(sf)
 library(rnaturalearth)
