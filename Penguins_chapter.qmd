@@ -341,10 +341,10 @@ v3 <- ggplot(data, aes(x = species, y = body_mass, fill = species)) +
 grid.arrange(v1, v2, v3,  #names of graphs  
              ncol = 3, nrow = 1)
 ```
-'
-## ANOVAs, U-Mann-Whitney tests, Student test {style="color:royalblue"}
 
-We run ANOVAs to verify these differences.\
+## ANOVA, U-Mann-Whitney tests, Student test {style="color:royalblue"}
+
+We run ANOVA and mean comparison tests to verify these differences.\
 There is a significant **difference between the body mass of these 3 species**, almost 2 of them, with a p-value of *2e-16*.
 
 ```{r}
@@ -824,14 +824,11 @@ boxplot(dataLM$body_mass~dataLM$clutch_completion, varwidth = TRUE, ylab = "body
 boxplot(dataLM$body_mass~dataLM$sex, varwidth = TRUE, ylab = "body mass", xlab = "Sex", col='brown', main = "")
 ```
 
-We can see on the @fig-lm_mass_effect that the variables *culmen_length*, *culmen_depth*, *flipper_length*, *delta_15_N*, *species* and *island* seems to influence the body mass. 
-The body mass seems to increase when *culmen_length*, *culmen_depth* and *flipper_length* increase. On the opposite, body mass seems to decrease when *delta_15_N* increase. 
-The species Gentoo and the individuals of the Biscoe Island seem to have a higher body mass.
+We can see on the @fig-lm_mass_effect that the variables *culmen_length*, *culmen_depth*, *flipper_length*, *delta_15_N*, *species* and *island* seems to influence the body mass. The body mass seems to increase when *culmen_length*, *culmen_depth* and *flipper_length* increase. On the opposite, body mass seems to decrease when *delta_15_N* increase. The species Gentoo and the individuals of the Biscoe Island seem to have a higher body mass.
 
 Here we are considering a simple model with no interaction but in some case it can usefull to examine the potential interaction between the different variables.
 
-In order to avoid colinearity in modelling, we analyse how the explanatories variables are related. 
-To do so we calculate the correlation between the quantitative explanatories variables and evaluate if the qualitative explanatory variables impact the quantitative one using boxplot.
+In order to avoid colinearity in modelling, we analyse how the explanatories variables are related. To do so we calculate the correlation between the quantitative explanatories variables and evaluate if the qualitative explanatory variables impact the quantitative one using boxplot.
 
 We chose a threshold of 0.7, to ensure there is no colinearity detected between the covariables.
 
@@ -906,6 +903,7 @@ boxplot(dataLM$delta_13_C~dataLM$sex, varwidth = TRUE, ylab = "delta 13C", xlab 
 boxplot(dataLM$delta_13_C~dataLM$clutch_completion, varwidth = TRUE, ylab = "delta 13C", xlab = "Clutch completion", col='grey', main = "")
 
 ```
+
 According to the @fig-lm_colinearity_cofactor there is no colinearity between cofactors and covariables.
 
 We keep all our explanatory variables to do the modelisation.
@@ -914,11 +912,9 @@ We keep all our explanatory variables to do the modelisation.
 
 For the statistic modelisation, we analyse first the full model, which means the model including all explanatories variables.
 
-In order to identify the candidate model from the full model, we are going to use the backward selection model. This method is based on the significance of the model terms. From the full model, we identify the significance of each term of the model and proceed to a skimming of the non-sgnificant terms. 
-The withdraw on the non significant term have to follow two step:\
+In order to identify the candidate model from the full model, we are going to use the backward selection model. This method is based on the significance of the model terms. From the full model, we identify the significance of each term of the model and proceed to a skimming of the non-sgnificant terms. The withdraw on the non significant term have to follow two step:\
 First step : remove successively the non significant interaction\
 Second step : remove successively the explanatory variable that are non significant and not include in interaction terms\
-
 
 First we build the full model:
 
@@ -931,6 +927,7 @@ Using the function *drop1* we analyse the significance of each variables:
 ```{r full model selection}
 drop1(modlm,test="F") #test significativté des variables avec test fischer
 ```
+
 We exclude the variable *island* of the model, because it is the non-significant variable with the highest p-value. Then, we create a new model (without the variable *island*) and test for significance.
 
 ```{r model2}
@@ -938,6 +935,7 @@ modlm2<-lm(body_mass ~ species + clutch_completion + culmen_length +
     culmen_depth + flipper_length + sex + delta_15_N + delta_13_C, data=dataLM)
 drop1(modlm2,test="F")
 ```
+
 As previously, we exclude the variable *clutch_completion* of the model, because it is non-significant. We build a new model and test again for variables' significance.
 
 ```{r model3}
@@ -945,6 +943,7 @@ modlm3<-lm(body_mass ~ species + culmen_length +
     culmen_depth + flipper_length + sex + delta_15_N + delta_13_C, data=dataLM)
 drop1(modlm3,test="F")
 ```
+
 All the variable in the model are significant, so we keep all of them in our final model. The best model is thus: $body\:mass$ \~ $species + culmen_{length} + culmen_{depth} + flipper_{length} + sex + delta\:15\:N + delta\:13\:C$
 
 Using the function *summary* we can acces the coefficient for all variable.
@@ -961,8 +960,7 @@ From the summary of the model we can also access the variance proportion that is
 
 ## Model validation {style="color:royalblue"}
 
-The hypotheses for ANCOVA are **independence**, **residuals normality** and **variance homogeneity**. 
-We also need to check for influent statistics unities, which means an observation with a high contribution to model construction.
+The hypotheses for ANCOVA are **independence**, **residuals normality** and **variance homogeneity**. We also need to check for influent statistics unities, which means an observation with a high contribution to model construction.
 
 Here, we assume an independence of variables as we don't have the details of the data collection.
 
