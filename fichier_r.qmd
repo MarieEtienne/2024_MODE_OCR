@@ -6,52 +6,19 @@ output: html_document
 bibliography: references.bib
 ---
 
-#### Some history about bat studies in French Guiana :
+# I. Some history about bat studies in French Guiana
 
-French Guiana is a territory belonging to the bio-geographic unit of the Guiana Shield (Hollowel and Reynolds 2005). With an area of 83,846 km², it hosts, like its neighboring territories, remarkable species diversity. Covered by 97% forest habitat mosaic, its extreme species diversity is well-documented. French Guiana represents a global hotspot in terms of bat species richness. The most commonly used method for studying bats in tropical regions is ground-level mist netting, followed by canopy netting and direct roost searches (MacSwiney et al. 2008). It is with these methods that the first studies on bat community characterization were conducted (Charles-Dominique and Brosset 2001). [To date, very little work has focused on exploring the reproduction patterns of Neotropical bat communities. Reproductive patterns are closely related to rainfall regimes (Ramoni *et al*., 2017) frequently occurring twice a year in tropical regions.]{.underline}
+French Guiana is a territory belonging to the bio-geographic unit of the Guiana Shield (@hollowell_checklist_2005) With an area of 83,846 km², it hosts, like its neighboring territories, remarkable species diversity. Covered by 97% forest habitat mosaic, its extreme species diversity is well-documented. French Guiana represents a global hotspot in terms of bat species richness. The most commonly used method for studying bats in tropical regions is ground-level mist netting, followed by canopy netting and direct roost searche (@macswiney_g_what_2008). It is with these methods that the first studies on bat community characterization were conducted (@charles-dominique_pierre_chauves-souris_2001). [To date, very little work has focused on exploring the reproduction patterns of Neotropical bat communities. Reproductive patterns are closely related to rainfall regimes (@ruiz-ramoni_reproductive_2016) frequently occurring twice a year in tropical regions.]{.underline}
 
-BIB :
+-   The data collected on the species of bats captured by date and location in French Guiana, and containing information on sex, age and reproductive state\
+-   The meteorological data of French Guiana from 1950 to 2024\
+-   The capture locations coordinates (degree minute second)
 
-```         
-@article{su2015package,
-  title={Package ‘r2jags’},
-  author={Su, Yu-Sung and Yajima, Masanao and Su, Maintainer Yu-Sung and SystemRequirements, JAGS},
-  journal={R package version 0.03-08, URL http://CRAN. R-project. org/package= R2jags},
-  year={2015}
-}
+# II. Fomatting our datasets
 
-@book{hollowell2005checklist,
-  title={Checklist of the terrestrial vertebrates of the Guiana Shield},
-  author={Hollowell, Tom and Reynolds, Robert P},
-  number={13},
-  year={2005},
-  publisher={Biological Society of Washington, National Museum of Natural History}
-}
+## A. Importation dataset and packages
 
-@article{macswiney2008you,
-  title={What you see is not what you get: the role of ultrasonic detectors in increasing inventory completeness in Neotropical bat assemblages},
-  author={MacSwiney G, M Cristina and Clarke, Frank M and Racey, Paul A},
-  journal={Journal of applied Ecology},
-  volume={45},
-  number={5},
-  pages={1364--1371},
-  year={2008},
-  publisher={Wiley Online Library}
-}
-
-@book{charles2001chauves,
-  title={Les chauves-souris de Guyane},
-  author={Charles-Dominique, Pierre and Brosset, Andr{\'e} and Jouard, Sylvie},
-  year={2001},
-  publisher={Mus{\'e}um national d'histoire naturelle, Laboratoire d'{\'e}cologie g{\'e}n{\'e}rale}
-}
-```
-
--   the data collected on the species of bats captured by date and location in French Guiana, and containing information on sex, age and reproductive state\
--   the meteorological data of French Guiana from 1950 to 2024\
--   the capture locations coordinates (degree minute second)
-
-```{r}
+```{r include=FALSE}
 library(dplyr)
 library(readxl)
 library(lubridate)
@@ -64,61 +31,51 @@ library(spdep)
 library(tripack)
 library(sp)
 library(geoR)
-
 ```
 
-```{r}
-data_chiro<-read_excel("data_chiro.xlsx") #import data chiro
-data_abiot_50_22<-read.csv("abiot_1950_2022.csv", sep = ";") #import data meteo 1950 -> 2022 #pensez à mettre les sources
-data_abiot_23_24<-read.csv("abiot_2023_2024.csv", sep = ";") #import data meteo 2023 -> 2024
+```{r include=FALSE}
+data_chiro<-read_excel("data_chiro.xlsx")
+data_abiot_50_22<-read.csv("abiot_1950_2022.csv", sep = ";") 
+data_abiot_23_24<-read.csv("abiot_2023_2024.csv", sep = ";") 
 coord_chiro<-read_excel("COORD_CAPTURE.xlsx")
-
 ```
 
-#### Data processing
+## B. Processing of the abiotic dataset
 
 -   Firstly we concatenate all the abiotic data together
 
--   Then we start to clean the abiotic the dataset by deleting all years that precede the first event of capture, the we use the Lubridate R package [@grolemund2016lubridate] to formate the data column as we want and the dplyr R package [@wickham2014dplyr] to re-organize the data set
+-   Then we start to clean the abiotic the dataset by deleting all years that precede the first event of capture, the we use the Lubridate R package (@spinu_lubridate_2010) to formate the data column as we want and the dplyr R package (@wickham_dplyr_2023) to reorganize the data set.
 
 ```{r}
-
-# CLEANING AND CREATING A CLIMATIC TABLE --------------------------------------------------
-data_abiot<-rbind(data_abiot_50_22, data_abiot_23_24) #On concatène les deux tables de données ensemble
-
+data_abiot<-rbind(data_abiot_50_22, data_abiot_23_24)
 data_abiot <- data_abiot %>%
-  filter(AAAAMMJJ >= 20141028) %>% #delete everything before this date
-  mutate(AAAAMMJJ = ymd(AAAAMMJJ)) %>%  # Conversion en format Date
-  mutate(Year = year(AAAAMMJJ)) %>%  # Extraire l'année après conversion en Date
-  mutate(AAAAMMJJ = format(AAAAMMJJ, "%d-%m-%Y")) %>%  # Formater la date en 'dd-mm-YYYY'
-  select(NUM_POSTE, NOM_USUEL, LAT, LON, AAAAMMJJ, RR, TM, TAMPLI, FFM, Year) %>% # finir les pipes
-  # Inclure la colonne Year
-  rename(date = AAAAMMJJ, rain_mm = RR, Temperature = TM, ampli_Temp = TAMPLI, wind_ms = FFM, COMMUNE = NOM_USUEL)%>% #renommer les colonnes
-  mutate(julian_day = yday(date)) #mettre au format jour julien
-
-
+  filter(AAAAMMJJ >= 20141028) %>% 
+  mutate(AAAAMMJJ = ymd(AAAAMMJJ)) %>% 
+  mutate(Year = year(AAAAMMJJ)) %>% 
+  mutate(AAAAMMJJ = format(AAAAMMJJ, "%d-%m-%Y")) %>% 
+  select(NUM_POSTE, NOM_USUEL, LAT, LON, AAAAMMJJ, RR, TM, TAMPLI, FFM, Year) %>%
+  rename(date = AAAAMMJJ, rain_mm = RR, Temperature = TM, ampli_Temp = TAMPLI, wind_ms = FFM, COMMUNE = NOM_USUEL)%>% 
+  mutate(julian_day = yday(date)) 
 ```
 
-#### Computing moonlight intensity
+[**Computing moonlight intensity :**]{.underline}
 
 -   Function that simulates the lunar cycle as a proxy for night-time luminosity
 
 ```{r}
-#Function to compute the moonlight % for a fixed date
 Lune <- function(date){
-  sortie <- c() #crée un vecteur vide pour stocker les résultats (cette fonction nous permet de calculer un vecteur contenant l'intensité lumineuse de la lune pour un vecteur de dates données)
+  sortie <- c() 
   for(i in 1:length(date)){ 
-    date_num <- as.numeric(as.Date(date[i],format="%d-%m-%Y")) #on transforme la date en nombre (0=01/01/1970)
-    sortie[i] <- (0.5*(cos((date_num-21)*((2*pi)/(29.530589)))+1)) #formule donnant l'intensité lumineuse de la lune à une date donnée
+    date_num <- as.numeric(as.Date(date[i],format="%d-%m-%Y")) 
+    sortie[i] <- (0.5*(cos((date_num-21)*((2*pi)/(29.530589)))+1)) 
   }
   return(sortie)
 }
 
-data_abiot$Lune <-Lune(data_abiot$date) #Adding moonlight % to the climatic table
-
+data_abiot$Lune <-Lune(data_abiot$date)
 ```
 
-#### Data processing
+## C. Processing of the biotic dataset
 
 -   Data_chiro table pre-processing : We only keep the columns of interest, then we only keep the female individuals because the reproduction indices are mainly observable on females. We only keep adult individuals because this is the age class likely to have reproductive indices.
 
@@ -135,89 +92,75 @@ data_chiro <- data_chiro %>%
   rename(LIEU_DIT = Localité, COMMUNE = Commune) #on renomme
 ```
 
-#### Converting DMS coordinates to decimal coordinates
+[**Converting DMS coordinates to decimal coordinates :**]{.underline}
 
--   Fonction for converting minute/second degree into decimal degrees
+-   Function to converting minute/second degree into decimal degrees
 
 ```{r Function to convert }
-# Fonction pour convertir DMS en degrés décimaux
 convert_dms_to_decimal <- function(dms) {
-  # Séparer les parties de la coordonnée DMS
   parts <- str_match(dms, "(\\d+)°(\\d+)'(\\d+\\.?\\d*)''\\s([NSEW])")
-  
   degrees <- as.numeric(parts[, 2]) 
   minutes <- as.numeric(parts[, 3])
   seconds <- as.numeric(parts[, 4])
   direction <- parts[, 5]
-  
-  # Calculer les degrés décimaux
   decimal <- degrees + minutes / 60 + seconds / 3600
-  
-  # Ajuster en fonction de la direction (S ou W deviennent négatifs)
   if (direction %in% c("S", "W")) {
     decimal <- -decimal
   }
   
   return(decimal)
 }
-
 ```
 
 -   We convert the DMS coordinates to decimal coordinates and we merge it with data_chiro by the capture locality
 
 ```{r}
 coord_chiro <- coord_chiro %>%
-  rowwise() %>%  # Appliquer la mutation par ligne
+  rowwise() %>%  
   mutate(
-    lon_dms = str_extract(COORD, "^[^N]+W"),  # Extraire la partie longitude
-    lat_dms = str_extract(COORD, "[^W]+N"),   # Extraire la partie latitude
-    Longitude = convert_dms_to_decimal(lon_dms),  # Convertir en décimal
-    Latitude = convert_dms_to_decimal(lat_dms)    # Convertir en décimal
+    lon_dms = str_extract(COORD, "^[^N]+W"), 
+    lat_dms = str_extract(COORD, "[^W]+N"),  
+    Longitude = convert_dms_to_decimal(lon_dms), 
+    Latitude = convert_dms_to_decimal(lat_dms) 
   ) %>%
-  ungroup() %>%  # Sortir du contexte rowwise
-  select(COMMUNE, LIEU_DIT, Latitude, Longitude)%>% #choisir les colonnes que l'on garde
-  rename(LAT = Latitude, LON = Longitude) #on renomme
+  ungroup() %>% 
+  select(COMMUNE, LIEU_DIT, Latitude, Longitude)%>%
+  rename(LAT = Latitude, LON = Longitude)
 
 data_chiro <- data_chiro %>%
-  inner_join(coord_chiro, by = "LIEU_DIT") # on merge la table des coordonnées décimales à celles des données de capture en fonction du lieu de capture
+  inner_join(coord_chiro, by = "LIEU_DIT") 
 
 data_chiro <- data_chiro%>%
-  select(COMMUNE.x,LIEU_DIT,Date,Espèce,Sexe,Repro,Age,Year,julian_day,LAT,LON)%>% #on spécifie les colonnes que l'on garde
+  select(COMMUNE.x,LIEU_DIT,Date,Espèce,Sexe,Repro,Age,Year,julian_day,LAT,LON)%>% 
   rename(COMMUNE = COMMUNE.x)
 ```
 
-représentation graphique de la guyane avec les station météorologique et les points de capture
+## **D. Graphical representation of Guyana with the incorporation of meteorological stations and capture points**
 
 ```{r}
 limite <- matrix(c(-54.40582467596958,5.123666986130482,0 -54.45958864979806,4.753175826159146,0 -54.43393543693306,4.077331065323269,0 -54.01198973780399,3.581399050490593,0 -54.20921816638264,3.132878544854336,0 -54.21013685965725,2.796587485871633,0 -54.45803260870573,2.441977197957256,0 -54.68709817836254,2.314479358976484,0 -54.15543583603689,2.123868408305178,0 -53.7651653142448,2.30335873628299,0 -53.35415060581271,2.164099707075567,0 -52.94875879245732,2.132858726757194,0 -52.56611638847146,2.518366090728264,0 -52.59199025844659,2.634734023219086,0 -52.39229001432994,2.890167168832993,0 -52.37091318927082,3.144918005801542,0 -52.21064002801557,3.274351081759725,0 -51.9836274889358,3.696015530721377,0 -51.6721839730206,4.031282773145124,0 -51.63663780527241,4.28966735155517,0 -51.9023261931293,4.501855027711033,0 -52.05244725433236,4.818896971774704,0 -52.51627884489513,5.026927311475695,0 -52.703088477061,5.197262336288941,0 -53.15061905132664,5.577522799535109,0 -53.53420039840946,5.573574890423137,0 -53.95403768383684,5.781472322818466,0 -54.40582467596958,5.123666986130482),ncol=2,byrow=T)
 
-
-
 plot(limite[,1],limite[,2],type='l')
 points(data_abiot$LON,data_abiot$LAT,pch=20,col='green')
 points(coord_chiro$LON,coord_chiro$LAT,pch=20,col="blue")
-
-
-
-
 ```
 
 ```{r Rain, include=FALSE}
 
 datamap<-read.csv("data_meteo.csv",row.names = 1)
-coord <- datamap[,c(4,3)] #on récupère les coordonnées de chaque stations météos
+coord <- datamap[,c(4,3)]
 
 dd <- unique(data_chiro$Date)
 res<- c()
 for(d in dd){
   
-  if(length(datamap$date[which(datamap$date==d)])>0){ #On vérifie que les données météo ont une correspondance avec les données de comptage 
+  if(length(datamap$date[which(datamap$date==d)])>0){ 
     coord_d <- coord[which(datamap$date==d),]
     delau <- c()
-    delau<-tryCatch({ tri2nb(coord_d)}, error=function(e){}) #On réalise une triangulantion de delaunay, l'argument tryCatch empeche la boucle for de s'interrompre à cause d'une erreur non-fatale
+    delau<-tryCatch({ tri2nb(coord_d)}, error=function(e){}) 
     delau.w<- nb2listw(delau, style="S", zero.policy=TRUE)
     m<-c()
-    m <- moran.test(datamap$rain_mm[which(datamap$date==d)], delau.w, zero.policy=TRUE) # On réalise un test de moran pour voir s'il y a une autocorélation spatiale de la pluie
+    m <- moran.test(datamap$rain_mm[which(datamap$date==d)], delau.w, zero.policy=TRUE) 
     if(m$p.value < 0.05){
       spatial_point <- c()
       spatial_point <- SpatialPointsDataFrame(coord_d, as.data.frame(datamap$rain_mm[which(datamap$date==d)]))
@@ -230,7 +173,7 @@ for(d in dd){
       mod1 <- variofit(variograme,ini.cov.pars = c((0.9*max(variograme$v,na.rm = T)[1]-variograme$u[1]),variograme$u[which(variograme$v==max(variograme$v,na.rm = T)[1])][1]),nugget=variograme$v[1],"exponential")#on réalise une interpolation spatiale 
       res[which(data_chiro$Date==d)] <- as.numeric(krige.conv(geodata, loc = data_chiro[which(data_chiro$Date==d),c(11,10)] , krige = krige.control(obj.m = mod1))$predict)
     }else{
-      res[which(data_chiro$Date==d)] <- mean(datamap$rain_mm[which(datamap$date==d)])# en l'absence de structure spatiale, on considère que la valeur en tout point est égale à la moyenne des données mesurées
+      res[which(data_chiro$Date==d)] <- mean(datamap$rain_mm[which(datamap$date==d)])
     }   
     
   }else{
@@ -239,12 +182,9 @@ for(d in dd){
   print(d)
   flush.console()
   
-  
 }
 
 data_chiro$Pluie <- res
-
-
 ```
 
 ```{r Temperature, include=FALSE}
@@ -282,11 +222,9 @@ for(d in dd){
   print(d)
   flush.console()
   
-  
 }
 
 data_chiro$Température <- res
-
 ```
 
 ```{r Range, include=FALSE}
@@ -330,7 +268,6 @@ for(d in dd){
 }
 
 data_chiro$Amplitude <- res
-
 ```
 
 ```{r Wind, include=FALSE}
@@ -375,29 +312,21 @@ for(d in dd){
 }
 
 data_chiro$Vent <- res
-
-
 ```
 
-```{r export, include=FALSE}
+```{r Export, include=FALSE}
 
-
-# Créer une nouvelle colonne pour indiquer si l'indice de reproduction est différent de 0 (1 si Repro != 0, 0 sinon)
 data_chiro <- data_chiro %>%
-  mutate(Repro_binary = ifelse(Repro != 0, 1, 0)) #on transforme l'indice repro en binaire pour avoir 0 si pas de repro 1 si repro
+  mutate(Repro_binary = ifelse(Repro != 0, 1, 0)) 
 
-# Calculer la proportion d'individus ayant un indice de reproduction différent de 0
 data_bin <- data_chiro %>%
-  group_by(Date) %>% #on groupe par date
+  group_by(Date) %>%
   summarise(
-    total_individuals = n(),  # Nombre total d'individus pour chaque combinaison
-    repro_positive = sum(Repro_binary),  # Nombre d'individus avec Repro != 0
-    proportion_repro = repro_positive / total_individuals  # Proportion
+    total_individuals = n(), 
+    repro_positive = sum(Repro_binary), 
+    proportion_repro = repro_positive / total_individuals 
   )
 
-
-
-#####
 data_bin <- data_bin %>%
   mutate(Date = as.Date(Date, format = "%d-%m-%Y"))
 
@@ -412,12 +341,13 @@ data_final <- data_bin %>%
               select(julian_day, Year, LAT, LON, Lune, Pluie, Température, Vent, Amplitude, Date) %>%
               distinct(),
             by = "Date")
-
 ```
 
-### Now, we will use the Bayesian approach to estimate the effect of those different covariates on the frequency of reproductive individuals...
+# II. Bayesian approach
 
-#### But firstly, let's introduce quickly the Bayes' theorem :
+We will use the Bayesian approach to estimate the effect of those different covariates on the frequency of reproductive individuals...
+
+## A. Quick introduction the beysian approach
 
 This theorem is based on conditional probabilities :
 
@@ -427,7 +357,7 @@ But we might try to explain it more simply as this :
 
 $$P(\text{hypothesis} \mid \text{data}) = \frac{ P(\text{data} \mid \text{hypothesis}) \; P(\text{hypothesis})}{P(\text{data})}$$
 
-### Let's explore quickly how our response variable react with different covariates
+## B. Little exploration of how our response variable react with different covariates
 
 ```{r}
 par(mfrow=c(2,2))
@@ -444,8 +374,7 @@ ggplot(data_final, aes(julian_day, repro_positive)) +
 
 ggplot(data_final, aes(Pluie, repro_positive)) +
   geom_point() + 
-  geom_smooth(method = "loess") #+
-  #scale_y_continuous(trans='log10')
+  geom_smooth(method = "loess")
 
 ggplot(data_final, aes(Température, repro_positive)) +
   geom_point() + 
@@ -453,20 +382,19 @@ ggplot(data_final, aes(Température, repro_positive)) +
   scale_y_continuous(trans='log10')
 ```
 
-#### At this point, we might be tempted to see whether or not these climatic parameters influence the proportion of reproductive individuals... let's try!!
+At this point, we might be tempted to see whether or not these climatic parameters influence the proportion of reproductive individuals... let's try!!
+
+## C. Study of climatic influence on the proportion of breeding indidivids
 
 Let's see the distribution of reproductive individuals :
 
 ```{r}
 hist(data_final$repro_positive, breaks = 20)
-
 ```
 
 The number of individuals showing reproductive activity seems to follow a negative-binomial distribution, but we encountered some issues to write and fit model using a negative binomial distribution... anyway ! Let's try to investigate with a binomial !
 
-#### First, we create an object containing our covariates of interest, we use a common practice which consists of centering-reducing the values of covariates :
-
-:
+[**First, we create an object containing our covariates of interest, we use a common practice which consists of centering-reducing the values of covariates:**]{.underline}
 
 ```{r}
 datax <- list(
@@ -478,7 +406,7 @@ datax <- list(
   julian_day = (data_final$julian_day - mean(data_final$julian_day)) / sd(data_final$julian_day))
 ```
 
-#### We write our null model and we assume that the number of reproductive individuals follows a binomial distribution. Specifically, we define our model as follows:
+[**We write our null model and we assume that the number of reproductive individuals follows a binomial distribution. Specifically, we define our model as follows:**]{.underline}
 
 $$
 \text{repro_positive}[i] \sim \text{Binomial}(p[i], \text{total_individuals}[i])
@@ -488,7 +416,7 @@ In this model, $\text{repro_positive}[i]$ represents the number of reproductive 
 \text{logit}(p[i]) = a
 $$
 
-#### Here is the null model in Jags language :
+[**Here is the null model in Jags language:**]{.underline}
 
 ```{r}
 model_null <- 
@@ -525,13 +453,13 @@ chiro_model_null <- jags(data = datax,
               parameters.to.save = parameters, 
               model.file = textConnection(model_null), 
               n.chains = 2, 
-              n.iter = 5000, #here the number of iterations for each MCMC
-              n.burnin = 1000) #here the number of iterations that will be discarded to avoid "temporal" autocorrelation
+              n.iter = 5000, 
+              n.burnin = 1000) 
 ```
 
 After fitting the model, we can explore how it went through some useful tools :
 
-traceplot() allows to see how MCMC converge
+-   *traceplot()* allows to see how MCMC converge
 
 ```{r}
 traceplot(chiro_model_null, mfrow = c(1,1), varnames = c("a"), ask = F)
@@ -567,7 +495,7 @@ abline(v=0,col='red',lwd=2)
 
 Remember that we defined a non-informative prior on parameter 'a' : a \~ dnorm(0, 0.001) to see if test the effect of 'a' on $p[i]$
 
-#### You can compute the Watanabe-Akaike Information Criterion :
+[**You can compute the Watanabe-Akaike Information Criterion :**]{.underline}
 
 ```{r}
 samples_waic_null<-jags.samples(chiro_model_null$model, c("WAIC", "deviance"), type = "mean",
@@ -581,7 +509,7 @@ waic_null<-round(c(waic = tmp[["waic"]], p_waic = tmp[["p_waic"]]),1)
 waic_null
 ```
 
-#### We write and fit several models with different parameters (rain, temperature, julian day and thermal amplitude) and we compute the WAIC for each of them.
+[We write and fit several models with different parameters (rain, temperature, julian day and thermal amplitude) and we compute the WAIC for each of them:]{.underline}
 
 Here the table of the different models we fitted :
 
@@ -590,9 +518,9 @@ waic_table<-read.table("waic_model.txt", header = T)
 waic_table
 ```
 
-#### So our best model is the one with rain/temperature/julian_day covariates
+## D. The best model 
 
-There it is :
+So our best model is the one with rain/temperature/julian_day covariates, there it is :
 
 ```{r}
 model_rain_temp_jday <- 
@@ -623,7 +551,7 @@ model {
 
 We decide to assess polynomial effect on $rain^2$ and on $julian\_day^4$ because of the non-linearity effect on $repro\_positive$
 
-And as we made before, we set the initial values for both MCMC, we specify the parametres to be estimated :
+And as we made before, we set the initial values for both MCMC, we specify the parameters to be estimated :
 
 ```{r}
 init1 <- list (a = -0.5, 
@@ -705,7 +633,9 @@ plot(density(res[,'b.julian_day4']),xlab="",ylab="", main="julian_day4",lwd=3)
 abline(v=0,col='red',lwd=2)
 ```
 
-#### Now let's try to predict some values from our model to better understand the different relations between $repro\_positive$ and the different covariates
+## E. Using our model
+
+Now let's try to predict some values from our model to better understand the different relations between $repro\_positive$ and the different covariates.
 
 First, let's simulate some data !
 
@@ -833,4 +763,6 @@ ggplot(pred_data, aes(x = julian_day)) +
   scale_y_continuous(limits = c(0, 1))
 ```
 
-#### Those results suggest that the probability of being reproductive could be mainly influenced by the two rainy seasons that occurs in the lowlands of French Guiana and, therefore, with the fructification period of many plants. As the extreme majority of the species caugth with mist-nets are frugivorous. We would greatly appreciate advice on how to improve this analysis!
+[**Results:**]{.underline} Those results suggest that the probability of being reproductive could be mainly influenced by the two rainy seasons that occurs in the lowlands of French Guiana and, therefore, with the fructification period of many plants. As the extreme majority of the species caugth with mist-nets are frugivorous.
+
+(We would greatly appreciate advice on how to improve this analysis!)
