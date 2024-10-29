@@ -84,8 +84,7 @@ data <- read.table("Bird_dataset.txt", header = TRUE, stringsAsFactors = TRUE)
 If the data isn't attached yet, please consider doing so
 
 ```{r}
-# Attach the datatset
-# detach(data)
+# detach(data) # If you have an error message, it is likely because the data is already attached, to fix this, please detach the data and attach it again
 attach(data)
 ```
 
