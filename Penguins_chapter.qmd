@@ -18,8 +18,6 @@ output:
 
 This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#column_name). The dataset was find on kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv
 
-This dataset was made from differents articles METTRE BIBLIO. Only 3 different species were studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
-
 This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#colum-name). This dataset was made from differents articles Selon Gorman et al. [@10.1371/journal.pone.0090081] and Horst et al. [@10.32614/RJ-2022-020]. Only 3 different species where studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
 
 ```{r, results='hide'}
@@ -345,25 +343,83 @@ We run anovas to confirm these differences.\
 There is a significant **difference between the body mass of these 3 species**, almost 2 of them, with a p-value of *2e-16*.
 
 ```{r}
+# homoscedasticity
+bartlett.test(data$body_mass~data$species) # p = 0.05005 > 0.05 homoscedasticity conditions are satisfied
+
 anova1 = aov(data$body_mass~data$species)
+
+#normality of residuals
+shapiro.test(residuals(anova1)) #p = 0.05118 > 0.05, the normality of residuals is accepted
 
 summary(anova1)
 ```
 
-There is a significant **difference between the body mass of these 3 islands**, almost 2 of them with a p-value of *2e-16*.
+We perform a Tukey post hoc test to see where the differences lie. There is a significant difference between the body mass of *Gentoo* and *Adelie* ( p = 0) and *Gentoo* and *Chinstrap* (p = 0). There is no significant difference between *Adelie* and *Chinstrap*.
 
 ```{r}
-anova2 = aov(body_mass~island, data = data)
-
-summary(anova2)
+TukeyHSD(anova1)
 ```
 
-There is a significant **difference between the body mass and the sex** with a p-value of *4.9e-16*.
+We cannot perform an anova between body mass and islands because the homoscedasticity conditions are not satisfied, so we will perform a Kruskall Wallis test. There is a significant **difference between the body mass of these 3 islands**, almost 2 of them, with a p-value of *2e-16*.
 
 ```{r}
-anova3 = aov(body_mass~sex, data = data)
+# homoscedasticity
+bartlett.test(data$body_mass~data$island) # p = 8.978e-14 < 0.05 homoscedasticity conditions are not satisfied
 
-summary(anova3)
+# Kruskall Wallis test
+kruskal.test(data$body_mass~data$island)
+
+```
+
+In order to observe the differences between the islands, we're going to carry out tests to compare the average between each island.
+
+
+```{r}
+# normality
+tapply(data$body_mass, data$island, shapiro.test)
+# Biscoe: p = 0.00209 < 0.05, normality is not respected
+# Dream: p = 0.4161 > 0.05, normality is respected
+# Torgersen: p =  0.2636 > 0.05, normality is respected
+```
+
+Data normality is respected for *Torgensen* Island and *Dream* Island. We will therefore carry out a homoscedasticity test between these islands to determine the appropriate mean comparison test.
+
+
+```{r}
+# Filter the data between the islands
+dream_data <- subset(data, island == "Dream")$body_mass
+torgersen_data <- subset(data, island == "Torgersen")$body_mass
+biscoe_data <- subset(data, island == "Biscoe")$body_mass
+
+# Perform a variance test between the 'Dream' and 'Torgersen' groups
+var.test(dream_data, torgersen_data) # p = 0.5526 > 0.05, homoscedasticity conditions are satisfied
+
+```
+We will therefore carry out two U-Mann Withney tests between the *Biscoe* and *Torgersen* islands and the *Biscoe* and *Dream* islands, and a Student t-test between the *Dream* and *Torgersen* islands. 
+```{r}
+# U-Mann Withney test between the Biscoe and Torgersen
+wilcox.test(biscoe_data, torgersen_data) # p = 1.396e-14 < 0.05
+
+# U-Mann Withney test between the Biscoe and Dream
+wilcox.test(biscoe_data, dream_data) # p = 2.2e-16 < 0.05
+
+# Student t-test between the Dream and Torgersen
+t.test(dream_data, torgersen_data, var.equal = T) # p = 0.9265 > 0.05
+```
+There is a significant difference in body mass between *Dream* and *Biscoe* islands (p = 2.2e-16) and between *Torgersen* and *Biscoe* (p = 1.396e-14). There was no significant difference between *Torgersen* and *Dream* islands.
+
+As there are only two modalities for gender, instead of an anova we'll perform a U-Mann Withney mean comparison test. There is a significant **difference between the body mass and the sex** with a p-value of *1.813e-15*.
+
+```{r}
+# normality
+tapply(data$body_mass, data$sex, shapiro.test)
+# Female: p = 6.155e-08 < 0.05, normality is not respected
+# Male: p = 1.227e-07 < 0.05, normality is not respected
+
+# U-Mann Withney test
+female_data = subset(data, sex == "FEMALE")$body_mass
+male_data = subset(data, sex == "MALE")$body_mass
+wilcox.test(female_data, male_data) # p = 1.813e-15 < 0.05
 ```
 
 Distribution of species between the islands in @tbl-table-distribution : we can see from this table that the *Adelie* species is present on all three islands, while the *Chrinstrap* and *Gentoo* species are only present on 2 islands, Dream and Biscoe respectively.
@@ -409,7 +465,7 @@ summary(rl1)
 
 ```
 
-These results show a highly significant effect of fin length for all species, with a greater effect for the *Gentoo* species. There was also a significant difference in body mass between species except between *Adélie* and *Chinstrap*.
+These results show a highly significant effect of fin length for all species, with a greater effect for the *Gentoo* species. There was also a significant difference in body mass between species except between *Adelie* and *Chinstrap*.
 
 In conclusion, we can say that fin length influences body mass and that this effect varies according to species.
 
@@ -424,7 +480,7 @@ summary(rl1)
 
 ```
 
-These results show a highly significant effect of fin length for all species, with a greater effect for the *Gentoo* species. There was also a significant difference in body mass between species except between *Adélie* and *Chinstrap*.
+These results show a highly significant effect of fin length for all species, with a greater effect for the *Gentoo* species. There was also a significant difference in body mass between species except between *Adelie* and *Chinstrap*.
 
 In conclusion, we can say that fin length influences body mass and that this effect varies according to species.
 
@@ -452,9 +508,9 @@ rl2 <- lm(culmen_depth ~ culmen_length + species + species:culmen_length, data =
 summary(rl2)
 ```
 
-These results show that beak length is significant and positive in *Adélie*. In the species *Chinstrap* and *Gentoo*, the beak depth is smaller and is significant in *Gentoo*. At the interaction level, it is not significant, which means that the effect of bill length on depth is relatively the same for 3 species.
+These results show that beak length is significant and positive in *Adelie*. In the species *Chinstrap* and *Gentoo*, the beak depth is smaller and is significant in *Gentoo*. At the interaction level, it is not significant, which means that the effect of bill length on depth is relatively the same for 3 species.
 
-We can conclude that beak depth depends on beak length but this does not vary between species. Gentoo\* penguins have a shallower beak than the others.
+We can conclude that beak depth depends on beak length but this does not vary between species. *Gentoo* penguins have a shallower beak than the others.
 
 In @fig-delta, in the There seems to be different trends between species.
 
