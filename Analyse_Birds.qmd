@@ -89,7 +89,13 @@ attach(data)
 ```
 
 Charge the packages
+Download the spDataLarge package, unavailable on CRAN
+```{r}
+# Please, run this cell only once
+install.packages("spDataLarge", repos = "https://nowosad.github.io/drat/", type = "source")
+```
 
+The rest of the packages 
 ```{r, include=FALSE}
 
 # Function to check and install packages if not installed
