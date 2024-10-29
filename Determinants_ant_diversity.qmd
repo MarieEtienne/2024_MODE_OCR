@@ -527,7 +527,7 @@ The analysis of outliers and the distribution of the qualitative variable sugges
 
 In order to test the possible relationship between the response variable $Y$ and the explanatory variables $Xs$, it will be essential to carry out statistical modelling, as this is the only way to test the significance of the relationships. However, we can start by performing graphical analyses to better visualize the data and get an idea
 
-```{r relation Y et XS}
+```{r relation Y and XS}
 #| label: fig-plotYXS
 #| echo: true
 #| message: false
@@ -551,13 +551,13 @@ boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Ant species ric
 
 ```
 
-Relationship between $X$ and latitude (@fig-plotYXS A): We can see that the higher the latitude, the lower the species richness. We can say that the further north we are, the fewer ant species there are.
+Relationship between $Y$ and latitude (@fig-plotYXS A): We can see that the higher the latitude, the lower the species richness. We can say that the further north we are, the fewer ant species there are.
 
-Relationship between $X$ and altitude (@fig-plotYXS B): In this graph, we can again see that the higher the altitude, the lower the species richness.
+Relationship between $Y$ and altitude (@fig-plotYXS B): In this graph, we can again see that the higher the altitude, the lower the species richness.
 
-Relationship between $X$ and bog area (@fig-plotYXS C): Here, there appears to be no relationship between ant species richness and bog area.
+Relationship between $Y$ and bog area (@fig-plotYXS C): Here, there appears to be no relationship between ant species richness and bog area.
 
-Relationship between $X$ and location (@fig-plotYXS D.): Here, there appears to be a relationship between location and ant species richness, with higher species richness in forests than in bogs.
+Relationship between $Y$ and location (@fig-plotYXS D.): Here, there appears to be a relationship between location and ant species richness, with higher species richness in forests than in bogs.
 
 [**Conclusion**]{.underline} **:**
 
@@ -600,7 +600,7 @@ Generally if we look at @fig-plotXS, we can assume an interaction between covari
 
 We aim to avoid collinearity among the explanatory variables in our modeling to prevent multiple variables from providing the same information. To do this, we must examine the statistical relationships that may exist among the variables by calculating the correlation between quantitative $X$ variables, and analyzing the influence of the qualitative $X$ on the quantitative $X$ variables using plot graphics.
 
-```{r colinearity1a}
+```{r collinearity1a}
 #| label: fig-plotcolinearityscatter
 #| echo: true
 #| message: false
@@ -618,7 +618,7 @@ plot(newdata,pch=16,col='deepskyblue4')
 
 ```
 
-```{r colinearity1b}
+```{r collinearity1b}
 #| label: fig-plotcolinearityCOR
 #| echo: true
 #| message: false
@@ -632,7 +632,7 @@ corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,t
 
 ```
 
-```{r colinearity1c}
+```{r collinearity1c}
 #| label: fig-plotcolinearityCATCONT
 #| echo: true
 #| message: false
@@ -658,7 +658,7 @@ In the first graph (@fig-plotcolinearityscatter), we can see that the point clou
 
 [**Conclusion**]{.underline} **:**
 
-There does not appear to be any colinearity among the variables, so we can retain them all.
+There does not appear to be any collinearity among the variables, so we can retain them all.
 
 # STATISTICAL ANALYSIS
 
@@ -692,7 +692,7 @@ mod1<-glm(Nsp~ Location
 
 Based on this complete model, we will eliminate the insignificant interactions step by step.
 
-```{r colinéarité2}
+```{r collinearity2}
 #| echo: true
 #| message: false
 #| warning: false
@@ -941,7 +941,7 @@ It may be due to :
 
 In our example, we will calculate the scale parameter. To do this, we will use the command :
 
-```{r surdispersion}
+```{r overdispersion}
 #| echo: true
 #| message: false
 #| warning: false
