@@ -152,7 +152,7 @@ The first step in our map creation is the separation of the dataset by the count
 data_list_county <- split(data, data$County)
 
 data_will <- data_list_county[["Will"]]
-data_jo_daviess <- data_list_county[["Jo Daviess"]]
+data_jo_daviess <- data_list_county[["Jo_Daviess"]]
 data_lafayette <- data_list_county[["Lafayette"]]
 data_iowa <- data_list_county[["Iowa"]]
 data_dane <- data_list_county[["Dane"]]
