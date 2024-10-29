@@ -14,9 +14,9 @@ French Guiana is a territory belonging to the bio-geographic unit of the Guiana 
 -   The meteorological data of French Guiana from 1950 to 2024\
 -   The capture locations coordinates (degree minute second)
 
-# II. Fomatting our datasets
+# II. Formating our datasets
 
-## A. Importation dataset and packages
+## A. Importation of datasets and packages
 
 ```{r include=FALSE}
 library(dplyr)
@@ -135,7 +135,7 @@ data_chiro <- data_chiro%>%
   rename(COMMUNE = COMMUNE.x)
 ```
 
-## **D. Graphical representation of Guyana with the incorporation of meteorological stations and capture points**
+## **D. Graphical representation of French Guiana with the incorporation of meteorological stations and capture points**
 
 ```{r}
 limite <- matrix(c(-54.40582467596958,5.123666986130482,0 -54.45958864979806,4.753175826159146,0 -54.43393543693306,4.077331065323269,0 -54.01198973780399,3.581399050490593,0 -54.20921816638264,3.132878544854336,0 -54.21013685965725,2.796587485871633,0 -54.45803260870573,2.441977197957256,0 -54.68709817836254,2.314479358976484,0 -54.15543583603689,2.123868408305178,0 -53.7651653142448,2.30335873628299,0 -53.35415060581271,2.164099707075567,0 -52.94875879245732,2.132858726757194,0 -52.56611638847146,2.518366090728264,0 -52.59199025844659,2.634734023219086,0 -52.39229001432994,2.890167168832993,0 -52.37091318927082,3.144918005801542,0 -52.21064002801557,3.274351081759725,0 -51.9836274889358,3.696015530721377,0 -51.6721839730206,4.031282773145124,0 -51.63663780527241,4.28966735155517,0 -51.9023261931293,4.501855027711033,0 -52.05244725433236,4.818896971774704,0 -52.51627884489513,5.026927311475695,0 -52.703088477061,5.197262336288941,0 -53.15061905132664,5.577522799535109,0 -53.53420039840946,5.573574890423137,0 -53.95403768383684,5.781472322818466,0 -54.40582467596958,5.123666986130482),ncol=2,byrow=T)
@@ -347,7 +347,7 @@ data_final <- data_bin %>%
 
 We will use the Bayesian approach to estimate the effect of those different covariates on the frequency of reproductive individuals...
 
-## A. Quick introduction the beysian approach
+## A. Quick introduction to the Bayesian approach
 
 This theorem is based on conditional probabilities :
 
@@ -518,7 +518,7 @@ waic_table<-read.table("waic_model.txt", header = T)
 waic_table
 ```
 
-## D. The best model 
+## D. The best model
 
 So our best model is the one with rain/temperature/julian_day covariates, there it is :
 
