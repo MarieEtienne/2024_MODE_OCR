@@ -12,13 +12,13 @@ output:
     toc_depth: 3
 ---
 
-# Introduction
+# Introduction {style="color:navy"}
 
-## Study context
+## Study context {style="color:royalblue"}
 
-This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#column_name). The dataset was find on kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv
+This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#column_name). The dataset was find on Kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv
 
-This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#colum-name). This dataset was made from differents articles Selon Gorman et al. [@10.1371/journal.pone.0090081] and Horst et al. [@10.32614/RJ-2022-020]. Only 3 different species where studied : Adelie, Chinstrap and Gentoo. The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
+This document is a report on the analysis of a dataset on penguins. The data collected contains informations on multiples [variables](#colum-name). This dataset was made from differents articles according by Gorman *et al.* [@10.1371/journal.pone.0090081] and Horst *et al.* [@10.32614/RJ-2022-020]. It focused on three penguin species : Adelie (*Pygoscelis adeliae*), Chinstrap (*Pygoscelis antarcticus*) and Gentoo (*Pygoscelis papua*). The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
 
 ```{r, results='hide'}
 #| message: false
@@ -28,31 +28,30 @@ This document is a report on the analysis of a dataset on penguins. This dataset
 #| code-fold: true
 #| code-summary: "Show the code"
 
-library(factoextra) # for data visualization
-library(FactoMineR) # for PCA
-library(tidyverse)  # for data manipulation and visualization
-library(dplyr)      # for data manipulation
-library(ggplot2)    # for data visualization
-library(corrplot)   # for correlation test
-
-
-library(sf)
-library(rnaturalearth)
-library(rnaturalearthdata)
-library(ggspatial)
-library(gridExtra)
-library(kableExtra)
+library(factoextra)         # for data visualization
+library(FactoMineR)         # for PCA
+library(tidyverse)          # for data manipulation and visualization
+library(dplyr)              # for data manipulation
+library(ggplot2)            # for data visualization
+library(corrplot)           # for correlation test
+library(sf)                 # for spatial data
+library(rnaturalearth)      # for earth maps
+library(rnaturalearthdata)  # for earth dataset
+library(ggspatial)          # for spatial plot
+library(gridExtra)          # for arranging plot
+library(kableExtra)         # for enhanced tables
 ```
 
-## Location
+## Location {style="color:royalblue"}
 
-Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands.These three blue points show the location of the data collect in @fig-map_antarctica.
+Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands. These three blue points show the location of the data collect in @fig-map_antarctica.
 
 ```{r}
 #| label: fig-map_antarctica
 #| fig-cap: "Maps of Antarctica with the collect points"
 #| code-fold: true
 #| code-summary: "Show the code"
+#| warning: false
 # Download country data (including Antarctica)
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
@@ -120,23 +119,23 @@ grid.arrange(gg_antartique, gg_zone_interet, ncol = 2)
 
 **Columns name :**
 
--   studyName : Sampling expedition from which data were collected, generated, etc.\
--   Sample Number : an integer denoting the continuous numbering sequence for each sample\
--   Species : a character string denoting the penguin species\
--   Region : a character string denoting the region of Palmer LTER sampling grid\
--   Island : a character string denoting the island near Palmer Station where samples were collected\
--   Stage : a character string denoting reproductive stage at sampling\
--   Individual ID : a character string denoting the unique ID for each individual in dataset\
--   Clutch Completion : a character string denoting if the study nest observed with a full clutch, i.e., 2 eggs\
--   Date Egg : a date denoting the date study nest observed with 1 egg (sampled)\
--   Culmen Length : a number denoting the length of the dorsal ridge of a bird's bill (millimeters)\
--   Culmen Depth : a number denoting the depth of the dorsal ridge of a bird's bill (millimeters)\
--   Flipper Length : an integer denoting the length penguin flipper (millimeters)\
--   Body Mass : an integer denoting the penguin body mass (grams)\
--   Sex : a character string denoting the sex of an animal\
--   Delta 15 N : a number denoting the measure of the ratio of stable isotopes 15N:14N\
--   Delta 13 C : a number denoting the measure of the ratio of stable isotopes 13C:12C\
--   Comments : a character string with text providing additional relevant information for data
+-   *studyName* : sampling expedition from which data were collected, generated, etc.\
+-   *Sample Number* : an integer denoting the continuous numbering sequence for each sample\
+-   *Species* : a character string denoting the penguin species\
+-   *Region* : a character string denoting the region of Palmer LTER sampling grid\
+-   *Island* : a character string denoting the island near Palmer Station where samples were collected\
+-   *Stage* : a character string denoting the reproductive stage at the time of sampling\
+-   *Individual ID* : a character string denoting the unique ID for each individual in dataset\
+-   *Clutch Completion* : a character string denoting if the study nest was observed with a full clutch, i.e., 2 eggs\
+-   *Date Egg* : a date denoting the date study nest observed with 1 egg (sampled)\
+-   *Culmen Length* : a number denoting the length of the dorsal ridge of a bird's bill (millimeters)\
+-   *Culmen Depth* : a number denoting the depth of the dorsal ridge of a bird's bill (millimeters)\
+-   *Flipper Length* : an integer denoting the length penguin flipper (millimeters)\
+-   *Body Mass* : an integer denoting the penguin body mass (grams)\
+-   *Sex* : a character string denoting the sex of an animal\
+-   *Delta 15 N* : a number denoting the measure of the ratio of stable isotopes 15N:14N\
+-   *Delta 13 C* : a number denoting the measure of the ratio of stable isotopes 13C:12C\
+-   *Comments* : a character string with text providing additional relevant information for data
 
 Loading dataset :
 
@@ -181,9 +180,9 @@ data = data %>%
 
 These names are easier to understand.
 
-## Missing values :
+## Missing values {style="color:royalblue"}
 
-The @fig-missing-val have a red line that represents the mean of NA values in the dataset and the bars are showing the number of NA's for each variables.
+The @fig-missing-val have a red line that represents the mean of missing values (NA) in the dataset and the bars are showing the number of NA's for each variables.
 
 ```{r}
 #| label: fig-missing-val
@@ -213,9 +212,9 @@ abline(h=NA_mean, col = "red", lwd = 2)
 
 ```
 
-# Exploratory analysis
+# Exploratory analysis {style="color:navy"}
 
-In this Data set, we would like to compare the different qualitative variables :\
+In this dataset, we would like to compare the different qualitative variables :\
 - *Culmen Length*\
 - *Culmen Depth*\
 - *Flipper Length*\
@@ -223,7 +222,11 @@ In this Data set, we would like to compare the different qualitative variables :
 - *Delta 13C*\
 - *Delta 15N*\
 
-The representation of this matrix isn't the best.
+## Correlation {style="color:royalblue"}
+
+To compare these qualitative variables, we begin by examining the correlations among them.
+
+The representation of this matrix is not optimal.
 
 ```{r}
 sub_data_num = data%>%
@@ -236,7 +239,7 @@ matcor
 
 We can use the library *corrplot* to make some visual correlation matrix.
 
-There is a correlation that we have to remove in a multivariate analysis between the Body Mass and the flipper length as we can see in @fig-cor_mat2 and @fig-cor_mat3.
+There is a correlation that we have to remove in a multivariate analysis between the *body_mass* variable and the *flipper_length* as we can see in @fig-cor_mat2 and @fig-cor_mat3.
 
 ```{r}
 #| label: fig-cor_mat2
@@ -261,9 +264,9 @@ Now, we want to observe whether certain qualitative variables have an effect on 
 - *Sex*\
 
 We have noticed some trends in @fig-boxplot_trends that we will have to confirm with statistical tests.\
-Box1: Gentoo penguins appear to be heavier than the other two species.\
-Box2: Penguins from Biscoe Island appear to be heavier than the other two islands.\
-Box3: Male penguins appear to be heavier than the other two categories.
+[Box1]{.underline}: Gentoo penguins appear to be heavier than the other two species.\
+[Box2]{.underline}: Penguins from Biscoe Island appear to be heavier than the other two islands.\
+[Box3]{.underline}: Male penguins appear to be heavier than the other two categories.
 
 ```{r}
 #| label: fig-boxplot_trends
@@ -282,7 +285,7 @@ box3 <- ggplot(data = data)+
 global_box <- grid.arrange(box1,box2,box3)
 ```
 
-## Violin plot :
+## Violin plot {style="color:royalblue"}
 
 Here is another way to visualize in @fig-violin the distribution between two variables.
 
@@ -338,8 +341,10 @@ v3 <- ggplot(data, aes(x = species, y = body_mass, fill = species)) +
 grid.arrange(v1, v2, v3,  #names of graphs  
              ncol = 3, nrow = 1)
 ```
+'
+## ANOVAs, U-Mann-Whitney tests, Student test {style="color:royalblue"}
 
-We run anovas to confirm these differences.\
+We run ANOVAs to verify these differences.\
 There is a significant **difference between the body mass of these 3 species**, almost 2 of them, with a p-value of *2e-16*.
 
 ```{r}
@@ -354,13 +359,13 @@ shapiro.test(residuals(anova1)) #p = 0.05118 > 0.05, the normality of residuals 
 summary(anova1)
 ```
 
-We perform a Tukey post hoc test to see where the differences lie. There is a significant difference between the body mass of *Gentoo* and *Adelie* ( p = 0) and *Gentoo* and *Chinstrap* (p = 0). There is no significant difference between *Adelie* and *Chinstrap*.
+We perform a Tukey's post-hoc test to see where the differences lie. There is a significant difference between the body mass of *Gentoo* and *Adelie* (p = 0) and *Gentoo* and *Chinstrap* (p = 0). There is no significant difference between *Adelie* and *Chinstrap*.
 
 ```{r}
 TukeyHSD(anova1)
 ```
 
-We cannot perform an anova between body mass and islands because the homoscedasticity conditions are not satisfied, so we will perform a Kruskall Wallis test. There is a significant **difference between the body mass of these 3 islands**, almost 2 of them, with a p-value of *2e-16*.
+We cannot perform an ANOVA between body mass and islands because the homoscedasticity conditions are not satisfied, so we will perform a Kruskall-Wallis test. There is a significant **difference between the body mass of these 3 islands**, almost 2 of them, with a p-value of *2e-16*.
 
 ```{r}
 # homoscedasticity
@@ -371,8 +376,7 @@ kruskal.test(data$body_mass~data$island)
 
 ```
 
-In order to observe the differences between the islands, we're going to carry out tests to compare the average between each island.
-
+In order to observe the differences between the islands, we are going to carry out tests to compare the average between each island.
 
 ```{r}
 # normality
@@ -382,8 +386,7 @@ tapply(data$body_mass, data$island, shapiro.test)
 # Torgersen: p =  0.2636 > 0.05, normality is respected
 ```
 
-Data normality is respected for *Torgensen* Island and *Dream* Island. We will therefore carry out a homoscedasticity test between these islands to determine the appropriate mean comparison test.
-
+Data normality is respected for Torgensen Island and Dream Island. We will therefore carry out a homoscedasticity test between these islands to determine the appropriate mean comparison test.
 
 ```{r}
 # Filter the data between the islands
@@ -395,7 +398,9 @@ biscoe_data <- subset(data, island == "Biscoe")$body_mass
 var.test(dream_data, torgersen_data) # p = 0.5526 > 0.05, homoscedasticity conditions are satisfied
 
 ```
-We will therefore carry out two U-Mann Withney tests between the *Biscoe* and *Torgersen* islands and the *Biscoe* and *Dream* islands, and a Student t-test between the *Dream* and *Torgersen* islands. 
+
+We will therefore carry out two U-Mann-Whitney tests between the Biscoe and Torgersen Islands and the Biscoe and Dream Islands, and a Student t-test between the Dream and Torgersen Islands.
+
 ```{r}
 # U-Mann Withney test between the Biscoe and Torgersen
 wilcox.test(biscoe_data, torgersen_data) # p = 1.396e-14 < 0.05
@@ -406,9 +411,10 @@ wilcox.test(biscoe_data, dream_data) # p = 2.2e-16 < 0.05
 # Student t-test between the Dream and Torgersen
 t.test(dream_data, torgersen_data, var.equal = T) # p = 0.9265 > 0.05
 ```
-There is a significant difference in body mass between *Dream* and *Biscoe* islands (p = 2.2e-16) and between *Torgersen* and *Biscoe* (p = 1.396e-14). There was no significant difference between *Torgersen* and *Dream* islands.
 
-As there are only two modalities for gender, instead of an anova we'll perform a U-Mann Withney mean comparison test. There is a significant **difference between the body mass and the sex** with a p-value of *1.813e-15*.
+There is a significant difference in body mass between Dream and Biscoe Islands (p = 2.2e-16) and between Torgersen and Biscoe Islands (p = 1.396e-14). There was no significant difference between Torgersen and Dream Islands.
+
+As there are only two modalities for gender, instead of an ANOVA we will perform a U-Mann-Whitney mean comparison test. There is a significant **difference between the body mass and the sex** with a p-value of *1.813e-15*.
 
 ```{r}
 # normality
@@ -421,7 +427,6 @@ female_data = subset(data, sex == "FEMALE")$body_mass
 male_data = subset(data, sex == "MALE")$body_mass
 wilcox.test(female_data, male_data) # p = 1.813e-15 < 0.05
 ```
-
 
 Distribution of species between the islands in @tbl-table-distribution : we can see from this table that the *Adelie* species is present on all three islands, while the *Chrinstrap* and *Gentoo* species are only present on 2 islands, Dream and Biscoe respectively.
 
@@ -438,9 +443,9 @@ kable(species_islands, "html", escape = F) %>%
                 position = "center")
 ```
 
-Some graphs and interpretations :
+## Graphical representations and interpretations {style="color:royalblue"}
 
-In @fig-bdm-lenght, it would appear that there is a positive linear trend between the body_mass variable and flipper_lenght for each specie.
+In @fig-bdm-lenght, it would appear that there is a positive linear trend between the *body_mass* variable and *flipper_length* for each species.
 
 ```{r}
 #| label: fig-bdm-lenght
@@ -470,22 +475,9 @@ These results show a highly significant effect of fin length for all species, wi
 
 In conclusion, we can say that fin length influences body mass and that this effect varies according to species.
 
-It would appear that there is a positive linear trend between the body_mass variable and flipper_lenght for each specie.
+It would appear that there is a positive linear trend between the *body_mass* variable and *flipper_length* for each species.
 
-Check with linear regression :
-
-```{r}
-
-rl1 <- lm(body_mass ~ flipper_length + species + species:flipper_length, data = data)
-summary(rl1)
-
-```
-
-These results show a highly significant effect of fin length for all species, with a greater effect for the *Gentoo* species. There was also a significant difference in body mass between species except between *Adelie* and *Chinstrap*.
-
-In conclusion, we can say that fin length influences body mass and that this effect varies according to species.
-
-In the @fig-lenght-depth, it would appear that there is a positive linear trend between the culmen_depth variable and culmen_length for each specie.
+In the @fig-lenght-depth, it would appear that there is a positive linear trend between the *culmen_depth* variable and *culmen_length* for each species.
 
 ```{r}
 #| label: fig-lenght-depth
@@ -509,11 +501,11 @@ rl2 <- lm(culmen_depth ~ culmen_length + species + species:culmen_length, data =
 summary(rl2)
 ```
 
-These results show that beak length is significant and positive in *Adelie*. In the species *Chinstrap* and *Gentoo*, the beak depth is smaller and is significant in *Gentoo*. At the interaction level, it is not significant, which means that the effect of bill length on depth is relatively the same for 3 species.
+These results show that beak length is significant and positive in *Adelie*. In the species *Chinstrap* and *Gentoo*, the beak depth is smaller and is significant in *Gentoo*. At the interaction level, it is not significant, which means that the effect of beak length on depth is relatively the same for 3 species.
 
 We can conclude that beak depth depends on beak length but this does not vary between species. *Gentoo* penguins have a shallower beak than the others.
 
-In @fig-delta, in the There seems to be different trends between species.
+In @fig-delta, it seems to be different trends between species.
 
 ```{r, fig.width=10, fig.height=5}
 #| label: fig-delta
@@ -537,11 +529,11 @@ rl3 <- lm(delta_13_C ~ delta_15_N + species + species:delta_15_N, data = data)
 summary(rl3)
 ```
 
-These results show that the relationship between nitrogen 15 and carbon 13 is positive and significant in *Adélie*, this relationship is reduced in *Chinstrap* and even more so in *Gentoo*. *Chinstrap* and *Gentoo* have significantly higher carbon-13 values than *Adélie*. The interactions between nitrogen 15 and the species are significant, showing that the effect of nitrogen 15 on carbon 13 varies according to the species.
+These results show that the relationship between nitrogen 15 and carbon 13 is positive and significant in *Adelie*, this relationship is reduced in *Chinstrap* and even more so in *Gentoo*. *Chinstrap* and *Gentoo* have significantly higher carbon-13 values than *Adelie*. The interactions between nitrogen 15 and the species are significant, showing that the effect of nitrogen 15 on carbon 13 varies according to the species.
 
 In conclusion, this model shows that the effect of nitrogen 15 on carbon 13 is highly species-dependent, with differences between species.
 
-## PCA on the species caracteristics
+## Principal Component Analysis (PCA) of species characteristics {style="color:royalblue"}
 
 ```{r}
 # Selection of quantitative data
@@ -560,7 +552,7 @@ acp_data= PCA(data_scales, graph = F)
 summary(acp_data)
 ```
 
-@fig-eig_value_plot is an histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, keep 2 dimensions and 78.4% inertia.
+@fig-eig_value_plot is an histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, we keep 2 dimensions and 78.4% inertia.
 
 ```{r}
 #| label: fig-eig_value_plot
@@ -575,7 +567,7 @@ va_propre = fviz_eig(acp_data, main ="", choice = "variance",
 va_propre
 ```
 
-@fig-contribution_plot determind the absolut contribution of variables to each axis. We can see that 3 variables make a strong contribution to axis 1 (delta_15_N, body_mass and culmen_depth) and 2 to axis 2 (culmen_depth and delta_13_C).
+@fig-contribution_plot assess the absolut contribution of variables to each axis. We can see that three variables make a strong contribution to axis 1 (*delta_15_N*, *body_mass* and *culmen_depth*) and 2 to axis 2 (*culmen_depth* and *delta_13_C*).
 
 ```{r,warning=FALSE,message=FALSE, fig.height=2, fig.width=5, fig.align = "center"}
 #| label: fig-contribution_plot
@@ -591,7 +583,7 @@ c2 = fviz_contrib(acp_data,choice = "var",axes =2,
 grid.arrange(c1,c2, ncol = 2)
 ```
 
-First graph (@fig-projection) show the result of PCA on axes 1 and 2. *A priori* clustering by the Species has been performed. Gentoo penguins have a greater mass and a longer culmen. Adelies are lighter and have a depth culmen. Chinstrap penguins are the lightest and have a long, depth culmen. Adelies and Chinstrap penguins both have a high concentration of carbon 13 and nitrogen 15.
+First graph (@fig-projection) show the result of PCA on axes 1 and 2. *A priori* clustering by the Species has been performed. *Gentoo* penguins have a greater mass and a longer culmen. *Adelie* are lighter and have a depth culmen. *Chinstrap* penguins are the lightest and have a long, depth culmen. *Adelie* and *Chinstrap* penguins both have a high concentration of carbon 13 and nitrogen 15.
 
 ```{r,warning=FALSE,message=FALSE, fig.height=7, fig.width=12, fig.align = "center"}
 #| label: fig-projection
@@ -615,9 +607,9 @@ grid.arrange(bi_plot, va_propre, c1, c2,  #names of graphs
                                    c(2,3,4))) #On the second col, the 3 other graphs
 ```
 
-Second graph (@fig-projection-islands) show the result of PCA on axes 1 and 2. *A priori* clustering by the Island has been performed. We can see that Gentoo penguins live only on Biscoe Island, while Chinstrap penguins live mainly on Dream Island. Adelie penguins live on these two islands and also on Togersen Island.
+Second graph (@fig-projection-islands) show the result of PCA on axes 1 and 2. *A priori* clustering by the Island has been performed. We can see that *Gentoo* penguins live only on Biscoe Island, while *Chinstrap* penguins live mainly on Dream Island. *Adelie* penguins live on these two islands and also on Togersen Island.
 
-The common habitats of Chinstrap and Adelie penguins seem to explain the presence of isotopes in these two species, as they must find a similar diet.
+The common habitats of *Chinstrap* and *Adelie* penguins seem to explain the presence of isotopes in these two species, as they must find a similar diet.
 
 ```{r}
 #| label: fig-projection-islands
@@ -635,7 +627,9 @@ grid.arrange(bi_plot, va_propre, c1, c2, #names of graphs
                                    c(2,3,4))) #On the second col, the 3 other graphs
 ```
 
-### MANQUE UN TITRE
+# Model selection and validation {style="color:navy"}
+
+## Data preparation and variable selection {style="color:royalblue"}
 
 ```{r}
 #selection of the interesting variables
@@ -676,7 +670,7 @@ summary(dataLM$clutch_completion)
 
 We observe that the plan is non orthogonal.
 
-Secondly, we explore the dynamics between body mass and the explanatory variable, to see if there is some trend.
+Secondly, we explore the dynamics between body mass and the explanatory variable, to identify if there any potential trend.
 
 ```{r datagraph, include=TRUE, fig.height=15, fig.width=6}
 par(mfrow=c(5,2))
@@ -700,11 +694,11 @@ boxplot(dataLM$body_mass~dataLM$clutch_completion, varwidth = TRUE, ylab = "body
 boxplot(dataLM$body_mass~dataLM$sex, varwidth = TRUE, ylab = "body mass", xlab = "Sex", col='brown', main = "")
 ```
 
-The variables that seems to influence body mass are culmen length, flipper length, delta 15N, species and island.
+The variables that seems to influence body mass are *culmen_length*, *flipper_length*, *delta_15_N*, *species* and *island*.
 
-Finally we check if there is colinearity between some variable. First, between covariables.
+Finally we check if there is colinearity between some variable. Starting with the covariables.
 
-We chose the threshold at 0.7 so there is no colinearity detected between the covariables.
+We chose a threshold of 0.7, to ensure there is no colinearity detected between the covariables.
 
 Then, between cofactors. In order to do so, we plot all the covariable as a function of all cofactors.
 
@@ -758,7 +752,7 @@ boxplot(dataLM$delta_13_C~dataLM$clutch_completion, varwidth = TRUE, ylab = "del
 
 ```
 
-## Statistics analysis - Model selection
+## Model selection {style="color:royalblue"}
 
 We build the statistical model, including all explanatory variable at first.
 
@@ -772,7 +766,7 @@ Now we are going to select the best model "by hand"
 drop1(modlm,test="F") #test significativté des variables avec test fischer
 ```
 
-We exclude the variable "island" of the model, because it is the non-significant variable with the highest p-value. Then, we create a new model (without the variable "island") and test for significance.
+We exclude the variable *island* of the model, because it is the non-significant variable with the highest p-value. Then, we create a new model (without the variable *island*) and test for significance.
 
 ```{r model2}
 modlm2<-lm(body_mass ~ species + clutch_completion + culmen_length + 
@@ -780,7 +774,7 @@ modlm2<-lm(body_mass ~ species + clutch_completion + culmen_length +
 drop1(modlm2,test="F")
 ```
 
-As previously, we exclude the variable "clutch_completion" of the model, because it is non-significant. We build a new model and test again for variables' significance.
+As previously, we exclude the variable *clutch_completion* of the model, because it is non-significant. We build a new model and test again for variables' significance.
 
 ```{r model3}
 modlm3<-lm(body_mass ~ species + culmen_length + 
@@ -788,7 +782,7 @@ modlm3<-lm(body_mass ~ species + culmen_length +
 drop1(modlm3,test="F")
 ```
 
-All the variable in the model are significant, so we keep all of them in our final model. The best model is thus: body_mass \~ species + culmen_length + culmen_depth + flipper_length + sex + delta_15_N + delta_13_C
+All the variable in the model are significant, so we keep all of them in our final model. The best model is thus: *body_mass \~ species + culmen_length + culmen_depth + flipper_length + sex + delta_15_N + delta_13_C*
 
 ```{r}
 summary(modlm3)
@@ -800,9 +794,9 @@ $$ Body\:Mass = 1467.1\:+\:(Species_{Adeliae} = 0 \:;\:Species_{Pygoscelis antar
 
 We can also notice that the model explain 88% of the body mass variance.
 
-## Model validation
+## Model validation {style="color:royalblue"}
 
-We need the validation of the model. Because it is a linear model, we need independence of the variable, normality and homoscedasticity of residuals.
+We need the validation of the model. As this is a linear model, we must check for independence of the variable, as well as the normality and homoscedasticity of the residuals.
 
 Here, we assume an independence of variables as we don't have the details of the data collection.
 
@@ -832,7 +826,7 @@ abline(h = 0)
 
 The variance is homogeneous.
 
-We also verify that there isn't an individual that is particularly influential.
+We also verify that there is not individual that is particularly influential.
 
 ```{r Contri, include=TRUE, fig.height=4, fig.width=4}
 
@@ -842,6 +836,6 @@ abline(h = 1, col = 2,lwd = 3)
 
 ```
 
-As all the bar are lower that 1, there is no influential individual.
+As all the bar are lower that 1, there is no influential individuals.
 
 We can conclude that the linear model is valid.
