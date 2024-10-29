@@ -81,11 +81,11 @@ Import dataset
 data <- read.table("Bird_dataset.txt", header = TRUE, stringsAsFactors = TRUE)
 ```
 
-If the data isn't attached yet, please conside doing so
+If the data isn't attached yet, please consider doing so
 
 ```{r}
 # Attach the datatset
-detach(data)
+# detach(data)
 attach(data)
 ```
 
@@ -222,7 +222,7 @@ data_carroll_whiteside <- data_carroll_whiteside %>%
          latitude_column = 41.9527)
 ```
 
-Now, for each county dataset, we subdivide the said dataset for each year when at least one nest has been observed in this conty. 
+Now, for each county dataset, we subdivide the said dataset for each year when at least one nest has been observed in this county. 
 
 ```{r}
 county_names <- c("data_will", "data_jo_daviess", "data_lafayette", "data_iowa", 
