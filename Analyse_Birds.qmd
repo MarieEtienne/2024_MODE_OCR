@@ -92,7 +92,10 @@ Charge the packages
 Download the spDataLarge package, unavailable on CRAN
 ```{r}
 # Please, run this cell only once
-install.packages("spDataLarge", repos = "https://nowosad.github.io/drat/", type = "source")
+if (!require(spDataLarge)) {
+  install.packages("spDataLarge", repos = "https://nowosad.github.io/drat/", type = "source")
+  library(spDataLarge)
+}
 ```
 
 The rest of the packages 
@@ -145,7 +148,7 @@ You can visualise the first rows of the dataset by running the following cell :
 head(data)
 ```
 
-In order to picture the data in a more visual way, we will be representing our dataset on a map. 
+In order to picture the data in a more visual way, we will represent our dataset on a map. 
 The first step in our map creation is the separation of the dataset by the counties. 
 
 ```{r}
@@ -276,7 +279,7 @@ head(data_will_1995)
 
 The main information that we want to present on the map are the mean number of fledged birds by nest and the amount of data available for each county and each year. 
 
-Here is the creation of a summary dataframe that contains all theese information for each dataframe. 
+Here is the creation of a summary dataframe that contains all these information for each dataframe. 
 
 ```{r}
 annee <- c()
