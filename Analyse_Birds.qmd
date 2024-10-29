@@ -162,7 +162,7 @@ data_carroll <- data_list_county[["Carroll"]]
 data_carroll_whiteside <- data_list_county[["Carroll/Whiteside"]]
 ```
 
-We are now adding columns for the coordinates of each county, the coordinates were obtained by searching for the conties on openstreetmap. 
+We are now adding columns for the coordinates of each county, the coordinates were obtained by searching for the counties on openstreetmap. 
 
 ```{r}
 data_will <- data_will %>%
