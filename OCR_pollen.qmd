@@ -73,17 +73,17 @@ summary (df)
 ```
 
 
-# PART 1: Effect of grazing on species richness
+# PART 1: EFFECT OF GRAZING ON SPECIES RICHNESS 
 
 
 ## **1.Data visualization**
-```{r data visualization, include = TRUE, fig.cap = "Fig 1 : Effect of grassland on species richness"}
+```{r fig1, include = TRUE, fig.cap = "Fig 1 : Effect of grassland on species richness"}
 ggplot(data=df)+
   geom_boxplot(aes(x=treatment, y=num.species))+
   geom_jitter(aes(x=treatment, y=num.species)) + 
   labs(x="Treatment", y="Species richness")
 ```
-The specific richness of grazed areas appears to be greater than in ungrazed areas. 
+The specific richness of grazed areas appears to be greater than in ungrazed areas \@ref(fig:fig1).
 
 ```{r hypotheses formulation, include = TRUE }
 hyp1<-lm(num.species~1,data=df)
@@ -94,7 +94,7 @@ The p-value is less than 0.05, so grazing has a significant effect on specific r
 
 ## **2.Choice of model: in this section, we assume that grazing (treatment) depends on the season and year of observation**
 
-```{r, complete model}
+```{r, complete model, include = TRUE}
 modComplet<-LinearModel(num.species~(treatment+season+year)*(treatment),data=df,selection = "aic")
 modComplet
 
@@ -102,7 +102,7 @@ modComplet
 The results for the full model are as follows: p-value: 2.554e-16, AIC = 649, BIC = 681. However, the model chosen according to the AIC criterion shows the following results: p-value: 1.41e-17, AIC = 645.2 and BIC = 669.2. As the AIC criterion is smaller for this model than for the full model, we choose to retain: num.species ~ treatment + season + year + treatment:year. There is therefore an interaction between the pasture and its year of observation. 
 
 ## **3.Validation of the chosen model with the Bartlett test**
-```{r, validation of the chosen model with the Bartlett test}
+```{r fig2, fig.cap="Validation of the chosen model with the Bartlett test", include = TRUE}
 modelAIC<-lm(num.species~treatment+season+year+treatment:year,data=df)
 
 res<-residuals(modelAIC)
@@ -119,17 +119,16 @@ boxplot(res~treatment:year,data=df)
 df$interaction <- interaction(df$treatment, df$year)
 bartlett.test(res ~ interaction, data = df)
 ```
-For the Bartlett tests, the p-values are all greater than 0.05, which means that homoscedasticity is respected for all our parameters, or that the variances are all equal for all our observations.
+For the Bartlett tests, the p-values are all greater than 0.05, which means that homoscedasticity is respected for all our parameters, or that the variances are all equal for all our observations \@ref(fig:fig2).
 
 ## **4. Residual normality test with Shapiro**
-```{r, residual normality test with Shapiro}
+```{r fig3, fig.cap="Residual normality test with Shapiro", include = TRUE}
 hist(res,main="Histogramme residus",xlab="Residus")
 shapiro.test(res)
 ```
-Residual normality is respected, as our p-value is greater than 0.05: the data are compatible with a normal distribution. Our linear model is therefore valid, as residual normality is a key assumption for applying this model.
+Residual normality is respected, as our p-value is greater than 0.05: the data are compatible with a normal distribution. Our linear model is therefore valid, as residual normality is a key assumption for applying this model \@ref(fig:fig3).
 
-## Conclusion part 1 on species richness
-Species richness therefore depends on grazing, season and year, as well as on the interaction grazing:year.
+ **Conclusion: ** Species richness therefore depends on grazing, season and year, as well as on the interaction grazing:year.
 
 
 # PART 2 - EFFECT OF GRAZING ON THE MORPHOLOGY
@@ -142,7 +141,7 @@ In this part, we'll try to analyse the effect of treatment (grazing), a qualitat
 
 Let's start by representing plant size as a function of the applied treatment (grazing or no grazing) to have an idea of the possible effect.
 
-```{r effect_treatment_on_height_graph}
+```{r fig4, fig.cap="Effect of treatment on height graph", include = TRUE}
 boxplot(df$logHeight.score~df$treatment, varwidth = TRUE, ylab = "plant height (log)", xlab = "Treatment", col='darkgrey', main = "", title = "effect of grazing on the height")
 
 ggplot(data=df)+
@@ -154,7 +153,7 @@ ggplot(data=df)+
 ```
 Interpretation :
 
-The median for the no grazing treatment is slightly higher than for the grazing treatment. The data also seems slightly more dispersed and spread out.
+The median for the no grazing treatment is slightly higher than for the grazing treatment \@ref(fig:fig4). The data also seems slightly more dispersed and spread out.
 So we could say that the plants without grazing are potentially higher than the ones which had the treatment.
 
 [**Statistical analysis of the relationship between Height and effect of treatment**]{.underline} **:**
@@ -170,7 +169,7 @@ Hypothesis H1: Grazing has an effect on plant height.
 The p-value is 2.39e-4 < 0.05. The test is significant, so hypothesis H0 is rejected. Grazing significantly reduces plant size.
 
 
-### **2. Effect of grazing on the seed mass**
+## **2. Effect of grazing on the seed mass**
 
 Now, let's study the seed mass of plants in relation to grazing.
 
@@ -178,7 +177,7 @@ Now, let's study the seed mass of plants in relation to grazing.
 
 Let's start by representing the seed mass of plants as a function of the applied treatment (grazing or no grazing) to have an idea of the possible effect.
 
-```{r effect_treatment_on_seed_mass_graph}
+```{r fig5, fig.cap="Effect of treatment on seed mass", include = TRUE}
 boxplot(df$logSeedMass.score~df$treatment, varwidth = TRUE, ylab = "Seed mass (log)", xlab = "Treatment", col='darkgrey', main = "", title = "effect of grazing on seed mass")
 
 ggplot(data=df)+
@@ -188,7 +187,7 @@ ggplot(data=df)+
 ```
 Interpretation :
 
-The medians are almost identical. The data for the no grazing treatment also seems more dispersed and spread out. So we could say that there is potentially no effect of treatment on seed mass.
+The medians are almost identical \@ref(fig:fig5). The data for the no grazing treatment also seems more dispersed and spread out. So we could say that there is potentially no effect of treatment on seed mass.
 
 [**Statistical analysis of the relationship between Height and effect of treatment**]{.underline} **:**
 
@@ -202,7 +201,7 @@ Hypothesis H1: Grazing has an effect on seed mass.
 
 
 
-```{r model_treatment_seed_mass_anova}
+```{r model_treatment_seed_mass_anova, include = TRUE}
 hyp2<-lm(logSeedMass.score~1,data=df)
 hyp3<-lm(logSeedMass.score~treatment,data=df)
 anova(hyp2,hyp3)
@@ -210,13 +209,13 @@ anova(hyp2,hyp3)
 The p-value = 0.3573 > 0.05, so the seed mass under hypothesis H1 is not significantly different from that under hypothesis H0.
 We can conclude that there is no effect of grazing on seed mass.
 
-### **3. Is the height of plants only affected by grazing ?**
+## **3. Is the height of plants only affected by grazing ?**
 
 We will now analyze the effect of grazing on plant size more precisely. We want to know if the size is influenced by grazing (treatment) alone or by its interaction with other factors.
 
 For this analysis, we will test the effects of grazing and its interaction with other factors on plant size through model analysis using the BIC criterion.
 
-```{r final_linear_model_height_bic}
+```{r final_linear_model_height_bic, include = TRUE}
 hyp4<-LinearModel(logHeight.score~(treatment+season+year+observer+logSeedMass.score+RatioPoll+R.score+C.score+S.score)*
                     (treatment+season+year+observer+logSeedMass.score+RatioPoll+R.score+C.score+S.score), data=df, selection = "bic")
 hyp4
@@ -230,9 +229,9 @@ This means that the effect of treatment that we previously saw was mainly due to
 
 # PARTIE 3: GRAZING EFFECT ON POLLINISATION STRATEGIES 
 
-## **1. Visualation of data and one-factor analysis of variance** 
+## **1. Visualization of data and one-factor analysis of variance** 
 
-```{r boxplot}
+```{r fig6, fig.cap="Data visualization", include = TRUE}
 # Boxplot 
 par(mfrow=c(1,2))
 
@@ -241,9 +240,9 @@ boxplot(df$RatioPoll~df$treatment, varwidth = TRUE, ylab = "Ratio Pollinisation"
 
 ```
 
-The boxplot shows no significant differences between plots grazed and those not grazed.
+The boxplot \@ref(fig:fig6) shows no significant differences between plots grazed and those not grazed.
 
-```{r anova}
+```{r anova, include = TRUE}
 # Anova
 poll1<-lm(RatioPoll~1,data=df)
 poll2<-lm(RatioPoll~treatment,data=df)
@@ -254,7 +253,7 @@ The P-value is not significant at the 5% threshold, so we reject the hypothesis 
 
 ## **2.Model test**
 
-```{r fullmodel}
+```{r fullmodel, include = TRUE}
 poll3<-LinearModel(RatioPoll~(treatment+season+year+observer+R.score+S.score+C.score)*
                      (treatment+season+year+observer+R.score+S.score+C.score),data=df,selection = "aic")
 poll3
@@ -263,9 +262,9 @@ poll3
 The model proposed by R does have a lower BIC than our initial model. However, some of the interactions retained by R have no significant effect. We decided to test a model without these interactions. 
 
 
-## **3.Model adjustement** 
+## **3.Model adjustment** 
 
-```{r coeff1}
+```{r coeff1, include = TRUE}
 
 poll4<-lm(RatioPoll~( treatment + season + year + 
     observer + R.score + S.score + C.score + treatment:R.score + 
@@ -275,7 +274,7 @@ summary(poll4)
 ```
 
 We have observed that the R.score:C.score interaction is not significant, we test a new model without it.
-```{r coeff2}
+```{r coeff2, include = TRUE}
 poll5<-lm(RatioPoll~( treatment + season + year + 
     observer + R.score + S.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
@@ -284,7 +283,7 @@ summary(poll5)
 ```
 The p-value of S.score is not significant and does not appear in any significant interactions. We therefore decide to remove it
 
-```{r coeff3}
+```{r coeff3, include = TRUE}
 poll6<-lm(RatioPoll~( treatment + season + year + 
     observer + R.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
@@ -295,7 +294,7 @@ summary(poll6)
 ## **4. Validity of the chosen model** 
 
 Now,we want to check the normality of residuals 
-```{r ResidNorm}
+```{r fig7, fig.cap="Check of the normality of residuals", include = TRUE}
 pollfinal<-lm(RatioPoll~(treatment + season + year + 
     observer + R.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
@@ -305,8 +304,8 @@ hist(res,main="Histogram residuals",xlab="Residus")
 shapiro.test(res)
 ```
 
-The residuals are not normally distributed. We're going to try and do some transformations using log and sqrt.
-```{r TransfoLog}
+The residuals are not normally distributed \@ref(fig:fig7). We're going to try and do some transformations using log and sqrt.
+```{r TransfoLog, include = TRUE}
 poll7<-lm(log(RatioPoll+1)~(treatment + season + year + 
     observer + R.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
@@ -315,9 +314,9 @@ summary(poll7)
 
 ```
 
-The p-value of the shapiro test is still less than 0.05, so the residuals are still not normally distributed. 
+The p-value of the shapiro test is still less than 0.05, so the residuals are still not normally distributed \@ref(fig:fig8). 
 
-```{r TransfoSqrt}
+```{r fig8, fig.cap="Transformed residuals histogram", include = TRUE}
 poll7<-LinearModel(sqrt(RatioPoll)~( season + C.score + treatment:R.score + 
     treatment:C.score + year:C.score ),data=df)
 poll7
@@ -329,7 +328,12 @@ hist(res,main="Histogram residuals",xlab="Residus")
 shapiro.test(res)
 
 ```
- **Conclusion: ** We cannot evaluate the impact of grazing on the pollination strategy of plants because the constraints of the general linear model are not respected. In addition, we cannot apply a generalised linear model given the type and values of our data. 
+ **Conclusion: ** We cannot evaluate the impact of grazing on the pollination strategy of plants because the constraints of the general linear model are not respected. In addition, we cannot apply a generalized linear model given the type and values of our data. 
  
- 
+# GLOBAL CONCLUSION
 
+Grazing does have a positive effect on species richness, and this effect is all the more beneficial in spring.
+
+Grazing has no effect on the seed weight of plants, but does tend to reduce plant height (plant avoidance strategy). However, plant height is not solely a consequence of grazing, it also depends on other physiological parameters (pollination mode, RCS profile, seed weight...) that can be integrated into a model close to a linear model.
+
+Grazing has no effect on the plants' sexual reproduction strategy, and does not favor the survival of entomogamous plants over others.
