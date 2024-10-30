@@ -1,3 +1,4 @@
+---
 title: "Effects of grazing on Swedish meadows"
 author: "Bastien, Elia, Caroline, Alexia, Marine, Lily, Julie" 
 bibliography: references.bib
@@ -6,26 +7,18 @@ execute:
 output: 
   html_document:
    toc: true
-   toc_float: true
+   toc_float: trueoutput:
+    fig_caption: true
+---
 
-```{=html}
-<style>
-body {
-text-align: justify}
-</style>
-```
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                      INTRODUCTION
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# INTRODUCTION
 
 Terrestrial ecosystems were dominated for several million years by large herbivorous mammals, which then declined at the end of the Pleistocene under the pressure of the first prehistoric human populations. The loss of these large herbivore species (aurochs, wild horses and anes, woolly rhinoceros...) was also synonymous with the loss of the ecosystem services they provided. @lundgren2020human
 
 For several years, the “rewilding” movement has been aiming to restore these ecosystem services by reintroducing species into large European natural areas, and the present study seeks to assess the extent to which introduced herbivore species have an influence on vegetation. @garido2019experimental
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                      MATERIALS AND METHODS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# MATERIALS AND METHODS
 
 
 The study site is located approximately 17 km south of Uppsala, Sweden. On this study site, three plots were used. Each plot was divided in two, with an ungrazed part and a grazed part. Four young Gotland stallions were placed in each grazing area for three years.
@@ -41,70 +34,65 @@ Other information was noted at each survey, such as the season, year and observe
 
 * The RCS score corresponds to an index of the strategy used by the plants. @Wood2018microbiomes
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                      RESEARCH QUESTIONS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# RESEARCH QUESTIONS
 
 We have chosen to use the  @garido2019experimental dataset to answer three different questions. Firstly, does grazing have an effect on the plant species richness of plots? Secondly, does grazing have an effect on plant morphology? And finally, does grazing have an effect on plant pollination strategies?
 
 To answer these questions, we transformed the initial dataset to obtain a dataset of 404 records. The variables used are :
-- treatment (grazed or ungrazed)
-- season
-- year
-- cover.area.bee (plot area occupied by entomogamous plants)
-- cover.area.gene (plot area occupied by anemogamous plants)
-- logh (log of plant height)
-- logS (log of seed mass)
-- richness (species richness)
-- observer
-- R.score
-- S.score
-- C.score
-- ratio poll (cover.area.bee/cover.area.gene)
+- *treatment* (grazed or ungrazed)
+- *season*
+- *year*
+- *cover.area.bee* (plot area occupied by entomogamous plants)
+- *cover.area.gene* (plot area occupied by anemogamous plants)
+- *logh* (log of plant height)
+- *logS* (log of seed mass)
+- *richness* (species richness)
+- *observer*
+- *R.score*
+- *S.score*
+- *C.score*
+- *ratio poll* (cover.area.bee/cover.area.gene)
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                      DATA IMPORT
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# PACKAGES IMPORT
+
+```{r packages, include=TRUE}
+library(tidyverse)
+library(FactoMineR)
+library(dplyr)
+library(ggplot2)
+```
+
+# DATA IMPORT
 
 
-```{r}
+```{r data import, include=TRUE}
 df <- read.table('pollen.csv', sep = ';',stringsAsFactors=TRUE, header = TRUE)
 df$year <- as.factor(df$year)
 summary (df)
 ```
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                      PACKAGES IMPORT
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# PART 1: Effect of grazing on species richness
 
 
-```{r}
-library(tidyverse)
-library(FactoMineR)
-library(dplyr)
-```
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                               PART 1: Effect of grazing on species richness
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# Data visualization
-```{r : data visualization}
+## **1.Data visualization**
+```{r data visualization, include = TRUE, fig.cap = "Fig 1 : Effect of grassland on species richness"}
 ggplot(data=df)+
   geom_boxplot(aes(x=treatment, y=num.species))+
   geom_jitter(aes(x=treatment, y=num.species)) + 
-  labs(x="Treatment", y="Species richness") +
-  ggtitle('Effect of grassland on species richness')
+  labs(x="Treatment", y="Species richness")
 ```
 The specific richness of grazed areas appears to be greater than in ungrazed areas. 
 
-```{r, hypotheses formulation}
+```{r hypotheses formulation, include = TRUE }
 hyp1<-lm(num.species~1,data=df)
 hyp0<-lm(num.species~treatment,data=df)
 anova(hyp0,hyp1)
 ```
 The p-value is less than 0.05, so grazing has a significant effect on specific richness. 
 
-# Choice of model: in this section, we assume that grazing (treatment) depends on the season and year of observation
+## **2.Choice of model: in this section, we assume that grazing (treatment) depends on the season and year of observation**
 
 ```{r, complete model}
 modComplet<-LinearModel(num.species~(treatment+season+year)*(treatment),data=df,selection = "aic")
@@ -113,7 +101,7 @@ modComplet
 ```
 The results for the full model are as follows: p-value: 2.554e-16, AIC = 649, BIC = 681. However, the model chosen according to the AIC criterion shows the following results: p-value: 1.41e-17, AIC = 645.2 and BIC = 669.2. As the AIC criterion is smaller for this model than for the full model, we choose to retain: num.species ~ treatment + season + year + treatment:year. There is therefore an interaction between the pasture and its year of observation. 
 
-# Validation of the chosen model with the Bartlett test
+## **3.Validation of the chosen model with the Bartlett test**
 ```{r, validation of the chosen model with the Bartlett test}
 modelAIC<-lm(num.species~treatment+season+year+treatment:year,data=df)
 
@@ -133,24 +121,22 @@ bartlett.test(res ~ interaction, data = df)
 ```
 For the Bartlett tests, the p-values are all greater than 0.05, which means that homoscedasticity is respected for all our parameters, or that the variances are all equal for all our observations.
 
-# Residual normality test with Shapiro
+## **4. Residual normality test with Shapiro**
 ```{r, residual normality test with Shapiro}
 hist(res,main="Histogramme residus",xlab="Residus")
 shapiro.test(res)
 ```
 Residual normality is respected, as our p-value is greater than 0.05: the data are compatible with a normal distribution. Our linear model is therefore valid, as residual normality is a key assumption for applying this model.
 
-# Conclusion part 1 on species richness
+## Conclusion part 1 on species richness
 Species richness therefore depends on grazing, season and year, as well as on the interaction grazing:year.
 
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                      PART 2 - EFFECT OF GRAZING ON THE MORPHOLOGY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# PART 2 - EFFECT OF GRAZING ON THE MORPHOLOGY
 
 In this part, we'll try to analyse the effect of treatment (grazing), a qualitative variable, on the morphological parameters of the plants (height and seed mass), quantitative variables. 
 
-### **1. Effect of grazing on the plant height**
+## **1. Effect of grazing on the plant height**
 
 [**Potential relationship between Height and effect of treatment**]{.underline} **:**
 
@@ -242,19 +228,10 @@ After the analysis, the final model with the lower BIC is : logH ~ treatment + l
 The results show that the factor treatment (grazing) by itself has no significant effect (p-value = 0.21 > 0.05) on the height of plants and same goes for R.score and S.score. 
 This means that the effect of treatment that we previously saw was mainly due to interactions between treatment and other factors.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                          PARTIE 3: GRAZING EFFECT ON POLLINISATION STRATEGIES 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# PARTIE 3: GRAZING EFFECT ON POLLINISATION STRATEGIES 
 
+## **1. Visualation of data and one-factor analysis of variance** 
 
-Data importation
-```{r pollen_read_data}
-df <- read_delim("pollen.csv", delim = ";", 
-    escape_double = FALSE, trim_ws = TRUE)
-
-```
-
-## VISUALISATION OF DATA AND ONE-FACTOR ANALYSIS OF VARIANCE
 ```{r boxplot}
 # Boxplot 
 par(mfrow=c(1,2))
@@ -275,7 +252,7 @@ anova(poll1,poll2)
 
 The P-value is not significant at the 5% threshold, so we reject the hypothesis that grazing has an effect on the RatioPoll. The Anova test confirms our graphical observation: there is no difference between the grazed and natural plots.
 
-## TEST MODEL
+## **2.Model test**
 
 ```{r fullmodel}
 poll3<-LinearModel(RatioPoll~(treatment+season+year+observer+R.score+S.score+C.score)*
@@ -286,36 +263,36 @@ poll3
 The model proposed by R does have a lower BIC than our initial model. However, some of the interactions retained by R have no significant effect. We decided to test a model without these interactions. 
 
 
-## MODEL ADJUSTEMENT 
+## **3.Model adjustement** 
 
 ```{r coeff1}
 
-poll4<-LinearModel(RatioPoll~( treatment + season + year + 
+poll4<-lm(RatioPoll~( treatment + season + year + 
     observer + R.score + S.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
     observer:R.score + R.score:C.score),data=df)
-poll4
+summary(poll4)
 ```
 
 We have observed that the R.score:C.score interaction is not significant, we test a new model without it.
 ```{r coeff2}
-poll5<-LinearModel(RatioPoll~( treatment + season + year + 
+poll5<-lm(RatioPoll~( treatment + season + year + 
     observer + R.score + S.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
     observer:R.score ),data=df)
-poll5
+summary(poll5)
 ```
 The p-value of S.score is not significant and does not appear in any significant interactions. We therefore decide to remove it
 
 ```{r coeff3}
-poll6<-LinearModel(RatioPoll~( treatment + season + year + 
+poll6<-lm(RatioPoll~( treatment + season + year + 
     observer + R.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
     observer:R.score ),data=df)
-poll6
+summary(poll6)
 ```
 
-## VALIDITY OF THE CHOSEN 
+## **4. Validity of the chosen model** 
 
 Now,we want to check the normality of residuals 
 ```{r ResidNorm}
@@ -330,11 +307,11 @@ shapiro.test(res)
 
 The residuals are not normally distributed. We're going to try and do some transformations using log and sqrt.
 ```{r TransfoLog}
-poll7<-LinearModel(log(RatioPoll+1)~(treatment + season + year + 
+poll7<-lm(log(RatioPoll+1)~(treatment + season + year + 
     observer + R.score + C.score + treatment:R.score + 
     treatment:C.score + year:C.score + 
     observer:R.score ),data=df )
-poll7
+summary(poll7)
 
 ```
 
@@ -353,4 +330,6 @@ shapiro.test(res)
 
 ```
  **Conclusion: ** We cannot evaluate the impact of grazing on the pollination strategy of plants because the constraints of the general linear model are not respected. In addition, we cannot apply a generalised linear model given the type and values of our data. 
+ 
+ 
 
