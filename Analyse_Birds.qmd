@@ -128,11 +128,11 @@ required_packages <- c(
   "factoextra", 
   "sf",         # for coordinats manipulation
   "terra",      # for maps creation
-  "spData", 
-  "tmap", 
-  "leaflet", 
-  "spDataLarge", 
-  "maps", 
+  "spData",     # for maps creation
+  "tmap",       # for maps creation
+  "leaflet",    # for maps creation
+  "spDataLarge",  # for maps creation
+  "maps",       # for maps creation
   "gifski"      # for gifs display
 )
 
@@ -279,7 +279,7 @@ head(data_will_1995)
 
 The main information that we want to present on the map are the mean number of fledged birds by nest and the amount of data available for each county and each year. 
 
-Here is the creation of a summary dataframe that contains all these information for each dataframe. 
+Here is the creation of a summary dataframe that contains all these informations for each dataframe. 
 
 ```{r}
 annee <- c()
