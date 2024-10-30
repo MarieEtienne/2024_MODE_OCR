@@ -3,7 +3,7 @@ title: "Determinants of Ant Species Density"
 autor: "Gabriel-Marie Arnault, Giuliana Brambilla, Apolline Byrdy, Anaelle Hulbert, Manon Le Bihan, Kilian Prevost, Chloé Van der Swaelmen and Léa Vuille"
 source : "Yannick Outreman, based on data from Gotelli & Ellison (2002) - Biogeography at a regional scale : determinants of ant species density in New England bogs and forests. Ecology, 83 : 1604-1609."
 editor: visual
-bibliography: references_determinant_ant_diversity.bib
+bibliography: references.bib
 ---
 
 # INTRODUCTION
