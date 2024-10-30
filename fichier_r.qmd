@@ -115,6 +115,7 @@ convert_dms_to_decimal <- function(dms) {
 -   We convert the DMS coordinates to decimal coordinates and we merge it with data_chiro by the capture locality
 
 ```{r}
+library(stringr)
 coord_chiro <- coord_chiro %>%
   rowwise() %>%  
   mutate(
@@ -145,6 +146,7 @@ points(data_abiot$LON,data_abiot$LAT,pch=20,col='green')
 points(coord_chiro$LON,coord_chiro$LAT,pch=20,col="blue")
 ```
 
+<<<<<<< HEAD
 To estimate the meteorogical values at capture sites, we used spatial interpolation. For each date and each value of interest, we measured at first wether or not there was an spatial structure using the moran test. If there is no spatial structure, we estimate the value by meaning the observed values. If there is a spatial structure, we realise a kriging. Because of the necessity to automatise this interpolation, the method is not completely correct, however the weather in French Guiana is not very heterogenous, and is mostly gradients to the ocean or east-west gradient. Morover, the data we obtain show the same patterns of dry season and rain season, and for all the values.
 
 ```{r Rain, include=FALSE}

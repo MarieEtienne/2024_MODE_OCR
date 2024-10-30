@@ -20,7 +20,8 @@ After a short introduction regarding the principles and the tools of a reproduci
 
 Table of Contents 
 
-<!-- * [Multivariate analysis](AMV_chapter.html) -->
+* [Bats analysis](fichier_r.html)
+
 <!-- * [Linear modelling in ecology](linear_modelling.html) -->
 <!-- * [Mixed models in Ecology](Mixed_models.html) -->
 <!-- * [Dependent Data](chapter_dependance.html) -->
