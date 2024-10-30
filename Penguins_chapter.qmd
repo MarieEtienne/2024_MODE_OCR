@@ -16,9 +16,7 @@ output:
 
 ## Study context {style="color:royalblue"}
 
-This document is a report on the analysis of a dataset on penguins. This dataset contains information on various [variables](#column_name). The dataset was find on Kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv
-
-This document is a report on the analysis of a dataset on penguins. The data collected contains informations on multiples [variables](#colum-name). This dataset was made from differents articles according by Gorman *et al.* [@10.1371/journal.pone.0090081] and Horst *et al.* [@10.32614/RJ-2022-020]. It focused on three penguin species : Adelie (*Pygoscelis adeliae*), Chinstrap (*Pygoscelis antarcticus*) and Gentoo (*Pygoscelis papua*). The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
+This document is a report on the analysis of a dataset on penguins. The data collected contains informations on multiples [variables](#colum-name). The dataset was find on Kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv. This dataset was made from differents articles according by Gorman *et al.* [@10.1371/journal.pone.0090081] and Horst *et al.* [@10.32614/RJ-2022-020]. It focused on three penguin species : Adelie (*Pygoscelis adeliae*), Chinstrap (*Pygoscelis antarcticus*) and Gentoo (*Pygoscelis papua*). The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
 
 ```{r, results='hide'}
 #| message: false
@@ -637,19 +635,7 @@ summary(anova2)
 
 There is a significant *difference between the body mass of these 3 islands*, almost 2 of them.
 
-# Model selection and validation {style="color:navy"}
-
-## Data preparation and variable selection {style="color:royalblue"}
-
-```{r}
-anova3 = aov(body_mass~sex, data = data)
-
-summary(anova3)
-```
-
-There is a significant *difference between the body mass and the sex.*
-
-# Body mass model: an example of ANCOVA
+# Body mass model: an example of ANCOVA {style="color:navy"}
 
 ANCOVA (i.e. analysis of variance-covariance) is a statistic method that enable to model the relation between a dependent quantitative variable and several dependent explanatory variable that can be **quantitative AND qualitative**.
 
@@ -689,7 +675,7 @@ dataLM<-dataLM %>%
   drop_na(culmen_length,culmen_depth,flipper_length,body_mass,sex,delta_15_N,delta_13_C)
 ```
 
-## Data exploration
+## Data exploration {style="color:royalblue"}
 
 Before any modelisation, we have to explore the data to avoid some mistake. These are the different step to follow prior to execute a model:
 
@@ -699,7 +685,7 @@ Before any modelisation, we have to explore the data to avoid some mistake. Thes
 4.  Look for potential interaction between explanatory variables.
 5.  Check for potential colinearity between explanatory variables.
 
-### 1. Response variable exploration
+### Response variable exploration {style="color:royalblue"}
 
 ```{r, fig.height=5, fig.width=15}
 #| label: fig-lm_resp_varia
@@ -719,7 +705,7 @@ qqline(dataLM$body_mass,col='red',lwd=2)
 
 We can see on the first graphic of the @fig-lm_resp_varia that there is no aberrant values for the variable body mass. The two other graphic of the figure show that there is a deviation of normality. However, normality of the response variable is not a requirement for ANCOVA.
 
-### 2. Explanatory variables exploration
+### Explanatory variables exploration {style="color:royalblue"}
 
 First we invastigate the distribution of the quantitative explanatory variables.
 
@@ -954,7 +940,7 @@ summary(modlm3)
 
 The model can thus be written as:
 
-$$ Body\:Mass = 1467.1\:+\:(Species_{Adeliae} = 0 \:;\:Species_{Pygoscelis antarctica} = -245.1^{**}\:;\:Species_{Pygoscelis papua} = 882.1^{***})$$ $$ +\:17.1^{*NS*}. Culmen\:Length\:+\:61.6^{**}. Culmen\:Depth\:+\:17.8^{***}. Flipper\:Length $$ $$ + (Sex_{Female}= 0\:;\: Sex_{Male}=417.9^{***})\:-\:164.3^{***}. Delta\:15N\:+\:65.2^{*}. Delta\:13C)$$
+$$ Body\:Mass = 1467.1\:-\:164.3^{***}. Delta\:15N\:+\:65.2^{*}. Delta\:13C$$ $$+\:(Species_{Adeliae} = 0 \:;\:Species_{Pygoscelis antarctica} = -245.1^{**}\:;\:Species_{Pygoscelis papua} = 882.1^{***})$$ $$ +\:17.1^{*NS*}. Culmen\:Length\:+\:61.6^{**}. Culmen\:Depth\:+\:17.8^{***}. Flipper\:Length $$ $$ + (Sex_{Female}= 0\:;\: Sex_{Male}=417.9^{***})$$
 
 From the summary of the model we can also access the variance proportion that is explained by the model. It correspond to the variable of *Adjusted R-squared* which is here 0.8813. The model is thus explaining 88% of the body mass variance.
 
