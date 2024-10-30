@@ -73,8 +73,8 @@ We saw earlier that there could be a potential effect of treatment on the plant'
 We perform an ANOVA to compare a random model with our model.
 
 Significance test:
-Hypothesis H0: Grazing has no effect on plant size.
-Hypothesis H1: Grazing has an effect on plant size.
+Hypothesis H0: Grazing has no effect on plant height.
+Hypothesis H1: Grazing has an effect on plant height.
 
 
 ```{r model_treatment_height_anova}
@@ -108,7 +108,7 @@ The medians are almost identical. The data for the no grazing treatment also see
 
 [**Statistical analysis of the relationship between Height and effect of treatment**]{.underline} **:**
 
-We saw earlier that there could be no potential effect of treatment on seed mass. We now want to know if this is really significant.
+We saw earlier that there could be no potential effect of treatment on seed mass. We now want to know if there is no significant difference.
  
 We perform an ANOVA to compare the model where we only consider the effect of grazing with a model where the effect of grazing is random.
 
