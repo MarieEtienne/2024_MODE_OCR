@@ -17,9 +17,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Install R packages
         run: |
-          Rscript -e "install.packages(c('factoextra'))"
           Rscript -e "install.packages(c('rnaturalearth','rnaturalearthdata', 'ggspatial'))" 
-
+          Rscript -e "install.packages(c('factoextra', 'tinytext', 'corrplot', 'plot3D', 'DHARMa', 'rcompanion','lattice'))" 
       - name: Additional Python packages
         run: |
           pip install numpy 

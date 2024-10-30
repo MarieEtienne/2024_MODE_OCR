@@ -1,0 +1,286 @@
+---
+title: "Titre à trouver"
+author: "TESSIER/GRAVE/DAVID/DENOUAL/SERRE/LAPORTE/LEROUX/BRUZZO"
+date: "2024-10-22"
+output: html_document
+bibliography: references.bib
+---
+
+#### We have at our disposal 4 datasets including :
+
+-   the data collected on the species of bats captured by date and location in French Guiana, and containing information on sex, age and reproductive state\
+-   the meteorological data of French Guiana from 1950 to 2024\
+-   the capture locations coordinates (degree minute second)
+
+```{r}
+
+library(dplyr)
+library(readxl)
+library(lubridate)
+
+data_chiro<-read_excel("data_chiro.xlsx") #import data chiro
+data_abiot_50_22<-read.csv("abiot_1950_2022.csv", sep = ";") #import data meteo 1950 -> 2022 #pensez à mettre les sources
+data_abiot_23_24<-read.csv("abiot_2023_2024.csv", sep = ";") #import data meteo 2023 -> 2024
+coord_chiro<-read_excel("COORD_CAPTURE.xlsx")
+
+```
+
+#### Data processing
+
+-   Firstly we concatenate all the abiotic data together
+
+-   Then we start to clean the abiotic the dataset by deleting all years that precede the first event of capture, the we use the Lubridate R package [@grolemund2016lubridate] to formate the data column as we want and the dplyr R package [@wickham2014dplyr] to re-organize the data set
+
+```{r}
+
+# CLEANING AND CREATING A CLIMATIC TABLE --------------------------------------------------
+data_abiot<-rbind(data_abiot_50_22, data_abiot_23_24) #On concatène les deux tables de données ensemble
+
+data_abiot <- data_abiot %>%
+  filter(AAAAMMJJ >= 20141028) %>% #delete everything before this date
+  mutate(AAAAMMJJ = ymd(AAAAMMJJ)) %>%  # Conversion en format Date
+  mutate(Year = year(AAAAMMJJ)) %>%  # Extraire l'année après conversion en Date
+  mutate(AAAAMMJJ = format(AAAAMMJJ, "%d-%m-%Y")) %>%  # Formater la date en 'dd-mm-YYYY'
+  select(NUM_POSTE, NOM_USUEL, LAT, LON, AAAAMMJJ, RR, TM, TAMPLI, FFM, Year) %>% # finir les pipes
+  # Inclure la colonne Year
+  rename(date = AAAAMMJJ, rain_mm = RR, Temperature = TM, ampli_Temp = TAMPLI, wind_ms = FFM, COMMUNE = NOM_USUEL)%>% #renommer les colonnes
+  mutate(julian_day = yday(date)) #mettre au format jour julien
+
+
+```
+
+#### Computing moonlight intensity
+
+- Function that simulates the lunar cycle as a proxy for night-time luminosity
+
+```{r}
+#Function to compute the moonlight % for a fixed date
+Lune <- function(date){
+  sortie <- c() #crée un vecteur vide pour stocker les résultats (cette fonction nous permet de calculer un vecteur contenant l'intensité lumineuse de la lune pour un vecteur de dates données)
+  for(i in 1:length(date)){ 
+    date_num <- as.numeric(as.Date(date[i],format="%d-%m-%Y")) #on transforme la date en nombre (0=01/01/1970)
+    sortie[i] <- (0.5*(cos((date_num-21)*((2*pi)/(29.530589)))+1)) #formule donnant l'intensité lumineuse de la lune à une date donnée
+  }
+  return(sortie)
+}
+
+data_abiot$Lune <-Lune(data_abiot$date) #Adding moonlight % to the climatic table
+
+```
+
+#### Data processing
+
+- Data_chiro table pre-processing : We only keep the columns of interest, then we only keep the female individuals because the reproduction indices are mainly observable on females. We only keep adult individuals because this is the age class likely to have reproductive indices.
+
+```{r}
+data_chiro <- data_chiro %>%
+  select(c(Année, Commune, Localité, Date, Espèce, Sexe, Repro, Age)) %>% #select the columns we want
+  filter(Sexe == "F") %>% #on ne garde que les femelles car très peu d'indices de repro sur les mâles
+  filter(Age == "AD") %>% #on ne conserve que les individus 
+  mutate(Date = ymd(Date)) %>% #date en jour julien
+  mutate(Year = year(Date)) %>% # Créer une nouvelle colonne 'Year' contenant uniquement l'année
+  mutate(Date = format(Date, "%d-%m-%Y"))%>% #formatage de la date
+  mutate(julian_day = yday(Date))%>% #Date =julian_day
+  rename(LIEU_DIT = Localité, COMMUNE = Commune) #on renomme
+```
+
+#### Converting DMS coordinates to decimal coordinates
+
+- Fonction for converting minute/second degree into decimal degrees
+
+```{r}
+# Fonction pour convertir DMS en degrés décimaux
+convert_dms_to_decimal <- function(dms) {
+  # Séparer les parties de la coordonnée DMS
+  parts <- str_match(dms, "(\\d+)°(\\d+)'(\\d+\\.?\\d*)''\\s([NSEW])")
+  
+  degrees <- as.numeric(parts[, 2]) 
+  minutes <- as.numeric(parts[, 3])
+  seconds <- as.numeric(parts[, 4])
+  direction <- parts[, 5]
+  
+  # Calculer les degrés décimaux
+  decimal <- degrees + minutes / 60 + seconds / 3600
+  
+  # Ajuster en fonction de la direction (S ou W deviennent négatifs)
+  if (direction %in% c("S", "W")) {
+    decimal <- -decimal
+  }
+  
+  return(decimal)
+}
+
+```
+
+- We convert the DMS coordinates to decimal coordinates and we merge it with data_chiro by the capture locality
+
+```{r}
+library(stringr)
+coord_chiro <- coord_chiro %>%
+  rowwise() %>%  # Appliquer la mutation par ligne
+  mutate(
+    lon_dms = str_extract(COORD, "^[^N]+W"),  # Extraire la partie longitude
+    lat_dms = str_extract(COORD, "[^W]+N"),   # Extraire la partie latitude
+    Longitude = convert_dms_to_decimal(lon_dms),  # Convertir en décimal
+    Latitude = convert_dms_to_decimal(lat_dms)    # Convertir en décimal
+  ) %>%
+  ungroup() %>%  # Sortir du contexte rowwise
+  select(COMMUNE, LIEU_DIT, Latitude, Longitude)%>% #choisir les colonnes que l'on garde
+  rename(LAT = Latitude, LON = Longitude) #on renomme
+
+data_chiro <- data_chiro %>%
+  inner_join(coord_chiro, by = "LIEU_DIT") # on merge la table des coordonnées décimales à celles des données de capture en fonction du lieu de capture
+
+data_chiro <- data_chiro%>%
+  select(COMMUNE.x,LIEU_DIT,Date,Espèce,Sexe,Repro,Age,Year,julian_day,LAT,LON)%>% #on spécifie les colonnes que l'on garde
+  rename(COMMUNE = COMMUNE.x)
+```
+
+représentation graphique de la guyane avec les station météorologique et les points de capture
+```{r}
+limite <- matrix(c(-54.40582467596958,5.123666986130482,0 -54.45958864979806,4.753175826159146,0 -54.43393543693306,4.077331065323269,0 -54.01198973780399,3.581399050490593,0 -54.20921816638264,3.132878544854336,0 -54.21013685965725,2.796587485871633,0 -54.45803260870573,2.441977197957256,0 -54.68709817836254,2.314479358976484,0 -54.15543583603689,2.123868408305178,0 -53.7651653142448,2.30335873628299,0 -53.35415060581271,2.164099707075567,0 -52.94875879245732,2.132858726757194,0 -52.56611638847146,2.518366090728264,0 -52.59199025844659,2.634734023219086,0 -52.39229001432994,2.890167168832993,0 -52.37091318927082,3.144918005801542,0 -52.21064002801557,3.274351081759725,0 -51.9836274889358,3.696015530721377,0 -51.6721839730206,4.031282773145124,0 -51.63663780527241,4.28966735155517,0 -51.9023261931293,4.501855027711033,0 -52.05244725433236,4.818896971774704,0 -52.51627884489513,5.026927311475695,0 -52.703088477061,5.197262336288941,0 -53.15061905132664,5.577522799535109,0 -53.53420039840946,5.573574890423137,0 -53.95403768383684,5.781472322818466,0 -54.40582467596958,5.123666986130482),ncol=2,byrow=T)
+
+
+
+plot(limite[,1],limite[,2],type='l')
+points(data_abiot$LON,data_abiot$LAT,pch=20,col='green')
+points(coord_chiro$LON,coord_chiro$LAT,pch=20,col="blue")
+
+```
+
+Data import :
+
+```{r}
+data_merged = read.csv("data_merged.csv", header = T)
+```
+
+```{r Rain}
+library(spdep)
+library(sp)
+library(geoR)
+
+datamap<-read.csv("data_meteo.csv",row.names = 1)
+coord <- datamap[,c(4,3)] #on récupère les coordonnées de chaque stations météos
+
+dd <- unique(data_merged$Date)
+res<- c()
+for(d in dd){
+  
+  if(length(datamap$date[which(datamap$date==d)])>0){ #On vérifie que les données météo ont une correspondance avec les données de comptage 
+    coord_d <- coord[which(datamap$date==d),]
+    delau <- c()
+    delau<-tryCatch({ tri2nb(coord_d)}, error=function(e){}) #On réalise une triangulantion de delaunay, l'argument tryCatch empeche la boucle for de s'interrompre à cause d'une erreur non-fatale
+    delau.w<- nb2listw(delau, style="S", zero.policy=TRUE)
+    m<-c()
+    m <- moran.test(datamap$rain_mm[which(datamap$date==d)], delau.w, zero.policy=TRUE) # On réalise un test de moran pour voir s'il y a une autocorélation spatiale de la pluie
+    if(m$p.value < 0.05){
+      spatial_point <- c()
+      spatial_point <- SpatialPointsDataFrame(coord_d, as.data.frame(datamap$rain_mm[which(datamap$date==d)]))
+      geodata <- as.geodata(spatial_point)
+      coord <- datamap[,c(4,3)]
+      variograme <- variog(geodata, option  = "sm")
+      m.d <- max(variograme$u)
+      if(length(which(is.na(variograme$v)==T))>0){m.d=variograme$u[which(is.na(variograme$v))][1]}
+      variograme <- variog(geodata, option  = "sm",max.dist = m.d)
+      mod1 <- variofit(variograme,ini.cov.pars = c((0.9*max(variograme$v,na.rm = T)[1]-variograme$u[1]),variograme$u[which(variograme$v==max(variograme$v,na.rm = T)[1])][1]),nugget=variograme$v[1],"exponential")#on réalise une interpolation spatiale 
+      res[which(data_merged$Date==d)] <- as.numeric(krige.conv(geodata, loc = data_merged[which(data_merged$Date==d),c(11,10)] , krige = krige.control(obj.m = mod1))$predict)
+    }else{
+      res[which(data_merged$Date==d)] <- mean(datamap$rain_mm[which(datamap$date==d)])# en l'absence de structure spatiale, on considère que la valeur en tout point est égale à la moyenne des données mesurées
+    }   
+    
+  }else{
+    res[which(data_merged$Date==d)] <- NA
+  }
+  print(d)
+  flush.console()
+}
+
+```
+
+
+```{r Temperature}
+
+dd <- unique(data_merged$Date)
+res<- c()
+for(d in dd){
+  
+  if(length(datamap$date[which(datamap$date==d)])>0){
+    coord_d <- coord[which(datamap$date==d),]
+    delau <- c()
+    delau<-tryCatch({ tri2nb(coord_d)}, error=function(e){})
+    delau.w<- nb2listw(delau, style="S", zero.policy=TRUE)
+    m<-c()
+    m <- moran.test(datamap$Temperature[which(datamap$date==d)], delau.w, zero.policy=TRUE)
+    if(m$p.value < 0.05){
+      spatial_point <- c()
+      spatial_point <- SpatialPointsDataFrame(coord_d, as.data.frame(datamap$Temperature[which(datamap$date==d)]))
+      geodata <- as.geodata(spatial_point)
+      coord <- datamap[,c(4,3)]
+      variograme <- variog(geodata, option  = "sm")
+      m.d <- max(variograme$u)
+      if(length(which(is.na(variograme$v)==T))>0){m.d=variograme$u[which(is.na(variograme$v))][1]}
+      variograme <- variog(geodata, option  = "sm",max.dist = m.d)
+      mod1 <- variofit(variograme,ini.cov.pars = c((0.9*max(variograme$v,na.rm = T)[1]-variograme$u[1]),variograme$u[which(variograme$v==max(variograme$v,na.rm = T)[1])][1]),nugget=variograme$v[1],"exponential")
+      res[which(data_merged$Date==d)] <- as.numeric(krige.conv(geodata, loc = data_merged[which(data_merged$Date==d),c(11,10)] , krige = krige.control(obj.m = mod1))$predict)
+      
+    }else{
+      res[which(data_merged$Date==d)] <- mean(datamap$Temperature[which(datamap$date==d)])
+    }   
+    
+  }else{
+    res[which(data_merged$Date==d)] <- NA
+  }
+  print(d)
+  flush.console()
+  
+  
+}
+
+data_merged$Température <- res
+
+```
+
+```{r Range}
+
+dd <- unique(data_merged$Date)
+res<- c()
+for(d in dd){
+  
+  if(length(datamap$date[which(datamap$date==d)])>0){
+    coord_d <- coord[which(datamap$date==d & is.na(datamap$ampli_Temp)==F),]
+    delau <- c()
+    delau<-tryCatch({ tri2nb(coord_d)}, error=function(e){})
+    delau.w <- c()
+    delau.w<- nb2listw(delau, style="S", zero.policy=TRUE)
+    m<-c()
+    m <- moran.test(datamap$ampli_Temp[which(datamap$date==d & is.na(datamap$ampli_Temp)==F)], delau.w, zero.policy=TRUE)
+    if(m$p.value < 0.05){
+      spatial_point <- c()
+      spatial_point <- SpatialPointsDataFrame(coord_d, as.data.frame(datamap$wind_ms[which(datamap$date==d & is.na(datamap$ampli_Temp)==F)]))
+      geodata <- as.geodata(spatial_point)
+      coord <- datamap[,c(4,3)]
+      variograme <- variog(geodata, option  = "sm")
+      m.d <- max(variograme$u)
+      if(length(which(is.na(variograme$v)==T))>0){m.d=variograme$u[which(is.na(variograme$v))][1]}
+      variograme <- variog(geodata, option  = "sm",max.dist = m.d)
+      mod1 <- variofit(variograme,ini.cov.pars = c((0.9*max(variograme$v,na.rm = T)[1]-variograme$u[1]),variograme$u[which(variograme$v==max(variograme$v,na.rm = T)[1])][1]),nugget=variograme$v[1],"exponential")
+      res[which(data_merged$Date==d)] <- as.numeric(krige.conv(geodata, loc = data_merged[which(data_merged$Date==d),c(11,10)] , krige = krige.control(obj.m = mod1))$predict)
+      
+    }else{
+      res[which(data_merged$Date==d)] <- mean(datamap$ampli_Temp[which(datamap$date==d)],na.rm = T)
+      
+    }   
+    
+  }else{
+    res[which(data_merged$Date==d)] <- NA
+  }
+  print(d)
+  flush.console()
+  
+  
+}
+
+data_merged$Amplitude <- res
+
+```
+
