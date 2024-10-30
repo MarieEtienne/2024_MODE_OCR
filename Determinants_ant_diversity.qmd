@@ -601,7 +601,7 @@ Generally if we look at @fig-plotXS, we can assume an interaction between covari
 We aim to avoid collinearity among the explanatory variables in our modeling to prevent multiple variables from providing the same information. To do this, we must examine the statistical relationships that may exist among the variables by calculating the correlation between quantitative $X$ variables, and analyzing the influence of the qualitative $X$ on the quantitative $X$ variables using plot graphics.
 
 ```{r collinearity1a}
-#| label: fig-plotcolinearityscatter
+#| label: fig-plotcollinearityscatter
 #| echo: true
 #| message: false
 #| warning: false
@@ -619,7 +619,7 @@ plot(newdata,pch=16,col='deepskyblue4')
 ```
 
 ```{r collinearity1b}
-#| label: fig-plotcolinearityCOR
+#| label: fig-plotcollinearityCOR
 #| echo: true
 #| message: false
 #| warning: false
@@ -633,7 +633,7 @@ corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,t
 ```
 
 ```{r collinearity1c}
-#| label: fig-plotcolinearityCATCONT
+#| label: fig-plotcollinearityCATCONT
 #| echo: true
 #| message: false
 #| warning: false
@@ -654,7 +654,7 @@ boxplot(dataAnts$LogArea~dataAnts$Location, varwidth = TRUE, ylab = "Bog area", 
 
 ```
 
-In the first graph (@fig-plotcolinearityscatter), we can see that the point clouds do not appear to show any trend toward collinearity. This impression is confirmed by the calculated values in the following figure (@fig-plotcolinearityCOR), where the values are well below 0.7, which is commonly used as a threshold for collinearity (above this, variables are considered correlated). The almost complete overlap of the boxplots (@fig-plotcolinearityCATCONT) further supports the non-collinearity of these factors.
+In the first graph (@fig-plotcollinearityscatter), we can see that the point clouds do not appear to show any trend toward collinearity. This impression is confirmed by the calculated values in the following figure (@fig-plotcollinearityCOR), where the values are well below 0.7, which is commonly used as a threshold for collinearity (above this, variables are considered correlated). The almost complete overlap of the boxplots (@fig-plotcollinearityCATCONT) further supports the non-collinearity of these factors.
 
 [**Conclusion**]{.underline} **:**
 
