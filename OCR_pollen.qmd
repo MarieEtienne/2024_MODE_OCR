@@ -1,3 +1,4 @@
+--- 
 title: "Effects of grazing on Swedish meadows"
 author: "Bastien, Elia, Caroline, Alexia, Marine, Lily, Julie" 
 bibliography: references.bib
@@ -7,7 +8,7 @@ output:
   html_document:
    toc: true
    toc_float: true
-
+--- 
 ```{=html}
 <style>
 body {
