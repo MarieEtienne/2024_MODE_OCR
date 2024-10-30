@@ -551,13 +551,13 @@ boxplot(dataAnts$Nsp~dataAnts$Location, varwidth = TRUE, ylab = "Ant species ric
 
 ```
 
-Relationship between $Y$ and latitude (@fig-plotYXS A): We can see that the higher the latitude, the lower the species richness. We can say that the further north we are, the fewer ant species there are.
+Relationship between ant species richness and latitude (@fig-plotYXS A): We can see that the higher the latitude, the lower the species richness. We can say that the further north we are, the fewer ant species there are.
 
-Relationship between $Y$ and altitude (@fig-plotYXS B): In this graph, we can again see that the higher the altitude, the lower the species richness.
+Relationship between ant species richness and altitude (@fig-plotYXS B): In this graph, we can again see that the higher the altitude, the lower the species richness.
 
-Relationship between $Y$ and bog area (@fig-plotYXS C): Here, there appears to be no relationship between ant species richness and bog area.
+Relationship between ant species richness and bog area (@fig-plotYXS C): Here, there appears to be no relationship between ant species richness and bog area.
 
-Relationship between $Y$ and location (@fig-plotYXS D.): Here, there appears to be a relationship between location and ant species richness, with higher species richness in forests than in bogs.
+Relationship between ant species richness and location (@fig-plotYXS D.): Here, there appears to be a relationship between location and ant species richness, with higher species richness in forests than in bogs.
 
 [**Conclusion**]{.underline} **:**
 
