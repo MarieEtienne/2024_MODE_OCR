@@ -82,7 +82,7 @@ library(dplyr)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Data visualization
-```{r}
+```{r : data visualization}
 ggplot(data=df)+
   geom_boxplot(aes(x=treatment, y=num.species))+
   geom_jitter(aes(x=treatment, y=num.species)) + 
@@ -91,7 +91,7 @@ ggplot(data=df)+
 ```
 The specific richness of grazed areas appears to be greater than in ungrazed areas. 
 
-```{r}
+```{r, hypotheses formulation}
 hyp1<-lm(num.species~1,data=df)
 hyp0<-lm(num.species~treatment,data=df)
 anova(hyp0,hyp1)
@@ -100,7 +100,7 @@ The p-value is less than 0.05, so grazing has a significant effect on specific r
 
 # Choice of model: in this section, we assume that grazing (treatment) depends on the season and year of observation
 
-```{r}
+```{r, complete model}
 modComplet<-LinearModel(num.species~(treatment+season+year)*(treatment),data=df,selection = "aic")
 modComplet
 
@@ -108,7 +108,7 @@ modComplet
 The results for the full model are as follows: p-value: 2.554e-16, AIC = 649, BIC = 681. However, the model chosen according to the AIC criterion shows the following results: p-value: 1.41e-17, AIC = 645.2 and BIC = 669.2. As the AIC criterion is smaller for this model than for the full model, we choose to retain: num.species ~ treatment + season + year + treatment:year. There is therefore an interaction between the pasture and its year of observation. 
 
 # Validation of the chosen model with the Bartlett test
-```{r}
+```{r, validation of the chosen model with the Bartlett test}
 modelAIC<-lm(num.species~treatment+season+year+treatment:year,data=df)
 
 res<-residuals(modelAIC)
@@ -128,8 +128,10 @@ bartlett.test(res ~ interaction, data = df)
 For the Bartlett tests, the p-values are all greater than 0.05, which means that homoscedasticity is respected for all our parameters, or that the variances are all equal for all our observations.
 
 # Residual normality test with Shapiro
+```{r, residual normality test with Shapiro}
 hist(res,main="Histogramme residus",xlab="Residus")
 shapiro.test(res)
+```
 Residual normality is respected, as our p-value is greater than 0.05: the data are compatible with a normal distribution. Our linear model is therefore valid, as residual normality is a key assumption for applying this model.
 
 # Conclusion part 1 on species richness
