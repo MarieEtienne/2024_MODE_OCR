@@ -4,15 +4,6 @@ on:
     branches:
       - master
   pull_request:
-
-jobs:
-  build:
-name: website
-on:
-  push:
-    branches:
-      - master
-  pull_request:
   
   
 jobs:
