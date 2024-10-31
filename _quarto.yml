@@ -20,12 +20,12 @@ website:
 
         
     right:
-      - text: Book contente
+      - text: Book content
         menu:
-        - text: R simple example 
-          href: r_chapter.qmd
-        - text: Python simple example 
-          href: python_chapter.qmd
+        - text: Titre à trouver 
+          href: fichier_r.qmd
+        - text: Determinants of Ant Species Density
+          href: Determinants_ant_diversity.qmd
         aria-label: GitHub
 
 format:
