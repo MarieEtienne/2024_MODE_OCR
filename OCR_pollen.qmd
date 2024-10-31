@@ -7,7 +7,7 @@ execute:
 output: 
   html_document:
    toc: true
-   toc_float: trueoutput:
+   toc_float: trueoutput
     fig_caption: true
 ---
 
