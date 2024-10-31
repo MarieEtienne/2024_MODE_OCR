@@ -84,28 +84,15 @@ data <- read.table("Bird_dataset.txt", header = TRUE, stringsAsFactors = TRUE)
 Charge the packages
 Download the spDataLarge package, unavailable on CRAN
 ```{r}
-# Please, run this cell only once
 if (!require(spDataLarge)) {
-  install.packages("spDataLarge", repos = "https://nowosad.github.io/drat/", type = "source")
-  library(spDataLarge)
+  stop("The package 'spDataLarge' must be installed from the following depot : https://nowosad.github.io/drat/ \n
+        Use the following command in order to install : \n
+        install.packages('spDataLarge', repos = 'https://nowosad.github.io/drat/', type = 'source')")
 }
 ```
 
 The rest of the packages 
 ```{r, include=FALSE}
-
-# Function to check and install packages if not installed
-install_if_missing <- function(packages) {
-  for (package in packages) {
-    if (!require(package, character.only = TRUE)) {
-      install.packages(package, dependencies = TRUE)
-      library(package, character.only = TRUE)
-    } else {
-      library(package, character.only = TRUE)
-    }
-  }
-}
-
 # List of required packages
 required_packages <- c(
   "knitr",      # for R Markdown chunk options
@@ -129,8 +116,14 @@ required_packages <- c(
   "gifski"      # for gifs display
 )
 
-# Install and load the packages
-install_if_missing(required_packages)
+# Checking the presence of packages
+for (package in required_packages) {
+  if (!require(package, character.only = TRUE)) {
+    stop(paste("The package", package, "must be installed. Please, use install.packages('", package, "')"))
+  } else {
+    library(package, character.only = TRUE)
+  }
+}
 ```
 
 # First look at the data : 
