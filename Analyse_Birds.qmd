@@ -12,6 +12,8 @@ toc: true
 toc_float: true
 ---
 
+**Do not forget to set your working directory in the right place** **Menu : Session/Set Working Directory/Choose directory** *And indicate Git/2024_MODE_OCR*
+
 # Data presentation
 
 The dataset (available following this link
@@ -80,21 +82,17 @@ data <- read.table("Bird_dataset.txt", header = TRUE, stringsAsFactors = TRUE)
 ```
 
 Charge the packages
-
-```{r, include=FALSE}
-
-# Function to check and install packages if not installed
-install_if_missing <- function(packages) {
-  for (package in packages) {
-    if (!require(package, character.only = TRUE)) {
-      install.packages(package, dependencies = TRUE)
-      library(package, character.only = TRUE)
-    } else {
-      library(package, character.only = TRUE)
-    }
-  }
+Download the spDataLarge package, unavailable on CRAN
+```{r}
+if (!require(spDataLarge)) {
+  stop("The package 'spDataLarge' must be installed from the following depot : https://nowosad.github.io/drat/ \n
+        Use the following command in order to install : \n
+        install.packages('spDataLarge', repos = 'https://nowosad.github.io/drat/', type = 'source')")
 }
+```
 
+The rest of the packages 
+```{r, include=FALSE}
 # List of required packages
 required_packages <- c(
   "knitr",      # for R Markdown chunk options
@@ -107,12 +105,225 @@ required_packages <- c(
   "lattice",    # for multipanel graphics
   "dplyr",      # for data manipulation
   "FactoMineR", # for ordinations
-  "factoextra"
+  "factoextra", 
+  "sf",         # for coordinats manipulation
+  "terra",      # for maps creation
+  "spData",     # for maps creation
+  "tmap",       # for maps creation
+  "leaflet",    # for maps creation
+  "spDataLarge",  # for maps creation
+  "maps",       # for maps creation
+  "gifski"      # for gifs display
 )
 
-# Install and load the packages
-install_if_missing(required_packages)
+# Checking the presence of packages
+for (package in required_packages) {
+  if (!require(package, character.only = TRUE)) {
+    stop(paste("The package", package, "must be installed. Please, use install.packages('", package, "')"))
+  } else {
+    library(package, character.only = TRUE)
+  }
+}
 ```
+
+# First look at the data : 
+
+You can visualize the first rows of the dataset by running the following cell :
+```{r}
+# View the firsts lines of the dataset
+head(data)
+```
+
+In order to picture the data in a more visual way, we will represent our dataset on a map. 
+The first step in our map creation is the separation of the dataset by the counties. 
+
+```{r}
+data_list_county <- split(data, data$County)
+
+data_will <- data_list_county[["Will"]]
+data_jo_daviess <- data_list_county[["Jo_Daviess"]]
+data_lafayette <- data_list_county[["Lafayette"]]
+data_iowa <- data_list_county[["Iowa"]]
+data_dane <- data_list_county[["Dane"]]
+data_green <- data_list_county[["Green"]]
+data_grant <- data_list_county[["Grant"]]
+data_grundy <- data_list_county[["Grundy"]]
+data_lee_ogle <- data_list_county[["Lee/Ogle"]]
+data_lee <- data_list_county[["Lee"]]
+data_rock <- data_list_county[["Rock"]]
+data_monroe <- data_list_county[["Monroe"]]
+data_carroll <- data_list_county[["Carroll"]]
+data_carroll_whiteside <- data_list_county[["Carroll/Whiteside"]]
+```
+
+We are now adding columns for the coordinates of each county, the coordinates were obtained by searching for the counties on openstreetmap. 
+
+```{r}
+data_will <- data_will %>%
+  mutate(longitude_column = -88.0817,
+         latitude_column = 41.5250)
+
+data_jo_daviess <- data_jo_daviess %>%
+  mutate(longitude_column = -90.4290,
+         latitude_column = 42.4167)
+
+data_grundy <- data_grundy %>%
+  mutate(longitude_column = -88.4210,
+         latitude_column = 41.3570)
+
+data_lee <- data_lee %>%
+  mutate(longitude_column = -89.4850,
+         latitude_column = 41.8430)
+
+data_carroll <- data_carroll %>%
+  mutate(longitude_column = -89.9826,
+         latitude_column = 42.0956)
+
+data_lafayette <- data_lafayette %>%
+  mutate(longitude_column = -90.1160,
+         latitude_column = 42.6825)
+
+data_iowa <- data_iowa %>%
+  mutate(longitude_column = -90.1160,
+         latitude_column = 42.6825)
+
+data_dane <- data_dane %>%
+  mutate(longitude_column = -89.4012,
+         latitude_column = 43.0731)
+
+data_green <- data_green %>%
+  mutate(longitude_column = -89.6387,
+         latitude_column = 42.6017)
+
+data_grant <- data_grant %>%
+  mutate(longitude_column = -90.7082,
+         latitude_column = 42.8475)
+
+data_rock <- data_rock %>%
+  mutate(longitude_column = -89.0187,
+         latitude_column = 42.6828)
+
+data_monroe <- data_monroe %>%
+  mutate(longitude_column = -90.8129,
+         latitude_column = 43.9447)
+
+data_lee_ogle <- data_lee_ogle %>%
+  mutate(longitude_column = -89.4038,
+         latitude_column = 41.9293)
+
+data_carroll_whiteside <- data_carroll_whiteside %>%
+  mutate(longitude_column = -89.9742,
+         latitude_column = 41.9527)
+```
+
+Now, for each county dataset, we subdivide the said dataset for each year when at least one nest has been observed in this county. 
+
+```{r}
+county_names <- c("data_will", "data_jo_daviess", "data_lafayette", "data_iowa", 
+                  "data_dane", "data_green", "data_grant", "data_grundy", 
+                  "data_lee_ogle", "data_lee", "data_rock", "data_monroe", 
+                  "data_carroll", "data_carroll_whiteside")
+
+county_dataframes <- mget(county_names)
+tables <- c()
+
+for(i in seq_along(county_dataframes)) {
+    county <- county_dataframes[[i]]
+    county_name <- county_names[i]
+    
+    if (!is.data.frame(county)) {
+        print(paste0("Error: ", county_name, " is not a dataframe"))
+        next
+    }
+    
+    if (!"Year" %in% colnames(county)) {
+        print(paste0("Error: ", county_name, " does not contain a 'Year' column"))
+        next
+    }
+    
+    data_county_year <- split(county, county$Year)
+
+    for(year in min(county$Year):max(county$Year)){
+        tableau <- data_county_year[[as.character(year)]]
+        
+        if (!is.null(tableau)) {
+            variable_name <- paste0(county_name, "_", year)
+            tables <- c(tables, variable_name)
+            assign(variable_name, tableau, envir = .GlobalEnv)
+        }
+    }
+}
+```
+
+We went from a full dataset with everything mixed-up to multiple datasets for each year and each county when an observation is available. 
+
+Here are, for example, the first rows of the dataframe related to the county of Will in 1995
+
+```{r}
+head(data_will_1995)
+```
+
+The main information that we want to present on the map are the mean number of fledged birds by nest and the amount of data available for each county and each year. 
+
+Here is the creation of a summary dataframe that contains all these informations for each dataframe. 
+
+```{r}
+annee <- c()
+taux_de_reussite <- c()
+nb_donnees <- c()
+lat <- c()
+lon<- c()
+
+# Creation of a summary for each year
+for(table_name in tables){
+  tablecreated <- get(table_name)
+  annee <- c(annee, tablecreated$Year[1])
+  taux_de_reussite <- c(taux_de_reussite, sum(tablecreated$Number_Fledged)/nrow(tablecreated))
+  nb_donnees <- c(nb_donnees, nrow(tablecreated))
+  lat <- c(lat, tablecreated$latitude_column[1])
+  lon <- c(lon, tablecreated$longitude_column[1])
+}
+
+# Creating a dataframe of thoose summaries
+tableau <- data.frame(
+  annee = annee, 
+  Mean_number_fledged_by_nest = taux_de_reussite, 
+  nb_donnees = nb_donnees, 
+  lat = lat, 
+  lon = lon
+)
+
+# Seting the dataframe as a spatial class in order to create a map
+tableau_sf <- st_as_sf(tableau, coords = c("lon", "lat"), crs = 4326)
+tableau_sf <- st_transform(tableau_sf, crs = st_crs(us_states))
+```
+
+As we now have all the data of interest in one single organized table, 
+we can actually create the map. 
+
+```{r}
+tmap_mode("view")
+
+bird_anim <- tm_shape(us_states) + 
+  tm_polygons() + 
+  tm_shape(tableau_sf) + 
+  tm_symbols(size = "Mean_number_fledged_by_nest", col = "nb_donnees", 
+             style = "quantile", title.size = "Mean number fledged by nest", title.col = "Number of nest observed") + 
+  tm_layout(title = "Bird Observations Over Time", 
+            legend.position = c("left", "bottom"),
+            frame = FALSE, 
+            legend.show = T) +
+  tm_facets(by = "annee", nrow = 1, ncol = 1, free.coords = FALSE)
+```
+
+And now, we just have to run the following cell to display the map. 
+```{r}
+tmap_animation(bird_anim)
+```
+Please, check out the newly created map on the "Viewer" panel of your Rstudio application. 
+
+I believe that the first thing we can say about the data, is that it is unevenly distributed. 
+Depending on the year and the county, the number of observed nests changes ; and sometimes not even a single observation is available. 
 
 # [1. Data exploration]{.underline}
 

@@ -10,18 +10,17 @@ jobs:
   build:
     name: Build website with rmarkdown
     runs-on: ubuntu-latest
-    container: mpetienne/mode2024:0.2
+    container: mpetienne/mode2023:0.3
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Install an R packages from a drat depot
+        run: |
+          Rscript -e "install.packages('spDataLarge', repos = 'https://nowosad.github.io/drat/', type = 'source')"
       - name: Install R packages
         run: |
-          Rscript -e "install.packages(c('factoextra'))" 
-          Rscript -e "install.packages(c('DHARMa', 'rcompanion', 'dplyr'))" 
-          Rscript -e "install.packages(c('ggcorrplot'))"
-
-          
+          Rscript -e "install.packages(c('factoextra', 'tinytext', 'corrplot', 'plot3D', 'DHARMa', 'rcompanion', 'lattice', 'knitr', 'ggplot2', 'ggcorrplot', 'dplyr', 'FactoMineR', 'sf', 'terra', 'spData', 'tmap', 'leaflet', 'spDataLarge', 'maps', 'gifski'))" 
       - name: Additional Python packages
         run: |
           pip install numpy 
@@ -33,6 +32,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_site
-          
-          
-
