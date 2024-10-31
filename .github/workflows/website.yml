@@ -15,9 +15,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Install an R packages from a drat depot
+        run: |
+          Rscript -e "install.packages('spDataLarge', repos = 'https://nowosad.github.io/drat/', type = 'source')"
       - name: Install R packages
         run: |
-          Rscript -e "install.packages(c('factoextra', 'tinytext', 'corrplot', 'plot3D', 'DHARMa', 'rcompanion','lattice'))" 
+          Rscript -e "install.packages(c(
+  'factoextra', 'tinytext', 'corrplot', 'plot3D', 'DHARMa', 'rcompanion', 'lattice',
+  'knitr',       # for R Markdown chunk options
+  'ggplot2',     # for graphs
+  'ggcorrplot',  # for correlation matrix calculations
+  'dplyr',       # for data manipulation
+  'FactoMineR',  # for ordinations
+  'sf',          # for coordinates manipulation
+  'terra',       # for maps creation
+  'spData',      # for maps creation
+  'tmap',        # for maps creation
+  'leaflet',     # for maps creation
+  'spDataLarge', # for maps creation
+  'maps',        # for maps creation
+  'gifski'       # for gifs display
+  )
+  )" 
       - name: Additional Python packages
         run: |
           pip install numpy 

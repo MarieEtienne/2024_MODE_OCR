@@ -31,9 +31,3 @@ install.packages(c('knitr', 'ggplot2', 'corrplot', 'ggcorrplot', 'plot3D', 'DHAR
                    'rcompanion', 'lattice', 'dplyr', 'FactoMineR', 'factoextra', 
                    'sf', 'terra', 'spData', 'tmap', 'leaflet', 'maps', 'gifski'))
 ```
-
-## Main resons why we indicate the required packages in this README file: 
-1. Removing automatic installation reduces security risks and allows the script to be used even without installation rights.
-2. Manual installation ensures reproducibility by enabling version control.
-3. Documenting installations separately makes the `website.yml` file more stable and minimizes installation errors.
-4. Managing external packages such as `spDataLarge` in the README reduces complexity in `website.yml`.
