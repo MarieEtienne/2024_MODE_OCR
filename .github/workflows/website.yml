@@ -17,12 +17,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Install R packages
         run: |
-<<<<<<< HEAD
           Rscript -e "install.packages(c('factoextra'))" 
           Rscript -e "install.packages(c('dplyr','readxl', 'lubridate', 'ggplot2','stringr', 'tidyr', 'ade4', 'spdep', 'tripack', 'sp', 'geoR', 'R2jags'))" 
-=======
           Rscript -e "install.packages(c('factoextra', 'tinytext', 'corrplot', 'plot3D', 'DHARMa', 'rcompanion','lattice'))" 
->>>>>>> 6f3689c8bed852800de944ae4c801708eefddc0a
       - name: Additional Python packages
         run: |
           pip install numpy 
