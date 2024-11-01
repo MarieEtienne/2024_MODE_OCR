@@ -4,6 +4,10 @@ autor: "Gabriel-Marie Arnault, Giuliana Brambilla, Apolline Byrdy, Anaelle Hulbe
 source : "Yannick Outreman, based on data from Gotelli & Ellison (2002) - Biogeography at a regional scale : determinants of ant species density in New England bogs and forests. Ecology, 83 : 1604-1609."
 editor: visual
 bibliography: references.bib
+format: 
+  html:
+    code-fold: true
+    code-tools: true
 ---
 
 # INTRODUCTION
