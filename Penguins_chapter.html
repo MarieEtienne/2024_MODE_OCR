@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline">
+
+<title>The Companion book a M1 MODE student should have! - Exploring data on penguins</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">The Companion book a M1 MODE student should have!</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://marieetienne.github.io/MODE_reproduciblescience/" rel="" target=""><i class="bi bi-home" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/MarieEtienne/2024_MODE_OCR" rel="" target=""><i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://marieetienne.github.io/MODE_reproduciblescience/instructions.html" rel="" target="">
+ <span class="menu-text">Instructions</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-courses-materials" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Courses Materials</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-courses-materials">    
+        <li>
+    <a class="dropdown-item" href="https://marieetienne.github.io/reproductibilite/_presentation/english_version.html" rel="" target="">
+ <span class="dropdown-text">Git Intro</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-book-content" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Book content</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-book-content">    
+        <li>
+    <a class="dropdown-item" href="./fichier_r.html" rel="" target="">
+ <span class="dropdown-text">Titre à trouver</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Determinants_ant_diversity.html" rel="" target="">
+ <span class="dropdown-text">Determinants of Ant Species Density</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./OCR_pollen.html" rel="" target="">
+ <span class="dropdown-text">Effects of grazing on Swedish meadows</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#study-context" id="toc-study-context" class="nav-link" data-scroll-target="#study-context">Study context</a></li>
+  <li><a href="#location" id="toc-location" class="nav-link" data-scroll-target="#location">Location</a></li>
+  <li><a href="#column_name" id="toc-column_name" class="nav-link" data-scroll-target="#column_name">Dataset presentation</a></li>
+  <li><a href="#missing-values" id="toc-missing-values" class="nav-link" data-scroll-target="#missing-values">Missing values</a></li>
+  </ul></li>
+  <li><a href="#exploratory-analysis" id="toc-exploratory-analysis" class="nav-link" data-scroll-target="#exploratory-analysis">Exploratory analysis</a>
+  <ul class="collapse">
+  <li><a href="#correlation" id="toc-correlation" class="nav-link" data-scroll-target="#correlation">Correlation</a></li>
+  <li><a href="#violin-plot" id="toc-violin-plot" class="nav-link" data-scroll-target="#violin-plot">Violin plot</a></li>
+  <li><a href="#anova-u-mann-whitney-tests-student-test" id="toc-anova-u-mann-whitney-tests-student-test" class="nav-link" data-scroll-target="#anova-u-mann-whitney-tests-student-test">ANOVA, U-Mann-Whitney tests, Student test</a></li>
+  <li><a href="#graphical-representations-and-interpretations" id="toc-graphical-representations-and-interpretations" class="nav-link" data-scroll-target="#graphical-representations-and-interpretations">Graphical representations and interpretations</a></li>
+  <li><a href="#principal-component-analysis-pca-of-species-characteristics" id="toc-principal-component-analysis-pca-of-species-characteristics" class="nav-link" data-scroll-target="#principal-component-analysis-pca-of-species-characteristics">Principal Component Analysis (PCA) of species characteristics</a></li>
+  </ul></li>
+  <li><a href="#body-mass-model-an-example-of-ancova" id="toc-body-mass-model-an-example-of-ancova" class="nav-link" data-scroll-target="#body-mass-model-an-example-of-ancova">Body mass model: an example of ANCOVA</a>
+  <ul class="collapse">
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration">Data exploration</a>
+  <ul class="collapse">
+  <li><a href="#response-variable-exploration" id="toc-response-variable-exploration" class="nav-link" data-scroll-target="#response-variable-exploration">Response variable exploration</a></li>
+  <li><a href="#explanatory-variables-exploration" id="toc-explanatory-variables-exploration" class="nav-link" data-scroll-target="#explanatory-variables-exploration">Explanatory variables exploration</a></li>
+  </ul></li>
+  <li><a href="#model-selection" id="toc-model-selection" class="nav-link" data-scroll-target="#model-selection">Model selection</a></li>
+  <li><a href="#model-validation" id="toc-model-validation" class="nav-link" data-scroll-target="#model-validation">Model validation</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Exploring data on penguins</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level1" style="color:navy">
+<h1 style="color:navy">Introduction</h1>
+<section id="study-context" class="level2" style="color:royalblue">
+<h2 style="color:royalblue" class="anchored" data-anchor-id="study-context">Study context</h2>
+<p>This document is a report on the analysis of a dataset on penguins. The data collected contains informations on multiples <a href="#colum-name">variables</a>. The dataset was found on Kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv. This dataset was assemble from various articles according by Gorman <em>et al.</em> <span class="citation" data-cites="10.1371/journal.pone.0090081">(<a href="#ref-10.1371/journal.pone.0090081" role="doc-biblioref">Gorman 2014</a>)</span> and Horst <em>et al.</em> <span class="citation" data-cites="10.32614/RJ-2022-020">(<a href="#ref-10.32614/RJ-2022-020" role="doc-biblioref">Horst, Hill, and Gorman 2022</a>)</span>. It focused on three penguin species : Adelie (<em>Pygoscelis adeliae</em>), Chinstrap (<em>Pygoscelis antarcticus</em>) and Gentoo (<em>Pygoscelis papua</em>). The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(factoextra)         <span class="co"># for data visualization</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FactoMineR)         <span class="co"># for PCA</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)          <span class="co"># for data manipulation and visualization</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)              <span class="co"># for data manipulation</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)            <span class="co"># for data visualization</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)           <span class="co"># for correlation test</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)                 <span class="co"># for spatial data</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)      <span class="co"># for earth maps</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearthdata)  <span class="co"># for earth dataset</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggspatial)          <span class="co"># for spatial plot</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)          <span class="co"># for arranging plot</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)         <span class="co"># for enhanced tables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="location" class="level2" style="color:royalblue">
+<h2 style="color:royalblue" class="anchored" data-anchor-id="location">Location</h2>
+<p>Data were collected in Antarctica on Biscoe, Dream and Torgersen Islands. These three blue points show the location of the data collect in <a href="#fig-map_antarctica">Figure&nbsp;1</a>.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download country data (including Antarctica)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>world <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">scale =</span> <span class="st">"medium"</span>, <span class="at">returnclass =</span> <span class="st">"sf"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to keep only Antarctica</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>antarctica <span class="ot">&lt;-</span> world[world<span class="sc">$</span>continent <span class="sc">==</span> <span class="st">"Antarctica"</span>, ]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>rectangle_coords <span class="ot">&lt;-</span> <span class="fu">st_as_sfc</span>(<span class="fu">st_bbox</span>(<span class="fu">c</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">90</span>, <span class="at">xmax =</span> <span class="sc">-</span><span class="dv">55</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="dv">75</span>, <span class="at">ymax =</span> <span class="sc">-</span><span class="dv">60</span>), <span class="at">crs =</span> <span class="fu">st_crs</span>(<span class="dv">4326</span>)))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>antarctic_proj <span class="ot">&lt;-</span> <span class="st">"+proj=laea +lat_0=-90 +datum=WGS84"</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform the rectangle into the polar projection system</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>rectangle_proj <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(rectangle_coords, <span class="at">crs =</span> antarctic_proj)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the map</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>gg_antartique <span class="ot">=</span> <span class="fu">ggplot</span>(<span class="at">data =</span> antarctica) <span class="sc">+</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">"rect"</span>, <span class="at">xmin =</span> <span class="sc">-</span><span class="dv">90</span>, <span class="at">xmax =</span> <span class="sc">-</span><span class="dv">55</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="dv">75</span>, <span class="at">ymax =</span> <span class="sc">-</span><span class="dv">60</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>() <span class="sc">+</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="st">"+proj=laea +lat_0=-90 +datum=WGS84"</span>) <span class="sc">+</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a> <span class="fu">annotate</span>(<span class="st">"rect"</span>, </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmin =</span> <span class="fu">st_bbox</span>(rectangle_proj)[<span class="st">"xmin"</span>], <span class="at">xmax =</span> <span class="fu">st_bbox</span>(rectangle_proj)[<span class="st">"xmax"</span>], </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin =</span> <span class="fu">st_bbox</span>(rectangle_proj)[<span class="st">"ymin"</span>], <span class="at">ymax =</span> <span class="fu">st_bbox</span>(rectangle_proj)[<span class="st">"ymax"</span>], </span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">fill =</span> <span class="st">"blue"</span>)<span class="sc">+</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Antarctica map"</span>,</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Data: Natural Earth"</span>) <span class="sc">+</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">"bl"</span>, <span class="at">width_hint =</span> <span class="fl">0.5</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>antarctic_proj <span class="ot">&lt;-</span> <span class="st">"+proj=laea +lat_0=-90 +datum=WGS84"</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Point coordinates in longitude and latitude</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>point_coords <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">lon =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">66.209547</span>, <span class="sc">-</span><span class="dv">64</span>, <span class="sc">-</span><span class="dv">65</span>), <span class="at">lat =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">66</span>, <span class="sc">-</span><span class="dv">65</span>, <span class="sc">-</span><span class="fl">64.8</span>))</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the point into an sf object (longitude/latitude coordinate system WGS84)</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>point_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(point_coords, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform the point into the projected coordinate system of the map</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>point_proj <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(point_sf, <span class="at">crs =</span> antarctic_proj)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the projected coordinates for use in annotate</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>point_proj_coords <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(point_proj)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a bounding box manually with the coordinates</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the bounding box into an sf object</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>bbox_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sfc</span>(<span class="fu">st_bbox</span>(<span class="fu">c</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">90</span>, <span class="at">xmax =</span> <span class="sc">-</span><span class="dv">55</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="dv">75</span>, <span class="at">ymax =</span> <span class="sc">-</span><span class="dv">60</span>)))</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop the map using the bounding box</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>antarctica_cropped <span class="ot">&lt;-</span> <span class="fu">st_crop</span>(antarctica, bbox_sf)</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the map</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>gg_zone_interet <span class="ot">=</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> antarctica_cropped) <span class="sc">+</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> point_proj, <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">shape =</span> <span class="dv">19</span>) <span class="sc">+</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="st">"+proj=laea +lat_0=-90 +datum=WGS84"</span>) <span class="sc">+</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Area of Interest"</span>,</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Data: Natural Earth"</span>) <span class="sc">+</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">"bl"</span>, <span class="at">width_hint =</span> <span class="fl">0.5</span>)</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(gg_antartique, gg_zone_interet, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-map_antarctica" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-map_antarctica-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: Maps of Antarctica with the collect points</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="column_name" class="level2">
+<h2 class="anchored" data-anchor-id="column_name">Dataset presentation</h2>
+<p><strong>Columns name :</strong></p>
+<ul>
+<li><em>studyName</em> : sampling expedition from which data were collected, generated, etc.<br>
+</li>
+<li><em>Sample Number</em> : an integer denoting the continuous numbering sequence for each sample<br>
+</li>
+<li><em>Species</em> : a character string denoting the penguin species<br>
+</li>
+<li><em>Region</em> : a character string denoting the region of Palmer LTER sampling grid<br>
+</li>
+<li><em>Island</em> : a character string denoting the island near Palmer Station where samples were collected<br>
+</li>
+<li><em>Stage</em> : a character string denoting the reproductive stage at the time of sampling<br>
+</li>
+<li><em>Individual ID</em> : a character string denoting the unique ID for each individual in dataset<br>
+</li>
+<li><em>Clutch Completion</em> : a character string denoting if the study nest was observed with a full clutch, i.e., 2 eggs<br>
+</li>
+<li><em>Date Egg</em> : a date denoting the date study nest observed with 1 egg (sampled)<br>
+</li>
+<li><em>Culmen Length</em> : a number denoting the length of the dorsal ridge of a bird’s bill (millimeters)<br>
+</li>
+<li><em>Culmen Depth</em> : a number denoting the depth of the dorsal ridge of a bird’s bill (millimeters)<br>
+</li>
+<li><em>Flipper Length</em> : an integer denoting the length penguin flipper (millimeters)<br>
+</li>
+<li><em>Body Mass</em> : an integer denoting the penguin body mass (grams)<br>
+</li>
+<li><em>Sex</em> : a character string denoting the sex of an animal<br>
+</li>
+<li><em>Delta 15 N</em> : a number denoting the measure of the ratio of stable isotopes 15N:14N<br>
+</li>
+<li><em>Delta 13 C</em> : a number denoting the measure of the ratio of stable isotopes 13C:12C<br>
+</li>
+<li><em>Comments</em> : a character string with text providing additional relevant information for data</li>
+</ul>
+<p>Loading dataset :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"penguins_raw.csv"</span>, <span class="at">sep =</span> <span class="st">","</span> , <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       X            studyName   Sample.Number   
+ Min.   :  1.00   PAL0708:110   Min.   :  1.00  
+ 1st Qu.: 86.75   PAL0809:114   1st Qu.: 29.00  
+ Median :172.50   PAL0910:120   Median : 58.00  
+ Mean   :172.50                 Mean   : 63.15  
+ 3rd Qu.:258.25                 3rd Qu.: 95.25  
+ Max.   :344.00                 Max.   :152.00  
+                                                
+                                      Species       Region          Island   
+ Adelie Penguin (Pygoscelis adeliae)      :152   Anvers:344   Biscoe   :168  
+ Chinstrap penguin (Pygoscelis antarctica): 68                Dream    :124  
+ Gentoo penguin (Pygoscelis papua)        :124                Torgersen: 52  
+                                                                             
+                                                                             
+                                                                             
+                                                                             
+                Stage     Individual.ID Clutch.Completion       Date.Egg  
+ Adult, 1 Egg Stage:344   N13A1  :  3   No : 36           2007-11-27: 18  
+                          N13A2  :  3   Yes:308           2007-11-16: 16  
+                          N18A1  :  3                     2008-11-09: 16  
+                          N18A2  :  3                     2009-11-18: 14  
+                          N21A1  :  3                     2008-11-04: 12  
+                          N21A2  :  3                     2008-11-06: 12  
+                          (Other):326                     (Other)   :256  
+ Culmen.Length..mm. Culmen.Depth..mm. Flipper.Length..mm. Body.Mass..g. 
+ Min.   :32.10      Min.   :13.10     Min.   :172.0       Min.   :2700  
+ 1st Qu.:39.23      1st Qu.:15.60     1st Qu.:190.0       1st Qu.:3550  
+ Median :44.45      Median :17.30     Median :197.0       Median :4050  
+ Mean   :43.92      Mean   :17.15     Mean   :200.9       Mean   :4202  
+ 3rd Qu.:48.50      3rd Qu.:18.70     3rd Qu.:213.0       3rd Qu.:4750  
+ Max.   :59.60      Max.   :21.50     Max.   :231.0       Max.   :6300  
+ NA's   :2          NA's   :2         NA's   :2           NA's   :2     
+     Sex      Delta.15.N..o.oo. Delta.13.C..o.oo.
+ FEMALE:165   Min.   : 7.632    Min.   :-27.02   
+ MALE  :168   1st Qu.: 8.300    1st Qu.:-26.32   
+ NA's  : 11   Median : 8.652    Median :-25.83   
+              Mean   : 8.733    Mean   :-25.69   
+              3rd Qu.: 9.172    3rd Qu.:-25.06   
+              Max.   :10.025    Max.   :-23.79   
+              NA's   :14        NA's   :13       
+                                  Comments  
+ Nest never observed with full clutch.: 34  
+ Not enough blood for isotopes.       :  7  
+ Sexing primers did not amplify.      :  4  
+ No blood sample obtained for sexing. :  2  
+ No blood sample obtained.            :  2  
+ (Other)                              :  5  
+ NA's                                 :290  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dim(data)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Names modification of columns and species :</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>X) <span class="sc">%&gt;%</span>                   <span class="co"># Remove X column </span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Comments) <span class="sc">%&gt;%</span>           <span class="co"># Remove Comments column</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(                          <span class="co"># we rename the columns of the dataset</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sample_number =</span> Sample.Number,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> Individual.ID,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">island =</span> Island,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">region =</span> Region,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">stage =</span> Stage,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">clutch_completion =</span> Clutch.Completion,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">date_egg =</span> Date.Egg,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">culmen_length =</span> Culmen.Length..mm.,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">culmen_depth =</span> Culmen.Depth..mm.,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">flipper_length =</span> Flipper.Length..mm.,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">body_mass =</span> Body.Mass..g.,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex =</span> Sex,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">delta_15_N =</span> Delta.<span class="fl">15.</span>N..o.oo.,</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">delta_13_C =</span> Delta.<span class="fl">13.</span>C..o.oo.,</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">species =</span> Species)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "studyName"         "sample_number"     "species"          
+ [4] "region"            "island"            "stage"            
+ [7] "id"                "clutch_completion" "date_egg"         
+[10] "culmen_length"     "culmen_depth"      "flipper_length"   
+[13] "body_mass"         "sex"               "delta_15_N"       
+[16] "delta_13_C"       </code></pre>
+</div>
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rename species</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> <span class="fu">recode</span>(species, <span class="st">"Adelie Penguin (Pygoscelis adeliae)"</span> <span class="ot">=</span> <span class="st">"Adelie"</span>, <span class="st">"Chinstrap penguin (Pygoscelis antarctica)"</span> <span class="ot">=</span> <span class="st">"Chinstrap"</span>, <span class="st">"Gentoo penguin (Pygoscelis papua)"</span> <span class="ot">=</span> <span class="st">"Gentoo"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>These names are easier to understand.</p>
+</section>
+<section id="missing-values" class="level2" style="color:royalblue">
+<h2 style="color:royalblue" class="anchored" data-anchor-id="missing-values">Missing values</h2>
+<p>The <a href="#fig-missing-val">Figure&nbsp;2</a> have a red line that represents the mean of missing values (NA) in the dataset and the bars are showing the number of NA’s for each variables.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verification of missing values</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(data)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>        studyName     sample_number           species            region 
+                0                 0                 0                 0 
+           island             stage                id clutch_completion 
+                0                 0                 0                 0 
+         date_egg     culmen_length      culmen_depth    flipper_length 
+                0                 2                 2                 2 
+        body_mass               sex        delta_15_N        delta_13_C 
+                2                11                14                13 </code></pre>
+</div>
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data_NA <span class="ot">&lt;-</span> data </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Representation of missing values</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>NA_df <span class="ot">&lt;-</span> (<span class="fu">colSums</span>(<span class="fu">is.na</span>(data_NA)) <span class="sc">/</span> <span class="fu">nrow</span>(data_NA)) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>color_pal <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"limegreen"</span>, <span class="st">"yellow"</span>, <span class="st">"firebrick"</span>), <span class="at">bias =</span> <span class="dv">20</span>)(<span class="dv">10</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>NA_col <span class="ot">&lt;-</span> color_pal[<span class="fu">as.integer</span>(NA_df<span class="sc">/</span><span class="fu">length</span>(NA_df)<span class="sc">*</span><span class="dv">9</span>)<span class="sc">+</span><span class="dv">1</span>]</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Graphique</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(NA_df,<span class="at">ylab =</span> <span class="st">"NA"</span>, <span class="at">col =</span> NA_col, <span class="at">las=</span><span class="dv">2</span>, <span class="at">cex.names=</span><span class="fl">0.6</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>NA_mean<span class="ot">&lt;-</span><span class="fu">mean</span>(NA_df)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.78% </span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span>NA_mean, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-missing-val" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-missing-val-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: Number of missing value as a function of each variables</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="exploratory-analysis" class="level1" style="color:navy">
+<h1 style="color:navy">Exploratory analysis</h1>
+<p>In this dataset, we would like to compare the different qualitative variables :<br>
+- <em>Culmen Length</em><br>
+- <em>Culmen Depth</em><br>
+- <em>Flipper Length</em><br>
+- <em>Body Mass</em><br>
+- <em>Delta 13C</em><br>
+- <em>Delta 15N</em><br>
+</p>
+<section id="correlation" class="level2" style="color:royalblue">
+<h2 style="color:royalblue" class="anchored" data-anchor-id="correlation">Correlation</h2>
+<p>To compare these qualitative variables, we begin by examining the correlations among them.</p>
+<p>The representation of this matrix is not optimal.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sub_data_num <span class="ot">=</span> data<span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(culmen_length, culmen_depth,flipper_length,body_mass,delta_13_C,delta_15_N)<span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="co"># we delete the few individuals with NA</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>matcor <span class="ot">=</span> <span class="fu">cor</span>(sub_data_num,<span class="at">method =</span> <span class="st">"pearson"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>matcor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               culmen_length culmen_depth flipper_length  body_mass delta_13_C
+culmen_length     1.00000000   -0.2259394      0.6491779  0.5934113  0.1807339
+culmen_depth     -0.22593935    1.0000000     -0.5810728 -0.4677456  0.4258196
+flipper_length    0.64917789   -0.5810728      1.0000000  0.8748008 -0.3820590
+body_mass         0.59341135   -0.4677456      0.8748008  1.0000000 -0.3755823
+delta_13_C        0.18073392    0.4258196     -0.3820590 -0.3755823  1.0000000
+delta_15_N       -0.05975909    0.6058744     -0.5077872 -0.5378882  0.5706148
+                delta_15_N
+culmen_length  -0.05975909
+culmen_depth    0.60587439
+flipper_length -0.50778717
+body_mass      -0.53788824
+delta_13_C      0.57061480
+delta_15_N      1.00000000</code></pre>
+</div>
+</div>
+<p>We can use the library <em>corrplot</em> to make some visual correlation matrix.</p>
+<p>There is a correlation that we have to remove in a multivariate analysis between the <em>body_mass</em> variable and the <em>flipper_length</em> as we can see in <a href="#fig-cor_mat2">Figure&nbsp;3</a> and <a href="#fig-cor_mat3">Figure&nbsp;4</a>.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(matcor, <span class="at">method =</span> <span class="st">"number"</span>, <span class="at">type =</span> <span class="st">"upper"</span>,<span class="at">order =</span> <span class="st">"hclust"</span>, <span class="at">tl.col=</span><span class="st">"black"</span>, <span class="at">tl.srt=</span><span class="dv">45</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-cor_mat2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-cor_mat2-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;3: Correlation matrix with numbers</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(matcor, <span class="at">type =</span> <span class="st">"upper"</span>,<span class="at">order =</span> <span class="st">"hclust"</span>, <span class="at">tl.col=</span><span class="st">"black"</span>, <span class="at">tl.srt=</span><span class="dv">45</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-cor_mat3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-cor_mat3-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;4: Correlation matrix with forms</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Now, we want to observe whether certain qualitative variables have an effect on body mass. We will therefore try to create a graph for each factor (qualitative variables) according to body mass:<br>
+- <em>Species</em><br>
+- <em>Island</em><br>
+- <em>Sex</em><br>
+</p>
+<p>We have noticed some trends in <a href="#fig-boxplot_trends">Figure&nbsp;5</a> that we will have to confirm with statistical tests.<br>
+<u>Box1</u>: Gentoo penguins appear to be heavier than the other two species.<br>
+<u>Box2</u>: Penguins from Biscoe Island appear to be heavier than the other two islands.<br>
+<u>Box3</u>: Male penguins appear to be heavier than the other two categories.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>box1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> data)<span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>body_mass, <span class="at">fill =</span> species))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>box2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> data)<span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>island,<span class="at">y=</span>body_mass, <span class="at">fill =</span> island))</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>box3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> data)<span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>sex,<span class="at">y=</span>body_mass, <span class="at">fill =</span> sex))</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>global_box <span class="ot">&lt;-</span> <span class="fu">grid.arrange</span>(box1,box2,box3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-boxplot_trends" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-boxplot_trends-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;5: Boxplots between body mass and other variables</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="violin-plot" class="level2" style="color:royalblue">
+<h2 style="color:royalblue" class="anchored" data-anchor-id="violin-plot">Violin plot</h2>
+<p>Here is another way to visualize in <a href="#fig-violin">Figure&nbsp;6</a> the distribution between two variables.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Violin plot for Culmen Length (beak length)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>v1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> culmen_length, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">shape =</span> <span class="dv">16</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="fl">0.2</span>), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">shape =</span> <span class="dv">20</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">fill =</span> <span class="st">"red"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Culmen Length by Species"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Species"</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Culmen Length (mm)"</span>) <span class="sc">+</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),  <span class="co"># Taille de l'axe x</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>))</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Violin plot for Flipper Length</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>v2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> flipper_length, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">shape =</span> <span class="dv">16</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="fl">0.2</span>), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">shape =</span> <span class="dv">20</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">fill =</span> <span class="st">"red"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Flipper Length by Species"</span>,</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Species"</span>,</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Flipper Length (mm)"</span>) <span class="sc">+</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),  <span class="co"># Taille de l'axe x</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>))</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Violin plot for Body Mass</span></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>v3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> body_mass, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">shape =</span> <span class="dv">16</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="fl">0.2</span>), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">shape =</span> <span class="dv">20</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">fill =</span> <span class="st">"red"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Body Mass by Species"</span>,</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Species"</span>,</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Body Mass (g)"</span>) <span class="sc">+</span></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),  <span class="co"># Taille de l'axe x</span></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>))</span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(v1, v2, v3,  <span class="co">#names of graphs  </span></span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-violin" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-violin-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption">Figure&nbsp;6: Violin plot of body mass as function of many variables</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="anova-u-mann-whitney-tests-student-test" class="level2" style="color:royalblue">
+<h2 style="color:royalblue" class="anchored" data-anchor-id="anova-u-mann-whitney-tests-student-test">ANOVA, U-Mann-Whitney tests, Student test</h2>
+<p>We run ANOVA and mean comparison tests to verify these differences.<br>
+There is a significant <strong>difference between the body mass of these 3 species</strong>, almost 2 of them, with a p-value of <em>2e-16</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># homoscedasticity</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(data<span class="sc">$</span>body_mass<span class="sc">~</span>data<span class="sc">$</span>species) <span class="co"># p = 0.05005 &gt; 0.05 homoscedasticity conditions are satisfied</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  data$body_mass by data$species
+Bartlett's K-squared = 5.9895, df = 2, p-value = 0.05005</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>anova1 <span class="ot">=</span> <span class="fu">aov</span>(data<span class="sc">$</span>body_mass<span class="sc">~</span>data<span class="sc">$</span>species)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#normality of residuals</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(<span class="fu">residuals</span>(anova1)) <span class="co">#p = 0.05118 &gt; 0.05, the normality of residuals is accepted</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  residuals(anova1)
+W = 0.99166, p-value = 0.05118</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Df    Sum Sq  Mean Sq F value Pr(&gt;F)    
+data$species   2 146864214 73432107   343.6 &lt;2e-16 ***
+Residuals    339  72443483   213698                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+2 observations deleted due to missingness</code></pre>
+</div>
+</div>
+<p>We perform a Tukey’s post-hoc test to see where the differences lie. There is a significant difference between the body mass of <em>Gentoo</em> and <em>Adelie</em> (p = 0) and <em>Gentoo</em> and <em>Chinstrap</em> (p = 0). There is no significant difference between <em>Adelie</em> and <em>Chinstrap</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(anova1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = data$body_mass ~ data$species)
+
+$`data$species`
+                       diff       lwr       upr     p adj
+Chinstrap-Adelie   32.42598 -126.5002  191.3522 0.8806666
+Gentoo-Adelie    1375.35401 1243.1786 1507.5294 0.0000000
+Gentoo-Chinstrap 1342.92802 1178.4810 1507.3750 0.0000000</code></pre>
+</div>
+</div>
+<p>We cannot perform an ANOVA between body mass and islands because the homoscedasticity conditions are not satisfied, so we will perform a Kruskall-Wallis test. There is a significant <strong>difference between the body mass of these 3 islands</strong>, almost 2 of them, with a p-value of <em>2e-16</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># homoscedasticity</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(data<span class="sc">$</span>body_mass<span class="sc">~</span>data<span class="sc">$</span>island) <span class="co"># p = 8.978e-14 &lt; 0.05 homoscedasticity conditions are not satisfied</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  data$body_mass by data$island
+Bartlett's K-squared = 60.083, df = 2, p-value = 8.978e-14</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Kruskall Wallis test</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(data<span class="sc">$</span>body_mass<span class="sc">~</span>data<span class="sc">$</span>island)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Kruskal-Wallis rank sum test
+
+data:  data$body_mass by data$island
+Kruskal-Wallis chi-squared = 130.07, df = 2, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>In order to observe the differences between the islands, we are going to carry out tests to compare the average between each island.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># normality</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(data<span class="sc">$</span>body_mass, data<span class="sc">$</span>island, shapiro.test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Biscoe
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.97247, p-value = 0.00209
+
+
+$Dream
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.98889, p-value = 0.4161
+
+
+$Torgersen
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.97185, p-value = 0.2636</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Biscoe: p = 0.00209 &lt; 0.05, normality is not respected</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Dream: p = 0.4161 &gt; 0.05, normality is respected</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Torgersen: p =  0.2636 &gt; 0.05, normality is respected</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Data normality is respected for Torgensen Island and Dream Island. We will therefore carry out a homoscedasticity test between these islands to determine the appropriate mean comparison test.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the data between the islands</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>dream_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, island <span class="sc">==</span> <span class="st">"Dream"</span>)<span class="sc">$</span>body_mass</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>torgersen_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, island <span class="sc">==</span> <span class="st">"Torgersen"</span>)<span class="sc">$</span>body_mass</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>biscoe_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, island <span class="sc">==</span> <span class="st">"Biscoe"</span>)<span class="sc">$</span>body_mass</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform a variance test between the 'Dream' and 'Torgersen' groups</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="fu">var.test</span>(dream_data, torgersen_data) <span class="co"># p = 0.5526 &gt; 0.05, homoscedasticity conditions are satisfied</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    F test to compare two variances
+
+data:  dream_data and torgersen_data
+F = 0.87619, num df = 123, denom df = 50, p-value = 0.5526
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 0.5354096 1.3682404
+sample estimates:
+ratio of variances 
+         0.8761931 </code></pre>
+</div>
+</div>
+<p>We will therefore carry out two U-Mann-Whitney tests between the Biscoe and Torgersen Islands and the Biscoe and Dream Islands, and a Student t-test between the Dream and Torgersen Islands.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># U-Mann Withney test between the Biscoe and Torgersen</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(biscoe_data, torgersen_data) <span class="co"># p = 1.396e-14 &lt; 0.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon rank sum test with continuity correction
+
+data:  biscoe_data and torgersen_data
+W = 7293, p-value = 1.396e-14
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># U-Mann Withney test between the Biscoe and Dream</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(biscoe_data, dream_data) <span class="co"># p = 2.2e-16 &lt; 0.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon rank sum test with continuity correction
+
+data:  biscoe_data and dream_data
+W = 17741, p-value &lt; 2.2e-16
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Student t-test between the Dream and Torgersen</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(dream_data, torgersen_data, <span class="at">var.equal =</span> T) <span class="co"># p = 0.9265 &gt; 0.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  dream_data and torgersen_data
+t = 0.092359, df = 173, p-value = 0.9265
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -133.0344  146.0958
+sample estimates:
+mean of x mean of y 
+ 3712.903  3706.373 </code></pre>
+</div>
+</div>
+<p>There is a significant difference in body mass between Dream and Biscoe Islands (p = 2.2e-16) and between Torgersen and Biscoe Islands (p = 1.396e-14). There was no significant difference between Torgersen and Dream Islands.</p>
+<p>As there are only two modalities for gender, instead of an ANOVA we will perform a U-Mann-Whitney mean comparison test. There is a significant <strong>difference between the body mass and the sex</strong> with a p-value of <em>1.813e-15</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># normality</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(data<span class="sc">$</span>body_mass, data<span class="sc">$</span>sex, shapiro.test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$FEMALE
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.91931, p-value = 6.155e-08
+
+
+$MALE
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.92504, p-value = 1.227e-07</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Female: p = 6.155e-08 &lt; 0.05, normality is not respected</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Male: p = 1.227e-07 &lt; 0.05, normality is not respected</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="co"># U-Mann Withney test</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>female_data <span class="ot">=</span> <span class="fu">subset</span>(data, sex <span class="sc">==</span> <span class="st">"FEMALE"</span>)<span class="sc">$</span>body_mass</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>male_data <span class="ot">=</span> <span class="fu">subset</span>(data, sex <span class="sc">==</span> <span class="st">"MALE"</span>)<span class="sc">$</span>body_mass</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(female_data, male_data) <span class="co"># p = 1.813e-15 &lt; 0.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon rank sum test with continuity correction
+
+data:  female_data and male_data
+W = 6874.5, p-value = 1.813e-15
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+</div>
+<p>Distribution of species between the islands in <a href="#tbl-table-distribution">Table&nbsp;1</a> : we can see from this table that the <em>Adelie</em> species is present on all three islands, while the <em>Chrinstrap</em> and <em>Gentoo</em> species are only present on 2 islands, Dream and Biscoe respectively.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>species_islands <span class="ot">&lt;-</span> <span class="fu">table</span>(data<span class="sc">$</span>island, data<span class="sc">$</span>species)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(species_islands, <span class="st">"html"</span>, <span class="at">escape =</span> F) <span class="sc">%&gt;%</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>),</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">full_width =</span> F,</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">position =</span> <span class="st">"center"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="tbl-table-distribution" class="anchored">
+<table class="table table-striped table-sm small" data-quarto-postprocess="true">
+<caption>Table&nbsp;1: Species distribution between the islands</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Adelie</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Chinstrap</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Gentoo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Biscoe</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">124</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dream</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Torgersen</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+</div>
+</div>
+</section>
+<section id="graphical-representations-and-interpretations" class="level2" style="color:royalblue">
+<h2 style="color:royalblue" class="anchored" data-anchor-id="graphical-representations-and-interpretations">Graphical representations and interpretations</h2>
+<p>In <a href="#fig-bdm-lenght">Figure&nbsp;7</a>, it would appear that there is a positive linear trend between the <em>body_mass</em> variable and <em>flipper_length</em> for each species.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> flipper_length, <span class="at">y =</span> body_mass, <span class="at">color =</span> species))<span class="sc">+</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#B2DF8A"</span>,<span class="st">"#FDBF6F"</span>,<span class="st">"#CAB2D6"</span>))<span class="sc">+</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>)<span class="sc">+</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)<span class="sc">+</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-bdm-lenght" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-bdm-lenght-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;7: Flipper length as a function of body mass</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Check with linear regression :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>rl1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> flipper_length <span class="sc">+</span> species <span class="sc">+</span> species<span class="sc">:</span>flipper_length, <span class="at">data =</span> data)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rl1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ flipper_length + species + species:flipper_length, 
+    data = data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-911.18 -251.93  -31.77  197.82 1144.81 
+
+Coefficients:
+                                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                     -2535.837    879.468  -2.883  0.00419 ** 
+flipper_length                     32.832      4.627   7.095 7.69e-12 ***
+speciesChinstrap                 -501.359   1523.459  -0.329  0.74229    
+speciesGentoo                   -4251.444   1427.332  -2.979  0.00311 ** 
+flipper_length:speciesChinstrap     1.742      7.856   0.222  0.82467    
+flipper_length:speciesGentoo       21.791      6.941   3.139  0.00184 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 370.6 on 336 degrees of freedom
+  (2 observations deleted due to missingness)
+Multiple R-squared:  0.7896,    Adjusted R-squared:  0.7864 
+F-statistic: 252.2 on 5 and 336 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>These results show a highly significant effect of fin length for all species, with a greater effect for the <em>Gentoo</em> species. There was also a significant difference in body mass between species except between <em>Adelie</em> and <em>Chinstrap</em>.</p>
+<p>In conclusion, we can say that fin length influences body mass and that this effect varies according to species.</p>
+<p>It would appear that there is a positive linear trend between the <em>body_mass</em> variable and <em>flipper_length</em> for each species.</p>
+<p>In the <a href="#fig-lenght-depth">Figure&nbsp;8</a>, it would appear that there is a positive linear trend between the <em>culmen_depth</em> variable and <em>culmen_length</em> for each species.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> culmen_length, <span class="at">y =</span> culmen_depth, <span class="at">color =</span> species))<span class="sc">+</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#B2DF8A"</span>,<span class="st">"#FDBF6F"</span>,<span class="st">"#CAB2D6"</span>))<span class="sc">+</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>)<span class="sc">+</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)<span class="sc">+</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-lenght-depth" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-lenght-depth-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;8: Culmen length as a function of culmen depth</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Check with linear regression :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>rl2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(culmen_depth <span class="sc">~</span> culmen_length <span class="sc">+</span> species <span class="sc">+</span> species<span class="sc">:</span>culmen_length, <span class="at">data =</span> data)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rl2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = culmen_depth ~ culmen_length + species + species:culmen_length, 
+    data = data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.6574 -0.6675 -0.0524  0.5383  3.5032 
+
+Coefficients:
+                               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                    11.40912    1.13812  10.025  &lt; 2e-16 ***
+culmen_length                   0.17883    0.02927   6.110 2.76e-09 ***
+speciesChinstrap               -3.83998    2.05398  -1.870 0.062419 .  
+speciesGentoo                  -6.15812    1.75451  -3.510 0.000509 ***
+culmen_length:speciesChinstrap  0.04338    0.04558   0.952 0.341895    
+culmen_length:speciesGentoo     0.02601    0.04054   0.642 0.521590    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.9548 on 336 degrees of freedom
+  (2 observations deleted due to missingness)
+Multiple R-squared:  0.7697,    Adjusted R-squared:  0.7662 
+F-statistic: 224.5 on 5 and 336 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>These results show that beak length is significant and positive in <em>Adelie</em>. In the species <em>Chinstrap</em> and <em>Gentoo</em>, the beak depth is smaller and is significant in <em>Gentoo</em>. At the interaction level, it is not significant, which means that the effect of beak length on depth is relatively the same for 3 species.</p>
+<p>We can conclude that beak depth depends on beak length but this does not vary between species. <em>Gentoo</em> penguins have a shallower beak than the others.</p>
+<p>In <a href="#fig-delta">Figure&nbsp;9</a>, it seems to be different trends between species.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> delta_15_N, <span class="at">y =</span> delta_13_C, <span class="at">color =</span> species))<span class="sc">+</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#B2DF8A"</span>,<span class="st">"#FDBF6F"</span>,<span class="st">"#CAB2D6"</span>))<span class="sc">+</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>)<span class="sc">+</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)<span class="sc">+</span></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-delta" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-delta-1.png" class="img-fluid figure-img" width="960"></p>
+<figcaption class="figure-caption">Figure&nbsp;9: Delta_15_N as a function of delta_13_C</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We check this using a linear model :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>rl3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(delta_13_C <span class="sc">~</span> delta_15_N <span class="sc">+</span> species <span class="sc">+</span> species<span class="sc">:</span>delta_15_N, <span class="at">data =</span> data)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rl3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = delta_13_C ~ delta_15_N + species + species:delta_15_N, 
+    data = data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.00888 -0.26656 -0.04769  0.20862  1.82777 
+
+Coefficients:
+                             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                 -32.01429    0.77063 -41.543  &lt; 2e-16 ***
+delta_15_N                    0.70093    0.08688   8.068 1.41e-14 ***
+speciesChinstrap              8.28567    1.57149   5.273 2.46e-07 ***
+speciesGentoo                15.64751    1.46204  10.702  &lt; 2e-16 ***
+delta_15_N:speciesChinstrap  -0.78957    0.17013  -4.641 5.04e-06 ***
+delta_15_N:speciesGentoo     -1.89173    0.17387 -10.880  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.4381 on 324 degrees of freedom
+  (14 observations deleted due to missingness)
+Multiple R-squared:  0.6957,    Adjusted R-squared:  0.691 
+F-statistic: 148.2 on 5 and 324 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>These results show that the relationship between nitrogen 15 and carbon 13 is positive and significant in <em>Adelie</em>, this relationship is reduced in <em>Chinstrap</em> and even more so in <em>Gentoo</em>. <em>Chinstrap</em> and <em>Gentoo</em> have significantly higher carbon-13 values than <em>Adelie</em>. The interactions between nitrogen 15 and the species are significant, showing that the effect of nitrogen 15 on carbon 13 varies according to the species.</p>
+<p>In conclusion, this model shows that the effect of nitrogen 15 on carbon 13 is highly species-dependent, with differences between species.</p>
+</section>
+<section id="principal-component-analysis-pca-of-species-characteristics" class="level2" style="color:royalblue">
+<h2 style="color:royalblue" class="anchored" data-anchor-id="principal-component-analysis-pca-of-species-characteristics">Principal Component Analysis (PCA) of species characteristics</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Selection of quantitative data</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>data_numeric <span class="ot">&lt;-</span> <span class="fu">select_if</span>(data, is.numeric)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove sample_number </span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The body_mass et the flipper_length are more than 80% correlated, we're deleting flipper_length because it's the data that's most correlated with all the other data.</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="co"># names(data_numeric)</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>data_numeric <span class="ot">&lt;-</span> data_numeric <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">"sample_number"</span>,<span class="st">"flipper_length"</span>))</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalizing data</span></span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>data_scales <span class="ot">&lt;-</span> <span class="fu">scale</span>(data_numeric)</span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA realization</span></span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>acp_data<span class="ot">=</span> <span class="fu">PCA</span>(data_scales, <span class="at">graph =</span> F)</span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(acp_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+PCA(X = data_scales, graph = F) 
+
+
+Eigenvalues
+                       Dim.1   Dim.2   Dim.3   Dim.4   Dim.5
+Variance               2.572   1.351   0.526   0.365   0.185
+% of var.             51.442  27.029  10.525   7.299   3.705
+Cumulative % of var.  51.442  78.471  88.996  96.295 100.000
+
+Individuals (the 10 first)
+                  Dist    Dim.1    ctr   cos2    Dim.2    ctr   cos2    Dim.3
+1             |  1.314 |  0.890  0.090  0.459 | -0.829  0.148  0.397 |  0.320
+2             |  1.649 |  1.245  0.175  0.571 | -0.054  0.001  0.001 | -0.732
+3             |  1.648 |  0.818  0.076  0.246 | -0.828  0.147  0.252 | -0.479
+4             |  0.000 |  0.000  0.000  0.613 |  0.000  0.000  4.990 |  0.000
+5             |  2.017 |  1.562  0.276  0.600 | -1.031  0.229  0.261 |  0.156
+6             |  2.131 |  1.565  0.277  0.539 | -0.580  0.072  0.074 |  0.759
+7             |  1.598 |  1.435  0.233  0.806 | -0.429  0.040  0.072 | -0.315
+8             |  2.345 |  1.636  0.302  0.487 |  0.427  0.039  0.033 |  0.787
+9             |  2.080 |  1.134  0.145  0.297 | -1.659  0.592  0.636 | -0.105
+10            |  1.914 |  1.520  0.261  0.630 |  0.383  0.032  0.040 |  0.891
+                 ctr   cos2  
+1              0.057  0.059 |
+2              0.296  0.197 |
+3              0.126  0.084 |
+4              0.000  4.933 |
+5              0.013  0.006 |
+6              0.318  0.127 |
+7              0.055  0.039 |
+8              0.342  0.113 |
+9              0.006  0.003 |
+10             0.439  0.217 |
+
+Variables
+                 Dim.1    ctr   cos2    Dim.2    ctr   cos2    Dim.3    ctr
+culmen_length | -0.382  5.660  0.146 |  0.885 57.930  0.783 |  0.037  0.260
+culmen_depth  |  0.795 24.599  0.633 |  0.055  0.227  0.003 |  0.555 58.510
+body_mass     | -0.818 26.034  0.670 |  0.392 11.384  0.154 |  0.304 17.588
+delta_15_N    |  0.830 26.756  0.688 |  0.282  5.887  0.080 |  0.061  0.719
+delta_13_C    |  0.660 16.950  0.436 |  0.576 24.572  0.332 | -0.347 22.924
+                cos2  
+culmen_length  0.001 |
+culmen_depth   0.308 |
+body_mass      0.093 |
+delta_15_N     0.004 |
+delta_13_C     0.121 |</code></pre>
+</div>
+</div>
+<p><a href="#fig-eig_value_plot">Figure&nbsp;10</a> is an histogram of the variance of the factorial axes with the percentage of inertia of each axis. Here, we keep 2 dimensions and 78.4% inertia.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Variance for each component</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>va_propre <span class="ot">=</span> <span class="fu">fviz_eig</span>(acp_data, <span class="at">main =</span><span class="st">""</span>, <span class="at">choice =</span> <span class="st">"variance"</span>,</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">label_size =</span><span class="dv">50</span>, <span class="at">addlabels =</span> T,</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">barfill  =</span> <span class="st">"grey"</span>,<span class="at">barcolor =</span> <span class="st">"grey"</span>)<span class="sc">+</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">60</span>))</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>va_propre</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-eig_value_plot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-eig_value_plot-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;10: Barplot of eigen values</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-contribution_plot">Figure&nbsp;11</a> assess the absolut contribution of variables to each axis. We can see that three variables make a strong contribution to axis 1 (<em>delta_15_N</em>, <em>body_mass</em> and <em>culmen_depth</em>) and 2 to axis 2 (<em>culmen_depth</em> and <em>delta_13_C</em>).</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Contribution of axis variables axis 1 and 2</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>c1 <span class="ot">=</span> <span class="fu">fviz_contrib</span>(acp_data,<span class="at">choice =</span> <span class="st">"var"</span>,<span class="at">axes =</span><span class="dv">1</span>,</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fill =</span> <span class="st">"grey"</span>,<span class="at">color =</span> <span class="st">"grey"</span>)<span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Axe 1"</span>) <span class="co">#For axe 1</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>c2 <span class="ot">=</span> <span class="fu">fviz_contrib</span>(acp_data,<span class="at">choice =</span> <span class="st">"var"</span>,<span class="at">axes =</span><span class="dv">2</span>,</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fill =</span> <span class="st">"grey"</span>,<span class="at">color =</span> <span class="st">"grey"</span>)<span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Axe 2"</span>) <span class="co">#For axe 2</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(c1,c2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-contribution_plot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-contribution_plot-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption class="figure-caption">Figure&nbsp;11: Barplots of absolut contributions of axe 1 and 2</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>First graph (<a href="#fig-projection">Figure&nbsp;12</a>) show the result of PCA on axes 1 and 2. <em>A priori</em> clustering by the Species has been performed. <em>Gentoo</em> penguins have a greater mass and a longer culmen. <em>Adelie</em> are lighter and have a depth culmen. <em>Chinstrap</em> penguins are the lightest and have a long, depth culmen. <em>Adelie</em> and <em>Chinstrap</em> penguins both have a high concentration of carbon 13 and nitrogen 15.</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Projection of variables and individuals and differentiation according to species</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>bi_plot <span class="ot">=</span> <span class="fu">fviz_pca_biplot</span>(acp_data, <span class="at">label=</span><span class="st">"var"</span>, </span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">habillage=</span>data<span class="sc">$</span>species, </span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">addEllipses =</span> T,</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">ellipse.alpha =</span> F, </span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="fl">3.5</span>), <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">3.5</span>,<span class="fl">3.5</span>))<span class="sc">+</span></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#B2DF8A"</span>,<span class="st">"#FDBF6F"</span>,<span class="st">"#CAB2D6"</span>))<span class="sc">+</span></span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(bi_plot, va_propre, c1, c2,  <span class="co">#names of graphs</span></span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="co">#How many row and col</span></span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">widths =</span> <span class="fu">c</span>(<span class="fl">2.2</span>,<span class="dv">1</span>), <span class="co">#Here, the first col will be bigger than the second</span></span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">layout_matrix =</span> <span class="fu">cbind</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="co">#On the first col only graph 1 for the 3 rows</span></span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>))) <span class="co">#On the second col, the 3 other graphs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-projection" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-projection-1.png" class="img-fluid figure-img" width="1152"></p>
+<figcaption class="figure-caption">Figure&nbsp;12: Projection of variables and individuals according to species</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Second graph (<a href="#fig-projection-islands">Figure&nbsp;13</a>) show the result of PCA on axes 1 and 2. <em>A priori</em> clustering by the Island has been performed. We can see that <em>Gentoo</em> penguins live only on Biscoe Island, while <em>Chinstrap</em> penguins live mainly on Dream Island. <em>Adelie</em> penguins live on these two islands and also on Togersen Island.</p>
+<p>The common habitats of <em>Chinstrap</em> and <em>Adelie</em> penguins seem to explain the presence of isotopes in these two species, as they must find a similar diet.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Projection of variables and individuals and differentiation according to species </span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>bi_plot <span class="ot">=</span> <span class="fu">fviz_pca_biplot</span>(acp_data, <span class="at">label=</span><span class="st">"var"</span>,  <span class="at">habillage=</span>data<span class="sc">$</span>island,  <span class="at">addEllipses =</span> T,  <span class="at">ellipse.alpha =</span> F,   <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="fl">3.5</span>),<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">3.5</span>,<span class="fl">3.5</span>))<span class="sc">+</span>  </span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#B2DF8A"</span>,<span class="st">"#FDBF6F"</span>,<span class="st">"#CAB2D6"</span>))<span class="sc">+</span>  </span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>) </span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(bi_plot, va_propre, c1, c2, <span class="co">#names of graphs  </span></span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="co">#How many row and col  </span></span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">widths =</span> <span class="fu">c</span>(<span class="fl">2.2</span>,<span class="dv">1</span>), <span class="co">#Here, the first col will be bigger than the second  </span></span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">layout_matrix =</span> <span class="fu">cbind</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="co">#On the first col only graph 1 for the 3 rows  </span></span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>))) <span class="co">#On the second col, the 3 other graphs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-projection-islands" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-projection-islands-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;13: Projection of variables and individuals and dfferentiation according to the islands</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>There is a significant <em>difference between the body mass of these 3 species</em>, almost 2 of them.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>anova2 <span class="ot">=</span> <span class="fu">aov</span>(body_mass<span class="sc">~</span>island, <span class="at">data =</span> data)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df    Sum Sq  Mean Sq F value Pr(&gt;F)    
+island        2  86314512 43157256     110 &lt;2e-16 ***
+Residuals   339 132993186   392310                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+2 observations deleted due to missingness</code></pre>
+</div>
+</div>
+<p>There is a significant <em>difference between the body mass of these 3 islands</em>, almost 2 of them.</p>
+</section>
+</section>
+<section id="body-mass-model-an-example-of-ancova" class="level1" style="color:navy">
+<h1 style="color:navy">Body mass model: an example of ANCOVA</h1>
+<p>ANCOVA (i.e.&nbsp;analysis of variance-covariance) is a statistic method that enable to model the relation between a dependent quantitative variable and several dependent explanatory variable that can be <strong>quantitative AND qualitative</strong>.</p>
+<p>Here we aim to determine:</p>
+<ol type="1">
+<li><p>Which variable influence the penguins’ body mass of the penguins</p></li>
+<li><p>What is the equation of the body mass model</p></li>
+</ol>
+<p>We are selecting different variable of the data set that we think can influence the body mass: <em>species, island, clutch_completion, culmen_length, culmen_depth, flipper_length, body_mass, sex, delta_15_N, delta_13_C</em>. They are the explanatory variables. It is important to check the type (numeric or factor) of each variable and change if necessary.</p>
+<p>We remove the individuals for which at least one measure is missing.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">#selection of the interesting variables</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>dataLM<span class="ot">&lt;-</span>data <span class="sc">%&gt;%</span> </span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species,island,clutch_completion,culmen_length,culmen_depth,flipper_length,body_mass,sex,delta_15_N,delta_13_C)</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="co">#set the variable type (factors or numerics)</span></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>dataLM<span class="sc">$</span>species<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataLM<span class="sc">$</span>species)</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>dataLM<span class="sc">$</span>island<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataLM<span class="sc">$</span>island)</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>dataLM<span class="sc">$</span>clutch_completion<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataLM<span class="sc">$</span>clutch_completion)</span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>dataLM<span class="sc">$</span>sex<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataLM<span class="sc">$</span>sex)</span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>dataLM<span class="sc">$</span>flipper_length<span class="ot">&lt;-</span><span class="fu">as.numeric</span>(dataLM<span class="sc">$</span>flipper_length)</span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a>dataLM<span class="sc">$</span>body_mass<span class="ot">&lt;-</span><span class="fu">as.numeric</span>(dataLM<span class="sc">$</span>body_mass)</span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dataLM)</span>
+<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a><span class="co">#check if there is missing values </span></span>
+<span id="cb63-16"><a href="#cb63-16" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(dataLM))</span>
+<span id="cb63-17"><a href="#cb63-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-18"><a href="#cb63-18" aria-hidden="true" tabindex="-1"></a><span class="co">#delete individual with missing values</span></span>
+<span id="cb63-19"><a href="#cb63-19" aria-hidden="true" tabindex="-1"></a>dataLM<span class="ot">&lt;-</span>dataLM <span class="sc">%&gt;%</span> </span>
+<span id="cb63-20"><a href="#cb63-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(culmen_length,culmen_depth,flipper_length,body_mass,sex,delta_15_N,delta_13_C)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="data-exploration" class="level2" style="color:royalblue">
+<h2 style="color:royalblue" class="anchored" data-anchor-id="data-exploration">Data exploration</h2>
+<p>Before any modelisation, we have to explore the data to avoid some mistake. These are the different step to follow prior to execute a model:</p>
+<ol type="1">
+<li>Check for aberrant values and distribution shape of the response variable which is here <em>body_mass</em>.</li>
+<li>If the explanatory variable is <strong>quantitative</strong>, check for aberrant values and distribution shape, and if the explanatory variable is <strong>qualitative</strong>, analyse the number mode and the number of individual in each one.</li>
+<li>Analyse the potential relation between the response variable and the different explanatory variables.</li>
+<li>Look for potential interaction between explanatory variables.</li>
+<li>Check for potential colinearity between explanatory variables.</li>
+</ol>
+<section id="response-variable-exploration" class="level3" style="color:royalblue">
+<h3 style="color:royalblue" class="anchored" data-anchor-id="response-variable-exploration">Response variable exploration</h3>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleveland plot</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(dataLM<span class="sc">$</span>body_mass,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">'Body mass'</span>)</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Histogram</span></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(dataLM<span class="sc">$</span>body_mass,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">"body mass"</span>,<span class="at">main=</span><span class="st">""</span>)</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot</span></span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(dataLM<span class="sc">$</span>body_mass,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">''</span>)</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(dataLM<span class="sc">$</span>body_mass,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-lm_resp_varia" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-lm_resp_varia-1.png" class="img-fluid figure-img" width="1440"></p>
+<figcaption class="figure-caption">Figure&nbsp;14: Distribution of the values of the variable body mass</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see on the first graphic of the <a href="#fig-lm_resp_varia">Figure&nbsp;14</a> that there is no aberrant values for the variable body mass. The two other graphic of the figure show that there is a deviation of normality. However, normality of the response variable is not a requirement for ANCOVA.</p>
+</section>
+<section id="explanatory-variables-exploration" class="level3" style="color:royalblue">
+<h3 style="color:royalblue" class="anchored" data-anchor-id="explanatory-variables-exploration">Explanatory variables exploration</h3>
+<p>First we invastigate the distribution of the quantitative explanatory variables.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">3</span>))</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Culmen Length</span></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleveland plot</span></span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(dataLM<span class="sc">$</span>culmen_length,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">'culmen_length'</span>)</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram</span></span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(dataLM<span class="sc">$</span>culmen_length,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">"culmen_length"</span>,<span class="at">main=</span><span class="st">""</span>)</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot</span></span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(dataLM<span class="sc">$</span>culmen_length,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">''</span>)</span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(dataLM<span class="sc">$</span>culmen_length,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Culmen Depth</span></span>
+<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleveland plot</span></span>
+<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(dataLM<span class="sc">$</span>culmen_depth,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">'culmen_depth'</span>)</span>
+<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram</span></span>
+<span id="cb65-16"><a href="#cb65-16" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(dataLM<span class="sc">$</span>culmen_depth,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">"culmen_depth"</span>,<span class="at">main=</span><span class="st">""</span>)</span>
+<span id="cb65-17"><a href="#cb65-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot</span></span>
+<span id="cb65-18"><a href="#cb65-18" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(dataLM<span class="sc">$</span>culmen_depth,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">''</span>)</span>
+<span id="cb65-19"><a href="#cb65-19" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(dataLM<span class="sc">$</span>culmen_depth,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb65-20"><a href="#cb65-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-21"><a href="#cb65-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Flipper length</span></span>
+<span id="cb65-22"><a href="#cb65-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleveland plot</span></span>
+<span id="cb65-23"><a href="#cb65-23" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(dataLM<span class="sc">$</span>flipper_length,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">'flipper length'</span>)</span>
+<span id="cb65-24"><a href="#cb65-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram</span></span>
+<span id="cb65-25"><a href="#cb65-25" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(dataLM<span class="sc">$</span>flipper_length,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">"flipper length"</span>,<span class="at">main=</span><span class="st">""</span>)</span>
+<span id="cb65-26"><a href="#cb65-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot</span></span>
+<span id="cb65-27"><a href="#cb65-27" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(dataLM<span class="sc">$</span>flipper_length,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">''</span>)</span>
+<span id="cb65-28"><a href="#cb65-28" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(dataLM<span class="sc">$</span>flipper_length,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb65-29"><a href="#cb65-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-30"><a href="#cb65-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Delta_15_N</span></span>
+<span id="cb65-31"><a href="#cb65-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleveland plot</span></span>
+<span id="cb65-32"><a href="#cb65-32" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(dataLM<span class="sc">$</span>delta_15_N,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">'delta_15_N'</span>)</span>
+<span id="cb65-33"><a href="#cb65-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram</span></span>
+<span id="cb65-34"><a href="#cb65-34" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(dataLM<span class="sc">$</span>delta_15_N,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">"delta_15_N"</span>,<span class="at">main=</span><span class="st">""</span>)</span>
+<span id="cb65-35"><a href="#cb65-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot</span></span>
+<span id="cb65-36"><a href="#cb65-36" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(dataLM<span class="sc">$</span>delta_15_N,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">''</span>)</span>
+<span id="cb65-37"><a href="#cb65-37" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(dataLM<span class="sc">$</span>delta_15_N,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb65-38"><a href="#cb65-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-39"><a href="#cb65-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Delta_13_C</span></span>
+<span id="cb65-40"><a href="#cb65-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleveland plot</span></span>
+<span id="cb65-41"><a href="#cb65-41" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(dataLM<span class="sc">$</span>delta_13_C,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">'delta_13_C'</span>)</span>
+<span id="cb65-42"><a href="#cb65-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram</span></span>
+<span id="cb65-43"><a href="#cb65-43" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(dataLM<span class="sc">$</span>delta_13_C,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">"delta_13_C"</span>,<span class="at">main=</span><span class="st">""</span>)</span>
+<span id="cb65-44"><a href="#cb65-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot</span></span>
+<span id="cb65-45"><a href="#cb65-45" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(dataLM<span class="sc">$</span>delta_13_C,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">''</span>)</span>
+<span id="cb65-46"><a href="#cb65-46" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(dataLM<span class="sc">$</span>delta_13_C,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-lm_expl_varia" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-lm_expl_varia-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption">Figure&nbsp;15: Distribution of the values of the explanatory variables</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see on the first graphic of each row of the <a href="#fig-lm_expl_varia">Figure&nbsp;15</a> that there is no abberant values for the variable <em>culmen_length</em>, <em>culmen_depth</em>, <em>flipper_length</em>, <em>delta_15_N</em> and <em>delat_13_C</em>. The two other graphic of each row of the figure show that there is a deviation of normality for all explanatory variable. However, normality of the explanatory variable is not a requirement for ANCOVA.</p>
+<p>Secondly we analyse the qualitative explanatory variables. We look at the distribution of the values in the different mode.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor Sex</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataLM<span class="sc">$</span>sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>FEMALE   MALE 
+   163    161 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor Island</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataLM<span class="sc">$</span>island)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Biscoe     Dream Torgersen 
+      162       119        43 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor Species</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataLM<span class="sc">$</span>species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Adelie Chinstrap    Gentoo 
+      139        67       118 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor Clutch completion</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataLM<span class="sc">$</span>clutch_completion)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> No Yes 
+ 34 290 </code></pre>
+</div>
+</div>
+<p>We observe that there is not the same number of observation in each mode so the plan is non orthogonal. This is not mandatory but it is best when the plan is orthogonal.</p>
+<p>Secondly, we explore the dynamics between body mass (response variable) and the explanatory variable, to identify if there any potential trend.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">2</span>))</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Culmen length</span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dataLM<span class="sc">$</span>body_mass<span class="sc">~</span>dataLM<span class="sc">$</span>culmen_length,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">'culmen length'</span>,<span class="at">ylab=</span><span class="st">'body mass'</span>)</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Culmen depth</span></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dataLM<span class="sc">$</span>body_mass<span class="sc">~</span>dataLM<span class="sc">$</span>culmen_depth,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">'culmen depth'</span>,<span class="at">ylab=</span><span class="st">'body mass'</span>)</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Flipper length</span></span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dataLM<span class="sc">$</span>body_mass<span class="sc">~</span>dataLM<span class="sc">$</span>flipper_length,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">'flipper length'</span>,<span class="at">ylab=</span><span class="st">'body mass'</span>)</span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a><span class="co"># delta 15 N</span></span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dataLM<span class="sc">$</span>body_mass<span class="sc">~</span>dataLM<span class="sc">$</span>delta_15_N,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">'delta 15N'</span>,<span class="at">ylab=</span><span class="st">'body mass'</span>)</span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a><span class="co"># delta 13 C</span></span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dataLM<span class="sc">$</span>body_mass<span class="sc">~</span>dataLM<span class="sc">$</span>delta_13_C,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">'delta 13C'</span>,<span class="at">ylab=</span><span class="st">'body mass'</span>)</span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Species</span></span>
+<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>body_mass<span class="sc">~</span>dataLM<span class="sc">$</span>species, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"Species"</span>, <span class="at">col=</span><span class="st">'darkgrey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Island</span></span>
+<span id="cb74-15"><a href="#cb74-15" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>body_mass<span class="sc">~</span>dataLM<span class="sc">$</span>island, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"Island"</span>, <span class="at">col=</span><span class="st">'brown'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb74-16"><a href="#cb74-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Clutch completion</span></span>
+<span id="cb74-17"><a href="#cb74-17" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>body_mass<span class="sc">~</span>dataLM<span class="sc">$</span>clutch_completion, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"Clutch completion"</span>, <span class="at">col=</span><span class="st">'brown'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb74-18"><a href="#cb74-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Sex</span></span>
+<span id="cb74-19"><a href="#cb74-19" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>body_mass<span class="sc">~</span>dataLM<span class="sc">$</span>sex, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"Sex"</span>, <span class="at">col=</span><span class="st">'brown'</span>, <span class="at">main =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-lm_mass_effect" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-lm_mass_effect-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption class="figure-caption">Figure&nbsp;16: Effect of the explanatories variables on the body mass</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see on the <a href="#fig-lm_mass_effect">Figure&nbsp;16</a> that the variables <em>culmen_length</em>, <em>culmen_depth</em>, <em>flipper_length</em>, <em>delta_15_N</em>, <em>species</em> and <em>island</em> seems to influence the body mass. The body mass seems to increase when <em>culmen_length</em>, <em>culmen_depth</em> and <em>flipper_length</em> increase. On the opposite, body mass seems to decrease when <em>delta_15_N</em> increase. The species Gentoo and the individuals of the Biscoe Island seem to have a higher body mass.</p>
+<p>Here we are considering a simple model with no interaction but in some case it can usefull to examine the potential interaction between the different variables.</p>
+<p>In order to avoid colinearity in modelling, we analyse how the explanatories variables are related. To do so we calculate the correlation between the quantitative explanatories variables and evaluate if the qualitative explanatory variables impact the quantitative one using boxplot.</p>
+<p>We chose a threshold of 0.7, to ensure there is no colinearity detected between the covariables.</p>
+<p>First between covariable: the quantitative explanatories variables.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot.mixed</span>(<span class="fu">cor</span>(dataLM <span class="sc">%&gt;%</span> <span class="fu">select_if</span>(is.numeric)<span class="sc">%&gt;%</span><span class="fu">select</span>(<span class="sc">-</span>body_mass)),<span class="at">upper=</span><span class="st">"square"</span>,<span class="at">lower.col=</span><span class="st">"black"</span>, <span class="at">tl.col=</span><span class="st">"black"</span>,<span class="at">cl.cex =</span> <span class="fl">0.8</span>,<span class="at">tl.cex =</span> <span class="fl">0.7</span>,<span class="at">number.cex =</span><span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-lm_colinearity_covariable" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-lm_colinearity_covariable-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption class="figure-caption">Figure&nbsp;17: Corelation matrice between the covariables</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The threshold above which we cosider there is colinearity is usually choose at +/- 0.7. We can thus see in the <a href="#fig-lm_colinearity_covariable">Figure&nbsp;17</a> that there is no colinearity detected between the covariables.</p>
+<p>Then between cofactors: the qualitative explanatory variables.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking collinearity between cofactors and covariables</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">4</span>))</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Culmen length and species</span></span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>culmen_length<span class="sc">~</span>dataLM<span class="sc">$</span>species, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Culmen length"</span>, <span class="at">xlab =</span> <span class="st">"Species"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Culmen length and island</span></span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>culmen_length<span class="sc">~</span>dataLM<span class="sc">$</span>island, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Culmen length"</span>, <span class="at">xlab =</span> <span class="st">"Island"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Culmen length and sex</span></span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>culmen_length<span class="sc">~</span>dataLM<span class="sc">$</span>sex, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Culmen length"</span>, <span class="at">xlab =</span> <span class="st">"Sex"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Culmen length and clutch completion</span></span>
+<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>culmen_length<span class="sc">~</span>dataLM<span class="sc">$</span>clutch_completion, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Culmen length"</span>, <span class="at">xlab =</span> <span class="st">"Clutch completion"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Culmen depth and species</span></span>
+<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>culmen_depth<span class="sc">~</span>dataLM<span class="sc">$</span>species, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Culmen depth"</span>, <span class="at">xlab =</span> <span class="st">"Species"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Culmen depth and island</span></span>
+<span id="cb76-15"><a href="#cb76-15" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>culmen_depth<span class="sc">~</span>dataLM<span class="sc">$</span>island, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Culmen depth"</span>, <span class="at">xlab =</span> <span class="st">"Island"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-16"><a href="#cb76-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Culmen depth and sex</span></span>
+<span id="cb76-17"><a href="#cb76-17" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>culmen_depth<span class="sc">~</span>dataLM<span class="sc">$</span>sex, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Culmen depth"</span>, <span class="at">xlab =</span> <span class="st">"Sex"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-18"><a href="#cb76-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Culmen depth and clutch completion</span></span>
+<span id="cb76-19"><a href="#cb76-19" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>culmen_depth<span class="sc">~</span>dataLM<span class="sc">$</span>clutch_completion, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Culmen depth"</span>, <span class="at">xlab =</span> <span class="st">"Clutch completion"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-20"><a href="#cb76-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-21"><a href="#cb76-21" aria-hidden="true" tabindex="-1"></a><span class="co">#Flipper length and species</span></span>
+<span id="cb76-22"><a href="#cb76-22" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>flipper_length<span class="sc">~</span>dataLM<span class="sc">$</span>species, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Flipper length"</span>, <span class="at">xlab =</span> <span class="st">"Species"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-23"><a href="#cb76-23" aria-hidden="true" tabindex="-1"></a><span class="co">#Flipper length and island</span></span>
+<span id="cb76-24"><a href="#cb76-24" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>flipper_length<span class="sc">~</span>dataLM<span class="sc">$</span>island, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Flipper length"</span>, <span class="at">xlab =</span> <span class="st">"Island"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-25"><a href="#cb76-25" aria-hidden="true" tabindex="-1"></a><span class="co">#Flipper length and sex</span></span>
+<span id="cb76-26"><a href="#cb76-26" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>flipper_length<span class="sc">~</span>dataLM<span class="sc">$</span>sex, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Flipper length"</span>, <span class="at">xlab =</span> <span class="st">"Sex"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-27"><a href="#cb76-27" aria-hidden="true" tabindex="-1"></a><span class="co">#Flipper length and clutch completion</span></span>
+<span id="cb76-28"><a href="#cb76-28" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>flipper_length<span class="sc">~</span>dataLM<span class="sc">$</span>clutch_completion, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Flipper length"</span>, <span class="at">xlab =</span> <span class="st">"Clutch completion"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-29"><a href="#cb76-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-30"><a href="#cb76-30" aria-hidden="true" tabindex="-1"></a><span class="co">#delta 15N and species</span></span>
+<span id="cb76-31"><a href="#cb76-31" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>delta_15_N<span class="sc">~</span>dataLM<span class="sc">$</span>species, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"delta 15N"</span>, <span class="at">xlab =</span> <span class="st">"Species"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-32"><a href="#cb76-32" aria-hidden="true" tabindex="-1"></a><span class="co">#delta 15N and island</span></span>
+<span id="cb76-33"><a href="#cb76-33" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>delta_15_N<span class="sc">~</span>dataLM<span class="sc">$</span>island, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"delta 15N"</span>, <span class="at">xlab =</span> <span class="st">"Island"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-34"><a href="#cb76-34" aria-hidden="true" tabindex="-1"></a><span class="co">#delta 15N and sex</span></span>
+<span id="cb76-35"><a href="#cb76-35" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>delta_15_N<span class="sc">~</span>dataLM<span class="sc">$</span>sex, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"delta 15N"</span>, <span class="at">xlab =</span> <span class="st">"Sex"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-36"><a href="#cb76-36" aria-hidden="true" tabindex="-1"></a><span class="co">#delta 15N and clutch completion</span></span>
+<span id="cb76-37"><a href="#cb76-37" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>delta_15_N<span class="sc">~</span>dataLM<span class="sc">$</span>clutch_completion, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"delta 15N"</span>, <span class="at">xlab =</span> <span class="st">"Clutch completion"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-38"><a href="#cb76-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-39"><a href="#cb76-39" aria-hidden="true" tabindex="-1"></a><span class="co">#delta 13C and species</span></span>
+<span id="cb76-40"><a href="#cb76-40" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>delta_13_C<span class="sc">~</span>dataLM<span class="sc">$</span>species, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"delta 13C"</span>, <span class="at">xlab =</span> <span class="st">"Species"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-41"><a href="#cb76-41" aria-hidden="true" tabindex="-1"></a><span class="co">#delta 13C and island</span></span>
+<span id="cb76-42"><a href="#cb76-42" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>delta_13_C<span class="sc">~</span>dataLM<span class="sc">$</span>island, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"delta 13C"</span>, <span class="at">xlab =</span> <span class="st">"Island"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-43"><a href="#cb76-43" aria-hidden="true" tabindex="-1"></a><span class="co">#delta 13C and sex</span></span>
+<span id="cb76-44"><a href="#cb76-44" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>delta_13_C<span class="sc">~</span>dataLM<span class="sc">$</span>sex, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"delta 13C"</span>, <span class="at">xlab =</span> <span class="st">"Sex"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb76-45"><a href="#cb76-45" aria-hidden="true" tabindex="-1"></a><span class="co">#delta 13C and clutch completion</span></span>
+<span id="cb76-46"><a href="#cb76-46" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(dataLM<span class="sc">$</span>delta_13_C<span class="sc">~</span>dataLM<span class="sc">$</span>clutch_completion, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"delta 13C"</span>, <span class="at">xlab =</span> <span class="st">"Clutch completion"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-lm_colinearity_cofactor" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-lm_colinearity_cofactor-1.png" class="img-fluid figure-img" width="1152"></p>
+<figcaption class="figure-caption">Figure&nbsp;18: Exploration of potential colinearities between cofactors and covariable</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>According to the <a href="#fig-lm_colinearity_cofactor">Figure&nbsp;18</a> there is no colinearity between cofactors and covariables.</p>
+<p>We keep all our explanatory variables to do the modelisation.</p>
+</section>
+</section>
+<section id="model-selection" class="level2" style="color:royalblue">
+<h2 style="color:royalblue" class="anchored" data-anchor-id="model-selection">Model selection</h2>
+<p>For the statistic modelisation, we analyse first the full model, which means the model including all explanatories variables.</p>
+<p>In order to identify the candidate model from the full model, we are going to use the backward selection model. This method is based on the significance of the model terms. From the full model, we identify the significance of each term of the model and proceed to a skimming of the non-sgnificant terms. The withdraw on the non significant term have to follow two step:<br>
+First step : remove successively the non significant interaction<br>
+Second step : remove successively the explanatory variable that are non significant and not include in interaction terms<br>
+</p>
+<p>First we build the full model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>modlm<span class="ot">&lt;-</span><span class="fu">lm</span>(body_mass <span class="sc">~</span> species <span class="sc">+</span> island <span class="sc">+</span> clutch_completion <span class="sc">+</span> culmen_length <span class="sc">+</span> culmen_depth <span class="sc">+</span> flipper_length <span class="sc">+</span> sex <span class="sc">+</span> delta_15_N <span class="sc">+</span> delta_13_C,<span class="at">data=</span>dataLM) <span class="co">#full model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Using the function <em>drop1</em> we analyse the significance of each variables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(modlm,<span class="at">test=</span><span class="st">"F"</span>) <span class="co">#test significativté des variables avec test fischer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+body_mass ~ species + island + clutch_completion + culmen_length + 
+    culmen_depth + flipper_length + sex + delta_15_N + delta_13_C
+                  Df Sum of Sq      RSS    AIC F value    Pr(&gt;F)    
+&lt;none&gt;                         24182707 3659.4                      
+species            2   5084613 29267320 3717.2 32.8003 1.178e-13 ***
+island             2     69965 24252672 3656.3  0.4513 0.6371895    
+clutch_completion  1    191844 24374551 3660.0  2.4751 0.1166736    
+culmen_length      1    474327 24657033 3663.7  6.1197 0.0139006 *  
+culmen_depth       1    776489 24959196 3667.7 10.0181 0.0017031 ** 
+flipper_length     1   2679918 26862625 3691.5 34.5757 1.054e-08 ***
+sex                1   5851484 30034190 3727.6 75.4946 &lt; 2.2e-16 ***
+delta_15_N         1   1027298 25210005 3670.9 13.2540 0.0003183 ***
+delta_13_C         1    353797 24536504 3662.1  4.5646 0.0334167 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>We exclude the variable <em>island</em> of the model, because it is the non-significant variable with the highest p-value. Then, we create a new model (without the variable <em>island</em>) and test for significance.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>modlm2<span class="ot">&lt;-</span><span class="fu">lm</span>(body_mass <span class="sc">~</span> species <span class="sc">+</span> clutch_completion <span class="sc">+</span> culmen_length <span class="sc">+</span> </span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>    culmen_depth <span class="sc">+</span> flipper_length <span class="sc">+</span> sex <span class="sc">+</span> delta_15_N <span class="sc">+</span> delta_13_C, <span class="at">data=</span>dataLM)</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(modlm2,<span class="at">test=</span><span class="st">"F"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+body_mass ~ species + clutch_completion + culmen_length + culmen_depth + 
+    flipper_length + sex + delta_15_N + delta_13_C
+                  Df Sum of Sq      RSS    AIC F value    Pr(&gt;F)    
+&lt;none&gt;                         24252672 3656.3                      
+species            2   6638740 30891412 3730.7 42.9760 &lt; 2.2e-16 ***
+clutch_completion  1    235068 24487740 3657.5  3.0434 0.0820427 .  
+culmen_length      1    481954 24734626 3660.7  6.2399 0.0130018 *  
+culmen_depth       1    784713 25037386 3664.7 10.1597 0.0015800 ** 
+flipper_length     1   2630322 26882994 3687.7 34.0548 1.334e-08 ***
+sex                1   5935926 30188599 3725.3 76.8526 &lt; 2.2e-16 ***
+delta_15_N         1    996020 25248693 3667.4 12.8955 0.0003821 ***
+delta_13_C         1    333909 24586581 3658.8  4.3231 0.0384091 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>As previously, we exclude the variable <em>clutch_completion</em> of the model, because it is non-significant. We build a new model and test again for variables’ significance.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>modlm3<span class="ot">&lt;-</span><span class="fu">lm</span>(body_mass <span class="sc">~</span> species <span class="sc">+</span> culmen_length <span class="sc">+</span> </span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>    culmen_depth <span class="sc">+</span> flipper_length <span class="sc">+</span> sex <span class="sc">+</span> delta_15_N <span class="sc">+</span> delta_13_C, <span class="at">data=</span>dataLM)</span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(modlm3,<span class="at">test=</span><span class="st">"F"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+body_mass ~ species + culmen_length + culmen_depth + flipper_length + 
+    sex + delta_15_N + delta_13_C
+               Df Sum of Sq      RSS    AIC F value    Pr(&gt;F)    
+&lt;none&gt;                      24487740 3657.5                      
+species         2   6586068 31073809 3730.6 42.3602 &lt; 2.2e-16 ***
+culmen_length   1    462092 24949833 3661.5  5.9442 0.0153187 *  
+culmen_depth    1    767080 25254821 3665.5  9.8674 0.0018420 ** 
+flipper_length  1   2774571 27262312 3690.2 35.6909 6.246e-09 ***
+sex             1   5977734 30465475 3726.2 76.8951 &lt; 2.2e-16 ***
+delta_15_N      1   1086210 25573950 3669.5 13.9725 0.0002203 ***
+delta_13_C      1    335608 24823349 3659.9  4.3171 0.0385403 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>All the variable in the model are significant, so we keep all of them in our final model. The best model is thus: <span class="math inline">\(body\:mass\)</span> ~ <span class="math inline">\(species + culmen_{length} + culmen_{depth} + flipper_{length} + sex + delta\:15\:N + delta\:13\:C\)</span></p>
+<p>Using the function <em>summary</em> we can acces the coefficient for all variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modlm3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ species + culmen_length + culmen_depth + 
+    flipper_length + sex + delta_15_N + delta_13_C, data = dataLM)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-681.10 -184.79   -3.52  186.14  822.43 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      1467.105   1051.184   1.396  0.16380    
+speciesChinstrap -245.090     89.050  -2.752  0.00626 ** 
+speciesGentoo     882.101    131.653   6.700 9.59e-11 ***
+culmen_length      17.063      6.998   2.438  0.01532 *  
+culmen_depth       61.555     19.596   3.141  0.00184 ** 
+flipper_length     17.757      2.972   5.974 6.25e-09 ***
+sexMALE           417.889     47.655   8.769  &lt; 2e-16 ***
+delta_15_N       -164.321     43.960  -3.738  0.00022 ***
+delta_13_C         65.171     31.366   2.078  0.03854 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 278.8 on 315 degrees of freedom
+Multiple R-squared:  0.8842,    Adjusted R-squared:  0.8813 
+F-statistic: 300.8 on 8 and 315 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>The model can thus be written as:</p>
+<p><span class="math display">\[ Body\:Mass = 1467.1\:-\:164.3^{***}. Delta\:15N\:+\:65.2^{*}. Delta\:13C\]</span> <span class="math display">\[+\:(Species_{Adeliae} = 0 \:;\:Species_{Pygoscelis antarctica} = -245.1^{**}\:;\:Species_{Pygoscelis papua} = 882.1^{***})\]</span> <span class="math display">\[ +\:17.1^{*NS*}. Culmen\:Length\:+\:61.6^{**}. Culmen\:Depth\:+\:17.8^{***}. Flipper\:Length \]</span> <span class="math display">\[ + (Sex_{Female}= 0\:;\: Sex_{Male}=417.9^{***})\]</span></p>
+<p>From the summary of the model we can also access the variance proportion that is explained by the model. It correspond to the variable of <em>Adjusted R-squared</em> which is here 0.8813. The model is thus explaining 88% of the body mass variance.</p>
+</section>
+<section id="model-validation" class="level2" style="color:royalblue">
+<h2 style="color:royalblue" class="anchored" data-anchor-id="model-validation">Model validation</h2>
+<p>The hypotheses for ANCOVA are <strong>independence</strong>, <strong>residuals normality</strong> and <strong>variance homogeneity</strong>. We also need to check for influent statistics unities, which means an observation with a high contribution to model construction.</p>
+<p>Here, we assume an independence of variables as we don’t have the details of the data collection.</p>
+<p>We check the normality of residuals.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram</span></span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(modlm3<span class="sc">$</span>residuals,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">"residuals"</span>,<span class="at">main=</span><span class="st">"Check Normality"</span>)</span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot</span></span>
+<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(modlm3<span class="sc">$</span>residuals,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">''</span>)</span>
+<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(modlm3<span class="sc">$</span>residuals,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-lm_resid_norm" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-lm_resid_norm-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption class="figure-caption">Figure&nbsp;19: Verification of residuals normality</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see on the first plot of <a href="#fig-lm_resid_norm">Figure&nbsp;19</a> that the histogram seems to have a normal distribution. This is confirmed by the second plot of the figure where we can see that the residuals are align with the red line, which means that the residuals have a normal distribution.</p>
+<p>We check the homoscedasticity of residuals.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># residuals vs fitted</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">residuals</span>(modlm3)<span class="sc">~</span><span class="fu">fitted</span>(modlm3)</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>      , <span class="at">col=</span><span class="st">'dodgerblue3'</span></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>      , <span class="at">pch=</span><span class="dv">16</span>)</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-lm_variance" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-lm_variance-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption class="figure-caption">Figure&nbsp;20: verification of residuals homoscedasticity</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see on the <a href="#fig-lm_variance">Figure&nbsp;20</a> that there is no tendency on the point repartition. We can thus conclude that the variance is homogeneous.</p>
+<p>We also verify that there is not individual that is particularly influential.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">cooks.distance</span>(modlm3), <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="dv">2</span>,<span class="at">lwd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-lm_influent_indiv" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Penguins_chapter_files/figure-html/fig-lm_influent_indiv-1.png" class="img-fluid figure-img" width="384"></p>
+<figcaption class="figure-caption">Figure&nbsp;21: Verification of influential individual</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As all the bar are lower that 1 on the <a href="#fig-lm_influent_indiv">Figure&nbsp;21</a>, we can conclude that there is no influential individuals.</p>
+<p>Finally, we can conclude that the <strong>linear model is valid</strong>.</p>
+
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-10.1371/journal.pone.0090081" class="csl-entry" role="listitem">
+Gorman, Tony D. AND Fraser, Kristen B. AND Williams. 2014. <span>“Ecological Sexual Dimorphism and Environmental Variability Within a Community of Antarctic Penguins (Genus Pygoscelis).”</span> <em>PLOS ONE</em> 9 (3): 1–14. <a href="https://doi.org/10.1371/journal.pone.0090081">https://doi.org/10.1371/journal.pone.0090081</a>.
+</div>
+<div id="ref-10.32614/RJ-2022-020" class="csl-entry" role="listitem">
+Horst, Allison, Alison Hill, and Kristen B. Gorman. 2022. <span>“Palmer Archipelago Penguins Data in the Palmerpenguins r Package - an Alternative to Anderson’s Irises.”</span> <em>The R Journal</em> 14 (June): 244–54. <a href="https://doi.org/10.32614/RJ-2022-020">https://doi.org/10.32614/RJ-2022-020</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
