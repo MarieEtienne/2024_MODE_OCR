@@ -16,7 +16,7 @@ output:
 
 ## Study context {style="color:royalblue"}
 
-This document is a report on the analysis of a dataset on penguins. The data collected contains informations on multiples [variables](#colum-name). The dataset was find on Kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv. This dataset was made from differents articles according by Gorman *et al.* [@10.1371/journal.pone.0090081] and Horst *et al.* [@10.32614/RJ-2022-020]. It focused on three penguin species : Adelie (*Pygoscelis adeliae*), Chinstrap (*Pygoscelis antarcticus*) and Gentoo (*Pygoscelis papua*). The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
+This document is a report on the analysis of a dataset on penguins. The data collected contains informations on multiples [variables](#colum-name). The dataset was found on Kaggle : https://www.kaggle.com/datasets/utkarshx27/penguin-size-clutch-and-blood-isotope-data?select=penguins_raw.csv. This dataset was assemble from various articles according by Gorman *et al.* [@10.1371/journal.pone.0090081] and Horst *et al.* [@10.32614/RJ-2022-020]. It focused on three penguin species : Adelie (*Pygoscelis adeliae*), Chinstrap (*Pygoscelis antarcticus*) and Gentoo (*Pygoscelis papua*). The dataset contains 344 observations and 17 variables. The goal of this analysis is to explore the dataset and to identify the main characteristics of the penguins.
 
 ```{r, results='hide'}
 #| message: false
