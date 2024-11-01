@@ -2,9 +2,7 @@
 title: "Unveiling the influence of climatic factors on reproductive patterns in neotropical bats through a Bayesian framework"
 author: "TESSIER/GRAVE/DAVID/DENOUAL/SERRE/LAPORTE/LEROUX/BRUZZO"
 date: "2024-10-22"
-format: 
- html:
-  math: mathjax
+output: html_document
 bibliography: references.bib
 ---
 
@@ -35,7 +33,13 @@ library(sp)
 library(geoR)
 ```
 
-We load 4 datasets which will later be cleaned, edited and fused : - data_chiro contains information collected during each capture event of the study : date, location in French Guiana, sex, age and reproductive state of the captured bats. - data_abiot_50_22 and data_abiot_23_24 describe meteorological data from French Guiana from 1950 to 2024. We retrieved it from [data.gouv](https://www.data.gouv.fr/fr/). - coord_chiro containing capture locations' coordinates (degree minute second), closest municipality and locality.
+We load 4 datasets which will later be cleaned, edited and fused :
+
+\- data_chiro contains information collected during each capture event of the study : date, location in French Guiana, sex, age and reproductive state of the captured bats.
+
+\- data_abiot_50_22 and data_abiot_23_24 describe meteorological data from French Guiana from 1950 to 2024. We retrieved it from [data.gouv](https://www.data.gouv.fr/fr/).
+
+\- coord_chiro containing capture locations' coordinates (degree minute second), closest municipality and locality.
 
 ```{r}
 data_chiro<-read_excel("data_chiro.xlsx")
@@ -356,11 +360,15 @@ We will use the Bayesian approach to estimate the effect of those different cova
 
 This theorem is based on conditional probabilities :
 
-$P(B \mid A) = \displaystyle{\frac{ P(A \mid B) \; P(B)}{P(A)}}$
+$$
+P(B \mid A) = \displaystyle{\frac{ P(A \mid B) \; P(B)}{P(A)}}
+$$
 
 But we might try to explain it more simply as this :
 
-$$P(\text{hypothesis} \mid \text{data}) = \frac{ P(\text{data} \mid \text{hypothesis}) \; P(\text{hypothesis})}{P(\text{data})}$$
+$$ 
+P(\text{hypothesis} \mid \text{data}) = \frac{P(\text{data} \mid \text{hypothesis}) \cdot P(\text{hypothesis})}{P(\text{data})}
+$$
 
 ## B. Little exploration of how our response variable react with different covariates
 
@@ -413,13 +421,11 @@ datax <- list(
 
 [**We write our null model and we assume that the number of reproductive individuals follows a binomial distribution. Specifically, we define our model as follows:**]{.underline}
 
-$$
-\text{repro_positive}[i] \sim \text{Binomial}(p[i], \text{total_individuals}[i])
-$$
+$$\text{repro_positive}[i] \sim \text{Binomial}(p[i], \text{total_individuals}[i])$$
 
-In this model, $\text{repro_positive}[i]$ represents the number of reproductive individuals observed for each observation ( i ), while $\text{total_individuals}[i]$ is the total number of individuals in the corresponding group. The parameter $p[i]$ is the probability of an individual being reproductive, modeled using the logit link function, where ( a ) is a parameter drawn from a normal distribution with mean 0 and a large variance (0.001), reflecting our prior belief about its value. $$
-\text{logit}(p[i]) = a
-$$
+In this model, $\text{repro_positive}[i]$ represents the number of reproductive individuals observed for each observation ( i ), while $\text{total_individuals}[i]$ is the total number of individuals in the corresponding group. The parameter $p[i]$ is the probability of an individual being reproductive, modeled using the logit link function, where ( a ) is a parameter drawn from a normal distribution with mean 0 and a large variance (0.001), reflecting our prior belief about its value. 
+
+$$\text{logit}(p[i]) = a$$
 
 [**Here is the null model in Jags language:**]{.underline}
 
@@ -653,7 +659,8 @@ pred_data <- expand.grid(
 
 This grid will allow us to simulate data from the source data.frame "data_final", for some reasons that we don't clearly understand... we need to sample each covariate at once and fix the other one to the median.
 
-Then we compute $p[i]$ for each estimate value from the model : $$
+Then we compute $p[i]$ for each estimate value from the model : 
+$$
 \text{logit}(p_i) = a + b_{\text{rain}} \cdot \text{rain}_i + b_{\text{rain2}} \cdot \text{rain}_i^2 + b_{\text{temp}} \cdot \text{temp}_i + b_{\text{julian_day}} \cdot \text{julian_day}_i + b_{\text{julian_day2}} \cdot \text{julian_day}_i^2 + b_{\text{julian_day3}} \cdot \text{julian_day}_i^3 + b_{\text{julian_day4}} \cdot \text{julian_day}_i^4
 $$
 
