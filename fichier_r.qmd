@@ -3,16 +3,17 @@ title: "Unveiling the influence of climatic factors on reproductive patterns in 
 author: "TESSIER/GRAVE/DAVID/DENOUAL/SERRE/LAPORTE/LEROUX/BRUZZO"
 date: "2024-10-22"
 output: html_document
+  math: mathjax
 bibliography: references.bib
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
 
 # I. Some history about bat studies in French Guiana
 
 French Guiana is a territory belonging to the bio-geographic unit of the Guiana Shield (@hollowell_checklist_2005) With an area of 83,846 km², it hosts, like its neighboring territories, remarkable species diversity. Covered by 97% forest habitat mosaic, its extreme species diversity is well-documented. French Guiana represents a global hotspot in terms of bat species richness. The most commonly used method for studying bats in tropical regions is ground-level mist netting, followed by canopy netting and direct roost searche (@macswiney_g_what_2008). It is with these methods that the first studies on bat community characterization were conducted (@charles-dominique_pierre_chauves-souris_2001). [To date, very little work has focused on exploring the reproduction patterns of Neotropical bat communities. Reproductive patterns are closely related to rainfall regimes (@ruiz-ramoni_reproductive_2016) frequently occurring twice a year in tropical regions.]{.underline}
-
--   The data collected on the species of bats captured by date and location in French Guiana, and containing information on sex, age and reproductive state\
--   The meteorological data of French Guiana from 1950 to 2024\
--   The capture locations coordinates (degree minute second)
 
 # II. Formating our datasets
 
@@ -33,7 +34,9 @@ library(sp)
 library(geoR)
 ```
 
-```{r include=FALSE}
+We load 4 datasets which will later be cleaned, edited and fused : - data_chiro contains information collected during each capture event of the study : date, location in French Guiana, sex, age and reproductive state of the captured bats. - data_abiot_50_22 and data_abiot_23_24 describe meteorological data from French Guiana from 1950 to 2024. We retrieved it from [data.gouv](https://www.data.gouv.fr/fr/). - coord_chiro containing capture locations' coordinates (degree minute second), closest municipality and locality.
+
+```{r}
 data_chiro<-read_excel("data_chiro.xlsx")
 data_abiot_50_22<-read.csv("abiot_1950_2022.csv", sep = ";") 
 data_abiot_23_24<-read.csv("abiot_2023_2024.csv", sep = ";") 
