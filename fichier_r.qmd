@@ -2,7 +2,8 @@
 title: "Unveiling the influence of climatic factors on reproductive patterns in neotropical bats through a Bayesian framework"
 author: "TESSIER/GRAVE/DAVID/DENOUAL/SERRE/LAPORTE/LEROUX/BRUZZO"
 date: "2024-10-22"
-output: html_document
+format: 
+ html:
   math: mathjax
 bibliography: references.bib
 ---
