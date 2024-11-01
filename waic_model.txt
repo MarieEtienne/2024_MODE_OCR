@@ -1,0 +1,8 @@
+"model"	"waic"	"p_waic"
+"model_rain_temp_jday"	523.3	18.4
+"model_rain_temp_jday_thermamp"	528.2	22.6
+"model_jday"	533.9	11.9
+"model_rain_jday"	541.1	17.6
+"model_rain_temp"	594	10.8
+"model_null"	616.3	3.2
+"model_rain"	619.9	5.7
