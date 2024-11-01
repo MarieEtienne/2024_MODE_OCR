@@ -4,8 +4,6 @@ editor:
     wrap: 72
 ---
 
-------------------------------------------------------------------------
-
 title: "Modèles matriciels et applications" group: "Quentin, Alexie,
 Jeanne, Laurane"
 
