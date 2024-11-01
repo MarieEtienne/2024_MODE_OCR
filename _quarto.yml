@@ -26,6 +26,8 @@ website:
           href: fichier_r.qmd
         - text: Determinants of Ant Species Density
           href: Determinants_ant_diversity.qmd
+        - text: Effects of grazing on Swedish meadows
+          href: OCR_pollen.qmd
         aria-label: GitHub
 
 format:
