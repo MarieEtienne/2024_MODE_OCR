@@ -3,6 +3,11 @@ LIEN DU dataset : https://zenodo.org/records/8251495
 
 # MODE_reproduciblescience
 
+# On November 3rd 
+Too bad, the site does not render.Mostly because therewas merge PR which did not pass the checks. 
+I give you up to the end of the week to fix it.
+
+
 # Last verification
 
 As soon as you merge into master, I will update the main page of the websote o that you can look at the final rendering of your work. 
