@@ -1,10 +1,16 @@
 ---
+title: "Analysis of the Factors Favorable to Nest Success of Different Bird Species in Two USA States, Wisconsin and Illinois"
+author: "Rudy, Tanguy, Manon, Garan, Anaëlle, Oceane, Victor"
 bibliography: references_analyse_birds.bib
+execute:
+  freeze: auto
+format:
+  html:
+    toc: true
+    toc-location: left
 ---
 
-------------------------------------------------------------------------
 
-title: "Analysis of the factors favorable to nest success of different birds species in two USA states, Wisconsin and Illinois" group: "Rudy, Tanguy, Manon, Garan, Anaëlle, Oceane, Victor" editor: markdown: wrap: 72 bibliography: references_analyse_birds.bib execute: freeze: auto output: html_document: toc: true toc_float: true ---
 
 **Do not forget to set your working directory in the right place** **Menu : Session/Set Working Directory/Choose directory** *And indicate Git/2024_MODE_OCR*
 
