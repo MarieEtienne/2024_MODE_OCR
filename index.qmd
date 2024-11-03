@@ -20,10 +20,11 @@ After a short introduction regarding the principles and the tools of a reproduci
 
 Table of Contents 
 
-* [Bats analysis](fichier_r.html)
+* [Reproductive patterns in neotropical bats ](fichier_r.html)
 * [Determinants of Ant Species Density](Determinants_ant_diversity.html)
 * [Effects of grazing on Swedish meadows](OCR_pollen.html)
 * [Exploring data on Pegnuins](Penguins_chapter.html)
+* [Analysis of the factors favorable to nest success of different birds species in two USA states, Wisconsin and Illinois](Analyse_Birds.qmd)
 
 <!-- * [Linear modelling in ecology](linear_modelling.html) -->
 <!-- * [Mixed models in Ecology](Mixed_models.html) -->
