@@ -20,13 +20,9 @@ jobs:
           Rscript -e "install.packages('spDataLarge', repos = 'https://nowosad.github.io/drat/', type = 'source')"
       - name: Install R packages
         run: |
-<<<<<<< HEAD
           Rscript -e "install.packages(c('factoextra', 'tinytext', 'corrplot', 'plot3D', 'DHARMa', 'rcompanion', 'lattice', 'knitr', 'ggplot2', 'ggcorrplot', 'dplyr', 'FactoMineR', 'sf', 'terra', 'spData', 'tmap', 'leaflet', 'spDataLarge', 'maps', 'gifski'))" 
-=======
           Rscript -e "install.packages(c('rnaturalearth','rnaturalearthdata', 'ggspatial'))" 
           Rscript -e "install.packages(c('dplyr','readxl', 'lubridate', 'ggplot2','stringr', 'tidyr', 'ade4', 'spdep', 'tripack', 'sp', 'geoR', 'R2jags'))" 
-          Rscript -e "install.packages(c('factoextra', 'tinytext', 'corrplot', 'plot3D', 'DHARMa', 'rcompanion','lattice'))" 
->>>>>>> origin/master
       - name: Additional Python packages
         run: |
           pip install numpy 
