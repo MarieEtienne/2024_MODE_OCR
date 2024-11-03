@@ -3,7 +3,7 @@ title: "Unveiling the influence of climatic factors on reproductive patterns in 
 author: "TESSIER/GRAVE/DAVID/DENOUAL/SERRE/LAPORTE/LEROUX/BRUZZO"
 date: "2024-10-22"
 output: html_document
-bibliography: references.bib
+bibliography: references_bats.bib
 ---
 
 ```{r setup, include=FALSE}
