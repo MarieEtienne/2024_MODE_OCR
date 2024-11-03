@@ -8,6 +8,7 @@ _site
 _freeze
  AMV_chapter_files
 SpatialSeries_Alexandra2_files/figure-html
+Analyse_Birds_files/
 
 # Remove .DS_store frome versioning system 
 .DS_Store 
