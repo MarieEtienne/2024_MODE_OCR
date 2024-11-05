@@ -3,22 +3,22 @@ title: "Unveiling the influence of climatic factors on reproductive patterns in 
 author: "TESSIER/GRAVE/DAVID/DENOUAL/SERRE/LAPORTE/LEROUX/BRUZZO"
 date: "2024-10-22"
 output: html_document
-bibliography: references.bib
+bibliography: bats_references.bib
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
-```
 
 # I. Some history about bat studies in French Guiana
 
 French Guiana is a territory belonging to the bio-geographic unit of the Guiana Shield (@hollowell_checklist_2005) With an area of 83,846 km², it hosts, like its neighboring territories, remarkable species diversity. Covered by 97% forest habitat mosaic, its extreme species diversity is well-documented. French Guiana represents a global hotspot in terms of bat species richness. The most commonly used method for studying bats in tropical regions is ground-level mist netting, followed by canopy netting and direct roost searche (@macswiney_g_what_2008). It is with these methods that the first studies on bat community characterization were conducted (@charles-dominique_pierre_chauves-souris_2001). [To date, very little work has focused on exploring the reproduction patterns of Neotropical bat communities. Reproductive patterns are closely related to rainfall regimes (@ruiz-ramoni_reproductive_2016) frequently occurring twice a year in tropical regions.]{.underline}
 
+-   The data collected on the species of bats captured by date and location in French Guiana, and containing information on sex, age and reproductive state\
+-   The meteorological data of French Guiana from 1950 to 2024\
+-   The capture locations coordinates (degree minute second)
+
 # II. Formating our datasets
 
 ## A. Importation of datasets and packages
 
-```{r include=FALSE}
+```{r echo = TRUE, message = FALSE, warning = FALSE}
 library(dplyr)
 library(readxl)
 library(lubridate)
@@ -33,15 +33,7 @@ library(sp)
 library(geoR)
 ```
 
-We load 4 datasets which will later be cleaned, edited and fused :
-
-\- data_chiro contains information collected during each capture event of the study : date, location in French Guiana, sex, age and reproductive state of the captured bats.
-
-\- data_abiot_50_22 and data_abiot_23_24 describe meteorological data from French Guiana from 1950 to 2024. We retrieved it from [data.gouv](https://www.data.gouv.fr/fr/).
-
-\- coord_chiro containing capture locations' coordinates (degree minute second), closest municipality and locality.
-
-```{r}
+```{r echo = TRUE, message = FALSE, warning = FALSE}
 data_chiro<-read_excel("data_chiro.xlsx")
 data_abiot_50_22<-read.csv("abiot_1950_2022.csv", sep = ";") 
 data_abiot_23_24<-read.csv("abiot_2023_2024.csv", sep = ";") 
@@ -54,7 +46,7 @@ coord_chiro<-read_excel("COORD_CAPTURE.xlsx")
 
 -   Then we start to clean the abiotic the dataset by deleting all years that precede the first event of capture, the we use the Lubridate R package (@spinu_lubridate_2010) to formate the data column as we want and the dplyr R package (@wickham_dplyr_2023) to reorganize the data set.
 
-```{r}
+```{r , echo = TRUE, message = FALSE, warning = FALSE}
 data_abiot<-rbind(data_abiot_50_22, data_abiot_23_24)
 data_abiot <- data_abiot %>%
   filter(AAAAMMJJ >= 20141028) %>% 
@@ -70,7 +62,7 @@ data_abiot <- data_abiot %>%
 
 -   Function that simulates the lunar cycle as a proxy for night-time luminosity
 
-```{r}
+```{r , echo = TRUE, message = FALSE, warning = FALSE}
 Lune <- function(date){
   sortie <- c() 
   for(i in 1:length(date)){ 
@@ -87,7 +79,7 @@ data_abiot$Lune <-Lune(data_abiot$date)
 
 -   Data_chiro table pre-processing : We only keep the columns of interest, then we only keep the female individuals because the reproduction indices are mainly observable on females. We only keep adult individuals because this is the age class likely to have reproductive indices.
 
-```{r}
+```{r , echo = TRUE, message = FALSE, warning = FALSE}
 data_chiro <- data_chiro %>%
   select(c(Année, Commune, Localité, Date, Espèce, Sexe, Repro, Age)) %>% #select the columns we want
   filter(Sexe == "F") %>% 
@@ -104,7 +96,7 @@ data_chiro <- data_chiro %>%
 
 -   Function to converting minute/second degree into decimal degrees
 
-```{r Function to convert }
+```{r Function to convert, echo = TRUE, message = FALSE, warning = FALSE }
 convert_dms_to_decimal <- function(dms) {
   parts <- str_match(dms, "(\\d+)°(\\d+)'(\\d+\\.?\\d*)''\\s([NSEW])")
   degrees <- as.numeric(parts[, 2]) 
@@ -122,7 +114,7 @@ convert_dms_to_decimal <- function(dms) {
 
 -   We convert the DMS coordinates to decimal coordinates and we merge it with data_chiro by the capture locality
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 library(stringr)
 coord_chiro <- coord_chiro %>%
   rowwise() %>%  
@@ -148,7 +140,7 @@ data_chiro <- data_chiro%>%
 
 In the graphic we can see in blue the capture points and in green the meteorological stations
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 limite <- matrix(c(-54.40582467596958,5.123666986130482,0 -54.45958864979806,4.753175826159146,0 -54.43393543693306,4.077331065323269,0 -54.01198973780399,3.581399050490593,0 -54.20921816638264,3.132878544854336,0 -54.21013685965725,2.796587485871633,0 -54.45803260870573,2.441977197957256,0 -54.68709817836254,2.314479358976484,0 -54.15543583603689,2.123868408305178,0 -53.7651653142448,2.30335873628299,0 -53.35415060581271,2.164099707075567,0 -52.94875879245732,2.132858726757194,0 -52.56611638847146,2.518366090728264,0 -52.59199025844659,2.634734023219086,0 -52.39229001432994,2.890167168832993,0 -52.37091318927082,3.144918005801542,0 -52.21064002801557,3.274351081759725,0 -51.9836274889358,3.696015530721377,0 -51.6721839730206,4.031282773145124,0 -51.63663780527241,4.28966735155517,0 -51.9023261931293,4.501855027711033,0 -52.05244725433236,4.818896971774704,0 -52.51627884489513,5.026927311475695,0 -52.703088477061,5.197262336288941,0 -53.15061905132664,5.577522799535109,0 -53.53420039840946,5.573574890423137,0 -53.95403768383684,5.781472322818466,0 -54.40582467596958,5.123666986130482),ncol=2,byrow=T)
 
 plot(limite[,1],limite[,2],type='l')
@@ -158,7 +150,7 @@ points(coord_chiro$LON,coord_chiro$LAT,pch=20,col="blue")
 
 To estimate the meteorogical values at capture sites, we used spatial interpolation. For each date and each value of interest, we measured at first wether or not there was an spatial structure using the moran test. If there is no spatial structure, we estimate the value by meaning the observed values. If there is a spatial structure, we realise a kriging. Because of the necessity to automatise this interpolation, the method is not completely correct, however the weather in French Guiana is not very heterogenous, and is mostly gradients to the ocean or east-west gradient. Morover, the data we obtain show the same patterns of dry season and rain season, and for all the values.
 
-```{r Rain, include=FALSE}
+```{r Rain,  echo = TRUE, message = FALSE, warning = FALSE}
 
 datamap<-read.csv("data_meteo.csv",row.names = 1)
 coord <- datamap[,c(4,3)]
@@ -199,7 +191,7 @@ for(d in dd){
 data_chiro$Pluie <- res
 ```
 
-```{r Temperature, include=FALSE}
+```{r Temperature, echo = TRUE, message = FALSE, warning = FALSE}
 
 dd <- unique(data_chiro$Date)
 res<- c()
@@ -238,7 +230,7 @@ for(d in dd){
 data_chiro$Température <- res
 ```
 
-```{r Range, include=FALSE}
+```{r Range,  echo = TRUE, message = FALSE, warning = FALSE}
 
 dd <- unique(data_chiro$Date)
 res<- c()
@@ -280,7 +272,7 @@ for(d in dd){
 data_chiro$Amplitude <- res
 ```
 
-```{r Wind, include=FALSE}
+```{r Wind, echo = TRUE, message = FALSE, warning = FALSE}
 
 dd <- unique(data_chiro$Date)
 res<- c()
@@ -323,7 +315,7 @@ for(d in dd){
 data_chiro$Vent <- res
 ```
 
-```{r Export, include=FALSE}
+```{r Export, echo = TRUE, message = FALSE, warning = FALSE}
 
 data_chiro <- data_chiro %>%
   mutate(Repro_binary = ifelse(Repro != 0, 1, 0)) 
@@ -360,19 +352,15 @@ We will use the Bayesian approach to estimate the effect of those different cova
 
 This theorem is based on conditional probabilities :
 
-$$
-P(B \mid A) = \displaystyle{\frac{ P(A \mid B) \; P(B)}{P(A)}}
-$$
+$P(B \mid A) = \displaystyle{\frac{ P(A \mid B) \; P(B)}{P(A)}}$
 
 But we might try to explain it more simply as this :
 
-$$ 
-P(\text{hypothesis} \mid \text{data}) = \frac{P(\text{data} \mid \text{hypothesis}) \cdot P(\text{hypothesis})}{P(\text{data})}
-$$
+$$P(\text{hypothesis} \mid \text{data}) = \frac{ P(\text{data} \mid \text{hypothesis}) \; P(\text{hypothesis})}{P(\text{data})}$$
 
 ## B. Little exploration of how our response variable react with different covariates
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 par(mfrow=c(2,2))
 
 ggplot(data_final, aes(Amplitude, repro_positive)) +
@@ -401,7 +389,7 @@ At this point, we might be tempted to see whether or not these climatic paramete
 
 Let's see the distribution of reproductive individuals :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 hist(data_final$repro_positive, breaks = 20)
 ```
 
@@ -409,7 +397,7 @@ The number of individuals showing reproductive activity seems to follow a negati
 
 [**First, we create an object containing our covariates of interest, we use a common practice which consists of centering-reducing the values of covariates:**]{.underline}
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 datax <- list(
   N = nrow(data_final), 
   repro_positive = data_final$repro_positive,  
@@ -421,15 +409,17 @@ datax <- list(
 
 [**We write our null model and we assume that the number of reproductive individuals follows a binomial distribution. Specifically, we define our model as follows:**]{.underline}
 
-$$\text{repro_positive}[i] \sim \text{Binomial}(p[i], \text{total_individuals}[i])$$
+$$
+\text{repro_positive}[i] \sim \text{Binomial}(p[i], \text{total_individuals}[i])
+$$
 
-In this model, $\text{repro_positive}[i]$ represents the number of reproductive individuals observed for each observation ( i ), while $\text{total_individuals}[i]$ is the total number of individuals in the corresponding group. The parameter $p[i]$ is the probability of an individual being reproductive, modeled using the logit link function, where ( a ) is a parameter drawn from a normal distribution with mean 0 and a large variance (0.001), reflecting our prior belief about its value. 
-
-$$\text{logit}(p[i]) = a$$
+In this model, $\text{repro_positive}[i]$ represents the number of reproductive individuals observed for each observation ( i ), while $\text{total_individuals}[i]$ is the total number of individuals in the corresponding group. The parameter $p[i]$ is the probability of an individual being reproductive, modeled using the logit link function, where ( a ) is a parameter drawn from a normal distribution with mean 0 and a large variance (0.001), reflecting our prior belief about its value. $$
+\text{logit}(p[i]) = a
+$$
 
 [**Here is the null model in Jags language:**]{.underline}
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 model_null <- 
   paste("
 model {
@@ -444,7 +434,7 @@ model {
 
 Then we set the initial values for the Monte-Carlo Markov Chains, we choose to set two chains to assess initial at different values to see if both converge to same distribution.
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 init1 <- list (a = -0.5)
 init2 <- list (a = 0.5)   
 inits <- list(init1,init2)
@@ -452,13 +442,13 @@ inits <- list(init1,init2)
 
 We specify the parameter we want to estimate :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 parameters <- c("a")
 ```
 
 The run the model with the function jags() :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 chiro_model_null <- jags(data = datax,
               inits = inits, 
               parameters.to.save = parameters, 
@@ -472,33 +462,33 @@ After fitting the model, we can explore how it went through some useful tools :
 
 -   *traceplot()* allows to see how MCMC converge
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 traceplot(chiro_model_null, mfrow = c(1,1), varnames = c("a"), ask = F)
 autocorr.plot(as.mcmc(chiro_model_null), ask = F)
 ```
 
 We can also print the object that contain the model to check other features like the estimate of the parameter, the deviance, credible intervals or the number of values used to assess the posterior distribution (n.eff)
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 print(chiro_model_null)
 ```
 
 Now, we put the estimated values of the two MCMC chains in the same object :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 res<-as.mcmc(chiro_model_null)
 res<-rbind(res[[1]], res[[2]])
 ```
 
 Then we can compute the mean of the estimated values of the intercept that are \< 0 :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 mean(res[,'a']<0)
 ```
 
 And we can plot the estimated posterior distribution of our parameter 'a' :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 par(mfrow=c(1,1))
 plot(density(res[,'a']),xlab="",ylab="", main="intercept",lwd=3,xlim=c(-0.1,2))
 abline(v=0,col='red',lwd=2)
@@ -508,7 +498,7 @@ Remember that we defined a non-informative prior on parameter 'a' : a \~ dnorm(0
 
 [**You can compute the Watanabe-Akaike Information Criterion :**]{.underline}
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 samples_waic_null<-jags.samples(chiro_model_null$model, c("WAIC", "deviance"), type = "mean",
                            n.iter = 10000,
                            n.burnin = 1000,
@@ -524,7 +514,7 @@ waic_null
 
 Here the table of the different models we fitted :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 waic_table<-read.table("waic_model.txt", header = T)
 waic_table
 ```
@@ -533,7 +523,7 @@ waic_table
 
 So our best model is the one with rain/temperature/julian_day covariates, there it is :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 model_rain_temp_jday <- 
   paste("
 model {
@@ -564,7 +554,7 @@ We decide to assess polynomial effect on $rain^2$ and on $julian\_day^4$ because
 
 And as we made before, we set the initial values for both MCMC, we specify the parameters to be estimated :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 init1 <- list (a = -0.5, 
                b.rain = -0.5, 
                b.rain2 = -0.5, 
@@ -597,7 +587,7 @@ parameters <- c("a",
 
 And we run jags() :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 chiro_rain_temp_jday <- jags(data = datax,
                         inits = inits, 
                         parameters.to.save = parameters, 
@@ -610,21 +600,21 @@ chiro_rain_temp_jday
 
 As we made before, we check how the MCMC converged and we trace the autocorrelation plot :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 traceplot(chiro_rain_temp_jday, mfrow = c(2,4), varnames = c("a","b.rain", "b.rain2","b.temp","b.julian_day" ,"b.julian_day2","b.julian_day3","b.julian_day4"), ask = F)
 autocorr.plot(as.mcmc(chiro_rain_temp_jday), ask = F)
 ```
 
 We put the estimate values in the same object :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 res<-as.mcmc(chiro_rain_temp_jday)
 res<-rbind(res[[1]], res[[2]])
 ```
 
 And we plot the estimated distribution of every parameters :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 par(mfrow=c(2,4))
 plot(density(res[,'a']),xlab="",ylab="", main="Intercept",lwd=3,xlim=c(-0.1,2))
 abline(v=0,col='red',lwd=2)
@@ -650,7 +640,7 @@ Now let's try to predict some values from our model to better understand the dif
 
 First, let's simulate some data !
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 pred_data <- expand.grid(
   rain = seq(min(datax$rain), max(datax$rain), length.out = 1000), 
   temp = median(datax$temp),
@@ -659,12 +649,11 @@ pred_data <- expand.grid(
 
 This grid will allow us to simulate data from the source data.frame "data_final", for some reasons that we don't clearly understand... we need to sample each covariate at once and fix the other one to the median.
 
-Then we compute $p[i]$ for each estimate value from the model : 
-$$
+Then we compute $p[i]$ for each estimate value from the model : $$
 \text{logit}(p_i) = a + b_{\text{rain}} \cdot \text{rain}_i + b_{\text{rain2}} \cdot \text{rain}_i^2 + b_{\text{temp}} \cdot \text{temp}_i + b_{\text{julian_day}} \cdot \text{julian_day}_i + b_{\text{julian_day2}} \cdot \text{julian_day}_i^2 + b_{\text{julian_day3}} \cdot \text{julian_day}_i^3 + b_{\text{julian_day4}} \cdot \text{julian_day}_i^4
 $$
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 n_sim<-1000
 
 p_sim <- matrix(NA, nrow = n_sim, ncol = nrow(pred_data))
@@ -694,7 +683,7 @@ for (i in 1:n_sim) {
 
 Then we compute our credible intervals :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 pred_data <- pred_data %>%
   mutate(
     mean_p = apply(p_sim, 2, mean),
@@ -705,7 +694,7 @@ pred_data <- pred_data %>%
 
 We want to get back to the natural scale for the X-axis :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 mean(data_final$Pluie)
 sd(data_final$Pluie)
 pred_data$rain <- (pred_data$rain * 10.71609) + 7.087872
@@ -714,7 +703,7 @@ pred_data$rain <- (pred_data$rain * 10.71609) + 7.087872
 
 Then we can plot our response variable with a covariate ! here the rain :
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 ggplot(pred_data, aes(x = rain)) +
   geom_line(aes(y = mean_p), color = "blue") +
   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2) +
@@ -726,7 +715,7 @@ ggplot(pred_data, aes(x = rain)) +
 
 Same task for julian_day... yes it's a bit boring, we need to improve the code !
 
-```{r}
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 pred_data <- expand.grid(
   rain = median(datax$temp), 
   temp = median(datax$temp),
