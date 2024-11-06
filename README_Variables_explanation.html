@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Companion book a M1 MODE student should have! – readme_variables_explanation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">The Companion book a M1 MODE student should have!</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://marieetienne.github.io/MODE_reproduciblescience/" rel="" target=""><i class="bi bi-home" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/MarieEtienne/2024_MODE_OCR" rel="" target=""><i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://marieetienne.github.io/MODE_reproduciblescience/instructions.html" rel="" target="">
+ <span class="menu-text">Instructions</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-courses-materials" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Courses Materials</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-courses-materials">    
+        <li>
+    <a class="dropdown-item" href="https://marieetienne.github.io/reproductibilite/_presentation/english_version.html" rel="" target="">
+ <span class="dropdown-text">Git Intro</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-book-content" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Book content</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-book-content">    
+        <li>
+    <a class="dropdown-item" href="./fichier_r.html" rel="" target="">
+ <span class="dropdown-text">Reproductive patterns in neotropical bats</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Determinants_ant_diversity.html" rel="" target="">
+ <span class="dropdown-text">Determinants of Ant Species Density</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./OCR_pollen.html" rel="" target="">
+ <span class="dropdown-text">Effects of grazing on Swedish meadows</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Analyse_Birds.html" rel="" target="">
+ <span class="dropdown-text">Nest success of different birds specie</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Penguins_chapter.html" rel="" target="">
+ <span class="dropdown-text">Penguins Exploration</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#nest-initiation-and-end-dates-for-eight-grassland-bird-species-in-wisconsin-and-illinois" id="toc-nest-initiation-and-end-dates-for-eight-grassland-bird-species-in-wisconsin-and-illinois" class="nav-link active" data-scroll-target="#nest-initiation-and-end-dates-for-eight-grassland-bird-species-in-wisconsin-and-illinois">Nest initiation and end dates for eight grassland bird species in Wisconsin and Illinois</a>
+  <ul class="collapse">
+  <li><a href="#description-of-the-data-and-file-structure" id="toc-description-of-the-data-and-file-structure" class="nav-link" data-scroll-target="#description-of-the-data-and-file-structure">Description of the data and file structure</a></li>
+  <li><a href="#sharingaccess-information" id="toc-sharingaccess-information" class="nav-link" data-scroll-target="#sharingaccess-information">Sharing/Access information</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="nest-initiation-and-end-dates-for-eight-grassland-bird-species-in-wisconsin-and-illinois" class="level1">
+<h1>Nest initiation and end dates for eight grassland bird species in Wisconsin and Illinois</h1>
+<hr>
+<p>We used nest records from published grassland bird studies done in Wisconsin and Illinois to compile a dataset for 8 obligate grassland bird species Study sites were clustered in southwestern Wisconsin near Mt. Horeb (43.0167N, 89.7500W); sites were located in Dane, Grant, Green, Iowa, Lafayette, Monroe, and Rock counties. In northern Illinois, study sites were located in Lee, Ogle, Will, Grundy, Carroll, and Jo Daviess counties (40.9822 to 42.2356N, -87.5433 to -90.3489W).The dataset consists of 3257 nests with observations on nest initiation date (date first egg laid), nest fate (success, failure), number of fledglings, and nest end date (date the nest either failed or fledged at least one nestling). The species were Bobolink, Dickcissel, Eastern Meadowlark, Grasshopper Sparrow, Henslow’s Sparrow, Savannah Sparrow, Vesper Sparrow, and Western Meadowlark.</p>
+<p>Nest data from all studies were put into a common format of nest initiation date (date first egg laid), nest fate, number of nestlings, and nest end date (date the nest either failed or fledged at least one nestling). We used the fate (success or failure) as assigned by the original researchers. We used the nest initiation and failure dates if recorded by the original researchers. In general, nest initiation dates were estimated based on field notes or digital video (i.e., video-surveillance of nests). In some instances, nests failed within the same nesting stage (laying, incubation, or nestling) in which they were first found. For these cases, nest initiation dates were estimated following Cox et al.&nbsp;(2012. Species and temporal factors affect predator-specific rates of nest predation for forest songbirds in the Midwest. Auk 129:147155) using average species-specific incubation times from Ehrlich et al.&nbsp;(1988. Birders handbook. Simon and Schuster Inc.&nbsp;New York, New York, USA). Nest end dates (date when nest failed or fledged at least one nestling) were either known (e.g., forced fledging during nest checks, digital video, field observations) or estimated. Nest end date was estimated using the mid-point between the dates when the nest was last observed with eggs/nestlings present and when the nest was next observed empty. We used the data to estimate the potential species-specific impacts of disturbance (e.g., mowing, fire) conducted at different dates in the breeding season on nests and fledglings.</p>
+<section id="description-of-the-data-and-file-structure" class="level2">
+<h2 class="anchored" data-anchor-id="description-of-the-data-and-file-structure">Description of the data and file structure</h2>
+<p>Data were put into an Excel file. The first line of the file is the header followed by 3257 lines of data. There are 10 columns. The columns are as follows.</p>
+<p>Nest_ID = unique nest identifier</p>
+<p>State = State in which nest was located (Illinois or Wisconsin)</p>
+<p>County = County in the state in which nest was located</p>
+<p>Habitat = Grassy habitat in which nest was located (pasture, cool-season grassland, warm-season grassland, or prairie)</p>
+<p>Species = English common name</p>
+<p>Year = Year nest was found</p>
+<p>Nest_Fate = Successly fledged at least one young (1) or Failed (0).</p>
+<p>Initiation_Date = Coded date when the first egg was laid. April 1 = 1; May 1 = 31; June 1 = 62; July 1 = 92; August 1 = 123; September 1 = 154</p>
+<p>Number_Fledged = For a successful nest, number of young in nest on nest end date; For a failed nest, Number_Fledged is 0</p>
+<p>Nest_End_Date = Coded date when the nest failed or was successful. April 1 = 1; May 1 = 31; June 1 = 62; July 1 = 92; August 1 = 123; September 1 = 154</p>
+</section>
+<section id="sharingaccess-information" class="level2">
+<h2 class="anchored" data-anchor-id="sharingaccess-information">Sharing/Access information</h2>
+<p>Data were derived from the following sources:</p>
+<ul>
+<li>Basili, G. D. 1997. Continental-scale ecology and conservation of Dickcissels. Dissertation, University of WisconsinMadison, Madison, Wisconsin, USA.</li>
+<li>Byers, C. M., C. A. Ribic, D. W. Sample., J. D. Dadisman, and M. R. Guttery. 2017. Grassland bird productivity in warm season grass fields in southwest Wisconsin. American Midland Naturalist 178:4763.</li>
+<li>Ellison, K. S., C. A. Ribic, D. W. Sample, M. J. Fawcett, and J. D. Dadisman. 2013. Impacts of tree rows on grassland birds and potential nest predators: a removal experiment. PLoS ONE 8(4):e59151. https://doi.org/10.1371/journal.pone.0059151.</li>
+<li>Herkert, J. R., Reinking, D. L., Wiedenfeld, D. A., Winter, M., Zimmerman, J. L., Jensen, W. E., Finck, E. J., Koford, R. R., Wolfe, D. H., Sherrod, S. K. and Jenkins, M. A. 2003. Effects of prairie fragmentation on the nest success of breeding birds in the midcontinental United States. Conservation Biology 17:587594.</li>
+<li>Renfrew, R. B., C. A. Ribic, and J. L. Nack. 2005. Edge avoidance by nesting grassland birds: a futile strategy in a fragmented landscape. The Auk 122:618636.</li>
+<li>Ribic, C. A., M. J. Guzy, T. A. Anderson, D. W. Sample, and J. L. Nack. 2012. Bird productivity and nest predation in agricultural grasslands. Studies in Avian Biology 43:119-134.</li>
+<li>Temple, S. A., B. M. Fevold, L. K. Paine, D. L. Undersander, and D. W. Sample. 1999. Nesting birds and grazing cattle: accommodating both on Midwestern pastures. Studies in Avian Biology 19:196202.</li>
+<li>Vos, S. M., and C. A. Ribic. 2013. Nesting success of grassland birds in oak barrens and dry prairies in West Central Wisconsin. Northeastern Naturalist 20:131–142.</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

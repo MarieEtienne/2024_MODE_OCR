@@ -56,26 +56,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -172,7 +153,7 @@ div.csl-indent {
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-book-content">    
         <li>
     <a class="dropdown-item" href="./fichier_r.html" rel="" target="">
- <span class="dropdown-text">Titre à trouver</span></a>
+ <span class="dropdown-text">Reproductive patterns in neotropical bats</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./Determinants_ant_diversity.html" rel="" target="">
@@ -181,6 +162,14 @@ div.csl-indent {
         <li>
     <a class="dropdown-item" href="./OCR_pollen.html" rel="" target="">
  <span class="dropdown-text">Effects of grazing on Swedish meadows</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Analyse_Birds.html" rel="" target="">
+ <span class="dropdown-text">Nest success of different birds specie</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Penguins_chapter.html" rel="" target="">
+ <span class="dropdown-text">Penguins Exploration</span></a>
   </li>  
     </ul>
   </li>
@@ -253,52 +242,55 @@ div.csl-indent {
 
 <section id="i.-some-history-about-bat-studies-in-french-guiana" class="level1">
 <h1>I. Some history about bat studies in French Guiana</h1>
-<p>French Guiana is a territory belonging to the bio-geographic unit of the Guiana Shield (<span class="citation" data-cites="hollowell_checklist_2005">Hollowell and Reynolds (<a href="#ref-hollowell_checklist_2005" role="doc-biblioref">2005</a>)</span>) With an area of 83,846 km², it hosts, like its neighboring territories, remarkable species diversity. Covered by 97% forest habitat mosaic, its extreme species diversity is well-documented. French Guiana represents a global hotspot in terms of bat species richness. The most commonly used method for studying bats in tropical regions is ground-level mist netting, followed by canopy netting and direct roost searche (<span class="citation" data-cites="macswiney_g_what_2008">MacSwiney G., Clarke, and Racey (<a href="#ref-macswiney_g_what_2008" role="doc-biblioref">2008</a>)</span>). It is with these methods that the first studies on bat community characterization were conducted (<span class="citation" data-cites="charles-dominique_pierre_chauves-souris_2001">Charles-Dominique Pierre, Brosset André, and Jouard Sylvie (<a href="#ref-charles-dominique_pierre_chauves-souris_2001" role="doc-biblioref">2001</a>)</span>). <u>To date, very little work has focused on exploring the reproduction patterns of Neotropical bat communities. Reproductive patterns are closely related to rainfall regimes (<span class="citation" data-cites="ruiz-ramoni_reproductive_2016">Ruiz-Ramoni, Ramoni-Perazzi, and Munoz-Romo (<a href="#ref-ruiz-ramoni_reproductive_2016" role="doc-biblioref">2016</a>)</span>) frequently occurring twice a year in tropical regions.</u></p>
-<ul>
-<li>The data collected on the species of bats captured by date and location in French Guiana, and containing information on sex, age and reproductive state<br>
-</li>
-<li>The meteorological data of French Guiana from 1950 to 2024<br>
-</li>
-<li>The capture locations coordinates (degree minute second)</li>
-</ul>
+<p>French Guiana is a territory belonging to the bio-geographic unit of the Guiana Shield (<span class="citation" data-cites="hollowell_checklist_2005">(<a href="#ref-hollowell_checklist_2005" role="doc-biblioref"><strong>hollowell_checklist_2005?</strong></a>)</span>) With an area of 83,846 km², it hosts, like its neighboring territories, remarkable species diversity. Covered by 97% forest habitat mosaic, its extreme species diversity is well-documented. French Guiana represents a global hotspot in terms of bat species richness. The most commonly used method for studying bats in tropical regions is ground-level mist netting, followed by canopy netting and direct roost searche (<span class="citation" data-cites="macswiney_g_what_2008">(<a href="#ref-macswiney_g_what_2008" role="doc-biblioref"><strong>macswiney_g_what_2008?</strong></a>)</span>). It is with these methods that the first studies on bat community characterization were conducted (<span class="citation" data-cites="charles-dominique_pierre_chauves-souris_2001">(<a href="#ref-charles-dominique_pierre_chauves-souris_2001" role="doc-biblioref"><strong>charles-dominique_pierre_chauves-souris_2001?</strong></a>)</span>). <u>To date, very little work has focused on exploring the reproduction patterns of Neotropical bat communities. Reproductive patterns are closely related to rainfall regimes (<span class="citation" data-cites="ruiz-ramoni_reproductive_2016">(<a href="#ref-ruiz-ramoni_reproductive_2016" role="doc-biblioref"><strong>ruiz-ramoni_reproductive_2016?</strong></a>)</span>) frequently occurring twice a year in tropical regions.</u></p>
 </section>
 <section id="ii.-formating-our-datasets" class="level1">
 <h1>II. Formating our datasets</h1>
 <section id="a.-importation-of-datasets-and-packages" class="level2">
 <h2 class="anchored" data-anchor-id="a.-importation-of-datasets-and-packages">A. Importation of datasets and packages</h2>
+<p>We load 4 datasets which will later be cleaned, edited and fused :</p>
+<p>- data_chiro contains information collected during each capture event of the study : date, location in French Guiana, sex, age and reproductive state of the captured bats.</p>
+<p>- data_abiot_50_22 and data_abiot_23_24 describe meteorological data from French Guiana from 1950 to 2024. We retrieved it from <a href="https://www.data.gouv.fr/fr/">data.gouv</a>.</p>
+<p>- coord_chiro containing capture locations’ coordinates (degree minute second), closest municipality and locality.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_chiro<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">"data_chiro.xlsx"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data_abiot_50_22<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"abiot_1950_2022.csv"</span>, <span class="at">sep =</span> <span class="st">";"</span>) </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>data_abiot_23_24<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"abiot_2023_2024.csv"</span>, <span class="at">sep =</span> <span class="st">";"</span>) </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>coord_chiro<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">"COORD_CAPTURE.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="b.-processing-of-the-abiotic-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="b.-processing-of-the-abiotic-dataset">B. Processing of the abiotic dataset</h2>
 <ul>
 <li><p>Firstly we concatenate all the abiotic data together</p></li>
-<li><p>Then we start to clean the abiotic the dataset by deleting all years that precede the first event of capture, the we use the Lubridate R package (<span class="citation" data-cites="spinu_lubridate_2010">Spinu, Grolemund, and Wickham (<a href="#ref-spinu_lubridate_2010" role="doc-biblioref">2010</a>)</span>) to formate the data column as we want and the dplyr R package (<span class="citation" data-cites="wickham_dplyr_2023">Wickham et al. (<a href="#ref-wickham_dplyr_2023" role="doc-biblioref">2023</a>)</span>) to reorganize the data set.</p></li>
+<li><p>Then we start to clean the abiotic the dataset by deleting all years that precede the first event of capture, the we use the Lubridate R package (<span class="citation" data-cites="spinu_lubridate_2010">(<a href="#ref-spinu_lubridate_2010" role="doc-biblioref"><strong>spinu_lubridate_2010?</strong></a>)</span>) to formate the data column as we want and the dplyr R package (<span class="citation" data-cites="wickham_dplyr_2023">(<a href="#ref-wickham_dplyr_2023" role="doc-biblioref"><strong>wickham_dplyr_2023?</strong></a>)</span>) to reorganize the data set.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_abiot<span class="ot">&lt;-</span><span class="fu">rbind</span>(data_abiot_50_22, data_abiot_23_24)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data_abiot <span class="ot">&lt;-</span> data_abiot <span class="sc">%&gt;%</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(AAAAMMJJ <span class="sc">&gt;=</span> <span class="dv">20141028</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">AAAAMMJJ =</span> <span class="fu">ymd</span>(AAAAMMJJ)) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">year</span>(AAAAMMJJ)) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">AAAAMMJJ =</span> <span class="fu">format</span>(AAAAMMJJ, <span class="st">"%d-%m-%Y"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(NUM_POSTE, NOM_USUEL, LAT, LON, AAAAMMJJ, RR, TM, TAMPLI, FFM, Year) <span class="sc">%&gt;%</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">date =</span> AAAAMMJJ, <span class="at">rain_mm =</span> RR, <span class="at">Temperature =</span> TM, <span class="at">ampli_Temp =</span> TAMPLI, <span class="at">wind_ms =</span> FFM, <span class="at">COMMUNE =</span> NOM_USUEL)<span class="sc">%&gt;%</span> </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">julian_day =</span> <span class="fu">yday</span>(date)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_abiot<span class="ot">&lt;-</span><span class="fu">rbind</span>(data_abiot_50_22, data_abiot_23_24)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data_abiot <span class="ot">&lt;-</span> data_abiot <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(AAAAMMJJ <span class="sc">&gt;=</span> <span class="dv">20141028</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">AAAAMMJJ =</span> <span class="fu">ymd</span>(AAAAMMJJ)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">year</span>(AAAAMMJJ)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">AAAAMMJJ =</span> <span class="fu">format</span>(AAAAMMJJ, <span class="st">"%d-%m-%Y"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(NUM_POSTE, NOM_USUEL, LAT, LON, AAAAMMJJ, RR, TM, TAMPLI, FFM, Year) <span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">date =</span> AAAAMMJJ, <span class="at">rain_mm =</span> RR, <span class="at">Temperature =</span> TM, <span class="at">ampli_Temp =</span> TAMPLI, <span class="at">wind_ms =</span> FFM, <span class="at">COMMUNE =</span> NOM_USUEL)<span class="sc">%&gt;%</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">julian_day =</span> <span class="fu">yday</span>(date)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><u><strong>Computing moonlight intensity :</strong></u></p>
 <ul>
 <li>Function that simulates the lunar cycle as a proxy for night-time luminosity</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Lune <span class="ot">&lt;-</span> <span class="cf">function</span>(date){</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  sortie <span class="ot">&lt;-</span> <span class="fu">c</span>() </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(date)){ </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    date_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.Date</span>(date[i],<span class="at">format=</span><span class="st">"%d-%m-%Y"</span>)) </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    sortie[i] <span class="ot">&lt;-</span> (<span class="fl">0.5</span><span class="sc">*</span>(<span class="fu">cos</span>((date_num<span class="dv">-21</span>)<span class="sc">*</span>((<span class="dv">2</span><span class="sc">*</span>pi)<span class="sc">/</span>(<span class="fl">29.530589</span>)))<span class="sc">+</span><span class="dv">1</span>)) </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(sortie)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>data_abiot<span class="sc">$</span>Lune <span class="ot">&lt;-</span><span class="fu">Lune</span>(data_abiot<span class="sc">$</span>date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Lune <span class="ot">&lt;-</span> <span class="cf">function</span>(date){</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  sortie <span class="ot">&lt;-</span> <span class="fu">c</span>() </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(date)){ </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    date_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.Date</span>(date[i],<span class="at">format=</span><span class="st">"%d-%m-%Y"</span>)) </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    sortie[i] <span class="ot">&lt;-</span> (<span class="fl">0.5</span><span class="sc">*</span>(<span class="fu">cos</span>((date_num<span class="dv">-21</span>)<span class="sc">*</span>((<span class="dv">2</span><span class="sc">*</span>pi)<span class="sc">/</span>(<span class="fl">29.530589</span>)))<span class="sc">+</span><span class="dv">1</span>)) </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(sortie)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>data_abiot<span class="sc">$</span>Lune <span class="ot">&lt;-</span><span class="fu">Lune</span>(data_abiot<span class="sc">$</span>date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="c.-processing-of-the-biotic-dataset" class="level2">
@@ -307,70 +299,70 @@ div.csl-indent {
 <li>Data_chiro table pre-processing : We only keep the columns of interest, then we only keep the female individuals because the reproduction indices are mainly observable on females. We only keep adult individuals because this is the age class likely to have reproductive indices.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_chiro <span class="ot">&lt;-</span> data_chiro <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">c</span>(Année, Commune, Localité, Date, Espèce, Sexe, Repro, Age)) <span class="sc">%&gt;%</span> <span class="co">#select the columns we want</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sexe <span class="sc">==</span> <span class="st">"F"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">==</span> <span class="st">"AD"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(Repro)<span class="sc">*</span><span class="dv">1</span><span class="sc">==</span><span class="dv">0</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Date =</span> <span class="fu">ymd</span>(Date)) <span class="sc">%&gt;%</span>  </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">year</span>(Date)) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Date =</span> <span class="fu">format</span>(Date, <span class="st">"%d-%m-%Y"</span>))<span class="sc">%&gt;%</span> </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">julian_day =</span> <span class="fu">yday</span>(Date))<span class="sc">%&gt;%</span> <span class="co">#Date =julian_day</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">LIEU_DIT =</span> Localité, <span class="at">COMMUNE =</span> Commune) <span class="co">#on renomme</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data_chiro <span class="ot">&lt;-</span> data_chiro <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">c</span>(Année, Commune, Localité, Date, Espèce, Sexe, Repro, Age)) <span class="sc">%&gt;%</span> <span class="co">#select the columns we want</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sexe <span class="sc">==</span> <span class="st">"F"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">==</span> <span class="st">"AD"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(Repro)<span class="sc">*</span><span class="dv">1</span><span class="sc">==</span><span class="dv">0</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Date =</span> <span class="fu">ymd</span>(Date)) <span class="sc">%&gt;%</span>  </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">year</span>(Date)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Date =</span> <span class="fu">format</span>(Date, <span class="st">"%d-%m-%Y"</span>))<span class="sc">%&gt;%</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">julian_day =</span> <span class="fu">yday</span>(Date))<span class="sc">%&gt;%</span> <span class="co">#Date =julian_day</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">LIEU_DIT =</span> Localité, <span class="at">COMMUNE =</span> Commune) <span class="co">#on renomme</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><u><strong>Converting DMS coordinates to decimal coordinates :</strong></u></p>
 <ul>
 <li>Function to converting minute/second degree into decimal degrees</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>convert_dms_to_decimal <span class="ot">&lt;-</span> <span class="cf">function</span>(dms) {</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  parts <span class="ot">&lt;-</span> <span class="fu">str_match</span>(dms, <span class="st">"(</span><span class="sc">\\</span><span class="st">d+)°(</span><span class="sc">\\</span><span class="st">d+)'(</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">.?</span><span class="sc">\\</span><span class="st">d*)''</span><span class="sc">\\</span><span class="st">s([NSEW])"</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  degrees <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(parts[, <span class="dv">2</span>]) </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  minutes <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(parts[, <span class="dv">3</span>])</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  seconds <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(parts[, <span class="dv">4</span>])</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  direction <span class="ot">&lt;-</span> parts[, <span class="dv">5</span>]</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  decimal <span class="ot">&lt;-</span> degrees <span class="sc">+</span> minutes <span class="sc">/</span> <span class="dv">60</span> <span class="sc">+</span> seconds <span class="sc">/</span> <span class="dv">3600</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (direction <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"S"</span>, <span class="st">"W"</span>)) {</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    decimal <span class="ot">&lt;-</span> <span class="sc">-</span>decimal</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(decimal)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>convert_dms_to_decimal <span class="ot">&lt;-</span> <span class="cf">function</span>(dms) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  parts <span class="ot">&lt;-</span> <span class="fu">str_match</span>(dms, <span class="st">"(</span><span class="sc">\\</span><span class="st">d+)°(</span><span class="sc">\\</span><span class="st">d+)'(</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">.?</span><span class="sc">\\</span><span class="st">d*)''</span><span class="sc">\\</span><span class="st">s([NSEW])"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  degrees <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(parts[, <span class="dv">2</span>]) </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  minutes <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(parts[, <span class="dv">3</span>])</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  seconds <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(parts[, <span class="dv">4</span>])</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  direction <span class="ot">&lt;-</span> parts[, <span class="dv">5</span>]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  decimal <span class="ot">&lt;-</span> degrees <span class="sc">+</span> minutes <span class="sc">/</span> <span class="dv">60</span> <span class="sc">+</span> seconds <span class="sc">/</span> <span class="dv">3600</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (direction <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"S"</span>, <span class="st">"W"</span>)) {</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    decimal <span class="ot">&lt;-</span> <span class="sc">-</span>decimal</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(decimal)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>We convert the DMS coordinates to decimal coordinates and we merge it with data_chiro by the capture locality</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>coord_chiro <span class="ot">&lt;-</span> coord_chiro <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span>  </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">lon_dms =</span> <span class="fu">str_extract</span>(COORD, <span class="st">"^[^N]+W"</span>), </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat_dms =</span> <span class="fu">str_extract</span>(COORD, <span class="st">"[^W]+N"</span>),  </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Longitude =</span> <span class="fu">convert_dms_to_decimal</span>(lon_dms), </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Latitude =</span> <span class="fu">convert_dms_to_decimal</span>(lat_dms) </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(COMMUNE, LIEU_DIT, Latitude, Longitude)<span class="sc">%&gt;%</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">LAT =</span> Latitude, <span class="at">LON =</span> Longitude)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>data_chiro <span class="ot">&lt;-</span> data_chiro <span class="sc">%&gt;%</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(coord_chiro, <span class="at">by =</span> <span class="st">"LIEU_DIT"</span>) </span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>data_chiro <span class="ot">&lt;-</span> data_chiro<span class="sc">%&gt;%</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(COMMUNE.x,LIEU_DIT,Date,Espèce,Sexe,Repro,Age,Year,julian_day,LAT,LON)<span class="sc">%&gt;%</span> </span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">COMMUNE =</span> COMMUNE.x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>coord_chiro <span class="ot">&lt;-</span> coord_chiro <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span>  </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">lon_dms =</span> <span class="fu">str_extract</span>(COORD, <span class="st">"^[^N]+W"</span>), </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat_dms =</span> <span class="fu">str_extract</span>(COORD, <span class="st">"[^W]+N"</span>),  </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Longitude =</span> <span class="fu">convert_dms_to_decimal</span>(lon_dms), </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Latitude =</span> <span class="fu">convert_dms_to_decimal</span>(lat_dms) </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(COMMUNE, LIEU_DIT, Latitude, Longitude)<span class="sc">%&gt;%</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">LAT =</span> Latitude, <span class="at">LON =</span> Longitude)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>data_chiro <span class="ot">&lt;-</span> data_chiro <span class="sc">%&gt;%</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(coord_chiro, <span class="at">by =</span> <span class="st">"LIEU_DIT"</span>) </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>data_chiro <span class="ot">&lt;-</span> data_chiro<span class="sc">%&gt;%</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(COMMUNE.x,LIEU_DIT,Date,Espèce,Sexe,Repro,Age,Year,julian_day,LAT,LON)<span class="sc">%&gt;%</span> </span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">COMMUNE =</span> COMMUNE.x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="d.-graphical-representation-of-french-guiana-with-the-incorporation-of-meteorological-stations-and-capture-points" class="level2">
 <h2 class="anchored" data-anchor-id="d.-graphical-representation-of-french-guiana-with-the-incorporation-of-meteorological-stations-and-capture-points"><strong>D. Graphical representation of French Guiana with the incorporation of meteorological stations and capture points</strong></h2>
 <p>In the graphic we can see in blue the capture points and in green the meteorological stations</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>limite <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">54.40582467596958</span>,<span class="fl">5.123666986130482</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.45958864979806</span>,<span class="fl">4.753175826159146</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.43393543693306</span>,<span class="fl">4.077331065323269</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.01198973780399</span>,<span class="fl">3.581399050490593</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.20921816638264</span>,<span class="fl">3.132878544854336</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.21013685965725</span>,<span class="fl">2.796587485871633</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.45803260870573</span>,<span class="fl">2.441977197957256</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.68709817836254</span>,<span class="fl">2.314479358976484</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.15543583603689</span>,<span class="fl">2.123868408305178</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">53.7651653142448</span>,<span class="fl">2.30335873628299</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">53.35415060581271</span>,<span class="fl">2.164099707075567</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.94875879245732</span>,<span class="fl">2.132858726757194</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.56611638847146</span>,<span class="fl">2.518366090728264</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.59199025844659</span>,<span class="fl">2.634734023219086</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.39229001432994</span>,<span class="fl">2.890167168832993</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.37091318927082</span>,<span class="fl">3.144918005801542</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.21064002801557</span>,<span class="fl">3.274351081759725</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">51.9836274889358</span>,<span class="fl">3.696015530721377</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">51.6721839730206</span>,<span class="fl">4.031282773145124</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">51.63663780527241</span>,<span class="fl">4.28966735155517</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">51.9023261931293</span>,<span class="fl">4.501855027711033</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.05244725433236</span>,<span class="fl">4.818896971774704</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.51627884489513</span>,<span class="fl">5.026927311475695</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.703088477061</span>,<span class="fl">5.197262336288941</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">53.15061905132664</span>,<span class="fl">5.577522799535109</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">53.53420039840946</span>,<span class="fl">5.573574890423137</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">53.95403768383684</span>,<span class="fl">5.781472322818466</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.40582467596958</span>,<span class="fl">5.123666986130482</span>),<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">byrow=</span>T)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(limite[,<span class="dv">1</span>],limite[,<span class="dv">2</span>],<span class="at">type=</span><span class="st">'l'</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(data_abiot<span class="sc">$</span>LON,data_abiot<span class="sc">$</span>LAT,<span class="at">pch=</span><span class="dv">20</span>,<span class="at">col=</span><span class="st">'green'</span>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(coord_chiro<span class="sc">$</span>LON,coord_chiro<span class="sc">$</span>LAT,<span class="at">pch=</span><span class="dv">20</span>,<span class="at">col=</span><span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>limite <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">54.40582467596958</span>,<span class="fl">5.123666986130482</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.45958864979806</span>,<span class="fl">4.753175826159146</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.43393543693306</span>,<span class="fl">4.077331065323269</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.01198973780399</span>,<span class="fl">3.581399050490593</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.20921816638264</span>,<span class="fl">3.132878544854336</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.21013685965725</span>,<span class="fl">2.796587485871633</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.45803260870573</span>,<span class="fl">2.441977197957256</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.68709817836254</span>,<span class="fl">2.314479358976484</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.15543583603689</span>,<span class="fl">2.123868408305178</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">53.7651653142448</span>,<span class="fl">2.30335873628299</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">53.35415060581271</span>,<span class="fl">2.164099707075567</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.94875879245732</span>,<span class="fl">2.132858726757194</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.56611638847146</span>,<span class="fl">2.518366090728264</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.59199025844659</span>,<span class="fl">2.634734023219086</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.39229001432994</span>,<span class="fl">2.890167168832993</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.37091318927082</span>,<span class="fl">3.144918005801542</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.21064002801557</span>,<span class="fl">3.274351081759725</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">51.9836274889358</span>,<span class="fl">3.696015530721377</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">51.6721839730206</span>,<span class="fl">4.031282773145124</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">51.63663780527241</span>,<span class="fl">4.28966735155517</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">51.9023261931293</span>,<span class="fl">4.501855027711033</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.05244725433236</span>,<span class="fl">4.818896971774704</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.51627884489513</span>,<span class="fl">5.026927311475695</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">52.703088477061</span>,<span class="fl">5.197262336288941</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">53.15061905132664</span>,<span class="fl">5.577522799535109</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">53.53420039840946</span>,<span class="fl">5.573574890423137</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">53.95403768383684</span>,<span class="fl">5.781472322818466</span>,<span class="dv">0</span> <span class="sc">-</span><span class="fl">54.40582467596958</span>,<span class="fl">5.123666986130482</span>),<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">byrow=</span>T)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(limite[,<span class="dv">1</span>],limite[,<span class="dv">2</span>],<span class="at">type=</span><span class="st">'l'</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(data_abiot<span class="sc">$</span>LON,data_abiot<span class="sc">$</span>LAT,<span class="at">pch=</span><span class="dv">20</span>,<span class="at">col=</span><span class="st">'green'</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(coord_chiro<span class="sc">$</span>LON,coord_chiro<span class="sc">$</span>LAT,<span class="at">pch=</span><span class="dv">20</span>,<span class="at">col=</span><span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -384,75 +376,43 @@ div.csl-indent {
 <section id="a.-quick-introduction-to-the-bayesian-approach" class="level2">
 <h2 class="anchored" data-anchor-id="a.-quick-introduction-to-the-bayesian-approach">A. Quick introduction to the Bayesian approach</h2>
 <p>This theorem is based on conditional probabilities :</p>
-<p><span class="math inline">\(P(B \mid A) = \displaystyle{\frac{ P(A \mid B) \; P(B)}{P(A)}}\)</span></p>
+<p><span class="math display">\[
+P(B \mid A) = \displaystyle{\frac{ P(A \mid B) \; P(B)}{P(A)}}
+\]</span></p>
 <p>But we might try to explain it more simply as this :</p>
-<p><span class="math display">\[P(\text{hypothesis} \mid \text{data}) = \frac{ P(\text{data} \mid \text{hypothesis}) \; P(\text{hypothesis})}{P(\text{data})}\]</span></p>
+<p><span class="math display">\[
+P(\text{hypothesis} \mid \text{data}) = \frac{P(\text{data} \mid \text{hypothesis}) \cdot P(\text{hypothesis})}{P(\text{data})}
+\]</span></p>
 </section>
 <section id="b.-little-exploration-of-how-our-response-variable-react-with-different-covariates" class="level2">
 <h2 class="anchored" data-anchor-id="b.-little-exploration-of-how-our-response-variable-react-with-different-covariates">B. Little exploration of how our response variable react with different covariates</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_final, <span class="fu">aes</span>(Amplitude, repro_positive)) <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans=</span><span class="st">'log10'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in scale_y_continuous(trans = "log10"): log-10 transformation introduced infinite values.
-log-10 transformation introduced infinite values.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 16 rows containing non-finite outside the scale range
-(`stat_smooth()`).</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_final, <span class="fu">aes</span>(Amplitude, repro_positive)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans=</span><span class="st">'log10'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_final, <span class="fu">aes</span>(julian_day, repro_positive)) <span class="sc">+</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans=</span><span class="st">'log10'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in scale_y_continuous(trans = "log10"): log-10 transformation introduced infinite values.
-log-10 transformation introduced infinite values.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 16 rows containing non-finite outside the scale range
-(`stat_smooth()`).</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_final, <span class="fu">aes</span>(julian_day, repro_positive)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans=</span><span class="st">'log10'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_final, <span class="fu">aes</span>(Pluie, repro_positive)) <span class="sc">+</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_final, <span class="fu">aes</span>(Pluie, repro_positive)) <span class="sc">+</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_final, <span class="fu">aes</span>(Température, repro_positive)) <span class="sc">+</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans=</span><span class="st">'log10'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in scale_y_continuous(trans = "log10"): log-10 transformation introduced infinite values.
-log-10 transformation introduced infinite values.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 16 rows containing non-finite outside the scale range
-(`stat_smooth()`).</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_final, <span class="fu">aes</span>(Température, repro_positive)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans=</span><span class="st">'log10'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-8-4.png" class="img-fluid" width="672"></p>
 </div>
@@ -463,7 +423,7 @@ log-10 transformation introduced infinite values.</code></pre>
 <h2 class="anchored" data-anchor-id="c.-study-of-climatic-influence-on-the-proportion-of-breeding-indidivids">C. Study of climatic influence on the proportion of breeding indidivids</h2>
 <p>Let’s see the distribution of reproductive individuals :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(data_final<span class="sc">$</span>repro_positive, <span class="at">breaks =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(data_final<span class="sc">$</span>repro_positive, <span class="at">breaks =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -471,68 +431,50 @@ log-10 transformation introduced infinite values.</code></pre>
 <p>The number of individuals showing reproductive activity seems to follow a negative-binomial distribution, but we encountered some issues to write and fit model using a negative binomial distribution… anyway ! Let’s try to investigate with a binomial !</p>
 <p><u><strong>First, we create an object containing our covariates of interest, we use a common practice which consists of centering-reducing the values of covariates:</strong></u></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>datax <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">N =</span> <span class="fu">nrow</span>(data_final), </span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">repro_positive =</span> data_final<span class="sc">$</span>repro_positive,  </span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">total_individuals =</span> data_final<span class="sc">$</span>total_individuals,  </span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">temp =</span> (data_final<span class="sc">$</span>Température <span class="sc">-</span> <span class="fu">mean</span>(data_final<span class="sc">$</span>Température)) <span class="sc">/</span> <span class="fu">sd</span>(data_final<span class="sc">$</span>Température),  </span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">rain =</span> (data_final<span class="sc">$</span>Pluie <span class="sc">-</span> <span class="fu">mean</span>(data_final<span class="sc">$</span>Pluie)) <span class="sc">/</span> <span class="fu">sd</span>(data_final<span class="sc">$</span>Pluie),</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">julian_day =</span> (data_final<span class="sc">$</span>julian_day <span class="sc">-</span> <span class="fu">mean</span>(data_final<span class="sc">$</span>julian_day)) <span class="sc">/</span> <span class="fu">sd</span>(data_final<span class="sc">$</span>julian_day))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>datax <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">N =</span> <span class="fu">nrow</span>(data_final), </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">repro_positive =</span> data_final<span class="sc">$</span>repro_positive,  </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">total_individuals =</span> data_final<span class="sc">$</span>total_individuals,  </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">temp =</span> (data_final<span class="sc">$</span>Température <span class="sc">-</span> <span class="fu">mean</span>(data_final<span class="sc">$</span>Température)) <span class="sc">/</span> <span class="fu">sd</span>(data_final<span class="sc">$</span>Température),  </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">rain =</span> (data_final<span class="sc">$</span>Pluie <span class="sc">-</span> <span class="fu">mean</span>(data_final<span class="sc">$</span>Pluie)) <span class="sc">/</span> <span class="fu">sd</span>(data_final<span class="sc">$</span>Pluie),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">julian_day =</span> (data_final<span class="sc">$</span>julian_day <span class="sc">-</span> <span class="fu">mean</span>(data_final<span class="sc">$</span>julian_day)) <span class="sc">/</span> <span class="fu">sd</span>(data_final<span class="sc">$</span>julian_day))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><u><strong>We write our null model and we assume that the number of reproductive individuals follows a binomial distribution. Specifically, we define our model as follows:</strong></u></p>
-<p><span class="math display">\[
-\text{repro_positive}[i] \sim \text{Binomial}(p[i], \text{total_individuals}[i])
-\]</span></p>
-<p>In this model, <span class="math inline">\(\text{repro_positive}[i]\)</span> represents the number of reproductive individuals observed for each observation ( i ), while <span class="math inline">\(\text{total_individuals}[i]\)</span> is the total number of individuals in the corresponding group. The parameter <span class="math inline">\(p[i]\)</span> is the probability of an individual being reproductive, modeled using the logit link function, where ( a ) is a parameter drawn from a normal distribution with mean 0 and a large variance (0.001), reflecting our prior belief about its value. <span class="math display">\[
-\text{logit}(p[i]) = a
-\]</span></p>
+<p><span class="math display">\[\text{repro_positive}[i] \sim \text{Binomial}(p[i], \text{total_individuals}[i])\]</span></p>
+<p>In this model, <span class="math inline">\(\text{repro_positive}[i]\)</span> represents the number of reproductive individuals observed for each observation ( i ), while <span class="math inline">\(\text{total_individuals}[i]\)</span> is the total number of individuals in the corresponding group. The parameter <span class="math inline">\(p[i]\)</span> is the probability of an individual being reproductive, modeled using the logit link function, where ( a ) is a parameter drawn from a normal distribution with mean 0 and a large variance (0.001), reflecting our prior belief about its value.</p>
+<p><span class="math display">\[\text{logit}(p[i]) = a\]</span></p>
 <p><u><strong>Here is the null model in Jags language:</strong></u></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>model_null <span class="ot">&lt;-</span> </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">"</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="st">model {</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="st">  for (i in 1:N) {</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="st">    repro_positive[i] ~ dbin(p[i], total_individuals[i])  </span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="st">    logit(p[i]) &lt;- a</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="st">  a ~ dnorm(0, 0.001)  </span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model_null <span class="ot">&lt;-</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">"</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">model {</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">  for (i in 1:N) {</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="st">    repro_positive[i] ~ dbin(p[i], total_individuals[i])  </span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="st">    logit(p[i]) &lt;- a</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="st">  a ~ dnorm(0, 0.001)  </span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then we set the initial values for the Monte-Carlo Markov Chains, we choose to set two chains to assess initial at different values to see if both converge to same distribution.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>init1 <span class="ot">&lt;-</span> <span class="fu">list</span> (<span class="at">a =</span> <span class="sc">-</span><span class="fl">0.5</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>init2 <span class="ot">&lt;-</span> <span class="fu">list</span> (<span class="at">a =</span> <span class="fl">0.5</span>)   </span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>inits <span class="ot">&lt;-</span> <span class="fu">list</span>(init1,init2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>init1 <span class="ot">&lt;-</span> <span class="fu">list</span> (<span class="at">a =</span> <span class="sc">-</span><span class="fl">0.5</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>init2 <span class="ot">&lt;-</span> <span class="fu">list</span> (<span class="at">a =</span> <span class="fl">0.5</span>)   </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>inits <span class="ot">&lt;-</span> <span class="fu">list</span>(init1,init2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We specify the parameter we want to estimate :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The run the model with the function jags() :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>chiro_model_null <span class="ot">&lt;-</span> <span class="fu">jags</span>(<span class="at">data =</span> datax,</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">inits =</span> inits, </span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">parameters.to.save =</span> parameters, </span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">model.file =</span> <span class="fu">textConnection</span>(model_null), </span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">n.chains =</span> <span class="dv">2</span>, </span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">n.iter =</span> <span class="dv">5000</span>, </span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">n.burnin =</span> <span class="dv">1000</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>module glm loaded</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in jags.model(model.file, data = data, inits = init.values, n.chains =
-n.chains, : Unused variable "temp" in data</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in jags.model(model.file, data = data, inits = init.values, n.chains =
-n.chains, : Unused variable "rain" in data</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in jags.model(model.file, data = data, inits = init.values, n.chains =
-n.chains, : Unused variable "julian_day" in data</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>chiro_model_null <span class="ot">&lt;-</span> <span class="fu">jags</span>(<span class="at">data =</span> datax,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">inits =</span> inits, </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">parameters.to.save =</span> parameters, </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">model.file =</span> <span class="fu">textConnection</span>(model_null), </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">n.chains =</span> <span class="dv">2</span>, </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">n.iter =</span> <span class="dv">5000</span>, </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">n.burnin =</span> <span class="dv">1000</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Compiling model graph
    Resolving undeclared variables
@@ -550,52 +492,14 @@ Initializing model</code></pre>
 <li><em>traceplot()</em> allows to see how MCMC converge</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">traceplot</span>(chiro_model_null, <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">varnames =</span> <span class="fu">c</span>(<span class="st">"a"</span>), <span class="at">ask =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.window(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.xy(xy, type, ...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter
-
-Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in box(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in title(...): "varnames" is not a graphical parameter</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">traceplot</span>(chiro_model_null, <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">varnames =</span> <span class="fu">c</span>(<span class="st">"a"</span>), <span class="at">ask =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.window(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.xy(xy, type, ...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter
-
-Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in box(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in title(...): "varnames" is not a graphical parameter</code></pre>
 </div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-15-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autocorr.plot</span>(<span class="fu">as.mcmc</span>(chiro_model_null), <span class="at">ask =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autocorr.plot</span>(<span class="fu">as.mcmc</span>(chiro_model_null), <span class="at">ask =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-15-3.png" class="img-fluid" width="672"></p>
 </div>
@@ -605,40 +509,40 @@ a graphical parameter</code></pre>
 </div>
 <p>We can also print the object that contain the model to check other features like the estimate of the parameter, the deviance, credible intervals or the number of values used to assess the posterior distribution (n.eff)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(chiro_model_null)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(chiro_model_null)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Inference for Bugs model at "4", fit using jags,
  2 chains, each with 5000 iterations (first 1000 discarded), n.thin = 4
  n.sims = 2000 iterations saved
          mu.vect sd.vect    2.5%     25%     50%     75%   97.5%  Rhat n.eff
-a          1.654   0.074   1.508   1.605   1.655   1.702   1.799 1.001  2000
-deviance 755.031   1.454 754.025 754.112 754.457 755.343 759.288 1.000  2000
+a          1.655   0.074   1.509   1.602   1.655   1.704   1.800 1.001  2000
+deviance 755.047   1.393 754.026 754.130 754.503 755.381 758.902 1.001  2000
 
 For each parameter, n.eff is a crude measure of effective sample size,
 and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
 
 DIC info (using the rule, pD = var(deviance)/2)
-pD = 1.1 and DIC = 756.1
+pD = 1.0 and DIC = 756.0
 DIC is an estimate of expected predictive error (lower deviance is better).</code></pre>
 </div>
 </div>
 <p>Now, we put the estimated values of the two MCMC chains in the same object :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>res<span class="ot">&lt;-</span><span class="fu">as.mcmc</span>(chiro_model_null)</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>res<span class="ot">&lt;-</span><span class="fu">rbind</span>(res[[<span class="dv">1</span>]], res[[<span class="dv">2</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>res<span class="ot">&lt;-</span><span class="fu">as.mcmc</span>(chiro_model_null)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>res<span class="ot">&lt;-</span><span class="fu">rbind</span>(res[[<span class="dv">1</span>]], res[[<span class="dv">2</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then we can compute the mean of the estimated values of the intercept that are &lt; 0 :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(res[,<span class="st">'a'</span>]<span class="sc">&lt;</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(res[,<span class="st">'a'</span>]<span class="sc">&lt;</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
 </div>
 <p>And we can plot the estimated posterior distribution of our parameter ‘a’ :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'a'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"intercept"</span>,<span class="at">lwd=</span><span class="dv">3</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>,<span class="dv">2</span>))</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'a'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"intercept"</span>,<span class="at">lwd=</span><span class="dv">3</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>,<span class="dv">2</span>))</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -646,15 +550,15 @@ DIC is an estimate of expected predictive error (lower deviance is better).</cod
 <p>Remember that we defined a non-informative prior on parameter ‘a’ : a ~ dnorm(0, 0.001) to see if test the effect of ‘a’ on <span class="math inline">\(p[i]\)</span></p>
 <p><u><strong>You can compute the Watanabe-Akaike Information Criterion :</strong></u></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>samples_waic_null<span class="ot">&lt;-</span><span class="fu">jags.samples</span>(chiro_model_null<span class="sc">$</span>model, <span class="fu">c</span>(<span class="st">"WAIC"</span>, <span class="st">"deviance"</span>), <span class="at">type =</span> <span class="st">"mean"</span>,</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n.iter =</span> <span class="dv">10000</span>,</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n.burnin =</span> <span class="dv">1000</span>,</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n.thin =</span> <span class="dv">1</span>)</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>samples_waic_null<span class="sc">$</span>p_waic<span class="ot">&lt;-</span>samples_waic_null<span class="sc">$</span>WAIC</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>samples_waic_null<span class="sc">$</span>waic<span class="ot">&lt;-</span>samples_waic_null<span class="sc">$</span>deviance <span class="sc">+</span> samples_waic_null<span class="sc">$</span>p_waic</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>tmp<span class="ot">&lt;-</span><span class="fu">sapply</span>(samples_waic_null, sum)</span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>waic_null<span class="ot">&lt;-</span><span class="fu">round</span>(<span class="fu">c</span>(<span class="at">waic =</span> tmp[[<span class="st">"waic"</span>]], <span class="at">p_waic =</span> tmp[[<span class="st">"p_waic"</span>]]),<span class="dv">1</span>)</span>
-<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>waic_null</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>samples_waic_null<span class="ot">&lt;-</span><span class="fu">jags.samples</span>(chiro_model_null<span class="sc">$</span>model, <span class="fu">c</span>(<span class="st">"WAIC"</span>, <span class="st">"deviance"</span>), <span class="at">type =</span> <span class="st">"mean"</span>,</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n.iter =</span> <span class="dv">10000</span>,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n.burnin =</span> <span class="dv">1000</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n.thin =</span> <span class="dv">1</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>samples_waic_null<span class="sc">$</span>p_waic<span class="ot">&lt;-</span>samples_waic_null<span class="sc">$</span>WAIC</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>samples_waic_null<span class="sc">$</span>waic<span class="ot">&lt;-</span>samples_waic_null<span class="sc">$</span>deviance <span class="sc">+</span> samples_waic_null<span class="sc">$</span>p_waic</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>tmp<span class="ot">&lt;-</span><span class="fu">sapply</span>(samples_waic_null, sum)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>waic_null<span class="ot">&lt;-</span><span class="fu">round</span>(<span class="fu">c</span>(<span class="at">waic =</span> tmp[[<span class="st">"waic"</span>]], <span class="at">p_waic =</span> tmp[[<span class="st">"p_waic"</span>]]),<span class="dv">1</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>waic_null</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  waic p_waic 
  758.2    3.2 </code></pre>
@@ -663,8 +567,8 @@ DIC is an estimate of expected predictive error (lower deviance is better).</cod
 <p><u>We write and fit several models with different parameters (rain, temperature, julian day and thermal amplitude) and we compute the WAIC for each of them:</u></p>
 <p>Here the table of the different models we fitted :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>waic_table<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">"waic_model.txt"</span>, <span class="at">header =</span> T)</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>waic_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>waic_table<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">"waic_model.txt"</span>, <span class="at">header =</span> T)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>waic_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                          model  waic p_waic
 1          model_rain_temp_jday 523.3   18.4
@@ -681,72 +585,72 @@ DIC is an estimate of expected predictive error (lower deviance is better).</cod
 <h2 class="anchored" data-anchor-id="d.-the-best-model">D. The best model</h2>
 <p>So our best model is the one with rain/temperature/julian_day covariates, there it is :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>model_rain_temp_jday <span class="ot">&lt;-</span> </span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">"</span></span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="st">model {</span></span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="st">  for (i in 1:N) {</span></span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="st">    repro_positive[i] ~ dbin(p[i], total_individuals[i])  # Distribution binomiale</span></span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a><span class="st">    logit(p[i]) &lt;- a + b.rain * rain[i] </span></span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a><span class="st">                     + b.rain2 * pow(rain[i],2)  </span></span>
-<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="st">                     + b.temp * temp[i] </span></span>
-<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a><span class="st">                     + b.julian_day * julian_day[i]</span></span>
-<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a><span class="st">                     + b.julian_day2 * pow(julian_day[i], 2)</span></span>
-<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a><span class="st">                     + b.julian_day3 * pow(julian_day[i], 3)</span></span>
-<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a><span class="st">                     + b.julian_day4 * pow(julian_day[i], 4)</span></span>
-<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
-<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a><span class="st">  a ~ dnorm(0, 0.001)  # Prior sur l'intercept</span></span>
-<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a><span class="st">  b.rain ~ dnorm(0, 0.001)</span></span>
-<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a><span class="st">  b.rain2 ~ dnorm(0, 0.001)</span></span>
-<span id="cb54-18"><a href="#cb54-18" aria-hidden="true" tabindex="-1"></a><span class="st">  b.temp ~ dnorm(0, 0.001)</span></span>
-<span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a><span class="st">  b.julian_day ~ dnorm(0, 0.001)</span></span>
-<span id="cb54-20"><a href="#cb54-20" aria-hidden="true" tabindex="-1"></a><span class="st">  b.julian_day2 ~ dnorm(0, 0.001) </span></span>
-<span id="cb54-21"><a href="#cb54-21" aria-hidden="true" tabindex="-1"></a><span class="st">  b.julian_day3 ~ dnorm(0, 0.001)</span></span>
-<span id="cb54-22"><a href="#cb54-22" aria-hidden="true" tabindex="-1"></a><span class="st">  b.julian_day4 ~ dnorm(0, 0.001)</span></span>
-<span id="cb54-23"><a href="#cb54-23" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb54-24"><a href="#cb54-24" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model_rain_temp_jday <span class="ot">&lt;-</span> </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">"</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="st">model {</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="st">  for (i in 1:N) {</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="st">    repro_positive[i] ~ dbin(p[i], total_individuals[i])  # Distribution binomiale</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="st">    logit(p[i]) &lt;- a + b.rain * rain[i] </span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="st">                     + b.rain2 * pow(rain[i],2)  </span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="st">                     + b.temp * temp[i] </span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="st">                     + b.julian_day * julian_day[i]</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="st">                     + b.julian_day2 * pow(julian_day[i], 2)</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="st">                     + b.julian_day3 * pow(julian_day[i], 3)</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="st">                     + b.julian_day4 * pow(julian_day[i], 4)</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="st">  a ~ dnorm(0, 0.001)  # Prior sur l'intercept</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="st">  b.rain ~ dnorm(0, 0.001)</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a><span class="st">  b.rain2 ~ dnorm(0, 0.001)</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a><span class="st">  b.temp ~ dnorm(0, 0.001)</span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a><span class="st">  b.julian_day ~ dnorm(0, 0.001)</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a><span class="st">  b.julian_day2 ~ dnorm(0, 0.001) </span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a><span class="st">  b.julian_day3 ~ dnorm(0, 0.001)</span></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a><span class="st">  b.julian_day4 ~ dnorm(0, 0.001)</span></span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We decide to assess polynomial effect on <span class="math inline">\(rain^2\)</span> and on <span class="math inline">\(julian\_day^4\)</span> because of the non-linearity effect on <span class="math inline">\(repro\_positive\)</span></p>
 <p>And as we made before, we set the initial values for both MCMC, we specify the parameters to be estimated :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>init1 <span class="ot">&lt;-</span> <span class="fu">list</span> (<span class="at">a =</span> <span class="sc">-</span><span class="fl">0.5</span>, </span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.rain =</span> <span class="sc">-</span><span class="fl">0.5</span>, </span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.rain2 =</span> <span class="sc">-</span><span class="fl">0.5</span>, </span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.temp =</span> <span class="sc">-</span><span class="fl">0.5</span>,</span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day =</span> <span class="sc">-</span><span class="fl">0.5</span>,</span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day2=</span> <span class="sc">-</span><span class="fl">0.5</span>,</span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day3=</span> <span class="sc">-</span><span class="fl">0.5</span>,</span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day4 =</span> <span class="sc">-</span><span class="fl">0.5</span>) </span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>init2 <span class="ot">&lt;-</span> <span class="fu">list</span> (<span class="at">a =</span> <span class="fl">0.5</span>, </span>
-<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.rain =</span> <span class="fl">0.5</span>, </span>
-<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.rain2 =</span> <span class="fl">0.5</span>, </span>
-<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.temp =</span> <span class="fl">0.5</span>, </span>
-<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day =</span> <span class="fl">0.5</span>,</span>
-<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day2=</span> <span class="fl">0.5</span>,</span>
-<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day3=</span> <span class="fl">0.5</span>,</span>
-<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day4 =</span> <span class="fl">0.5</span>)</span>
-<span id="cb55-18"><a href="#cb55-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-19"><a href="#cb55-19" aria-hidden="true" tabindex="-1"></a>inits <span class="ot">&lt;-</span> <span class="fu">list</span>(init1,init2)</span>
-<span id="cb55-20"><a href="#cb55-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-21"><a href="#cb55-21" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>,</span>
-<span id="cb55-22"><a href="#cb55-22" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.rain"</span>, </span>
-<span id="cb55-23"><a href="#cb55-23" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.rain2"</span>, </span>
-<span id="cb55-24"><a href="#cb55-24" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.temp"</span>,</span>
-<span id="cb55-25"><a href="#cb55-25" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.julian_day"</span> ,</span>
-<span id="cb55-26"><a href="#cb55-26" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.julian_day2"</span>,</span>
-<span id="cb55-27"><a href="#cb55-27" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.julian_day3"</span>,</span>
-<span id="cb55-28"><a href="#cb55-28" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.julian_day4"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>init1 <span class="ot">&lt;-</span> <span class="fu">list</span> (<span class="at">a =</span> <span class="sc">-</span><span class="fl">0.5</span>, </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.rain =</span> <span class="sc">-</span><span class="fl">0.5</span>, </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.rain2 =</span> <span class="sc">-</span><span class="fl">0.5</span>, </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.temp =</span> <span class="sc">-</span><span class="fl">0.5</span>,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day =</span> <span class="sc">-</span><span class="fl">0.5</span>,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day2=</span> <span class="sc">-</span><span class="fl">0.5</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day3=</span> <span class="sc">-</span><span class="fl">0.5</span>,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day4 =</span> <span class="sc">-</span><span class="fl">0.5</span>) </span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>init2 <span class="ot">&lt;-</span> <span class="fu">list</span> (<span class="at">a =</span> <span class="fl">0.5</span>, </span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.rain =</span> <span class="fl">0.5</span>, </span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.rain2 =</span> <span class="fl">0.5</span>, </span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.temp =</span> <span class="fl">0.5</span>, </span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day =</span> <span class="fl">0.5</span>,</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day2=</span> <span class="fl">0.5</span>,</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day3=</span> <span class="fl">0.5</span>,</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">b.julian_day4 =</span> <span class="fl">0.5</span>)</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>inits <span class="ot">&lt;-</span> <span class="fu">list</span>(init1,init2)</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>,</span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.rain"</span>, </span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.rain2"</span>, </span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.temp"</span>,</span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.julian_day"</span> ,</span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.julian_day2"</span>,</span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.julian_day3"</span>,</span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>                <span class="st">"b.julian_day4"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And we run jags() :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>chiro_rain_temp_jday <span class="ot">&lt;-</span> <span class="fu">jags</span>(<span class="at">data =</span> datax,</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">inits =</span> inits, </span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">parameters.to.save =</span> parameters, </span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">model.file =</span> <span class="fu">textConnection</span>(model_rain_temp_jday), </span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n.chains =</span> <span class="dv">2</span>, </span>
-<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n.iter =</span> <span class="dv">10000</span>, </span>
-<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n.burnin =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>chiro_rain_temp_jday <span class="ot">&lt;-</span> <span class="fu">jags</span>(<span class="at">data =</span> datax,</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">inits =</span> inits, </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">parameters.to.save =</span> parameters, </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">model.file =</span> <span class="fu">textConnection</span>(model_rain_temp_jday), </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n.chains =</span> <span class="dv">2</span>, </span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n.iter =</span> <span class="dv">10000</span>, </span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n.burnin =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Compiling model graph
    Resolving undeclared variables
@@ -758,218 +662,47 @@ Graph information:
 
 Initializing model</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>chiro_rain_temp_jday</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>chiro_rain_temp_jday</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Inference for Bugs model at "5", fit using jags,
  2 chains, each with 10000 iterations (first 1000 discarded), n.thin = 9
  n.sims = 2000 iterations saved
               mu.vect sd.vect    2.5%     25%     50%     75%   97.5%  Rhat
-a               0.425   0.149   0.135   0.327   0.428   0.521   0.714 1.001
-b.julian_day    0.150   0.256  -0.377  -0.013   0.154   0.320   0.636 1.001
-b.julian_day2   2.306   0.326   1.682   2.091   2.308   2.517   2.936 1.001
-b.julian_day3  -0.213   0.156  -0.518  -0.313  -0.215  -0.115   0.098 1.003
-b.julian_day4  -0.568   0.131  -0.813  -0.650  -0.572  -0.484  -0.321 1.001
-b.rain          0.438   0.216  -0.010   0.298   0.440   0.585   0.850 1.002
-b.rain2         0.060   0.104  -0.075  -0.015   0.039   0.113   0.319 1.002
-b.temp          0.567   0.127   0.309   0.479   0.568   0.654   0.806 1.001
-deviance      617.046   7.954 610.629 613.878 616.225 619.180 626.814 1.124
+a               0.414   0.152   0.131   0.309   0.411   0.519   0.715 1.002
+b.julian_day    0.149   0.252  -0.352  -0.022   0.150   0.315   0.658 1.001
+b.julian_day2   2.325   0.330   1.704   2.100   2.316   2.550   2.955 1.001
+b.julian_day3  -0.212   0.154  -0.509  -0.314  -0.215  -0.113   0.096 1.001
+b.julian_day4  -0.574   0.133  -0.824  -0.662  -0.575  -0.487  -0.318 1.001
+b.rain          0.428   0.221  -0.022   0.281   0.434   0.576   0.852 1.001
+b.rain2         0.063   0.102  -0.071  -0.013   0.043   0.121   0.312 1.001
+b.temp          0.561   0.128   0.305   0.474   0.562   0.651   0.807 1.019
+deviance      616.898   7.544 610.980 613.666 615.998 619.214 626.155 1.123
               n.eff
 a              2000
 b.julian_day   2000
 b.julian_day2  2000
 b.julian_day3  2000
 b.julian_day4  2000
-b.rain          820
-b.rain2        1300
-b.temp         2000
+b.rain         2000
+b.rain2        2000
+b.temp          620
 deviance       2000
 
 For each parameter, n.eff is a crude measure of effective sample size,
 and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
 
 DIC info (using the rule, pD = var(deviance)/2)
-pD = 31.6 and DIC = 648.7
+pD = 28.5 and DIC = 645.4
 DIC is an estimate of expected predictive error (lower deviance is better).</code></pre>
 </div>
 </div>
 <p>As we made before, we check how the MCMC converged and we trace the autocorrelation plot :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">traceplot</span>(chiro_rain_temp_jday, <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>), <span class="at">varnames =</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b.rain"</span>, <span class="st">"b.rain2"</span>,<span class="st">"b.temp"</span>,<span class="st">"b.julian_day"</span> ,<span class="st">"b.julian_day2"</span>,<span class="st">"b.julian_day3"</span>,<span class="st">"b.julian_day4"</span>), <span class="at">ask =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.window(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.xy(xy, type, ...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter
-
-Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in box(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in title(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.window(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.xy(xy, type, ...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter
-
-Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in box(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in title(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.window(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.xy(xy, type, ...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter
-
-Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in box(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in title(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.window(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.xy(xy, type, ...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter
-
-Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in box(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in title(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.window(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.xy(xy, type, ...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter
-
-Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in box(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in title(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.window(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.xy(xy, type, ...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter
-
-Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in box(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in title(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.window(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.xy(xy, type, ...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter
-
-Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in box(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in title(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.window(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.xy(xy, type, ...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter
-
-Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in box(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in title(...): "varnames" is not a graphical parameter</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">traceplot</span>(chiro_rain_temp_jday, <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>), <span class="at">varnames =</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b.rain"</span>, <span class="st">"b.rain2"</span>,<span class="st">"b.temp"</span>,<span class="st">"b.julian_day"</span> ,<span class="st">"b.julian_day2"</span>,<span class="st">"b.julian_day3"</span>,<span class="st">"b.julian_day4"</span>), <span class="at">ask =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.window(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in plot.xy(xy, type, ...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter
-
-Warning in axis(side = side, at = at, labels = labels, ...): "varnames" is not
-a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in box(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in title(...): "varnames" is not a graphical parameter</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autocorr.plot</span>(<span class="fu">as.mcmc</span>(chiro_rain_temp_jday), <span class="at">ask =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autocorr.plot</span>(<span class="fu">as.mcmc</span>(chiro_rain_temp_jday), <span class="at">ask =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-25-2.png" class="img-fluid" width="672"></p>
 </div>
@@ -982,28 +715,28 @@ a graphical parameter</code></pre>
 </div>
 <p>We put the estimate values in the same object :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>res<span class="ot">&lt;-</span><span class="fu">as.mcmc</span>(chiro_rain_temp_jday)</span>
-<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>res<span class="ot">&lt;-</span><span class="fu">rbind</span>(res[[<span class="dv">1</span>]], res[[<span class="dv">2</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>res<span class="ot">&lt;-</span><span class="fu">as.mcmc</span>(chiro_rain_temp_jday)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>res<span class="ot">&lt;-</span><span class="fu">rbind</span>(res[[<span class="dv">1</span>]], res[[<span class="dv">2</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And we plot the estimated distribution of every parameters :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>))</span>
-<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'a'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"Intercept"</span>,<span class="at">lwd=</span><span class="dv">3</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>,<span class="dv">2</span>))</span>
-<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.rain'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"Rainfall"</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
-<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.rain2'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"Rainfall"</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
-<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb108-8"><a href="#cb108-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.temp'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"Temperature"</span>,<span class="at">lwd=</span><span class="dv">3</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>,<span class="fl">1.5</span>))</span>
-<span id="cb108-9"><a href="#cb108-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb108-10"><a href="#cb108-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.julian_day'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"julian_day"</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
-<span id="cb108-11"><a href="#cb108-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb108-12"><a href="#cb108-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.julian_day2'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"julian_day2"</span>,<span class="at">lwd=</span><span class="dv">3</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">4</span>))</span>
-<span id="cb108-13"><a href="#cb108-13" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb108-14"><a href="#cb108-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.julian_day3'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"julian_day3"</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
-<span id="cb108-15"><a href="#cb108-15" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb108-16"><a href="#cb108-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.julian_day4'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"julian_day4"</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
-<span id="cb108-17"><a href="#cb108-17" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>))</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'a'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"Intercept"</span>,<span class="at">lwd=</span><span class="dv">3</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>,<span class="dv">2</span>))</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.rain'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"Rainfall"</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.rain2'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"Rainfall"</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.temp'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"Temperature"</span>,<span class="at">lwd=</span><span class="dv">3</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>,<span class="fl">1.5</span>))</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.julian_day'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"julian_day"</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.julian_day2'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"julian_day2"</span>,<span class="at">lwd=</span><span class="dv">3</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">4</span>))</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.julian_day3'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"julian_day3"</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(res[,<span class="st">'b.julian_day4'</span>]),<span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"julian_day4"</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -1014,129 +747,129 @@ a graphical parameter</code></pre>
 <p>Now let’s try to predict some values from our model to better understand the different relations between <span class="math inline">\(repro\_positive\)</span> and the different covariates.</p>
 <p>First, let’s simulate some data !</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
-<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">rain =</span> <span class="fu">seq</span>(<span class="fu">min</span>(datax<span class="sc">$</span>rain), <span class="fu">max</span>(datax<span class="sc">$</span>rain), <span class="at">length.out =</span> <span class="dv">1000</span>), </span>
-<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">temp =</span> <span class="fu">median</span>(datax<span class="sc">$</span>temp),</span>
-<span id="cb109-4"><a href="#cb109-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">julian_day =</span> <span class="fu">median</span>(datax<span class="sc">$</span>julian_day))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">rain =</span> <span class="fu">seq</span>(<span class="fu">min</span>(datax<span class="sc">$</span>rain), <span class="fu">max</span>(datax<span class="sc">$</span>rain), <span class="at">length.out =</span> <span class="dv">1000</span>), </span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">temp =</span> <span class="fu">median</span>(datax<span class="sc">$</span>temp),</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">julian_day =</span> <span class="fu">median</span>(datax<span class="sc">$</span>julian_day))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This grid will allow us to simulate data from the source data.frame “data_final”, for some reasons that we don’t clearly understand… we need to sample each covariate at once and fix the other one to the median.</p>
 <p>Then we compute <span class="math inline">\(p[i]\)</span> for each estimate value from the model : <span class="math display">\[
 \text{logit}(p_i) = a + b_{\text{rain}} \cdot \text{rain}_i + b_{\text{rain2}} \cdot \text{rain}_i^2 + b_{\text{temp}} \cdot \text{temp}_i + b_{\text{julian_day}} \cdot \text{julian_day}_i + b_{\text{julian_day2}} \cdot \text{julian_day}_i^2 + b_{\text{julian_day3}} \cdot \text{julian_day}_i^3 + b_{\text{julian_day4}} \cdot \text{julian_day}_i^4
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>n_sim<span class="ot">&lt;-</span><span class="dv">1000</span></span>
-<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>p_sim <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> n_sim, <span class="at">ncol =</span> <span class="fu">nrow</span>(pred_data))</span>
-<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
-<span id="cb110-6"><a href="#cb110-6" aria-hidden="true" tabindex="-1"></a>  sample_idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(res), <span class="dv">1</span>)</span>
-<span id="cb110-7"><a href="#cb110-7" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"a"</span>]</span>
-<span id="cb110-8"><a href="#cb110-8" aria-hidden="true" tabindex="-1"></a>  b.rain <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.rain"</span>]</span>
-<span id="cb110-9"><a href="#cb110-9" aria-hidden="true" tabindex="-1"></a>  b.rain2 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.rain2"</span>]</span>
-<span id="cb110-10"><a href="#cb110-10" aria-hidden="true" tabindex="-1"></a>  b.temp <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.temp"</span>]</span>
-<span id="cb110-11"><a href="#cb110-11" aria-hidden="true" tabindex="-1"></a>  b.julian_day <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day"</span>]</span>
-<span id="cb110-12"><a href="#cb110-12" aria-hidden="true" tabindex="-1"></a>  b.julian_day2 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day2"</span>]</span>
-<span id="cb110-13"><a href="#cb110-13" aria-hidden="true" tabindex="-1"></a>  b.julian_day3 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day3"</span>]</span>
-<span id="cb110-14"><a href="#cb110-14" aria-hidden="true" tabindex="-1"></a>  b.julian_day4 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day4"</span>]</span>
-<span id="cb110-15"><a href="#cb110-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb110-16"><a href="#cb110-16" aria-hidden="true" tabindex="-1"></a>  p_sim[i, ] <span class="ot">&lt;-</span> <span class="fu">plogis</span>(</span>
-<span id="cb110-17"><a href="#cb110-17" aria-hidden="true" tabindex="-1"></a>    a <span class="sc">+</span> </span>
-<span id="cb110-18"><a href="#cb110-18" aria-hidden="true" tabindex="-1"></a>      b.rain <span class="sc">*</span> pred_data<span class="sc">$</span>rain <span class="sc">+</span> b.rain2 <span class="sc">*</span> pred_data<span class="sc">$</span>rain<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span></span>
-<span id="cb110-19"><a href="#cb110-19" aria-hidden="true" tabindex="-1"></a>      b.temp <span class="sc">*</span> pred_data<span class="sc">$</span>temp <span class="sc">+</span></span>
-<span id="cb110-20"><a href="#cb110-20" aria-hidden="true" tabindex="-1"></a>      b.julian_day <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day <span class="sc">+</span> </span>
-<span id="cb110-21"><a href="#cb110-21" aria-hidden="true" tabindex="-1"></a>      b.julian_day2 <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span></span>
-<span id="cb110-22"><a href="#cb110-22" aria-hidden="true" tabindex="-1"></a>      b.julian_day3 <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> </span>
-<span id="cb110-23"><a href="#cb110-23" aria-hidden="true" tabindex="-1"></a>      b.julian_day4 <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day<span class="sc">^</span><span class="dv">4</span></span>
-<span id="cb110-24"><a href="#cb110-24" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb110-25"><a href="#cb110-25" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>n_sim<span class="ot">&lt;-</span><span class="dv">1000</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>p_sim <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> n_sim, <span class="at">ncol =</span> <span class="fu">nrow</span>(pred_data))</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  sample_idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(res), <span class="dv">1</span>)</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"a"</span>]</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  b.rain <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.rain"</span>]</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  b.rain2 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.rain2"</span>]</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  b.temp <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.temp"</span>]</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  b.julian_day <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day"</span>]</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>  b.julian_day2 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day2"</span>]</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>  b.julian_day3 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day3"</span>]</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>  b.julian_day4 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day4"</span>]</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>  p_sim[i, ] <span class="ot">&lt;-</span> <span class="fu">plogis</span>(</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>    a <span class="sc">+</span> </span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>      b.rain <span class="sc">*</span> pred_data<span class="sc">$</span>rain <span class="sc">+</span> b.rain2 <span class="sc">*</span> pred_data<span class="sc">$</span>rain<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span></span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>      b.temp <span class="sc">*</span> pred_data<span class="sc">$</span>temp <span class="sc">+</span></span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>      b.julian_day <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day <span class="sc">+</span> </span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>      b.julian_day2 <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span></span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>      b.julian_day3 <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> </span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>      b.julian_day4 <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day<span class="sc">^</span><span class="dv">4</span></span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then we compute our credible intervals :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> pred_data <span class="sc">%&gt;%</span></span>
-<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_p =</span> <span class="fu">apply</span>(p_sim, <span class="dv">2</span>, mean),</span>
-<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower =</span> <span class="fu">apply</span>(p_sim, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fl">0.025</span>),</span>
-<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper =</span> <span class="fu">apply</span>(p_sim, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fl">0.975</span>)</span>
-<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> pred_data <span class="sc">%&gt;%</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_p =</span> <span class="fu">apply</span>(p_sim, <span class="dv">2</span>, mean),</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower =</span> <span class="fu">apply</span>(p_sim, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fl">0.025</span>),</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper =</span> <span class="fu">apply</span>(p_sim, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fl">0.975</span>)</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We want to get back to the natural scale for the X-axis :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data_final<span class="sc">$</span>Pluie)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data_final<span class="sc">$</span>Pluie)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6.95171</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(data_final<span class="sc">$</span>Pluie)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(data_final<span class="sc">$</span>Pluie)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10.36198</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>pred_data<span class="sc">$</span>rain <span class="ot">&lt;-</span> (pred_data<span class="sc">$</span>rain <span class="sc">*</span> <span class="fl">10.71609</span>) <span class="sc">+</span> <span class="fl">7.087872</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>pred_data<span class="sc">$</span>rain <span class="ot">&lt;-</span> (pred_data<span class="sc">$</span>rain <span class="sc">*</span> <span class="fl">10.71609</span>) <span class="sc">+</span> <span class="fl">7.087872</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then we can plot our response variable with a covariate ! here the rain :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pred_data, <span class="fu">aes</span>(<span class="at">x =</span> rain)) <span class="sc">+</span></span>
-<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> mean_p), <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower, <span class="at">ymax =</span> upper), <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Rain (Natural Scale)"</span>, <span class="at">y =</span> <span class="st">"Probability of Reproduction"</span>) <span class="sc">+</span></span>
-<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))<span class="sc">+</span></span>
-<span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pred_data, <span class="fu">aes</span>(<span class="at">x =</span> rain)) <span class="sc">+</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> mean_p), <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower, <span class="at">ymax =</span> upper), <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Rain (Natural Scale)"</span>, <span class="at">y =</span> <span class="st">"Probability of Reproduction"</span>) <span class="sc">+</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))<span class="sc">+</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Same task for julian_day… yes it’s a bit boring, we need to improve the code !</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
-<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">rain =</span> <span class="fu">median</span>(datax<span class="sc">$</span>temp), </span>
-<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">temp =</span> <span class="fu">median</span>(datax<span class="sc">$</span>temp),</span>
-<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">julian_day =</span> <span class="fu">seq</span>(<span class="fu">min</span>(datax<span class="sc">$</span>julian_day), <span class="fu">max</span>(datax<span class="sc">$</span>julian_day), <span class="at">length.out =</span> <span class="dv">1000</span>))</span>
-<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a>p_sim <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> n_sim, <span class="at">ncol =</span> <span class="fu">nrow</span>(pred_data))</span>
-<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
-<span id="cb118-8"><a href="#cb118-8" aria-hidden="true" tabindex="-1"></a>  sample_idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(res), <span class="dv">1</span>)</span>
-<span id="cb118-9"><a href="#cb118-9" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"a"</span>]</span>
-<span id="cb118-10"><a href="#cb118-10" aria-hidden="true" tabindex="-1"></a>  b.rain <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.rain"</span>]</span>
-<span id="cb118-11"><a href="#cb118-11" aria-hidden="true" tabindex="-1"></a>  b.rain2 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.rain2"</span>]</span>
-<span id="cb118-12"><a href="#cb118-12" aria-hidden="true" tabindex="-1"></a>  b.temp <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.temp"</span>]</span>
-<span id="cb118-13"><a href="#cb118-13" aria-hidden="true" tabindex="-1"></a>  b.julian_day <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day"</span>]</span>
-<span id="cb118-14"><a href="#cb118-14" aria-hidden="true" tabindex="-1"></a>  b.julian_day2 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day2"</span>]</span>
-<span id="cb118-15"><a href="#cb118-15" aria-hidden="true" tabindex="-1"></a>  b.julian_day3 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day3"</span>]</span>
-<span id="cb118-16"><a href="#cb118-16" aria-hidden="true" tabindex="-1"></a>  b.julian_day4 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day4"</span>]</span>
-<span id="cb118-17"><a href="#cb118-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb118-18"><a href="#cb118-18" aria-hidden="true" tabindex="-1"></a>  p_sim[i, ] <span class="ot">&lt;-</span> <span class="fu">plogis</span>(</span>
-<span id="cb118-19"><a href="#cb118-19" aria-hidden="true" tabindex="-1"></a>    a <span class="sc">+</span> </span>
-<span id="cb118-20"><a href="#cb118-20" aria-hidden="true" tabindex="-1"></a>      b.rain <span class="sc">*</span> pred_data<span class="sc">$</span>rain <span class="sc">+</span> b.rain2 <span class="sc">*</span> pred_data<span class="sc">$</span>rain<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span></span>
-<span id="cb118-21"><a href="#cb118-21" aria-hidden="true" tabindex="-1"></a>      b.temp <span class="sc">*</span> pred_data<span class="sc">$</span>temp <span class="sc">+</span></span>
-<span id="cb118-22"><a href="#cb118-22" aria-hidden="true" tabindex="-1"></a>      b.julian_day <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day <span class="sc">+</span> </span>
-<span id="cb118-23"><a href="#cb118-23" aria-hidden="true" tabindex="-1"></a>      b.julian_day2 <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span></span>
-<span id="cb118-24"><a href="#cb118-24" aria-hidden="true" tabindex="-1"></a>      b.julian_day3 <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> </span>
-<span id="cb118-25"><a href="#cb118-25" aria-hidden="true" tabindex="-1"></a>      b.julian_day4 <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day<span class="sc">^</span><span class="dv">4</span></span>
-<span id="cb118-26"><a href="#cb118-26" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb118-27"><a href="#cb118-27" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb118-28"><a href="#cb118-28" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> pred_data <span class="sc">%&gt;%</span></span>
-<span id="cb118-29"><a href="#cb118-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb118-30"><a href="#cb118-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_p =</span> <span class="fu">apply</span>(p_sim, <span class="dv">2</span>, mean),</span>
-<span id="cb118-31"><a href="#cb118-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower =</span> <span class="fu">apply</span>(p_sim, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fl">0.025</span>),</span>
-<span id="cb118-32"><a href="#cb118-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper =</span> <span class="fu">apply</span>(p_sim, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fl">0.975</span>)</span>
-<span id="cb118-33"><a href="#cb118-33" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb118-34"><a href="#cb118-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-35"><a href="#cb118-35" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data_final<span class="sc">$</span>julian_day)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">rain =</span> <span class="fu">median</span>(datax<span class="sc">$</span>temp), </span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">temp =</span> <span class="fu">median</span>(datax<span class="sc">$</span>temp),</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">julian_day =</span> <span class="fu">seq</span>(<span class="fu">min</span>(datax<span class="sc">$</span>julian_day), <span class="fu">max</span>(datax<span class="sc">$</span>julian_day), <span class="at">length.out =</span> <span class="dv">1000</span>))</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>p_sim <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> n_sim, <span class="at">ncol =</span> <span class="fu">nrow</span>(pred_data))</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>  sample_idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(res), <span class="dv">1</span>)</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"a"</span>]</span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  b.rain <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.rain"</span>]</span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  b.rain2 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.rain2"</span>]</span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  b.temp <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.temp"</span>]</span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>  b.julian_day <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day"</span>]</span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>  b.julian_day2 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day2"</span>]</span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>  b.julian_day3 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day3"</span>]</span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>  b.julian_day4 <span class="ot">&lt;-</span> res[sample_idx, <span class="st">"b.julian_day4"</span>]</span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>  p_sim[i, ] <span class="ot">&lt;-</span> <span class="fu">plogis</span>(</span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>    a <span class="sc">+</span> </span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>      b.rain <span class="sc">*</span> pred_data<span class="sc">$</span>rain <span class="sc">+</span> b.rain2 <span class="sc">*</span> pred_data<span class="sc">$</span>rain<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span></span>
+<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>      b.temp <span class="sc">*</span> pred_data<span class="sc">$</span>temp <span class="sc">+</span></span>
+<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a>      b.julian_day <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day <span class="sc">+</span> </span>
+<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a>      b.julian_day2 <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span></span>
+<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a>      b.julian_day3 <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> </span>
+<span id="cb50-25"><a href="#cb50-25" aria-hidden="true" tabindex="-1"></a>      b.julian_day4 <span class="sc">*</span> pred_data<span class="sc">$</span>julian_day<span class="sc">^</span><span class="dv">4</span></span>
+<span id="cb50-26"><a href="#cb50-26" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> pred_data <span class="sc">%&gt;%</span></span>
+<span id="cb50-29"><a href="#cb50-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb50-30"><a href="#cb50-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_p =</span> <span class="fu">apply</span>(p_sim, <span class="dv">2</span>, mean),</span>
+<span id="cb50-31"><a href="#cb50-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower =</span> <span class="fu">apply</span>(p_sim, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fl">0.025</span>),</span>
+<span id="cb50-32"><a href="#cb50-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper =</span> <span class="fu">apply</span>(p_sim, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fl">0.975</span>)</span>
+<span id="cb50-33"><a href="#cb50-33" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb50-34"><a href="#cb50-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-35"><a href="#cb50-35" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data_final<span class="sc">$</span>julian_day)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 201.5163</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(data_final<span class="sc">$</span>julian_day)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(data_final<span class="sc">$</span>julian_day)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 96.75666</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>pred_data<span class="sc">$</span>julian_day <span class="ot">&lt;-</span> (pred_data<span class="sc">$</span>julian_day <span class="sc">*</span> <span class="fl">95.50893</span>) <span class="sc">+</span> <span class="fl">203.0329</span></span>
-<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pred_data, <span class="fu">aes</span>(<span class="at">x =</span> julian_day)) <span class="sc">+</span></span>
-<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> mean_p), <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower, <span class="at">ymax =</span> upper), <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb122-6"><a href="#cb122-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Julian day (Natural Scale)"</span>, <span class="at">y =</span> <span class="st">"Probability of Reproduction"</span>) <span class="sc">+</span></span>
-<span id="cb122-7"><a href="#cb122-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb122-8"><a href="#cb122-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))<span class="sc">+</span></span>
-<span id="cb122-9"><a href="#cb122-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>pred_data<span class="sc">$</span>julian_day <span class="ot">&lt;-</span> (pred_data<span class="sc">$</span>julian_day <span class="sc">*</span> <span class="fl">95.50893</span>) <span class="sc">+</span> <span class="fl">203.0329</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pred_data, <span class="fu">aes</span>(<span class="at">x =</span> julian_day)) <span class="sc">+</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> mean_p), <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower, <span class="at">ymax =</span> upper), <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Julian day (Natural Scale)"</span>, <span class="at">y =</span> <span class="st">"Probability of Reproduction"</span>) <span class="sc">+</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))<span class="sc">+</span></span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="fichier_r_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -1145,30 +878,10 @@ a graphical parameter</code></pre>
 <p>(We would greatly appreciate advice on how to improve this analysis!)</p>
 
 
-
 </section>
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
-<div id="ref-charles-dominique_pierre_chauves-souris_2001" class="csl-entry" role="listitem">
-Charles-Dominique Pierre, Brosset André, and Jouard Sylvie. 2001. <em>Les Chauves-Souris de Guyane</em>. 49. Muséum national d’histoire naturelle.
-</div>
-<div id="ref-hollowell_checklist_2005" class="csl-entry" role="listitem">
-Hollowell, Tom, and Robert P Reynolds. 2005. <span>“Checklist of the Terrestrial Vertebrates of the Guiana Shield,”</span> no. 13.
-</div>
-<div id="ref-macswiney_g_what_2008" class="csl-entry" role="listitem">
-MacSwiney G., M. Cristina, Frank M. Clarke, and Paul A. Racey. 2008. <span>“What You See Is Not What You Get: The Role of Ultrasonic Detectors in Increasing Inventory Completeness in Neotropical Bat Assemblages.”</span> <em>Journal of Applied Ecology</em> 45 (5): 1364–71. <a href="https://doi.org/10.1111/j.1365-2664.2008.01531.x">https://doi.org/10.1111/j.1365-2664.2008.01531.x</a>.
-</div>
-<div id="ref-ruiz-ramoni_reproductive_2016" class="csl-entry" role="listitem">
-Ruiz-Ramoni, Damián, Paolo Ramoni-Perazzi, and Mariana Munoz-Romo. 2016. <span>“Reproductive Pattern of the Large Fruit-Eating Bat, Artibeus Amplus (Chiroptera: Phyllostomidae) in the Venezuelan Andes.”</span> <em>Revista de Biología Tropical</em> 65 (1): 335. <a href="https://doi.org/10.15517/rbt.v65i1.23863">https://doi.org/10.15517/rbt.v65i1.23863</a>.
-</div>
-<div id="ref-spinu_lubridate_2010" class="csl-entry" role="listitem">
-Spinu, Vitalie, Garrett Grolemund, and Hadley Wickham. 2010. <span>“Lubridate: Make Dealing with Dates a Little Easier.”</span> <a href="https://doi.org/10.32614/CRAN.package.lubridate">https://doi.org/10.32614/CRAN.package.lubridate</a>.
-</div>
-<div id="ref-wickham_dplyr_2023" class="csl-entry" role="listitem">
-Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, Davis Vaughan, Posit Software, and PBC. 2023. <span>“Dplyr: A Grammar of Data Manipulation.”</span> <a href="https://cran.r-project.org/web/packages/dplyr/index.html">https://cran.r-project.org/web/packages/dplyr/index.html</a>.
-</div>
-</div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
