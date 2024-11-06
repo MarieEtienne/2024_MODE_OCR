@@ -1,7 +1,7 @@
 ---
 title: "Exploring data on penguins" 
 author: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline" 
-bibliography: references.bib 
+bibliography: references_penguins.bib 
 execute:
   freeze: auto
   warning: false
