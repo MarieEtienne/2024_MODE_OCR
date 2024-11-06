@@ -22,12 +22,16 @@ website:
     right:
       - text: Book content
         menu:
-        - text: Titre à trouver 
+        - text: Reproductive patterns in neotropical bats 
           href: fichier_r.qmd
         - text: Determinants of Ant Species Density
           href: Determinants_ant_diversity.qmd
         - text: Effects of grazing on Swedish meadows
           href: OCR_pollen.qmd
+        - text: Nest success of different birds specie
+          href: Analyse_Birds.qmd
+        - text: Penguins Exploration
+          href: Penguins_chapter.qmd
         aria-label: GitHub
 
 format:
