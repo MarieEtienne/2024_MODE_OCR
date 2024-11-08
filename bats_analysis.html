@@ -4988,14 +4988,14 @@ Initializing model</code></pre>
  2 chains, each with 5000 iterations (first 1000 discarded), n.thin = 4
  n.sims = 2000 iterations saved
          mu.vect sd.vect    2.5%     25%     50%     75%   97.5%  Rhat n.eff
-a          1.655   0.076   1.506   1.603   1.654   1.708   1.801 1.001  2000
-deviance 755.102   1.491 754.026 754.150 754.544 755.403 759.046 1.001  2000
+a          1.655   0.073   1.517   1.605   1.655   1.704   1.802 1.002   870
+deviance 755.015   1.416 754.025 754.122 754.475 755.305 759.055 1.001  2000
 
 For each parameter, n.eff is a crude measure of effective sample size,
 and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
 
 DIC info (using the rule, pD = var(deviance)/2)
-pD = 1.1 and DIC = 756.2
+pD = 1.0 and DIC = 756.0
 DIC is an estimate of expected predictive error (lower deviance is better).</code></pre>
 </div>
 </div>
@@ -5034,7 +5034,7 @@ DIC is an estimate of expected predictive error (lower deviance is better).</cod
 <span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>waic_null</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  waic p_waic 
- 758.2    3.2 </code></pre>
+ 758.2    3.1 </code></pre>
 </div>
 </div>
 <p><u>We write and fit several models with different parameters (rain, temperature, julian day and thermal amplitude) and we compute the WAIC for each of them:</u></p>
@@ -5141,31 +5141,31 @@ Initializing model</code></pre>
  2 chains, each with 10000 iterations (first 1000 discarded), n.thin = 9
  n.sims = 2000 iterations saved
               mu.vect sd.vect    2.5%     25%     50%     75%   97.5%  Rhat
-a               0.412   0.149   0.117   0.310   0.413   0.516   0.693 1.001
-b.julian_day    0.141   0.257  -0.362  -0.035   0.142   0.323   0.621 1.003
-b.julian_day2   2.333   0.332   1.705   2.108   2.328   2.555   2.993 1.003
-b.julian_day3  -0.208   0.156  -0.496  -0.316  -0.207  -0.102   0.107 1.003
-b.julian_day4  -0.576   0.135  -0.836  -0.663  -0.573  -0.493  -0.317 1.003
-b.rain          0.435   0.218   0.010   0.296   0.436   0.578   0.865 1.002
-b.rain2         0.066   0.102  -0.072  -0.013   0.050   0.124   0.302 1.006
-b.temp          0.564   0.129   0.330   0.476   0.561   0.646   0.833 1.002
-deviance      617.174   8.303 611.119 614.105 616.262 619.188 626.327 1.122
+a               0.421   0.152   0.138   0.318   0.421   0.523   0.711 1.001
+b.julian_day    0.152   0.244  -0.344  -0.009   0.153   0.312   0.633 1.001
+b.julian_day2   2.317   0.324   1.672   2.109   2.321   2.536   2.933 1.001
+b.julian_day3  -0.216   0.150  -0.502  -0.316  -0.219  -0.119   0.089 1.003
+b.julian_day4  -0.572   0.130  -0.815  -0.657  -0.575  -0.492  -0.308 1.001
+b.rain          0.437   0.218   0.015   0.292   0.433   0.583   0.857 1.001
+b.rain2         0.058   0.103  -0.075  -0.017   0.033   0.110   0.310 1.001
+b.temp          0.564   0.129   0.300   0.479   0.563   0.645   0.820 1.001
+deviance      616.997   7.763 610.779 613.810 616.213 619.039 626.611 1.129
               n.eff
 a              2000
-b.julian_day    630
-b.julian_day2   710
-b.julian_day3   710
-b.julian_day4   740
-b.rain          790
-b.rain2         300
-b.temp         1000
+b.julian_day   2000
+b.julian_day2  2000
+b.julian_day3  2000
+b.julian_day4  2000
+b.rain         2000
+b.rain2        2000
+b.temp         2000
 deviance       2000
 
 For each parameter, n.eff is a crude measure of effective sample size,
 and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
 
 DIC info (using the rule, pD = var(deviance)/2)
-pD = 34.5 and DIC = 651.7
+pD = 30.1 and DIC = 647.1
 DIC is an estimate of expected predictive error (lower deviance is better).</code></pre>
 </div>
 </div>
